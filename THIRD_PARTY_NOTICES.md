@@ -47,7 +47,7 @@ Playwright (Apache-2.0) and its browser distributions were used for the original
 
 ## Planned capabilities, not used models
 
-FLUX.2 klein **4B** remains a disabled preset placeholder. No FLUX, geometry, research-only depth weights or paid model API is used. The 4B license must not be generalized to other FLUX variants. The original example uses SDXL only; the example also uses the continuity preset below.
+FLUX.2 klein **4B** remains a disabled preset placeholder. No FLUX, geometry, research-only depth weights or paid model API is used. The 4B license must not be generalized to other FLUX variants. The early greenhouse study and the hangar example use SDXL only; the greenhouse continuity example also uses the continuity preset below.
 
 ## Continuity preset
 

@@ -184,6 +184,15 @@ ENGINE_MODE=local COMFY_BASE_URL=http://127.0.0.1:8189 COMFY_ENGINE_URL=http://1
 # Engine and proxy control URLs must remain loopback HTTP in both modes
 ```
 
+App model check without a report — model-directory variables
+
+```sh
+# Used only when SHOTBOARD_ENGINE_MANIFEST is unset; the app then hashes local files before a render
+# SHOTBOARD_MODEL_DIR: SDXL checkpoint; default .runtime/models/checkpoints
+# SHOTBOARD_QWEN_MODEL_DIR: Qwen diffusion GGUF; default .runtime/models/diffusion_models
+# SHOTBOARD_REFERENCE_MODEL_DIR: Qwen encoder, vision projector and VAE under text_encoders/ and vae/; default ../models, outside the repository
+```
+
 SDXL lock maintenance — explicit operator action, separate from setup
 
 ```sh

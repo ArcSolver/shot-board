@@ -363,7 +363,13 @@ def list_boards():
 def create_board(scene: Scene):
     with store.lock:
         config = scene.model_dump()
-        board = dict(id=uuid4().hex, title=scene.scene[:80], config=config, shots=expand_shots(config),
+        title = scene.scene
+        if len(title) > 80:
+            prefix = title[:79]
+            if title[79] != " ":
+                prefix = prefix.rsplit(" ", 1)[0] if " " in prefix else prefix
+            title = prefix.rstrip() + "…"
+        board = dict(id=uuid4().hex, title=title, config=config, shots=expand_shots(config),
                      continuity=dict(enabled=False, hero=None), review=[], created_at=time.time())
         store.boards[board["id"]] = board
         store.save(board)

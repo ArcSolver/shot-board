@@ -46,6 +46,24 @@ class APITests(unittest.TestCase):
             for token in ('traveler', 'greenhouse', 'compass', 'raincoat'):
                 self.assertNotIn(token, shot['prompt'].lower())
 
+    def test_board_title_truncation(self):
+        scenes = [
+            ('A traveler finds a compass', 'A traveler finds a compass'),
+            ('x' * 80, 'x' * 80),
+            ('A ' * 37 + 'compass appears', ('A ' * 37).rstrip() + '…'),
+            ('A ' * 39 + 'x remains', 'A ' * 39 + 'x…'),
+            ('x' * 81, 'x' * 79 + '…'),
+        ]
+        for scene, title in scenes:
+            with self.subTest(scene=scene):
+                board = self.client.post('/api/boards', json={'scene': scene}).json()
+                self.assertEqual(board['title'], title)
+                self.assertLessEqual(len(board['title']), 80)
+                self.assertEqual(board['config']['scene'], scene)
+                self.assertEqual(self.client.get('/api/boards/' + board['id']).json()['title'], title)
+                saved = json.loads((Path(self.temp.name)/board['id']/'board.json').read_text())
+                self.assertEqual(saved['title'], title)
+
     def add_completed_takes(self):
         board = server.store.boards[self.board['id']]
         for shot in board['shots']:
@@ -192,7 +210,7 @@ class APITests(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
         board = response.json()
         self.assertEqual(board['config']['scene'], ' '.join(['A']*50))
-        self.assertEqual(board['title'], board['config']['scene'][:80])
+        self.assertEqual(board['title'], ' '.join(['A']*40) + '…')
         self.assertEqual(board['config']['character'], 'An adult traveler')
         self.assertEqual(self.client.post('/api/boards', json={'scene':' \n\t '}).status_code, 422)
 

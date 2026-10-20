@@ -8,6 +8,20 @@
 
 Higgsfield Popcorn is Higgsfield's storyboard tool for visual consistency: you write a story, add reference images if you like, and it makes 4, 6 or 8 frames. Shot Board is a smaller, independent app built around the same idea and aimed at film coverage. It runs on open weights in ComfyUI. Higgsfield did not make it, and it does not match that tool's features.
 
+## Try it without a GPU
+
+The three bundled examples open in the CPU app with no engine running. You can browse, pick, review and export them; the footer shows the engine as offline. You need Git and uv.
+
+```sh
+git clone [REPO_URL] shot-board
+cd shot-board
+uv venv .venv --python 3.12
+uv pip install --python .venv/bin/python -r requirements.lock.txt --require-hashes
+.venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
+```
+
+Open **http://127.0.0.1:8790** and choose **Explore the board** on an example. Rendering new takes needs a GPU worker; see [Run it locally](#run-it-locally).
+
 ## What it does
 
 You write one scene. Shot Board turns it into a shot list and renders takes for each cut. You compare, review and pick, then export the picks as a storyboard plus a ZIP that records how each frame was made.
@@ -166,6 +180,7 @@ Continuity improved in the greenhouse example, but only partly. Read the verdict
 
 - **The first Qwen board was mostly lost.** Only one of its five edits came back. It missed the requested framing, so counting the hero, 1 of 6 cuts matched its shot type. The other four failed on the connection to the remote worker and were never judged.
 - **The final 5 of 6 is not an automatic success rate.** It counts the reused SDXL hero and the SDXL fallback for S06. The Qwen cuts used prompts we had edited by hand in the cut editor, and S01 was edited again for its retry.
+- **The hero prompts were hand-edited too.** All eight medium hero candidates, the chosen hero S02/T05 included, used prompts we had edited by hand.
 - **The wide shot is still too close.** The figure fills about a quarter of the image height where an extreme wide was asked for.
 - **Props and sets drift.** The over-shoulder cut gets the left shoulder right, but the compass dial moves onto the hinged lid. The insert's needle layout cannot be checked against the small compass in the hero. The SDXL low angle invents a domed stairwell.
 - **What holds.** The face close-up looks compatible with the hero. In the over-shoulder cut, SDXL alone drew a different person in a tan jacket; the reference edit keeps the yellow coat, the teal scarf and the left shoulder. The Qwen low angle never came back, so we cannot say whether it would have kept the person.

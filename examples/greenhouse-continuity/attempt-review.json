@@ -227,6 +227,6 @@
     "prop": "FAIL†",
     "set": "FAIL†",
     "framing": "FAIL†",
-    "observation": "Engine log records completion, but the SDK did not download the image across the wall-clock gap and pod deletion. No published image to review."
+    "observation": "Engine log records completion, but the SDK did not download the image across the wall-clock gap and GPU worker shutdown. No published image to review."
   }
 ]

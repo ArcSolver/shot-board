@@ -135,6 +135,6 @@
     "shot": "s06",
     "take": "t03",
     "verdict": "fail",
-    "note": "Face: FAIL\u2020; Outfit: FAIL\u2020; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: FAIL\u2020. Engine log records completion, but the SDK did not download the image across the wall-clock gap and pod deletion. No published image to review."
+    "note": "Face: FAIL\u2020; Outfit: FAIL\u2020; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: FAIL\u2020. Engine log records completion, but the SDK did not download the image across the wall-clock gap and GPU worker shutdown. No published image to review."
   }
 ]
