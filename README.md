@@ -22,6 +22,8 @@ FLUX.2 klein 4B remains disabled.
 
 ## Run with a remote GPU
 
+[Step-by-step technical setup](docs/SETUP.md)
+
 The app is a CPU client. Run ComfyUI on a separate GPU worker and expose its engine and SDK proxy through SSH loopback tunnels. Keep one serial GPU job active. The source/file-store machine must never run ComfyUI or load models.
 
 ```sh
