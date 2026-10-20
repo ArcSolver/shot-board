@@ -25,13 +25,12 @@ context.referenceId = referenceTake.id;
 context.fixture = board;
 vm.runInContext('board=fixture; currentShot="s01"; renderCompare();', context);
 assert.equal(element('use-hero').disabled, true);
-assert.match(element('hero-rule').textContent, /Only an SDXL original/);
-assert.match(element('hero-rule').textContent, /edits are never chained/);
+assert.match(element('hero-rule').textContent, /Select an SDXL take to use as the hero/);
 (async()=>{
   requests.length = 0;
   await element('use-hero').onclick();
   assert.equal(requests.length, 0);
-  assert.match(element('toast').textContent, /Qwen edits cannot be heroes/);
+  assert.match(element('toast').textContent, /Select an SDXL take to use as the hero/);
   vm.runInContext('currentShot="s02"; renderCompare();', context);
   assert.equal(element('use-hero').disabled, false);
   vm.runInContext('board.shots[1].picked=null; renderCompare();', context);

@@ -1,6 +1,4 @@
-# Real UI captures
-
-All screenshots use the current CPU app in headless Chromium. Source stills in the greenhouse and hangar boards were rendered on the same RTX 4090 worker.
+# UI captures
 
 | Capture | State |
 |---|---|
@@ -12,16 +10,12 @@ All screenshots use the current CPU app in headless Chromium. Source stills in t
 | [05-compare.png](05-compare.png) | Side-by-side takes, picked still and locked seed |
 | [06-mobile.png](06-mobile.png) | Responsive 390px board view |
 
-The final board/compare captures were taken after the generation engine was stopped, so the engine-offline badge is expected. Viewing saved takes, picking and exporting remain available.
-
 ## Continuity captures
-
-Captures 01–21 were refreshed using the new RTX 4090 outputs. Captures 03 and 08 show the finished hangar and Qwen boards. Completed-board captures were made after the GPU worker was shut down.
 
 | Capture | State |
 |---|---|
 | [07-continuity-hero.png](07-continuity-hero.png) | Picked SDXL hero, continuity enabled |
-| [08-continuity-rendering.png](08-continuity-rendering.png) | Finished Qwen board with the render panel open: 18 of 23 takes ready, 5 stopped, six picks |
+| [08-continuity-rendering.png](08-continuity-rendering.png) | Finished Qwen board with the render panel open, six picks |
 | [09-continuity-board.png](09-continuity-board.png) | Final board: four Qwen edits, SDXL hero and S06 SDXL fallback |
-| [10-continuity-compare.png](10-continuity-compare.png) | SDXL, failed attempt and selected Qwen over-shoulder edit with measured times |
+| [10-continuity-compare.png](10-continuity-compare.png) | SDXL take, failed attempt and selected Qwen over-shoulder edit |
 | [11-continuity-mobile.png](11-continuity-mobile.png) | Completed board at 390px width |

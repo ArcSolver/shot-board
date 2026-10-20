@@ -1,16 +1,14 @@
 # Technical setup
 
-worker — recorded environment (not minimum requirements)
+Tested on an RTX 4090 with 24 GB VRAM.
+
+worker — tested environment
 
 ```sh
-# Container: runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404
-# OS: Ubuntu 24.04 image; kernel and NVIDIA driver version: unknown
+# Container: runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404 (Ubuntu 24.04)
 # Python: 3.12.3; PyTorch: 2.8.0+cu128; torchvision: 0.23.0+cu128
-# GPU: one NVIDIA GeForce RTX 4090, 24 GB; observed peak: 22,330 MiB
-# Engine-reported RAM: 89,645 MB; provisioned container disk: 100 GB
-# Minimum VRAM/RAM/disk and other GPU/OS compatibility: unknown
+# GPU: one NVIDIA GeForce RTX 4090, 24 GB
 # SDK: 0.5.0; proxy: 0.1.6; no Lightning or angle LoRA
-# Sources: saved engine log, pip freeze, GPU samples and container record
 ```
 
 CPU client — verified tests
@@ -200,3 +198,15 @@ SDXL lock maintenance — explicit operator action, separate from setup
 .venv/bin/python scripts/update_model_lock.py --update-lock --revision 462165984030d82259a11f4367a4eed129e94a7b
 # Review and commit workflows/model-lock.json separately; downloads never rewrite it
 ```
+
+## Engine configuration and runtime limits
+
+`ENGINE_MODE` tells the app where the models run, `local` or `remote`. If you leave it unset, engine port 8188 counts as local and any other loopback port counts as a remote tunnel. Set it yourself for a tunnel on 8188 or for a local engine on another port. In both modes the engine and proxy URLs must stay loopback HTTP. The memory pressure and swap check runs only for a local engine on macOS, during Qwen edits.
+
+`SHOTBOARD_ENGINE_MANIFEST` accepts schema version 1 with `verified: true` and a `models` array that lists `filename`, actual `sha256`, `bytes` and `verified: true` for each component. The app checks every component, SDXL included, against its pinned locks and rejects anything missing, unverified, or with the wrong hash or size. The report is a file you supply and the app reads it as written, so regenerate it whenever the worker's model files change. The app server never downloads weights or starts a worker. Without a report, it checks local model files at the paths set by the model-directory variables above.
+
+Keep ComfyUI running with `--offline --disable-partner-nodes` if you change the engine command.
+
+- This is a single-user loopback app. Do not run multiple app workers or `--reload` during generation; queued or running takes are marked interrupted after a restart.
+- One render request queues up to four takes per cut, so a six-cut board can queue up to 24 takes at once. A cut holds at most sixteen takes.
+- The app stops waiting for a take thirty minutes after the SDK submits it. Reference upload before that and image download after it are not counted.

@@ -86,28 +86,28 @@
     },
     {
       "file": "12-home.png",
-      "sha256": "88ad38454f30b271e6c258a0574113a67a6e934b5c1aa2db3e6817ba378205fb",
+      "sha256": "6ce4594c391de65e16187658c402bfea0557a4c5b324556ceef6414d9b036d12",
       "source_render_device": "NVIDIA GeForce RTX 4090",
       "capture": "Headless Chromium on CPU host",
       "render_run_id": "wh3a62zdvzetzz"
     },
     {
       "file": "13-board.png",
-      "sha256": "c03cd372ec522422632a5a0e5b3b983781550a47d814adaa5c88cb7e7767752b",
+      "sha256": "f307d3cbff95c0bae5f5abdebfc3517ba1418941b872216260178d1ad432cabf",
       "source_render_device": "NVIDIA GeForce RTX 4090",
       "capture": "Headless Chromium on CPU host",
       "render_run_id": "wh3a62zdvzetzz"
     },
     {
       "file": "14-compare.png",
-      "sha256": "8a0dc81be78b024cb86986760a3f7bdfc60984e7a3ec0faf2f437830b686b34b",
+      "sha256": "3d05336f3e2f39cc78e40bdb2a1e6638dd8c5b641fffab4852c01a8144217fc1",
       "source_render_device": "NVIDIA GeForce RTX 4090",
       "capture": "Headless Chromium on CPU host",
       "render_run_id": "wh3a62zdvzetzz"
     },
     {
       "file": "15-storyboard.png",
-      "sha256": "32a45a282b7f8834a400e23afa6e5b595a1bb5f65db3c1df4261e914aead9814",
+      "sha256": "95c3485e3ef3f3eef970b82c9eef084830816b816e1b3ca1e684e5c499dd6473",
       "source_render_device": "NVIDIA GeForce RTX 4090",
       "capture": "Headless Chromium on CPU host",
       "render_run_id": "wh3a62zdvzetzz"
