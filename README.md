@@ -38,7 +38,7 @@ On the worker, run ComfyUI with `--offline --disable-partner-nodes` and the sepa
 
 [SDXL Base](workflows/model-lock.json) includes its VAE and encoders and uses CreativeML Open RAIL++-M. [Qwen components](workflows/qwen-model-lock.json) are Apache-2.0: Edit-2511 Q8_0 diffusion, Qwen2.5-VL-7B Q8_0 encoder, F16 vision projector and Qwen image VAE. No Lightning or angle LoRA is used. Reference edits run 24 steps, CFG 4, Euler/simple, shift 3.1 and cut-specific dimensions around one megapixel. The same frozen hero is uploaded through the SDK for every edit. Edits are never chained.
 
-Open **http://127.0.0.1:8790**, build a list, and render SDXL takes. Pick a face-visible medium take, choose **Use selected as hero**, and click **Render reference edits**. The hero cut stays selected; the other cuts receive new reference takes. Compare both takes before picking. To change the hero pick, disable continuity first. The UI shows real elapsed seconds including upload, model loading, encoding, sampling and output download. Queue wait, setup and model verification are separate. Speed and visual quality are measurements, not guarantees; see the [six-cut comparison](examples/greenhouse-a2/README.md).
+Open **http://127.0.0.1:8790**, choose **New scene**, build a list, and render SDXL takes. Pick a face-visible medium take, choose **Use selected as hero**, and click **Render reference edits**. The hero cut stays selected; the other cuts receive new reference takes. Compare both takes before picking. To change the hero pick, disable continuity first. The UI shows real elapsed seconds including upload, model loading, encoding, sampling and output download. Queue wait, setup and model verification are separate. Speed and visual quality are measurements, not guarantees; see the [six-cut comparison](examples/greenhouse-a2/README.md).
 
 Export activates when every cut has a pick. Existing take recipes survive edits and mode changes. Reference exports include `references/<hash>.png`, its source recipe, portable graphs, exact SDK-submitted graphs and hashes. SDK asset IDs belong to the original proxy. For portable replay, upload the included hero under the reference path in the graph.
 
@@ -53,7 +53,7 @@ Stop the app before importing:
 .venv/bin/python scripts/import_example.py --example greenhouse-a2
 ```
 
-Restart and choose **Open a board**. The original greenhouse example preserves all twelve A1 images and recipes. The A2 example contains the six SDXL images plus five reference edits and their shared SDXL hero. Browsing, picking and exporting work with the engine offline. The A2 sheets contain letterboxed original images, not retouched renders.
+Restart and choose **My boards**. The original greenhouse example preserves all twelve A1 images and recipes. The A2 example contains the six SDXL images plus five reference edits and their shared SDXL hero. Browsing, picking and exporting work with the engine offline. The A2 sheets contain letterboxed original images, not retouched renders.
 
 ## Tests and structure
 
