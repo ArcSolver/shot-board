@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shot Board — A scene, seen six ways.</title>
+  <link rel="icon" href="data:,"><link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="/">▣ <span>SHOT BOARD</span><small>STILL STUDIO / 01</small></a><div class="topright"><span id="connection" class="connection">Checking local engine</span><button id="load-example" class="quiet">Open a board</button><button id="new-board" class="quiet">+ New scene</button></div></header>
+<main>
+  <section id="composer">
+    <div class="intro"><p class="eyebrow">YOUR SCENE. EVERY ANGLE.</p><h1>A scene,<br>seen six ways<span>.</span></h1><p>Find the coverage. Explore the takes.<br>Keep the frame that tells your story.</p><div class="intro-footer"><span class="dot"></span> OPEN WEIGHTS. LOCAL RENDERING.<br><small>No credits. No cloud. Your creative process.</small></div></div>
+    <form id="scene-form" class="composer-panel">
+      <label class="section-label" for="scene">01 / THE SCENE</label>
+      <textarea id="scene" name="scene" rows="2" required>A traveler discovers a small brass compass in a rain-soaked greenhouse.</textarea>
+      <details class="bible" open><summary>Continuity bible <span>SHARED ACROSS EVERY CUT</span></summary><div class="bible-fields"><label>Character<input id="character" name="character" value="An adult traveler with short dark hair, mustard raincoat, brown satchel" required></label><label>Set<input id="setting" name="setting" value="A quiet glass greenhouse, ferns, rain on windows, wooden potting table" required></label></div></details>
+      <div class="section-label">02 / CAMERA LANGUAGE</div><div id="camera-chips"></div>
+      <div class="section-label">03 / THE ATMOSPHERE</div><div id="look-chips"></div>
+      <div class="form-bottom"><label>Coverage<select id="count" name="count"><option value="6">6 cuts · essential</option><option value="7">7 cuts</option><option value="8">8 cuts</option><option value="9">9 cuts · extended</option></select></label><label>Seed family<input type="number" id="seed" name="seed" min="0" max="4294967295" value="20261020"></label><label>Model<select aria-label="Model preset"><option>SDXL Base 1.0</option><option disabled>Qwen reference edit · planned</option><option disabled>FLUX.2 klein 4B · planned</option></select></label></div>
+      <button type="submit" class="primary full">Build shot list <span>↗</span></button><p class="fine">Starts with a shot list. Rendering begins when you say action.</p>
+    </form>
+  </section>
+  <section id="workspace" hidden>
+    <div class="board-heading"><div><p class="eyebrow">SCENE / <span id="board-number">01</span></p><h2 id="board-title"></h2><p id="board-meta" class="muted"></p></div><div class="heading-actions"><button id="edit-toggle" class="quiet">Edit shot list</button><button id="export" class="primary" disabled>Export selects ↗</button></div></div>
+    <div class="toolbar"><div class="tabs"><button id="board-tab" class="tab active">Shot board</button><span id="pick-count" class="count"></span></div><div class="render-actions"><label>Takes per cut<select id="takes-count"><option value="2">2 takes</option><option value="1">1 take</option><option value="3">3 takes</option><option value="4">4 takes</option></select></label><button id="generate" class="primary">▶ Render board</button><button id="cancel" class="quiet" hidden>Stop queue</button></div></div>
+    <div id="queue-panel" class="queue-panel" hidden><div><span class="live-dot"></span><strong id="queue-status"></strong><span id="queue-detail"></span></div><progress id="queue-progress" value="0" max="12"></progress><small>One take at a time. Model loading and rendering may take a few minutes. Elapsed time is measured; no estimated sampling percentage.</small></div>
+    <div id="shot-list" hidden></div><div id="board-grid" class="board-grid"></div>
+    <p class="board-note">CONTINUITY V1 <span>Shared bible + seed families guide continuity. Character identity, props and geometry can vary between cuts. Move chips express composition intent in a still.</span></p>
+  </section>
+</main>
+<footer><span>SHOT BOARD</span><span>A LITTLE MORE INTENTION IN EVERY FRAME.</span><span>LOCAL / OPEN / YOURS</span></footer>
+<dialog id="compare-dialog"><div class="dialog-heading"><div><p class="eyebrow">THE CUTTING ROOM</p><h2 id="compare-title"></h2></div><button id="close-compare" class="quiet" aria-label="Close compare">✕</button></div><div id="compare-images" class="compare-images"></div><div class="compare-controls"><label>Reusable seed<input id="reuse-seed" type="number" min="0" max="4294967295"></label><button id="seed-lock" class="quiet">Lock seed</button><button id="more-takes" class="primary">+ Render takes</button><button id="reframe" class="quiet experimental">Reframe <small>EXPERIMENTAL · SOON</small></button></div><p id="compare-message" class="muted"></p></dialog>
+<dialog id="boards-dialog"><div class="dialog-heading"><h2>Your boards</h2><button id="close-boards" class="quiet" aria-label="Close boards">✕</button></div><div id="boards-list"></div></dialog>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+</body></html>
