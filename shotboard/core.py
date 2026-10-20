@@ -95,7 +95,6 @@ def expand_shots(config):
 def settings_for(shot, preset_id):
     preset = deepcopy(PRESETS[preset_id])
     preset["preset_id"] = preset_id
-    # A1 boards keep their original generic dimensions; new lists use v2 presets.
     preset.update(shot.get("reference_size" if preset_id == "qwen-reference" else "render_settings", {}))
     return preset
 

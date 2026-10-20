@@ -6,7 +6,7 @@ Shot Board source is MIT. Dependencies are installed separately from their upstr
 
 **SDXL Base 1.0** — Stability AI, [model card](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0), [CreativeML Open RAIL++-M license](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/LICENSE.md). This is an open-weight model with use restrictions, not an MIT/Apache model. The checkpoint, including its embedded SDXL diffusion network, CLIP-L/OpenCLIP bigG encoders and VAE, is governed by the checkpoint distribution terms. The app requires compliance with those use restrictions. The checkpoint revision and SHA-256 are recorded in `workflows/model-lock.json` and each exported take.
 
-CLIP and OpenCLIP implementations originate under MIT; that does not replace the SDXL checkpoint distribution terms. See the [SDXL model card](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0) and [OpenCLIP](https://github.com/mlfoundations/open_clip/blob/main/LICENSE). The runtime implementations come from the separate ComfyUI installation. No refiner, custom LoRA or standalone encoder/VAE weight is used for A1.
+CLIP and OpenCLIP implementations originate under MIT; that does not replace the SDXL checkpoint distribution terms. See the [SDXL model card](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0) and [OpenCLIP](https://github.com/mlfoundations/open_clip/blob/main/LICENSE). The runtime implementations come from the separate ComfyUI installation.
 
 ## Separate generation engine
 
@@ -47,7 +47,7 @@ Playwright (Apache-2.0) and its browser distributions were used for the original
 
 ## Planned capabilities, not used models
 
-FLUX.2 klein **4B** remains a disabled preset placeholder. No FLUX, geometry, research-only depth weights or paid model API is used. The 4B license must not be generalized to other FLUX variants. The original A1 example uses SDXL only; the A2 example also uses the continuity preset below.
+FLUX.2 klein **4B** remains a disabled preset placeholder. No FLUX, geometry, research-only depth weights or paid model API is used. The 4B license must not be generalized to other FLUX variants. The original example uses SDXL only; the example also uses the continuity preset below.
 
 ## Continuity preset
 

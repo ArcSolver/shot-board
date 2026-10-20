@@ -304,7 +304,7 @@ def health():
     return dict(proxy_ready=ready, reference_components_present=reference_components_present, checkpoint_present=checkpoint_present)
 
 
-EXAMPLES = {"greenhouse-a2": "The greenhouse / continuity", "greenhouse": "The greenhouse / early study", "hangar": "The hangar / SDXL coverage"}
+EXAMPLES = {"greenhouse-continuity": "The greenhouse / continuity", "greenhouse": "The greenhouse / early study", "hangar": "The hangar / SDXL coverage"}
 
 
 def example_board(slug):

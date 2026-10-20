@@ -6,7 +6,7 @@
 <link rel="icon" href="data:,"><link rel="stylesheet" href="/static/style.css"><script src="/static/app.js" defer></script>
 </head>
 <body>
-<header class="topbar"><a class="brand" href="/" aria-label="Shot Board home"><span class="brand-mark">▧</span> SHOT BOARD<span class="brand-sub">STILL STUDIO</span></a><nav><button id="load-example" class="quiet">My boards</button><button id="new-board" class="primary">+ New scene</button></nav></header>
+<header class="topbar"><a class="brand" href="/" aria-label="Shot Board home"><span class="brand-mark">▧</span> SHOT BOARD</a><nav><button id="load-example" class="quiet">My boards</button><button id="new-board" class="primary">+ New scene</button></nav></header>
 <main>
 <section id="home">
   <div class="home-heading"><div><p class="eyebrow">ONE SCENE. A WHOLE STORY.</p><h1>Find your next frame<span>.</span></h1></div><p class="home-description">Explore the angles. Make your picks. <br>Turn a scene into a storyboard.</p></div>
@@ -38,7 +38,7 @@
   <p class="board-note">← → Navigate cuts <span>Enter to compare · Esc to close · Review each pick before sharing.</span></p>
 </section>
 </main>
-<footer><span>SHOT BOARD / STILL STUDIO</span><span id="connection">Checking engine</span><span>Open weights. Local rendering. No cloud required.</span></footer>
+<footer><span>SHOT BOARD</span><span id="connection">Checking engine</span><span>Open weights. Local rendering. No cloud required.</span></footer>
 <dialog id="compare-dialog"><div class="dialog-heading"><div><p class="eyebrow">COMPARE & PICK <span id="compare-index"></span></p><h2 id="compare-title"></h2></div><div class="dialog-nav"><button id="previous-cut" aria-label="Previous cut">←</button><button id="next-cut" aria-label="Next cut">→</button><button id="close-compare" aria-label="Close compare">✕</button></div></div><p id="compare-review" class="review-line"></p><div id="compare-images" class="compare-images"></div><p id="hero-rule" class="muted"></p><details class="compare-recipe"><summary>Seed & render controls</summary><div class="compare-controls"><label>Reusable seed<input id="reuse-seed" type="number" min="0" max="4294967295"></label><button id="seed-lock" class="quiet">Lock seed</button><button id="use-hero" class="quiet">Use selected as hero</button><button id="more-takes" class="primary">+ Render takes</button></div><p id="compare-message" class="muted"></p></details></dialog>
 <dialog id="storyboard-dialog"><div class="dialog-heading"><div><p class="eyebrow">READY TO SHARE</p><h2>Your scene. One board.</h2></div><button id="close-storyboard" aria-label="Close storyboard">✕</button></div><div class="storyboard-controls"><label>Format<select id="storyboard-layout"><option value="landscape">Landscape · 1600 × 900</option><option value="portrait">Portrait · 1080 × 1350</option></select></label><a id="download-storyboard" class="button primary" download>Download PNG ↓</a></div><p id="storyboard-error" role="status" hidden></p><img id="storyboard-preview" alt="Storyboard of your selected cuts"><p class="fine">Selected takes, original proportions. Both formats are included in Export ZIP.</p></dialog>
 <dialog id="boards-dialog"><div class="dialog-heading"><h2>Your boards</h2><button id="close-boards" aria-label="Close boards">✕</button></div><div id="boards-list"></div></dialog>

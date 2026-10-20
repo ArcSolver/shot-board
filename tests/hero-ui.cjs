@@ -16,7 +16,7 @@ const context = vm.createContext({
   fetch:(...args)=>{requests.push(args); return new Promise(()=>{});}
 });
 vm.runInContext(fs.readFileSync(path.join(root, 'shotboard/static/app.js'), 'utf8'), context);
-const board = JSON.parse(fs.readFileSync(path.join(root, 'examples/greenhouse-a2/board.json'), 'utf8'));
+const board = JSON.parse(fs.readFileSync(path.join(root, 'examples/greenhouse-continuity/board.json'), 'utf8'));
 board.continuity.enabled = false;
 const referenceTake = board.shots[0].takes.find(t=>t.reference);
 assert.ok(referenceTake, 'Example includes a real reference edit');

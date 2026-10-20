@@ -133,14 +133,14 @@ class APITests(unittest.TestCase):
                 self.assertEqual(json.loads(path.read_text()), imported)
 
     def test_manual_review_preserves_bundled_observations(self):
-        bid = self.client.post('/api/examples/greenhouse-a2/open').json()['id']
+        bid = self.client.post('/api/examples/greenhouse-continuity/open').json()['id']
         base = '/api/boards/'+bid
         board = self.client.get(base).json()
         original = deepcopy(board['review'][0])
         config = deepcopy(board['config'])
         self.client.put(base+f"/shots/{original['shot']}/takes/{original['take']}/review",
                         json={'verdict':'fail', 'note':'Recheck framing'})
-        self.client.post('/api/examples/greenhouse-a2/open')
+        self.client.post('/api/examples/greenhouse-continuity/open')
         board = self.client.get(base).json()
         self.assertEqual(board['config'], config)
         review = board['review'][0]
@@ -152,7 +152,7 @@ class APITests(unittest.TestCase):
 
     def test_examples_open_without_generation_and_preserve_user_picks(self):
         examples = self.client.get("/api/examples").json()
-        self.assertEqual(examples[0]["slug"], "greenhouse-a2")
+        self.assertEqual(examples[0]["slug"], "greenhouse-continuity")
         slug = examples[0]["slug"]
         opened = self.client.post(f"/api/examples/{slug}/open").json()
         base = "/api/boards/" + opened["id"]
@@ -170,7 +170,7 @@ class APITests(unittest.TestCase):
         import io
         import json
         import zipfile
-        slug = "greenhouse-a2"
+        slug = "greenhouse-continuity"
         bid = self.client.post(f"/api/examples/{slug}/open").json()["id"]
         base = "/api/boards/" + bid
         for layout in ("portrait", "landscape"):
@@ -198,7 +198,7 @@ class APITests(unittest.TestCase):
 
     def test_export_succeeds_when_storyboards_fail(self):
         import io, json, zipfile
-        bid = self.client.post('/api/examples/greenhouse-a2/open').json()['id']
+        bid = self.client.post('/api/examples/greenhouse-continuity/open').json()['id']
         with patch('shotboard.core.storyboard_png', side_effect=ValueError('private renderer detail')):
             response = self.client.get('/api/boards/'+bid+'/export')
         self.assertEqual(response.status_code, 200)

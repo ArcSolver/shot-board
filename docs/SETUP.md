@@ -1,19 +1,19 @@
 # Technical setup
 
-A2r worker — recorded environment (not minimum requirements)
+worker — recorded environment (not minimum requirements)
 
 ```sh
 # Container: runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404
 # OS: Ubuntu 24.04 image; kernel and NVIDIA driver version: unknown
 # Python: 3.12.3; PyTorch: 2.8.0+cu128; torchvision: 0.23.0+cu128
-# GPU: one NVIDIA GeForce RTX 4090, 24 GB; observed peak: 22,426 MiB
+# GPU: one NVIDIA GeForce RTX 4090, 24 GB; observed peak: 22,330 MiB
 # Engine-reported RAM: 89,645 MB; provisioned container disk: 100 GB
 # Minimum VRAM/RAM/disk and other GPU/OS compatibility: unknown
 # SDK: 0.5.0; proxy: 0.1.6; no Lightning or angle LoRA
-# Sources: A2r saved engine log, pip freeze, GPU samples and container record
+# Sources: saved engine log, pip freeze, GPU samples and container record
 ```
 
-CPU client — verified A4 tests
+CPU client — verified tests
 
 ```sh
 # Debian GNU/Linux 13; CPython 3.12.15; Node v24.21.0
@@ -40,7 +40,6 @@ ssh "$GPU_SSH" 'mkdir -p /opt/shot-board && tar -xzf /tmp/shot-board-source.tar.
 GPU worker — pinned engine installation
 
 ```sh
-# GPU worker only; never the source/file-store machine
 cd /opt/shot-board
 mkdir -p .runtime
 export COMFY_DIR="$PWD/.runtime/ComfyUI"
@@ -49,7 +48,7 @@ git -C "$COMFY_DIR" checkout --detach e3bee7ffcb7d6547ed0bcd15221792f3b8646b17
 git clone https://github.com/city96/ComfyUI-GGUF.git "$COMFY_DIR/custom_nodes/ComfyUI-GGUF"
 git -C "$COMFY_DIR/custom_nodes/ComfyUI-GGUF" checkout --detach 6ea2651e7df66d7585f6ffee804b20e92fb38b8a
 python3.12 -m venv --system-site-packages .runtime/engine-venv
-# A2r image already provides torch; explicit versions for a fresh Python environment
+# image already provides torch; explicit versions for a fresh Python environment
 .runtime/engine-venv/bin/python -m pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128
 .runtime/engine-venv/bin/python -m pip install -r "$COMFY_DIR/requirements.txt" -r "$COMFY_DIR/custom_nodes/ComfyUI-GGUF/requirements.txt" comfy-sdk==0.5.0 comfy-api-proxy==0.1.6
 # Remaining engine dependency versions are not locked here

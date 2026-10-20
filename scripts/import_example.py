@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--example', default='greenhouse', choices=['greenhouse', 'greenhouse-a2', 'hangar'])
+    parser.add_argument('--example', default='greenhouse', choices=['greenhouse', 'greenhouse-continuity', 'hangar'])
     args = parser.parse_args()
     example = ROOT / 'examples' / args.example
     board = json.loads((example / "board.json").read_text())
