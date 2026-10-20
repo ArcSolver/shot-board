@@ -69,8 +69,8 @@
         0
       ],
       "seed": 20261020,
-      "steps": 4,
-      "cfg": 1.0,
+      "steps": 24,
+      "cfg": 4.0,
       "sampler_name": "euler",
       "scheduler": "simple",
       "denoise": 1.0
@@ -108,7 +108,7 @@
   "9": {
     "class_type": "CLIPLoaderGGUF",
     "inputs": {
-      "clip_name": "Qwen2.5-VL-7B-Instruct-Q6_K.gguf",
+      "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
       "type": "qwen_image"
     }
   },
@@ -118,22 +118,11 @@
       "vae_name": "qwen_image_vae.safetensors"
     }
   },
-  "11": {
-    "class_type": "LoraLoaderModelOnly",
-    "inputs": {
-      "model": [
-        "8",
-        0
-      ],
-      "lora_name": "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors",
-      "strength_model": 1.0
-    }
-  },
   "12": {
     "class_type": "ModelSamplingAuraFlow",
     "inputs": {
       "model": [
-        "11",
+        "8",
         0
       ],
       "shift": 3.1
@@ -157,7 +146,7 @@
         0
       ],
       "upscale_method": "lanczos",
-      "megapixels": 0.25,
+      "megapixels": 1.0,
       "resolution_steps": 1
     }
   },

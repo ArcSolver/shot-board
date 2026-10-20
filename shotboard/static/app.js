@@ -29,8 +29,7 @@ function render() {
   $('keep-continuity').checked=!!continuity.enabled;
   $('keep-continuity').disabled=busy()||!heroRef;
   $('hero-status').textContent=heroRef?`Hero: ${heroRef.shot_id.toUpperCase()} / ${heroRef.take_id.toUpperCase()}${continuity.enabled?' · Qwen reference edits':' · continuity off'}`:'Pick a take, then use it as the hero in Compare & pick.';
-  const refTakes=allTakes().filter(t=>t.reference),slow=refTakes.some(t=>t.elapsed_seconds>240);
-  $('continuity-detail').textContent=continuity.enabled?`Qwen-Image-Edit-2511 Q8_0 + Qwen2.5-VL-7B · 4-step Lightning. The hero stays; other cuts become reference edits. ${slow?'Slow on Mac / fast on NVIDIA target (NVIDIA unmeasured). ':''}Real elapsed time appears on each take. Identity and shot accuracy need review.`:'SDXL coverage · framing-first prompts, cut-specific dimensions and CFG. Use a picked take as the hero to enable reference edits.';
+  $('continuity-detail').textContent=continuity.enabled?`Qwen-Image-Edit-2511 Q8_0 + Qwen2.5-VL-7B · 24 steps. The hero stays; other cuts become reference edits. Real elapsed time appears on each take. Identity and shot accuracy need review.`:'SDXL coverage · framing-first prompts, cut-specific dimensions and CFG. Use a picked take as the hero to enable reference edits.';
   const picked=board.shots.filter(s=>s.picked).length, takes=allTakes(), completed=takes.filter(t=>t.status==='succeeded').length;
   $('pick-count').textContent=`${picked} / ${board.shots.length} selected`;
   $('export').disabled=picked!==board.shots.length;
@@ -58,12 +57,12 @@ async function openBoard(id){board=await api('/boards/'+id);location.hash=id;las
 function renderCompare(){
   const s=board.shots.find(s=>s.id===currentShot);if(!s)return;
   $('compare-title').textContent=s.title;
-  $('compare-images').innerHTML=s.takes.length?s.takes.map(t=>`<div class="compare-take ${s.picked===t.id?'chosen':''}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${escapeHTML(s.title)} ${t.id}">`:'<div class="shot-hero"><span class="empty-frame">'+escapeHTML(t.status)+'</span></div>'}<div><div><strong>${t.id.toUpperCase()}${s.picked===t.id?' · SELECTED':''}</strong><small>SEED ${t.seed} · ${t.elapsed_seconds||0}s · ${escapeHTML(t.status)}${t.reference?' · REFERENCE EDIT':''}</small>${t.settings?`<small>${escapeHTML(t.settings.label)} · ${t.settings.width} × ${t.settings.height} · CFG ${t.settings.cfg}${t.reference&&t.elapsed_seconds>240?' · SLOW ON MAC':''}</small>`:''}${t.error?`<small>${escapeHTML(t.error)}</small>`:''}</div><button class="${s.picked===t.id?'primary':'quiet'}" data-pick="${t.id}" ${t.status!=='succeeded'?'disabled':''}>${s.picked===t.id?'✓ Selected':'Pick this take'}</button></div></div>`).join(''):'<p class="muted">No takes yet. Render this cut to start comparing.</p>';
+  $('compare-images').innerHTML=s.takes.length?s.takes.map(t=>`<div class="compare-take ${s.picked===t.id?'chosen':''}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${escapeHTML(s.title)} ${t.id}">`:'<div class="shot-hero"><span class="empty-frame">'+escapeHTML(t.status)+'</span></div>'}<div><div><strong>${t.id.toUpperCase()}${s.picked===t.id?' · SELECTED':''}</strong><small>SEED ${t.seed} · ${t.elapsed_seconds||0}s · ${escapeHTML(t.status)}${t.reference?' · REFERENCE EDIT':''}</small>${t.settings?`<small>${escapeHTML(t.settings.label)} · ${t.settings.width} × ${t.settings.height} · CFG ${t.settings.cfg}</small>`:''}${t.error?`<small>${escapeHTML(t.error)}</small>`:''}</div><button class="${s.picked===t.id?'primary':'quiet'}" data-pick="${t.id}" ${t.status!=='succeeded'?'disabled':''}>${s.picked===t.id?'✓ Selected':'Pick this take'}</button></div></div>`).join(''):'<p class="muted">No takes yet. Render this cut to start comparing.</p>';
   document.querySelectorAll('[data-pick]').forEach(el=>el.onclick=guarded(async()=>{await api(`/boards/${board.id}/shots/${s.id}/pick`,'POST',{take_id:el.dataset.pick});await refresh();$('reuse-seed').value=board.shots.find(x=>x.id===s.id).takes.find(t=>t.id===el.dataset.pick).seed;}));
   $('seed-lock').textContent=s.locked_seed!==null?'Unlock seed':'Lock seed';
   $('seed-lock').disabled=!s.takes.some(t=>t.status==='succeeded');
   $('use-hero').disabled=busy()||!s.picked;
-  $('more-takes').disabled=busy()||(board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id);$('reframe').disabled=!s.picked;
+  $('more-takes').disabled=busy()||(board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id);
   $('compare-message').textContent=s.locked_seed!==null?`Seed ${s.locked_seed} locked. New takes reuse this seed; edit the shot prompt to explore a change.`:'Pick a take, then lock its seed to reuse it. You can also enter a seed manually.';
 }
 function openCompare(id){currentShot=id;renderCompare();const s=board.shots.find(s=>s.id===id),t=s.takes.find(t=>t.id===s.picked)||s.takes.find(t=>t.status==='succeeded');$('reuse-seed').value=s.locked_seed??t?.seed??board.config.seed;if(!$('compare-dialog').open)$('compare-dialog').showModal();}
@@ -78,7 +77,6 @@ $('cancel').onclick=guarded(async()=>{await api(`/boards/${board.id}/cancel`,'PO
 $('seed-lock').onclick=guarded(async()=>{const s=board.shots.find(x=>x.id===currentShot);const seed=s.locked_seed!==null?null:Number($('reuse-seed').value);await api(`/boards/${board.id}/shots/${s.id}/seed`,'POST',{seed});await refresh();});
 $('use-hero').onclick=guarded(async()=>{const s=board.shots.find(s=>s.id===currentShot);await api(`/boards/${board.id}/continuity`,'POST',{enabled:true,shot_id:s.id,take_id:s.picked});await refresh();toast('Hero locked. Other cuts will use Qwen reference editing.');});
 $('keep-continuity').onchange=guarded(async()=>{const hero=board.continuity?.hero;await api(`/boards/${board.id}/continuity`,'POST',{enabled:$('keep-continuity').checked,shot_id:hero?.shot_id,take_id:hero?.take_id});await refresh();});
-$('reframe').onclick=guarded(async()=>{const result=await api(`/boards/${board.id}/shots/${currentShot}/reframe`,'POST',{});toast(result.message);});
 $('export').onclick=()=>{location.href=`/api/boards/${board.id}/export`;};
 $('close-compare').onclick=()=>$('compare-dialog').close();$('close-boards').onclick=()=>$('boards-dialog').close();
 $('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$('board-grid').hidden=editing;$('edit-toggle').textContent=editing?'Return to board':'Edit shot list';if(editing)showEditors();};

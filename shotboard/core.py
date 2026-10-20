@@ -31,7 +31,7 @@ COVERAGE = [
     ("Establishing", "extreme wide establishing shot, distant full-body {subject} tiny in frame, expansive environment", "close-up, portrait, cropped body", 1216, 704, 6.5, 640, 368),
     ("Medium", "medium waist-up shot, head and torso visible, {subject} examining {prop}", "extreme close-up, distant figure, full body", 1024, 768, 6.0, 576, 432),
     ("Close-up", "tight face close-up portrait, face fills almost the entire frame, eyes in sharp focus, cropped at chin and forehead", "wide shot, medium shot, waist, torso, full body, hands, object in foreground", 768, 1024, 7.0, 448, 576),
-    ("Over shoulder", "over-the-shoulder POV, one out-of-focus shoulder at left edge foreground, {prop} on table in sharp focus beyond shoulder, rear view of {subject}", "front view, facing camera, portrait, eye contact, full body", 1152, 768, 7.0, 640, 432),
+    ("Over shoulder", "over-the-shoulder POV, back of {subject}'s head and clothed shoulder clearly visible filling left third foreground, camera immediately behind the person looking past their shoulder toward {prop} on table, rear three-quarter view", "empty room, no person, unoccupied, front view, facing camera, portrait, eye contact, full body", 1152, 768, 7.0, 640, 432),
     ("Insert", "macro insert detail shot of {prop} held in fingers, object fills frame, only hands and object visible", "face, head, portrait, torso, full body, wide shot, medium shot", 1024, 1024, 6.5, 512, 512),
     ("Low angle", "dramatic worm's-eye view from floor level looking steeply upward at {subject}, towering figure, architecture overhead, strong foreshortening", "eye level, high angle, overhead view, flat perspective, looking down", 768, 1024, 7.5, 448, 576),
     ("Profile", "side profile medium shot of {subject}, face in profile", "front view, facing camera", 1024, 768, 6.5, 576, 432),
@@ -51,12 +51,11 @@ PRESETS = {
         "label": "Qwen continuity · reference edit", "enabled": True,
         "license": "Apache-2.0", "capability": "reference-edit",
         "unet": "qwen-image-edit-2511-Q8_0.gguf",
-        "encoder": "Qwen2.5-VL-7B-Instruct-Q6_K.gguf", "vae": "qwen_image_vae.safetensors",
-        "lora": "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors",
-        "width": 512, "height": 512, "steps": 4, "cfg": 1.0,
+        "encoder": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf", "vae": "qwen_image_vae.safetensors",
+        "width": 512, "height": 512, "steps": 24, "cfg": 4.0,
         "sampler_name": "euler", "scheduler": "simple", "denoise": 1.0,
-        "shift": 3.1, "reference_megapixels": 0.25,
-        "performance_note": "Mac timing is measured per take. NVIDIA speed is not measured here.",
+        "shift": 3.1, "reference_megapixels": 1.0,
+        "performance_note": "Actual SDK elapsed time includes upload, model loading and output download.",
     },
     "flux-klein-4b": {"label": "FLUX.2 klein 4B · planned", "enabled": False,
                       "license": "Apache-2.0", "capability": "text-and-reference"},
@@ -78,9 +77,9 @@ def expand_shots(config):
         direction = direction.format(subject=config['character'].split(',')[0], prop=config.get('prop', "the scene's key object"))
         prompt = f"({direction}:1.45), live-action RAW photograph, {bible}, {config['lens']}mm lens, {angle}, {atmosphere}, {motion}"
         shots.append(dict(id=f"s{i+1:02}", title=title, direction=direction,
-                          template_version=2, shot_type=title,
+                          template_version=3, shot_type=title,
                           render_settings=dict(width=width, height=height, cfg=cfg),
-                          reference_size=dict(width=qw, height=qh),
+                          reference_size=dict(width=width, height=height),
                           prompt=prompt, negative=f"{avoid}, {NEGATIVE}",
                           locked_seed=None, picked=None, takes=[]))
     return shots
@@ -97,9 +96,10 @@ def settings_for(shot, preset_id):
 def reference_prompt(shot):
     # Qwen follows natural edit instructions; SDXL attention syntax is not portable.
     framing = re.sub(r"\(([^()]+):[0-9.]+\)", r"\1", shot["prompt"])
-    return ("Edit the reference photograph into a new camera shot of the SAME scene. "
+    return ("Requested framing: " + shot.get("direction", shot["title"]) + ". "
+            "Edit the reference photograph into a new camera shot of the SAME scene. "
             "Preserve the exact same person and facial identity, hair, outfit, bag, object design, "
-            "materials, lighting and greenhouse architecture from the reference. "
+            "materials, lighting and set architecture from the reference. "
             "Change camera position and framing as requested; do not simply repeat the reference composition. "
             + framing + ". Keep only elements visible in this framing; do not force a face into a detail or rear view.")
 
@@ -116,7 +116,6 @@ def workflow_for(shot, seed, preset, reference=None):
         graph = json.loads((ROOT / "workflows/qwen-reference.api.json").read_text())
         graph["1"]["inputs"]["image"] = reference["image"]
         graph["2"]["inputs"]["prompt"] = reference_prompt(shot)
-        # Lightning uses CFG 1: the negative branch is recorded but not evaluated.
         graph["3"]["inputs"]["prompt"] = shot["negative"]
         graph["4"]["inputs"].update(width=preset["width"], height=preset["height"])
         graph["5"]["inputs"].update(seed=seed, **{k: preset[k] for k in
@@ -124,7 +123,6 @@ def workflow_for(shot, seed, preset, reference=None):
         graph["8"]["inputs"]["unet_name"] = preset["unet"]
         graph["9"]["inputs"]["clip_name"] = preset["encoder"]
         graph["10"]["inputs"]["vae_name"] = preset["vae"]
-        graph["11"]["inputs"]["lora_name"] = preset["lora"]
         graph["12"]["inputs"]["shift"] = preset["shift"]
         graph["14"]["inputs"]["megapixels"] = preset["reference_megapixels"]
         return graph

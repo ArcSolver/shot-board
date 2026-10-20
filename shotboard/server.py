@@ -21,6 +21,8 @@ import httpx
 from PIL import Image
 from pydantic import BaseModel, Field
 
+from .memory import MemoryGuard, MemorySafetyError
+
 from .core import (ROOT, PRESETS, LENSES, ANGLES, MOVES, LIGHTS, LOOKS,
                    expand_shots, seed_for, workflow_for, settings_for, export_board, sha256)
 
@@ -28,6 +30,8 @@ DATA = Path(os.environ.get("SHOTBOARD_DATA_DIR", ROOT / ".runtime/boards"))
 MODEL_DIR = Path(os.environ.get("SHOTBOARD_MODEL_DIR", ROOT / ".runtime/models/checkpoints"))
 REFERENCE_MODEL_DIR = Path(os.environ.get("SHOTBOARD_REFERENCE_MODEL_DIR", ROOT.parent / "models"))
 QWEN_MODEL_DIR = Path(os.environ.get("SHOTBOARD_QWEN_MODEL_DIR", ROOT / ".runtime/models/diffusion_models"))
+# Optional private report copied over SSH after hashing the remote engine's files.
+ENGINE_MANIFEST = os.environ.get("SHOTBOARD_ENGINE_MANIFEST")
 SDK_URL = os.environ.get("COMFY_BASE_URL", "http://127.0.0.1:8189")
 if urlparse(SDK_URL).hostname not in ("127.0.0.1", "localhost", "::1") or urlparse(SDK_URL).scheme != "http":
     raise RuntimeError("Shot Board only accepts a local HTTP Comfy proxy.")
@@ -95,6 +99,7 @@ class Store:
         self.stop = threading.Event()
         self.thread = None
         self.active_job = None
+        self.memory_guard = MemoryGuard()
 
     def save(self, board):
         dest = DATA / board["id"] / "board.json"
@@ -135,6 +140,7 @@ class Store:
             start = time.monotonic()
             job = None
             try:
+                self.memory_guard.prepare(take["settings"]["preset_id"])
                 with Comfy(timeout=30) as client:
                     workflow = client.workflows.from_json(deepcopy(take["workflow"]))
                     if take.get("reference"):
@@ -162,6 +168,7 @@ class Store:
                         if time.monotonic() > deadline:
                             job.cancel()
                             raise TimeoutError("Local generation exceeded 30 minutes")
+                        self.memory_guard.check_running()
                         job.refresh()
                         with self.lock:
                             take.update(engine_status=job.status, phase="Local engine · " + job.status,
@@ -191,8 +198,15 @@ class Store:
                         pass
                 with self.lock:
                     # Do not expose engine exception bodies, credentials, or filesystem paths.
+                    if isinstance(exc, MemorySafetyError):
+                        for pending_board in self.boards.values():
+                            for pending_shot in pending_board["shots"]:
+                                for pending in pending_shot["takes"]:
+                                    if pending["status"] == "queued":
+                                        pending.update(status="cancelled", error=str(exc))
+                            self.save(pending_board)
                     take.update(status="cancelled" if take.get("cancel_requested") or self.stop.is_set() else "failed",
-                                error=f"{type(exc).__name__}: local generation stopped. Check the local engine and retry.",
+                                error=str(exc) if isinstance(exc, MemorySafetyError) else f"{type(exc).__name__}: local generation stopped. Check the local engine and retry.",
                                 elapsed_seconds=round(time.monotonic()-start, 3))
             finally:
                 with self.lock:
@@ -250,8 +264,7 @@ def shot_for(board, sid):
 
 @app.get("/api/config")
 def config():
-    return dict(lens=LENSES, angle=ANGLES, move=MOVES, lighting=LIGHTS, look=LOOKS, presets=PRESETS,
-                reframe=dict(enabled=False, experimental=True))
+    return dict(lens=LENSES, angle=ANGLES, move=MOVES, lighting=LIGHTS, look=LOOKS, presets=PRESETS)
 
 
 @app.get("/api/health")
@@ -267,7 +280,17 @@ def health():
         ((QWEN_MODEL_DIR / m["filename"]) if m["component"] == "diffusion" else
          (REFERENCE_MODEL_DIR / m["folder"] / m["filename"])).is_file()
         for m in json.loads((ROOT / "workflows/qwen-model-lock.json").read_text()))
-    return dict(proxy_ready=ready, reference_components_present=reference_components_present, checkpoint_present=(MODEL_DIR / PRESETS["sdxl-base"]["checkpoint"]).is_file())
+    checkpoint_present = (MODEL_DIR / PRESETS["sdxl-base"]["checkpoint"]).is_file()
+    if ENGINE_MANIFEST:
+        def available(preset):
+            try:
+                verify_models(preset)
+                return True
+            except ValueError:
+                return False
+        checkpoint_present = available("sdxl-base")
+        reference_components_present = available("qwen-reference")
+    return dict(proxy_ready=ready, reference_components_present=reference_components_present, checkpoint_present=checkpoint_present)
 
 
 @app.get("/api/boards")
@@ -331,7 +354,7 @@ def generate(bid: str, request: Generate):
         tasks = []
         for shot in shots:
             preset = settings_for(shot, preset_id)
-            offset = len(shot["takes"])
+            offset = max((int(t["id"][1:]) for t in shot["takes"]), default=0)
             for i in range(request.takes):
                 tid = f"t{offset+i+1:02}"
                 seed = seed_for(board["config"]["seed"], offset+i, shot["locked_seed"])
@@ -355,6 +378,20 @@ def verify_models(preset_id):
                              components=["SDXL UNet", "CLIP-L", "OpenCLIP bigG", "VAE (checkpoint embedded)"])]
     else:
         requirements = json.loads((ROOT / "workflows/qwen-model-lock.json").read_text())
+    if ENGINE_MANIFEST:
+        try:
+            report = json.loads(Path(ENGINE_MANIFEST).read_text())
+            if report.get("schema_version") != 1 or report.get("verified") is not True:
+                raise ValueError("Unverified engine model report")
+            for model in requirements:
+                component = next((m for m in report["models"] if m["filename"] == model["filename"]), None)
+                if not component or component.get("sha256") != model["sha256"] or component.get("verified") is not True:
+                    raise ValueError("Engine model report differs from pinned component")
+                if "bytes" in model and component.get("bytes") != model["bytes"]:
+                    raise ValueError("Engine model size differs from pinned component")
+        except (OSError, KeyError, TypeError, json.JSONDecodeError) as exc:
+            raise ValueError("Engine model report unavailable or invalid") from exc
+        return requirements
     for model in requirements:
         if preset_id == "sdxl-base":
             path = MODEL_DIR / model["filename"]
@@ -437,16 +474,6 @@ def lock_seed(bid: str, sid: str, request: SeedLock):
         shot_for(board, sid)["locked_seed"] = request.seed
         store.save(board)
     return dict(ok=True)
-
-
-@app.post("/api/boards/{bid}/shots/{sid}/reframe")
-def reframe(bid: str, sid: str):
-    with store.lock:
-        shot = shot_for(board_for(bid), sid)
-        if not shot["picked"]:
-            raise HTTPException(409, "Pick a still before reframing")
-    return dict(enabled=False, experimental=True, status="coming_soon",
-                message="Reframe is coming soon: close-up and small parallax experiments.")
 
 
 @app.get("/api/boards/{bid}/export")

@@ -50,16 +50,16 @@ class TemplateTests(unittest.TestCase):
         graph = workflow_for(shot, 41, settings, reference)
         self.assertEqual(graph['8']['inputs']['unet_name'], 'qwen-image-edit-2511-Q8_0.gguf')
         self.assertEqual(graph['9']['class_type'], 'CLIPLoaderGGUF')
-        self.assertEqual(graph['9']['inputs']['clip_name'], 'Qwen2.5-VL-7B-Instruct-Q6_K.gguf')
+        self.assertEqual(graph['9']['inputs']['clip_name'], 'Qwen2.5-VL-7B-Instruct-Q8_0.gguf')
         self.assertEqual(graph['2']['inputs']['image1'], ['14',0])
         self.assertEqual(graph['1']['inputs']['image'], reference['image'])
         self.assertIn('SAME scene', graph['2']['inputs']['prompt'])
         self.assertNotIn(':1.45', graph['2']['inputs']['prompt'])
         self.assertEqual(graph['4']['inputs']['width'], shot['reference_size']['width'])
-        self.assertEqual(graph['5']['inputs']['steps'],4)
-        self.assertEqual(graph['5']['inputs']['cfg'],1)
+        self.assertEqual(graph['5']['inputs']['steps'],24)
+        self.assertEqual(graph['5']['inputs']['cfg'],4)
         loras=[n['inputs']['lora_name'] for n in graph.values() if n['class_type']=='LoraLoaderModelOnly']
-        self.assertEqual(loras,[PRESETS['qwen-reference']['lora']])
+        self.assertEqual(loras,[])
         with self.assertRaisesRegex(ValueError, 'hero'):
             workflow_for(shot, 0, settings)
         self.assertNotIn('preset_id', PRESETS['qwen-reference'])
@@ -77,7 +77,7 @@ class TemplateTests(unittest.TestCase):
 
     def test_all_qwen_components_are_pinned_and_projector_included(self):
         lock=json.loads((ROOT/'workflows/qwen-model-lock.json').read_text())
-        self.assertEqual(len(lock),5)
+        self.assertEqual(len(lock),4)
         self.assertTrue(any(m['component']=='vision projector' for m in lock))
         self.assertTrue(all(len(m['sha256'])==64 and len(m['revision'])==40 and m['license']=='Apache-2.0' for m in lock))
         with tempfile.TemporaryDirectory() as tmp:
@@ -224,7 +224,7 @@ class SDKWorkerTests(unittest.TestCase):
                 captured['graph']=deepcopy(workflow.json)
                 return Job()
         server.store.stop.clear()
-        with patch.object(server,'Comfy',Client):
+        with patch.object(server,'Comfy',Client), patch.object(server.store.memory_guard,'prepare'):
             server.store.work()
         self.assertEqual(take['status'],'succeeded')
         self.assertEqual(captured['graph']['1']['inputs']['image'],binding)

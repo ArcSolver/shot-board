@@ -40,12 +40,9 @@ class APITests(unittest.TestCase):
         self.client.post(self.base+"/shots/s01/seed",json={"seed":None})
         self.assertIsNone(self.client.get(self.base).json()["shots"][0]["locked_seed"])
 
-    def test_reframe_does_not_queue_work(self):
-        self.assertEqual(self.client.post(self.base+"/shots/s01/reframe").status_code, 409)
-        server.store.boards[self.board["id"]]["shots"][0]["picked"] = "t01"
-        response = self.client.post(self.base+"/shots/s01/reframe").json()
-        self.assertFalse(response["enabled"])
-        self.assertTrue(response["experimental"])
+    def test_removed_route_and_config(self):
+        self.assertEqual(self.client.post(self.base+"/shots/s01/reframe").status_code, 404)
+        self.assertNotIn("reframe", self.client.get("/api/config").json())
         self.assertTrue(server.store.tasks.empty())
 
     def test_invalid_shot_and_cross_origin(self):
