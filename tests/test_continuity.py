@@ -16,7 +16,8 @@ from shotboard.core import ROOT, PRESETS, expand_shots, settings_for, workflow_f
 
 class TemplateTests(unittest.TestCase):
     def setUp(self):
-        self.shots = expand_shots(server.Scene(scene="A traveler discovers a brass compass in a greenhouse").model_dump())
+        self.shots = expand_shots(server.Scene(scene="A traveler discovers a brass compass in a greenhouse",
+                                              character="An adult traveler").model_dump())
 
     def test_framing_first_and_distinct_geometry_negative_cfg(self):
         for shot in self.shots:

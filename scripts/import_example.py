@@ -14,8 +14,17 @@ def main():
     args = parser.parse_args()
     example = ROOT / 'examples' / args.example
     board = json.loads((example / "board.json").read_text())
+    review = example / "continuity-review.json"
+    board["review"] = json.loads(review.read_text()) if review.exists() else []
     destination = Path(os.environ.get("SHOTBOARD_DATA_DIR", ROOT / ".runtime/boards")) / board["id"]
     if destination.exists():
+        saved_path = destination / "board.json"
+        saved = json.loads(saved_path.read_text())
+        if "review" not in saved:
+            saved["review"] = board["review"]
+            saved_path.write_text(json.dumps(saved, indent=2)+"\n")
+            print("Example review imported.")
+            return
         print("Example board already present; no files changed.")
         return
     destination.mkdir(parents=True)

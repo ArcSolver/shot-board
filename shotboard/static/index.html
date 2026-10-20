@@ -18,10 +18,11 @@
   <div class="composer-intro"><p class="eyebrow">A NEW SCENE</p><h1>Start with a moment<span>.</span></h1><p class="muted">Describe the scene. We’ll lay out the coverage.</p></div>
   <form id="scene-form" class="composer-panel">
     <label class="section-label" for="scene">WHAT HAPPENS IN YOUR SCENE?</label>
-    <textarea id="scene" name="scene" rows="3" required maxlength="600" placeholder="A traveler discovers a small brass compass in a rain-soaked greenhouse.">A traveler discovers a small brass compass in a rain-soaked greenhouse.</textarea>
+    <textarea id="scene" name="scene" rows="3" required maxlength="600" placeholder="Describe the scene."></textarea>
+    <button id="use-example" type="button" class="quiet">Use example</button>
     <div class="coverage-preview" id="coverage-preview" aria-label="Six planned compositions"></div>
     <details class="advanced"><summary>Fine-tune the scene <span>Character, camera & atmosphere</span></summary>
-      <div class="bible-fields"><label>Character<input id="character" name="character" value="An adult traveler with short dark hair, mustard raincoat, brown satchel" required maxlength="400"></label><label>Key prop<input id="prop" name="prop" value="small brass compass" required maxlength="160"></label><label>Set<input id="setting" name="setting" value="A quiet glass greenhouse, ferns, rain on windows, wooden potting table" required maxlength="400"></label></div>
+      <div class="bible-fields"><label>Character<input id="character" name="character" maxlength="400"></label><label>Key prop<input id="prop" name="prop" maxlength="160"></label><label>Set<input id="setting" name="setting" maxlength="400"></label></div>
       <div class="section-label">CAMERA LANGUAGE</div><div id="camera-chips"></div><div class="section-label">ATMOSPHERE</div><div id="look-chips"></div>
       <div class="form-bottom"><label>Coverage<select id="count" name="count"><option value="6">6 cuts · essential</option><option value="7">7 cuts</option><option value="8">8 cuts</option><option value="9">9 cuts · extended</option></select></label><label>Seed family<input type="number" id="seed" name="seed" min="0" max="4294967295" value="20261020"></label><label>Model<select aria-label="Model preset"><option>SDXL Base 1.0</option></select></label></div>
     </details>

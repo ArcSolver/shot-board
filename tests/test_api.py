@@ -1,10 +1,19 @@
 from pathlib import Path
+from copy import deepcopy
+import io
+import json
+import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
+import zipfile
 
 from fastapi.testclient import TestClient
+from PIL import Image
 from shotboard import server
+from shotboard.core import PRESETS, sha256, workflow_for
 
 
 class APITests(unittest.TestCase):
@@ -29,6 +38,110 @@ class APITests(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertEqual(self.client.get(self.base).json()["shots"][0]["title"], "Opening")
         self.assertTrue((Path(self.temp.name)/self.board["id"]/"board.json").is_file())
+
+    def test_scene_defaults_do_not_add_example_content(self):
+        board = self.client.post('/api/boards', json={'scene': 'A robot repairs a spaceship engine.'}).json()
+        self.assertEqual([board['config'][key] for key in ('character', 'prop', 'setting')], ['', '', ''])
+        for shot in board['shots']:
+            for token in ('traveler', 'greenhouse', 'compass', 'raincoat'):
+                self.assertNotIn(token, shot['prompt'].lower())
+
+    def add_completed_takes(self):
+        board = server.store.boards[self.board['id']]
+        for shot in board['shots']:
+            shot['takes'] = []
+            for tid, color in (('t01', 'olive'), ('t02', 'blue')):
+                image = Path(self.temp.name) / board['id'] / f"{shot['id']}-{tid}.png"
+                Image.new('RGB', (16, 9), color).save(image)
+                shot['takes'].append(dict(id=tid, status='succeeded', seed=41,
+                    settings=deepcopy(PRESETS['sdxl-base']), models=[], elapsed_seconds=0,
+                    workflow=workflow_for(shot, 41, PRESETS['sdxl-base']),
+                    image=image.name, image_sha256=sha256(image)))
+            shot['picked'] = 't01'
+        server.store.save(board)
+
+    def test_manual_reviews_survive_picks_restart_and_export(self):
+        self.add_completed_takes()
+        path = self.base + '/shots/s01/takes/'
+        for tid, verdict, note in (('t01', 'pass', 'Clear framing'), ('t02', 'fail', 'Too tight')):
+            response = self.client.put(path + tid + '/review', json=dict(verdict=verdict, note=note))
+            self.assertEqual(response.status_code, 200)
+        for tid, verdict in (('t02', 'fail'), ('t01', 'pass')):
+            self.assertEqual(self.client.post(self.base+'/shots/s01/pick', json={'take_id':tid}).status_code, 200)
+            board = self.client.get(self.base).json()
+            selected = next(r for r in board['review'] if r['shot']=='s01' and r['take']==board['shots'][0]['picked'])
+            self.assertEqual(selected['verdict'], verdict)
+        # Identical take IDs in other shots must not overwrite this shot's review.
+        self.client.put(self.base+'/shots/s02/takes/t01/review', json={'verdict':'pending', 'note':'Check set'})
+        response = self.client.put(path+'t02/review', json={'verdict':'pending', 'note':''})
+        self.assertEqual(response.status_code, 200)
+        board = self.client.get(self.base).json()
+        self.assertEqual(len(board['review']), 3)
+        with zipfile.ZipFile(io.BytesIO(self.client.get(self.base+'/export').content)) as archive:
+            manifest = json.loads(archive.read('manifest.json'))
+            self.assertEqual(manifest['review'], board['review'])
+            self.assertEqual(manifest['shots'][0]['review']['verdict'], 'pass')
+            self.assertEqual(manifest['shots'][0]['review']['note'], 'Clear framing')
+            self.assertEqual(manifest['shots'][2]['review']['verdict'], 'pending')
+        restored = server.Store()
+        restored.start()
+        restored.stop.set()
+        restored.thread.join(timeout=2)
+        with patch.object(server, 'store', restored):
+            self.assertEqual(self.client.get(self.base).json()['review'], board['review'])
+
+    def test_review_validation_and_missing_targets(self):
+        self.add_completed_takes()
+        path = self.base+'/shots/s01/takes/t01/review'
+        for body in ({'verdict':'unknown'}, {'verdict':'pass', 'note':'x'*401}, {'note':'No verdict'}):
+            self.assertEqual(self.client.put(path, json=body).status_code, 422)
+        for path in (self.base+'/shots/s01/takes/missing/review',
+                     self.base+'/shots/missing/takes/t01/review',
+                     '/api/boards/missing/shots/s01/takes/t01/review'):
+            self.assertEqual(self.client.put(path, json={'verdict':'pass'}).status_code, 404)
+
+    def test_cli_import_matches_explore_and_preserves_edits(self):
+        for slug in server.EXAMPLES:
+            with self.subTest(slug=slug), tempfile.TemporaryDirectory() as folder:
+                command = [sys.executable, str(server.ROOT/'scripts/import_example.py'), '--example', slug]
+                env = dict(os.environ, SHOTBOARD_DATA_DIR=folder)
+                subprocess.run(command, env=env, check=True, capture_output=True)
+                bid = self.client.post(f'/api/examples/{slug}/open').json()['id']
+                explored = self.client.get('/api/boards/'+bid).json()
+                path = Path(folder)/bid/'board.json'
+                imported = json.loads(path.read_text())
+                self.assertEqual(imported, explored)
+                for shot in imported['shots']:
+                    for take in shot['takes']:
+                        self.assertEqual(sha256(Path(folder)/bid/take['image']), take['image_sha256'])
+                # Backfill only a missing review on an older import, preserving picks.
+                imported.pop('review')
+                imported['shots'][0]['picked'] = 't01'
+                path.write_text(json.dumps(imported))
+                server.store.boards[bid] = deepcopy(imported)
+                subprocess.run(command, env=env, check=True, capture_output=True)
+                self.client.post(f'/api/examples/{slug}/open')
+                imported = json.loads(path.read_text())
+                self.assertEqual(imported, self.client.get('/api/boards/'+bid).json())
+                self.assertEqual(imported, json.loads((server.DATA/bid/'board.json').read_text()))
+                imported['review'] = [{'shot':'s01', 'take':'t01', 'verdict':'fail', 'note':'Keep this'}]
+                path.write_text(json.dumps(imported))
+                subprocess.run(command, env=env, check=True, capture_output=True)
+                self.assertEqual(json.loads(path.read_text()), imported)
+
+    def test_manual_review_preserves_bundled_observations(self):
+        bid = self.client.post('/api/examples/greenhouse-a2/open').json()['id']
+        base = '/api/boards/'+bid
+        board = self.client.get(base).json()
+        original = deepcopy(board['review'][0])
+        config = deepcopy(board['config'])
+        self.client.put(base+f"/shots/{original['shot']}/takes/{original['take']}/review",
+                        json={'verdict':'fail', 'note':'Recheck framing'})
+        self.client.post('/api/examples/greenhouse-a2/open')
+        board = self.client.get(base).json()
+        self.assertEqual(board['config'], config)
+        review = board['review'][0]
+        self.assertEqual(review, original | dict(verdict='fail', note='Recheck framing'))
 
     def test_incomplete_export_and_pick_rejected(self):
         self.assertEqual(self.client.get(self.base+"/export").status_code, 409)

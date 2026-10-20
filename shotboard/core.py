@@ -67,7 +67,11 @@ NEGATIVE = "anime, cartoon, illustration, drawing, painting, 3d render, text, wa
 
 def expand_shots(config):
     """Same bible and chips always produce the same editable six to nine cuts."""
-    bible = f"{config['scene']}. Character: {config['character']}. Set: {config['setting']}."
+    bible = config['scene'].rstrip('. ')
+    for key, label in (("character", "Character"), ("setting", "Set"), ("prop", "Key prop")):
+        if config.get(key, '').strip():
+            bible += f". {label}: {config[key].strip()}"
+    bible += "."
     atmosphere = ", ".join([LIGHT_PROMPTS[config['lighting']], LOOK_PROMPTS[config['look']],
                             "cinematic still photograph"])
     motion = {"Static": "locked camera composition", "Push in": "visual intent of a slow push in",
@@ -76,10 +80,11 @@ def expand_shots(config):
     for i, (title, direction, avoid, width, height, cfg, qw, qh) in enumerate(COVERAGE[:config["count"]]):
         # Only compatible cuts inherit angle; a low-angle chip must not undo OTS.
         angle = config["angle"].lower() if title in ("Medium", "Profile") else ""
-        direction = direction.format(subject=config['character'].split(',')[0], prop=config.get('prop', "the scene's key object"))
+        direction = direction.format(subject=config.get('character', '').split(',')[0].strip() or "the main subject",
+                                     prop=config.get('prop', '').strip() or "the focal detail")
         prompt = f"({direction}:1.45), live-action RAW photograph, {bible}, {config['lens']}mm lens, {angle}, {atmosphere}, {motion}"
         shots.append(dict(id=f"s{i+1:02}", title=title, direction=direction,
-                          template_version=3, shot_type=title,
+                          template_version=4, shot_type=title,
                           render_settings=dict(width=width, height=height, cfg=cfg),
                           reference_size=dict(width=width, height=height),
                           prompt=prompt, negative=f"{avoid}, {NEGATIVE}",
@@ -149,7 +154,7 @@ def export_board(board, data_root):
                     title=board["title"], scene=deepcopy(board["config"]),
                     consistency="Reference edits preserve a hero when enabled; identity and shot accuracy require visual review.",
                     generation_path="Comfy SDK → local API proxy → ComfyUI",
-                    review=deepcopy(board.get("review")), hero=deepcopy(board.get("continuity", {}).get("hero")),
+                    review=deepcopy(board.get("review", [])), hero=deepcopy(board.get("continuity", {}).get("hero")),
                     storyboards=[], storyboard_errors=[], shots=[])
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
@@ -182,6 +187,9 @@ def export_board(board, data_root):
                 archive.writestr(submitted_name, submitted_graph)
                 submitted_hash = hashlib.sha256(submitted_graph.encode()).hexdigest()
             manifest["shots"].append(dict(id=shot["id"], title=shot["title"], take_id=take["id"],
+                review=deepcopy(next((r for r in board.get("review", [])
+                                     if r["shot"] == shot["id"] and r["take"] == take["id"]),
+                                    dict(shot=shot["id"], take=take["id"], verdict="pending", note=""))),
                 seed=take["seed"], seed_locked=shot["locked_seed"] is not None,
                 settings=deepcopy(take["settings"]), models=deepcopy(take["models"]),
                 prompt=take["workflow"]["2"]["inputs"].get("text", take["workflow"]["2"]["inputs"].get("prompt")),

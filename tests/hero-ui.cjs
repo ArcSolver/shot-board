@@ -32,5 +32,19 @@ assert.match(element('hero-rule').textContent, /edits are never chained/);
   assert.equal(element('use-hero').disabled, false);
   vm.runInContext('board.shots[1].picked=null; renderCompare();', context);
   assert.equal(element('use-hero').disabled, true);
+  board.review = [
+    {shot:'s01',take:'t01',verdict:'pass',note:'<b>Clear</b> "subject"'},
+    {shot:'s01',take:'t03',verdict:'fail',note:'Too tight'}
+  ];
+  vm.runInContext('board.shots[0].picked="t01";', context);
+  assert.equal(vm.runInContext('reviewSummary(board.shots[0])', context), 'Pass');
+  vm.runInContext('board.shots[0].picked="t03";', context);
+  assert.equal(vm.runInContext('reviewSummary(board.shots[0])', context), 'Fail');
+  vm.runInContext('board.shots[0].picked=null;', context);
+  assert.equal(vm.runInContext('reviewSummary(board.shots[0],"t01")', context), 'Pass');
+  const editor = vm.runInContext('reviewEditor(board.shots[0],board.shots[0].takes[0])', context);
+  assert.match(editor, /&lt;b&gt;Clear&lt;\/b&gt; &quot;subject&quot;/);
+  assert.doesNotMatch(editor, /<b>Clear<\/b>/);
   console.log('Hero UI: Qwen disabled and blocked, SDXL enabled, empty pick disabled.');
+  console.log('Review UI: verdict follows take, unpicked preview and note escaping passed.');
 })().catch(error=>{console.error(error); process.exitCode=1;});

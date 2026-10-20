@@ -46,9 +46,9 @@ TERMINAL = {"succeeded", "failed", "cancelled", "canceled", "expired", "error"}
 
 class Scene(BaseModel):
     scene: str = Field(min_length=3, max_length=600)
-    character: str = Field(default="An adult traveler with short dark hair, mustard raincoat, brown satchel", min_length=3, max_length=400)
-    setting: str = Field(default="A quiet glass greenhouse, ferns, rain on windows, wooden potting table", min_length=3, max_length=400)
-    prop: str = Field(default="the scene's key object", min_length=3, max_length=160)
+    character: str = Field(default="", max_length=400)
+    setting: str = Field(default="", max_length=400)
+    prop: str = Field(default="", max_length=160)
     lens: Literal["24", "35", "50", "85"] = "35"
     angle: Literal["Eye level", "Low angle", "High angle"] = "Eye level"
     move: Literal["Static", "Push in", "Lateral drift"] = "Static"
@@ -91,6 +91,11 @@ class Continuity(BaseModel):
 
 class Pick(BaseModel):
     take_id: str
+
+
+class Review(BaseModel):
+    verdict: Literal["pass", "fail", "pending"]
+    note: str = Field(default="", max_length=400)
 
 
 class SeedLock(BaseModel):
@@ -343,6 +348,7 @@ def open_example(slug: str):
             store.save(source)
         else:
             store.boards[source["id"]].setdefault("review", source["review"])
+            store.save(store.boards[source["id"]])
         return dict(id=source["id"])
 
 
@@ -357,7 +363,7 @@ def create_board(scene: Scene):
     with store.lock:
         config = scene.model_dump()
         board = dict(id=uuid4().hex, title=scene.scene[:80], config=config, shots=expand_shots(config),
-                     continuity=dict(enabled=False, hero=None), created_at=time.time())
+                     continuity=dict(enabled=False, hero=None), review=[], created_at=time.time())
         store.boards[board["id"]] = board
         store.save(board)
         return deepcopy(board)
@@ -533,6 +539,23 @@ def lock_seed(bid: str, sid: str, request: SeedLock):
         shot_for(board, sid)["locked_seed"] = request.seed
         store.save(board)
     return dict(ok=True)
+
+
+@app.put("/api/boards/{bid}/shots/{sid}/takes/{tid}/review")
+def save_review(bid: str, sid: str, tid: str, request: Review):
+    with store.lock:
+        board = board_for(bid)
+        shot = shot_for(board, sid)
+        if not any(t["id"] == tid for t in shot["takes"]):
+            raise HTTPException(404, "Take not found")
+        reviews = board.setdefault("review", [])
+        review = next((r for r in reviews if r["shot"] == sid and r["take"] == tid), None)
+        if review is None:
+            review = dict(shot=sid, take=tid)
+            reviews.append(review)
+        review.update(request.model_dump())
+        store.save(board)
+        return deepcopy(review)
 
 
 @app.get("/api/boards/{bid}/storyboard")

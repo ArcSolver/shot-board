@@ -13,7 +13,26 @@ from shotboard.server import Scene
 
 class CoverageTests(unittest.TestCase):
     def setUp(self):
-        self.config = Scene(scene="A traveler finds a compass").model_dump()
+        self.config = Scene(scene="A technician repairs an engine", character="a technician in silver gloves",
+                            setting="an orbital workshop", prop="a pressure gauge").model_dump()
+
+    def test_new_scene_has_no_example_defaults(self):
+        for extras in ({}, dict(character="", setting="", prop=""),
+                       dict(character=" \t ", setting="\n", prop=" ")):
+            config = Scene(scene="A robot repairs a spaceship engine.", **extras).model_dump()
+            for key in ("character", "setting", "prop"):
+                self.assertEqual(config[key], "")
+            for shot in expand_shots(config):
+                self.assertIn(config["scene"], shot["prompt"])
+                for token in ("traveler", "greenhouse", "compass", "raincoat", "Character:", "Set:", "Key prop:"):
+                    self.assertNotIn(token.lower(), shot["prompt"].lower())
+
+    def test_each_optional_extra_is_used_only_when_supplied(self):
+        for key, value, label in (("character", "a robot", "Character"), ("setting", "a spaceship", "Set"),
+                                  ("prop", "a wrench", "Key prop")):
+            config = Scene(scene="Repairs begin", **{key: value}).model_dump()
+            for shot in expand_shots(config):
+                self.assertIn(f"{label}: {value}", shot["prompt"])
 
     def test_deterministic_coverage_and_shared_bible(self):
         shots = expand_shots(self.config)

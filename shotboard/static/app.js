@@ -7,6 +7,7 @@ function isSDXLOriginal(take) {
 }
 const $ = (id) => document.getElementById(id);
 let examples = [], board = null, currentShot = null, editing = false, lastSignature = '', polling = false;
+const reviewDrafts = new Map();
 const choices = {lens:'35', angle:'Eye level', move:'Static', lighting:'Window light', look:'Muted film'};
 const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const busy = () => board?.shots.some(s => s.takes.some(t => ['queued','running'].includes(t.status)));
@@ -48,16 +49,17 @@ function render() {
   $('queue-detail').textContent=running?`${running.phase} · ${Math.floor((Date.now()/1000)-running.started_at)}s elapsed`:busy()?'Waiting for local worker':failed?'Review stopped takes before retrying':'Local rendering complete';
   $('queue-progress').max=takes.length||1;$('queue-progress').value=completed;
   $('recipe-label').textContent=heroRef?`Hero ${heroRef.shot_id.toUpperCase()} / ${heroRef.take_id.toUpperCase()} · ${heroRef.settings.label} · recipe & visual review`:'SDXL Base 1.0 · recipe & visual review';
-  $('recipe-detail').textContent=heroRef?`Hero: ${heroRef.settings.label}, ${heroRef.settings.steps} steps, seed ${heroRef.seed}. Reference-edit preset: Qwen-Image-Edit-2511 Q8_0, 24 steps. Each take retains its own recipe. `+(board.review?.length?'Bundled review (original selections): framing passes in 5/6 cuts; the hero medium is too tight. Prop details and wide set drift. Hidden faces remain unverified.':'Review each take; identity and shot accuracy are unverified.'):'SDXL Base 1.0, 20 steps. Existing takes keep their original recipes. Identity and shot accuracy require visual review.';
-  const signature=JSON.stringify([board.continuity,board.shots.map(s=>[s.title,s.prompt,s.picked,s.locked_seed,s.takes.map(t=>[t.id,t.status,t.image,t.error])])]);
+  $('recipe-detail').textContent=heroRef?`Hero: ${heroRef.settings.label}, ${heroRef.settings.steps} steps, seed ${heroRef.seed}. Reference-edit preset: Qwen-Image-Edit-2511 Q8_0, 24 steps. Each take retains its own recipe. `+'Review each take; identity and shot accuracy are unverified.':'SDXL Base 1.0, 20 steps. Existing takes keep their original recipes. Identity and shot accuracy require visual review.';
+  const signature=JSON.stringify([board.continuity,board.review,board.shots.map(s=>[s.title,s.prompt,s.picked,s.locked_seed,s.takes.map(t=>[t.id,t.status,t.image,t.error])])]);
   if(signature!==lastSignature){
     lastSignature=signature;
     $('board-grid').innerHTML=board.shots.map((s,i)=>{
       const ready=s.takes.filter(t=>t.status==='succeeded'),hero=ready.find(t=>t.id===s.picked)||ready[0];
       const active=s.takes.find(t=>t.status==='running');
-      return `<article class="shot-card ${s.picked?'picked':''}"><div class="shot-label"><h3>${pictogram(s.shot_type||s.title)}<b>${String(i+1).padStart(2,'0')}</b>${escapeHTML(s.title)}</h3><span class="pill">${heroRef?.shot_id===s.id&&continuity.enabled?'★ HERO':s.picked?'✓ SELECTED':'COVERAGE'}</span></div><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?`<img src="${imageURL(hero)}" alt="${escapeHTML(s.title)} ${hero.id}">`:`<span class="empty-frame">${String(i+1).padStart(2,'0')}</span>`}<span class="frame-status">${hero?(s.picked?'SELECT / ':'PREVIEW / ')+hero.id.toUpperCase():active?'RENDERING LOCALLY':s.takes.some(t=>t.status==='queued')?'IN THE QUEUE':s.takes.some(t=>t.status==='failed')?'RENDER FAILED · RETRY':'AWAITING FIRST TAKE'}</span></div><div class="take-strip">${s.takes.map(t=>`<button class="take-thumb ${s.picked===t.id?'selected':''}" data-compare="${s.id}" aria-label="Compare ${escapeHTML(s.title)} ${t.id}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${t.id}">`:t.status==='running'?'…':t.status==='queued'?t.id:escapeHTML(t.status)}</button>`).join('') || '<small class="muted">Two takes. A little room to explore.</small>'}<span class="take-count">${ready.length} TAKES</span></div><p class="card-review">${escapeHTML(reviewSummary(s))}</p><div class="card-bottom"><small>${s.locked_seed!==null?'▣ SEED LOCKED':'SHARED SEED FAMILY'}</small><button data-compare="${s.id}">Compare & pick ↗</button></div></article>`;
+      return `<article class="shot-card ${s.picked?'picked':''}"><div class="shot-label"><h3>${pictogram(s.shot_type||s.title)}<b>${String(i+1).padStart(2,'0')}</b>${escapeHTML(s.title)}</h3><span class="pill">${heroRef?.shot_id===s.id&&continuity.enabled?'★ HERO':s.picked?'✓ SELECTED':'COVERAGE'}</span></div><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?`<img src="${imageURL(hero)}" alt="${escapeHTML(s.title)} ${hero.id}">`:`<span class="empty-frame">${String(i+1).padStart(2,'0')}</span>`}<span class="frame-status">${hero?(s.picked?'SELECT / ':'PREVIEW / ')+hero.id.toUpperCase():active?'RENDERING LOCALLY':s.takes.some(t=>t.status==='queued')?'IN THE QUEUE':s.takes.some(t=>t.status==='failed')?'RENDER FAILED · RETRY':'AWAITING FIRST TAKE'}</span></div><div class="take-strip">${s.takes.map(t=>`<button class="take-thumb ${s.picked===t.id?'selected':''}" data-compare="${s.id}" aria-label="Compare ${escapeHTML(s.title)} ${t.id}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${t.id}">`:t.status==='running'?'…':t.status==='queued'?t.id:escapeHTML(t.status)}</button>`).join('') || '<small class="muted">Two takes. A little room to explore.</small>'}<span class="take-count">${ready.length} TAKES</span></div><p class="card-review">${escapeHTML(reviewSummary(s,hero?.id))}</p>${hero?reviewEditor(s,hero):''}<div class="card-bottom"><small>${s.locked_seed!==null?'▣ SEED LOCKED':'SHARED SEED FAMILY'}</small><button data-compare="${s.id}">Compare & pick ↗</button></div></article>`;
     }).join('');
     document.querySelectorAll('[data-compare]').forEach(el=>{el.onclick=()=>openCompare(el.dataset.compare);el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openCompare(el.dataset.compare);}};});
+    bindReviewEditors('#board-grid');
     if($('compare-dialog').open)renderCompare();
   }
 }
@@ -68,9 +70,10 @@ function renderCompare(){
   $('compare-title').textContent=s.title;
   $('compare-index').textContent=` / ${board.shots.indexOf(s)+1} OF ${board.shots.length}`;
   const review=board.review?.find(r=>r.shot===s.id&&r.take===s.picked);
-  $('compare-review').textContent=review?`${s.picked.toUpperCase()} review · ${review.observation}`:'Visual review pending for this selection. Compare identity, framing, props and set.';
-  $('compare-images').innerHTML=s.takes.length?s.takes.map(t=>`<div class="compare-take ${s.picked===t.id?'chosen':''}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${escapeHTML(s.title)} ${t.id}">`:'<div class="shot-hero"><span class="empty-frame">'+escapeHTML(t.status)+'</span></div>'}<div><div><strong>${t.id.toUpperCase()}${s.picked===t.id?' · SELECTED':''}</strong><small>SEED ${t.seed} · ${t.elapsed_seconds||0}s · ${escapeHTML(t.status)}${t.reference?' · REFERENCE EDIT':''}</small>${t.settings?`<small>${escapeHTML(t.settings.label)} · ${t.settings.width} × ${t.settings.height} · CFG ${t.settings.cfg}</small>`:''}${t.settings?`<small>${t.settings.steps} steps · ${escapeHTML(t.settings.sampler_name)} / ${escapeHTML(t.settings.scheduler)}</small>`:''}${t.error?`<small>${escapeHTML(t.error)}</small>`:''}</div><button class="${s.picked===t.id?'primary':'quiet'}" data-pick="${t.id}" ${t.status!=='succeeded'?'disabled':''}>${s.picked===t.id?'✓ Selected':'Pick this take'}</button></div></div>`).join(''):'<p class="muted">No takes yet. Render this cut to start comparing.</p>';
+  $('compare-review').textContent=review?`${s.picked.toUpperCase()} · ${reviewSummary(s)}${review.observation?' · '+review.observation:''}`:'Visual review pending for this selection. Compare identity, framing, props and set.';
+  $('compare-images').innerHTML=s.takes.length?s.takes.map(t=>`<div class="compare-take ${s.picked===t.id?'chosen':''}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${escapeHTML(s.title)} ${t.id}">`:'<div class="shot-hero"><span class="empty-frame">'+escapeHTML(t.status)+'</span></div>'}<div><div><strong>${t.id.toUpperCase()}${s.picked===t.id?' · SELECTED':''}</strong><small>SEED ${t.seed} · ${t.elapsed_seconds||0}s · ${escapeHTML(t.status)}${t.reference?' · REFERENCE EDIT':''}</small>${t.settings?`<small>${escapeHTML(t.settings.label)} · ${t.settings.width} × ${t.settings.height} · CFG ${t.settings.cfg}</small>`:''}${t.settings?`<small>${t.settings.steps} steps · ${escapeHTML(t.settings.sampler_name)} / ${escapeHTML(t.settings.scheduler)}</small>`:''}${t.error?`<small>${escapeHTML(t.error)}</small>`:''}</div><button class="${s.picked===t.id?'primary':'quiet'}" data-pick="${t.id}" ${t.status!=='succeeded'?'disabled':''}>${s.picked===t.id?'✓ Selected':'Pick this take'}</button></div>${reviewEditor(s,t)}</div>`).join(''):'<p class="muted">No takes yet. Render this cut to start comparing.</p>';
   document.querySelectorAll('[data-pick]').forEach(el=>el.onclick=guarded(async()=>{await api(`/boards/${board.id}/shots/${s.id}/pick`,'POST',{take_id:el.dataset.pick});await refresh();$('reuse-seed').value=board.shots.find(x=>x.id===s.id).takes.find(t=>t.id===el.dataset.pick).seed;}));
+  bindReviewEditors('#compare-images');
   $('seed-lock').textContent=s.locked_seed!==null?'Unlock seed':'Lock seed';
   $('seed-lock').disabled=!s.takes.some(t=>t.status==='succeeded');
   const picked=s.takes.find(t=>t.id===s.picked), heroAllowed=isSDXLOriginal(picked);
@@ -84,6 +87,12 @@ function showEditors(){
   $('shot-list').innerHTML=board.shots.map(s=>`<div class="shot-editor"><div><label>Cut title<input id="title-${s.id}" value="${escapeHTML(s.title)}"></label><label>SDXL width<input type="number" min="512" max="1536" step="64" id="width-${s.id}" value="${s.render_settings?.width||1024}"></label><label>SDXL height<input type="number" min="512" max="1536" step="64" id="height-${s.id}" value="${s.render_settings?.height||576}"></label><label>SDXL CFG<input type="number" min="1" max="12" step="0.1" id="cfg-${s.id}" value="${s.render_settings?.cfg||6}"></label><button data-save="${s.id}">Save cut</button></div><div><label>Prompt<textarea id="prompt-${s.id}">${escapeHTML(s.prompt)}</textarea></label><label>Negative prompt<input class="editor-negative" id="negative-${s.id}" value="${escapeHTML(s.negative)}"></label></div></div>`).join('');
   document.querySelectorAll('[data-save]').forEach(button=>button.onclick=guarded(async()=>{const s=button.dataset.save;await api(`/boards/${board.id}/shots/${s}`,'PATCH',{title:$('title-'+s).value,prompt:$('prompt-'+s).value,negative:$('negative-'+s).value,render_settings:{width:Number($('width-'+s).value),height:Number($('height-'+s).value),cfg:Number($('cfg-'+s).value)}});await refresh();toast('Cut saved. Existing takes keep their original settings.');}));
 }
+$('use-example').onclick=guarded(async()=>{
+  if(!examples.length)examples=await api('/examples');
+  const config=examples[0].board.config;
+  for(const key of ['scene','character','prop','setting'])$(key).value=config[key]||'';
+  document.querySelector('.advanced').open=true;
+});
 $('scene-form').onsubmit=guarded(async event=>{event.preventDefault();const data=Object.fromEntries(new FormData(event.target));Object.assign(data,choices,{seed:Number(data.seed),count:Number(data.count)});const created=await api('/boards','POST',data);await openBoard(created.id);});
 $('generate').onclick=guarded(async()=>{const button=$('generate');button.disabled=true;try{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value)});await refresh();}finally{button.disabled=busy();}});
 $('more-takes').onclick=guarded(async()=>{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value),shot_id:currentShot});await refresh();});
@@ -95,7 +104,7 @@ $('export').onclick=()=>{location.href=`/api/boards/${board.id}/export`;};
 $('close-compare').onclick=()=>$('compare-dialog').close();$('close-boards').onclick=()=>$('boards-dialog').close();
 $('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$('board-grid').hidden=editing;$('edit-toggle').textContent=editing?'Return to board':'Edit shot list';if(editing)showEditors();};
 $('board-tab').onclick=()=>{editing=false;$('shot-list').hidden=true;$('board-grid').hidden=false;$('edit-toggle').textContent='Edit shot list';};
-$('new-board').onclick=()=>{board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;$('scene').focus();};
+$('new-board').onclick=()=>{$('scene-form').reset();document.querySelector('.advanced').open=false;board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;$('scene').focus();};
 $('load-example').onclick=guarded(async()=>{const boards=await api('/boards');$('boards-list').innerHTML=boards.map(b=>`<button class="board-link" data-board="${b.id}">${escapeHTML(b.title)} ↗</button>`).join('')||'<p class="muted">Your first scene starts here. Build a shot list to begin.</p>';document.querySelectorAll('[data-board]').forEach(b=>b.onclick=guarded(async()=>{await openBoard(b.dataset.board);$('boards-dialog').close();}));$('boards-dialog').showModal();});
 async function health(){try{const h=await api('/health');$('connection').textContent=board?.continuity?.enabled&&!h.reference_components_present?'Continuity setup needed':h.proxy_ready&&h.checkpoint_present?'Local engine ready':!h.checkpoint_present?'SDXL setup needed':'Local engine offline';}catch{$('connection').textContent='Local server unavailable';}}
 guarded(async()=>{chips(await api('/config'));await loadGallery();if(location.hash.length>1)await openBoard(location.hash.slice(1));await health();})();
@@ -113,11 +122,33 @@ function pictogram(type){
   };
   return `<svg viewBox="0 0 42 30" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1" y="1" width="40" height="28" rx="3" opacity=".4"/>${paths[type]||paths.Medium}</svg>`;
 }
-function reviewSummary(shot){
-  const review=board.review?.find(r=>r.shot===shot.id&&r.take===shot.picked);
+function reviewSummary(shot,takeId=shot.picked){
+  const review=board.review?.find(r=>r.shot===shot.id&&r.take===takeId);
   if(!review)return 'Visual review pending';
+  if(review.verdict)return {pass:'Pass',fail:'Fail',pending:'Pending'}[review.verdict];
   const fields=[['same_person','Identity'],['outfit','Outfit'],['prop','Prop'],['set','Set'],['shot_type','Framing']];
-  return fields.filter(([key])=>!review[key].startsWith('PASS')).map(([key,label])=>`${label}: ${review[key].includes('not ')?'unverified':'failed'}`).join(' · ')||'Visible features reviewed';
+  return fields.filter(([key])=>review[key]&&!review[key].startsWith('PASS')).map(([key,label])=>`${label}: ${review[key].includes('not ')?'unverified':'failed'}`).join(' · ')||'Visible features reviewed';
+}
+function reviewEditor(shot,take){
+  const saved=board.review?.find(r=>r.shot===shot.id&&r.take===take.id);
+  const draft=reviewDrafts.get(`${board.id}/${shot.id}/${take.id}`)||saved||{};
+  return `<form class="review-editor" data-shot="${shot.id}" data-take="${take.id}" aria-label="Review ${shot.id} ${take.id}"><label>Review<select name="verdict">${['pending','pass','fail'].map(value=>`<option value="${value}" ${(draft.verdict||'pending')===value?'selected':''}>${{pending:'Pending',pass:'Pass',fail:'Fail'}[value]}</option>`).join('')}</select></label><label class="review-note">Note<input name="note" maxlength="400" value="${escapeHTML(draft.note||'')}"></label><button type="submit" class="quiet">Save</button></form>`;
+}
+function bindReviewEditors(root){
+  document.querySelectorAll(`${root} .review-editor`).forEach(form=>{
+    const key=`${board.id}/${form.dataset.shot}/${form.dataset.take}`;
+    const values=()=>({verdict:form.elements.verdict.value,note:form.elements.note.value});
+    form.oninput=()=>reviewDrafts.set(key,values());
+    form.onsubmit=guarded(async event=>{
+      event.preventDefault();
+      const data=values(), button=form.querySelector('button');button.disabled=true;
+      try{
+        await api(`/boards/${board.id}/shots/${form.dataset.shot}/takes/${form.dataset.take}/review`,'PUT',data);
+        if(!reviewDrafts.has(key)||JSON.stringify(reviewDrafts.get(key))===JSON.stringify(data))reviewDrafts.delete(key);
+        await refresh();toast('Saved');
+      }finally{button.disabled=false;}
+    });
+  });
 }
 async function loadGallery(){
   examples=await api('/examples');
