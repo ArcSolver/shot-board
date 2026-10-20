@@ -18,6 +18,10 @@ const context = vm.createContext({
 vm.runInContext(fs.readFileSync(path.join(root, 'shotboard/static/app.js'), 'utf8'), context);
 const board = JSON.parse(fs.readFileSync(path.join(root, 'examples/greenhouse-a2/board.json'), 'utf8'));
 board.continuity.enabled = false;
+const referenceTake = board.shots[0].takes.find(t=>t.reference);
+assert.ok(referenceTake, 'Example includes a real reference edit');
+board.shots[0].picked = referenceTake.id;
+context.referenceId = referenceTake.id;
 context.fixture = board;
 vm.runInContext('board=fixture; currentShot="s01"; renderCompare();', context);
 assert.equal(element('use-hero').disabled, true);
@@ -34,11 +38,11 @@ assert.match(element('hero-rule').textContent, /edits are never chained/);
   assert.equal(element('use-hero').disabled, true);
   board.review = [
     {shot:'s01',take:'t01',verdict:'pass',note:'<b>Clear</b> "subject"'},
-    {shot:'s01',take:'t03',verdict:'fail',note:'Too tight'}
+    {shot:'s01',take:referenceTake.id,verdict:'fail',note:'Too tight'}
   ];
   vm.runInContext('board.shots[0].picked="t01";', context);
   assert.equal(vm.runInContext('reviewSummary(board.shots[0])', context), 'Pass');
-  vm.runInContext('board.shots[0].picked="t03";', context);
+  vm.runInContext('board.shots[0].picked=referenceId;', context);
   assert.equal(vm.runInContext('reviewSummary(board.shots[0])', context), 'Fail');
   vm.runInContext('board.shots[0].picked=null;', context);
   assert.equal(vm.runInContext('reviewSummary(board.shots[0],"t01")', context), 'Pass');

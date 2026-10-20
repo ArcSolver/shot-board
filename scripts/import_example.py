@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--example', default='greenhouse', choices=['greenhouse', 'greenhouse-a2'])
+    parser.add_argument('--example', default='greenhouse', choices=['greenhouse', 'greenhouse-a2', 'hangar'])
     args = parser.parse_args()
     example = ROOT / 'examples' / args.example
     board = json.loads((example / "board.json").read_text())
@@ -30,7 +30,8 @@ def main():
     destination.mkdir(parents=True)
     for shot in board["shots"]:
         for take in shot["takes"]:
-            shutil.copyfile(example / "takes" / take["image"], destination / take["image"])
+            if take.get("image"):
+                shutil.copyfile(example / "takes" / take["image"], destination / take["image"])
     if (example / 'references').is_dir():
         shutil.copytree(example / 'references', destination / 'references')
     (destination / "board.json").write_text(json.dumps(board, indent=2)+"\n")

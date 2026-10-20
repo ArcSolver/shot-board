@@ -113,7 +113,10 @@ class APITests(unittest.TestCase):
                 self.assertEqual(imported, explored)
                 for shot in imported['shots']:
                     for take in shot['takes']:
-                        self.assertEqual(sha256(Path(folder)/bid/take['image']), take['image_sha256'])
+                        if take.get('image'):
+                            self.assertEqual(sha256(Path(folder)/bid/take['image']), take['image_sha256'])
+                        else:
+                            self.assertEqual(take['status'], 'failed')
                 # Backfill only a missing review on an older import, preserving picks.
                 imported.pop('review')
                 imported['shots'][0]['picked'] = 't01'
@@ -154,8 +157,8 @@ class APITests(unittest.TestCase):
         opened = self.client.post(f"/api/examples/{slug}/open").json()
         base = "/api/boards/" + opened["id"]
         board = self.client.get(base).json()
-        self.assertEqual(len(board["review"]), 6)
-        self.assertEqual(board["shots"][0]["picked"], "t03")
+        self.assertEqual(board["review"], server.example_board(slug)["review"])
+        self.assertEqual(board["shots"][0]["picked"], server.example_board(slug)["shots"][0]["picked"])
         self.client.post(base+"/shots/s01/pick", json={"take_id":"t01"})
         self.client.post(f"/api/examples/{slug}/open")
         self.assertEqual(self.client.get(base).json()["shots"][0]["picked"], "t01")

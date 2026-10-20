@@ -304,7 +304,7 @@ def health():
     return dict(proxy_ready=ready, reference_components_present=reference_components_present, checkpoint_present=checkpoint_present)
 
 
-EXAMPLES = {"greenhouse-a2": "The greenhouse / continuity", "greenhouse": "The greenhouse / early study"}
+EXAMPLES = {"greenhouse-a2": "The greenhouse / continuity", "greenhouse": "The greenhouse / early study", "hangar": "The hangar / SDXL coverage"}
 
 
 def example_board(slug):
@@ -340,7 +340,8 @@ def open_example(slug: str):
             destination.mkdir(parents=True, exist_ok=True)
             for shot in source["shots"]:
                 for take in shot["takes"]:
-                    shutil.copyfile(ROOT / "examples" / slug / "takes" / take["image"], destination / take["image"])
+                    if take.get("image"):
+                        shutil.copyfile(ROOT / "examples" / slug / "takes" / take["image"], destination / take["image"])
             refs = ROOT / "examples" / slug / "references"
             if refs.is_dir():
                 shutil.copytree(refs, destination / "references", dirs_exist_ok=True)
