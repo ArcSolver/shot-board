@@ -2,7 +2,7 @@
   "1": {
     "class_type": "LoadImage",
     "inputs": {
-      "image": "references/dae1d990c74f83c6eb2b2dd5b7d7a97dbef5ccfea574c94a901e8e99db0153c7.png"
+      "image": "references/100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png"
     }
   },
   "2": {
@@ -20,7 +20,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: tight face close-up portrait, face fills almost the entire frame, eyes in sharp focus, cropped at chin and forehead. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. Create an EXTREME TIGHT FACE CLOSE-UP of exactly this woman. The face fills almost the ENTIRE portrait frame, cropped at forehead and chin. Both eyes, nose, cheeks and mouth are sharp and clearly visible. Camera at face height. Crop OUT shoulders, torso, hands, compass, bag and table. Match her facial identity, dark hair, skin and rainy soft light exactly. Only her face and a soft defocused background belong in this photograph.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: tight face close-up portrait, face fills almost the entire frame, eyes in sharp focus, cropped at chin and forehead. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. TIGHT FACE CLOSE-UP of the same woman, her face filling almost the entire photograph, cropped at forehead and chin, eyes and nose sharp. Keep the same facial features and short side-parted brown hair. A small edge of the teal scarf may be visible. Crop out hands and compass. Do not repeat the medium composition.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -68,7 +68,7 @@
         "4",
         0
       ],
-      "seed": 20261020,
+      "seed": 20261021,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

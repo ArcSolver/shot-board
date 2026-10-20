@@ -1,56 +1,62 @@
 [
   {
     "shot": "s01",
-    "same_person": "FAIL (not verifiable)",
+    "take": "t01",
+    "face": "FAIL†",
     "outfit": "PASS",
-    "prop": "FAIL (not visible)",
-    "set": "FAIL (not verifiable)",
-    "shot_type": "PASS",
-    "observation": "Rear distant figure; yellow coat and greenhouse; face and compass cannot be checked. Exact hero set layout is not recognizable."
+    "prop": "FAIL†",
+    "set": "FAIL",
+    "framing": "PASS",
+    "observation": "Distant rear figure hides face and compass; yellow coat visible. Large symmetrical arched space differs from the hero view."
   },
   {
     "shot": "s02",
-    "same_person": "PASS (hero reuse)",
+    "take": "t05",
+    "face": "PASS",
     "outfit": "PASS",
     "prop": "PASS",
     "set": "PASS",
-    "shot_type": "FAIL",
-    "observation": "Identity/prop baseline itself. Head and hands fill the frame; waist-up medium was not achieved."
+    "framing": "PASS",
+    "observation": "Chosen baseline: entire head, torso and waist/hips visible, hands holding an open brass compass. Yellow coat and teal scarf. Brown satchel not visible."
   },
   {
     "shot": "s03",
-    "same_person": "FAIL",
-    "outfit": "FAIL (not visible)",
-    "prop": "FAIL (not visible)",
-    "set": "FAIL (not verifiable)",
-    "shot_type": "PASS",
-    "observation": "Different face, blue eye and brow; face close-up achieved."
+    "take": "t01",
+    "face": "FAIL",
+    "outfit": "FAIL†",
+    "prop": "FAIL†",
+    "set": "FAIL†",
+    "framing": "PASS",
+    "observation": "Extreme face detail has a different apparent face; clothing, prop and architecture cannot be checked."
   },
   {
     "shot": "s04",
-    "same_person": "FAIL",
+    "take": "t01",
+    "face": "FAIL†",
     "outfit": "FAIL",
     "prop": "FAIL",
     "set": "PASS",
-    "shot_type": "PASS",
-    "observation": "Person now present, but reads as a different man; coat and brass apparatus differ. OTS is achieved from right foreground rather than requested left."
+    "framing": "FAIL",
+    "observation": "Rear figure wears a tan jacket and handles a box-like device; figure is in the right foreground, not the requested left."
   },
   {
     "shot": "s05",
-    "same_person": "FAIL (not verifiable)",
-    "outfit": "FAIL (not visible)",
+    "take": "t01",
+    "face": "FAIL†",
+    "outfit": "FAIL†",
     "prop": "FAIL",
-    "set": "FAIL (not verifiable)",
-    "shot_type": "PASS",
-    "observation": "Macro hands/compass achieved, but dial, case and suspension ring differ from the hinged hero compass."
+    "set": "FAIL†",
+    "framing": "PASS",
+    "observation": "Macro framing succeeds; black-and-gold compass rose/ring differs from the hero white dial and open case."
   },
   {
     "shot": "s06",
-    "same_person": "FAIL (not verifiable)",
+    "take": "t01",
+    "face": "FAIL†",
     "outfit": "PASS",
-    "prop": "FAIL (not visible)",
+    "prop": "FAIL†",
     "set": "FAIL",
-    "shot_type": "PASS",
-    "observation": "Strong upward view; distant person cannot establish face identity; new domed architecture. Dome differs from the hero setting."
+    "framing": "PASS",
+    "observation": "Strong upward view with a small yellow-coated figure; new domed stairwell architecture; face and prop unverified."
   }
 ]

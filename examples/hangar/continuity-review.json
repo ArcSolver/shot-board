@@ -1,0 +1,74 @@
+[
+  {
+    "shot": "s01",
+    "take": "t01",
+    "verdict": "pass",
+    "note": "Wide hangar and a small mechanical subject at a workbench; spaceship engine detail is weak."
+  },
+  {
+    "shot": "s01",
+    "take": "t02",
+    "verdict": "fail",
+    "note": "Wide hangar, but the small robot is hard to verify and the engine becomes a large airframe."
+  },
+  {
+    "shot": "s02",
+    "take": "t01",
+    "verdict": "fail",
+    "note": "Robot head and torso are visible but tightly framed with a detached arm; repair action is unclear."
+  },
+  {
+    "shot": "s02",
+    "take": "t02",
+    "verdict": "pass",
+    "note": "Head and torso of a mechanical robot at an engine workbench; exact single-sensor design is not retained."
+  },
+  {
+    "shot": "s03",
+    "take": "t01",
+    "verdict": "fail",
+    "note": "Human-looking face replaces the requested metal robot head."
+  },
+  {
+    "shot": "s03",
+    "take": "t02",
+    "verdict": "fail",
+    "note": "Close-up framing, but a humanoid cyborg face replaces the requested square metal head."
+  },
+  {
+    "shot": "s04",
+    "take": "t01",
+    "verdict": "fail",
+    "note": "Foreground robot and engine equipment, but left-shoulder OTS fails and human workers appear."
+  },
+  {
+    "shot": "s04",
+    "take": "t02",
+    "verdict": "fail",
+    "note": "Human mechanic and engine assembly replace the requested robot OTS."
+  },
+  {
+    "shot": "s05",
+    "take": "t01",
+    "verdict": "fail",
+    "note": "Macro detail is dominated by human fingers instead of mechanical grippers."
+  },
+  {
+    "shot": "s05",
+    "take": "t02",
+    "verdict": "pass",
+    "note": "Macro mechanical engine detail; robot gripper action is not visible."
+  },
+  {
+    "shot": "s06",
+    "take": "t01",
+    "verdict": "fail",
+    "note": "Upward view contains only hangar architecture; robot and engine action absent."
+  },
+  {
+    "shot": "s06",
+    "take": "t02",
+    "verdict": "fail",
+    "note": "Low-angle engine structure, but robot repair action is absent."
+  }
+]

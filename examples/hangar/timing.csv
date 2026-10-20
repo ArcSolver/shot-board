@@ -1,0 +1,13 @@
+shot,title,take,method,seed,width,height,seconds,status,error,picked,image_sha256,device
+s01,Establishing,t01,sdxl-base,20261020,1216,704,22.981,succeeded,,True,603d2a111fb63bbd768316dac2408f058eb1443a22df4cb331d64e03b688bb09,NVIDIA GeForce RTX 4090
+s01,Establishing,t02,sdxl-base,20365749,1216,704,3.728,succeeded,,False,a4bdbd55b1dd5a84dce8863d9eed1c9ab727e0f137bda325a6ac208b438dd857,NVIDIA GeForce RTX 4090
+s02,Medium,t01,sdxl-base,20261020,1024,768,3.852,succeeded,,False,721e86b86fddd419378f7edc400746e63b87a5079c681868965bedd47d3ca1c9,NVIDIA GeForce RTX 4090
+s02,Medium,t02,sdxl-base,20365749,1024,768,2.868,succeeded,,True,528276eb0222caae771764ca311fb70190651b6fe262544cba6a6c4dc1b0905d,NVIDIA GeForce RTX 4090
+s03,Close-up,t01,sdxl-base,20261020,768,1024,3.735,succeeded,,False,d0cc113332c63e2ed894ec7e9da65d46a8c09fa23dc487fe187cdd925220f8ab,NVIDIA GeForce RTX 4090
+s03,Close-up,t02,sdxl-base,20365749,768,1024,3.703,succeeded,,True,bda6834333ff87165e1c5f18c1ce78b357ffb118fe782a9aa33133ab43553f1b,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t01,sdxl-base,20261020,1152,768,3.77,succeeded,,True,125060d797265e9c743014b3267a34c5e7498edeab85682baa7671d166f399ef,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t02,sdxl-base,20365749,1152,768,3.764,succeeded,,False,74f7255c581ae699713714dd3c1e92d5cb9a96988731231c174db85abae65c79,NVIDIA GeForce RTX 4090
+s05,Insert,t01,sdxl-base,20261020,1024,1024,3.804,succeeded,,False,b09d2016c166b4e9115e1a9dfe30c5aa0751e63cf2c484a9f6517623abcecdd4,NVIDIA GeForce RTX 4090
+s05,Insert,t02,sdxl-base,20365749,1024,1024,3.799,succeeded,,True,6b956bdcd2393ef8eb6866ff78fba6f1e409384a282f2a7235f8cb073ef494dc,NVIDIA GeForce RTX 4090
+s06,Low angle,t01,sdxl-base,20261020,768,1024,3.685,succeeded,,False,d52d0d5fa9443ae3e4ae888bf8c10d4929101c35dc13038514336d0135f2b9ec,NVIDIA GeForce RTX 4090
+s06,Low angle,t02,sdxl-base,20365749,768,1024,2.606,succeeded,,True,dccbafb4def5a38e4a4e1e187369066d9ed1dff338bf3a902656ed78986904f4,NVIDIA GeForce RTX 4090

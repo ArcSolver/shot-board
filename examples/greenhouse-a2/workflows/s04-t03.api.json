@@ -2,14 +2,7 @@
   "1": {
     "class_type": "LoadImage",
     "inputs": {
-      "image": {
-        "__type": "core/ASSET",
-        "info": {
-          "id": "5e3c1e85-9d15-44c1-a569-dbc9300d7767",
-          "hash": "blake3:1680332a2d71b29a4306b7a297c6818c750df762acd004bb44d88d5a2a1cdf9e",
-          "file_path": "dae1d990c74f83c6eb2b2dd5b7d7a97dbef5ccfea574c94a901e8e99db0153c7.png"
-        }
-      }
+      "image": "references/100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png"
     }
   },
   "2": {
@@ -27,7 +20,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: macro insert detail shot of small brass compass held in fingers, object fills frame, only hands and object visible. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. Remove the entire woman's face, head, torso and bag from the photograph. Change to a STRAIGHT DOWN TOP-DOWN MACRO shot: ONLY two hands holding the same round brass compass over a wooden table. The black compass dial faces straight UP toward the camera and occupies the central 80 percent of the frame. Preserve its white compass rose, green marker, brass rim and right side ring. The image is cropped tightly around compass and fingertips; absolutely no face, no head, no body, no shoulder anywhere. Do not repeat the hero composition.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: over-the-shoulder POV, back of An adult traveler with short dark hair's head and clothed shoulder clearly visible filling left third foreground, camera immediately behind the person looking past their shoulder toward small brass compass on table, rear three-quarter view. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. OVER-THE-SHOULDER photograph from immediately behind the same woman. The back of her head and yellow-coated LEFT SHOULDER occupy the LEFT THIRD of the foreground. Look past that shoulder toward her hands holding the same open brass compass above the wooden bench in the right middle ground. Keep the white dial, thin needle and hinged case. Show the same wet glass and ferns. Her face is hidden. Do not place her on the right side.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -45,14 +38,14 @@
         "14",
         0
       ],
-      "prompt": "face, head, portrait, torso, full body, wide shot, medium shot, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+      "prompt": "empty room, no person, unoccupied, front view, facing camera, portrait, eye contact, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
     }
   },
   "4": {
     "class_type": "EmptySD3LatentImage",
     "inputs": {
-      "width": 1024,
-      "height": 1024,
+      "width": 1152,
+      "height": 768,
       "batch_size": 1
     }
   },
@@ -75,7 +68,7 @@
         "4",
         0
       ],
-      "seed": 20261020,
+      "seed": 20261021,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

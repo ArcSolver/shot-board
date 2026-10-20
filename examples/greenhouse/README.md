@@ -1,28 +1,33 @@
-# The greenhouse / a six-cut local example
+# Greenhouse — early recipe
 
-Scene: **A traveler discovers a small brass compass in a rain-soaked greenhouse.**
+| Field | Value |
+|---|---|
+| Device | NVIDIA GeForce RTX 4090 × 1 |
+| Scene | A traveler discovers a small brass compass in a rain-soaked greenhouse. |
+| Cuts | 6 |
+| Attempts | 12 |
+| Published source PNGs | 12 |
+| SDK seconds: sum | 35.888 |
+| SDK seconds: range | 2.488–8.185 |
+| Timing scope | Upload, load/unload, encoding, sampling, polling, download/save; excludes setup, queue wait, preflight hashing and visual review |
+| Models | Pinned repository locks; public weights; ComfyUI offline, partner nodes disabled |
+| Settings | 1024 × 576; 20 steps; CFG 6; Euler/normal; denoise 1 |
+| Recipe check | 12/12 workflows, prompts, seeds and sampler settings equal the stored early recipe |
+| Selected takes | s01/t01, s02/t01, s03/t01, s04/t01, s05/t01, s06/t01 |
 
-This is a synthetic SFW scene rendered from text with SDXL Base 1.0. No photographs, real-person references, existing characters, brand assets or logos were supplied. Twelve actual outputs are included, including the unpicked takes. They have not been retouched; the app strips embedded engine metadata when saving public PNGs.
+| Cut | T01 seed / seconds | T02 seed / seconds |
+|---|---|---|
+| s01 Establishing | 20261020 / 8.185 | 20365749 / 2.506 |
+| s02 Medium | 20261020 / 2.488 | 20365749 / 2.551 |
+| s03 Close-up | 20261020 / 2.497 | 20365749 / 2.520 |
+| s04 Over shoulder | 20261020 / 2.499 | 20365749 / 2.542 |
+| s05 Insert | 20261020 / 2.493 | 20365749 / 2.504 |
+| s06 Low angle | 20261020 / 2.496 | 20365749 / 2.607 |
 
-- 6 cuts × 2 takes, 1024 × 576, 20 steps, CFG 6, Euler / normal, denoise 1.
-- Seed families: **20261020** and **20365749**, shared across all six cuts.
-- First take picked for each cut; the first cut's seed is locked.
-- Measured on Apple Silicon / MPS: **17.226–24.402 seconds per take**, **238.550 seconds** from the first take start through the last take finish. Sum of individual SDK timings: 238.526 seconds. Timings include SDK submission, engine loading/sampling, polling and image download/save; exclude stack startup, model download, model preflight hashing and human selection.
-- A single example run, not a latency benchmark or a guarantee for another machine.
-
-![All twelve takes](contact-sheet.png)
-
-The shared seed family keeps a recognizable greenhouse, palette and clothing theme, particularly within the first-take column. Faces, hair, props and framing vary. The close-up and over-shoulder prompts are not consistently followed; some outputs remain medium compositions. The insert cut gives a clear detail view. Do not interpret this board as a proof of precise camera control or identity preservation.
-
-Files:
-
-- `board.json`: complete persisted board, original take settings/workflows, picks and measured timings.
-- `takes/`: all twelve metadata-free PNG stills.
-- `workflows/`: all twelve exact API-format generation graphs.
-- `selects.zip`: downloaded through the app's Export selects button.
-- `export/`: the same ZIP unpacked: six selected stills, six workflows and `manifest.json`.
-- `timing.csv`: per-take timing and seed.
-
-Checkpoint hash and revision: [model-lock.json](../../workflows/model-lock.json). SDXL uses the CreativeML Open RAIL++-M license; see [third-party notices](../../THIRD_PARTY_NOTICES.md). No model weights are distributed in this example.
-
-To browse it in the app without rendering, run `python scripts/import_example.py` from the repository root before starting the app, then use **Open a board**. The generation engine can remain stopped for comparison and export.
+| File | Data |
+|---|---|
+| board.json | Every attempt, snapshot, pick and stored review |
+| takes/; workflows/ | Source PNGs and portable graphs; submitted graphs for Qwen |
+| selects.zip; export/ | Selected frames, graphs, manifest and two storyboards |
+| timing.csv; provenance.json | Measured per-attempt timing; device and PNG hashes |
+| contact-sheet.png | All attempts, original proportions |

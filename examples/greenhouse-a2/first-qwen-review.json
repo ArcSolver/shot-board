@@ -2,31 +2,61 @@
   {
     "shot": "s01",
     "take": "t02",
-    "shot_type": "FAIL",
-    "reason": "Subject fills too much of frame; not extreme wide."
+    "face": "FAIL†",
+    "outfit": "PASS",
+    "prop": "FAIL†",
+    "set": "PASS",
+    "framing": "FAIL",
+    "observation": "Figure is about one third of image height, above the requested one-fifth maximum. Visible glass/wood/fern motifs match; off-screen layout and small face/dial are unverified."
+  },
+  {
+    "shot": "s02",
+    "take": "t05",
+    "face": "PASS",
+    "outfit": "PASS",
+    "prop": "PASS",
+    "set": "PASS",
+    "framing": "PASS",
+    "observation": "Chosen baseline: entire head, torso and waist/hips visible, hands holding an open brass compass. Yellow coat and teal scarf. Brown satchel not visible."
   },
   {
     "shot": "s03",
     "take": "t02",
-    "shot_type": "FAIL",
-    "reason": "Upper body, hands and object instead of tight face close-up."
+    "face": "FAIL†",
+    "outfit": "FAIL†",
+    "prop": "FAIL†",
+    "set": "FAIL†",
+    "framing": "FAIL†",
+    "observation": "SDK transport failed before output download; no published image to review. Engine log records a completed job after the connection failed."
   },
   {
     "shot": "s04",
     "take": "t02",
-    "shot_type": "PASS",
-    "reason": "Rear OTS with a person; side differs."
+    "face": "FAIL†",
+    "outfit": "FAIL†",
+    "prop": "FAIL†",
+    "set": "FAIL†",
+    "framing": "FAIL†",
+    "observation": "SDK transport failed before output download; no published image to review. Submission did not reach a remote job."
   },
   {
     "shot": "s05",
     "take": "t02",
-    "shot_type": "FAIL",
-    "reason": "Torso/bag and partial face; compass too small for macro insert."
+    "face": "FAIL†",
+    "outfit": "FAIL†",
+    "prop": "FAIL†",
+    "set": "FAIL†",
+    "framing": "FAIL†",
+    "observation": "SDK transport failed before output download; no published image to review. Submission did not reach a remote job."
   },
   {
     "shot": "s06",
     "take": "t02",
-    "shot_type": "PASS",
-    "reason": "Strong upward view of the traveler."
+    "face": "FAIL†",
+    "outfit": "FAIL†",
+    "prop": "FAIL†",
+    "set": "FAIL†",
+    "framing": "FAIL†",
+    "observation": "SDK transport failed before output download; no published image to review. Submission did not reach a remote job."
   }
 ]

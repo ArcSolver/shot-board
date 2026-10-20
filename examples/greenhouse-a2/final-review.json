@@ -1,0 +1,62 @@
+[
+  {
+    "shot": "s01",
+    "take": "t03",
+    "face": "FAIL†",
+    "outfit": "PASS",
+    "prop": "FAIL†",
+    "set": "PASS",
+    "framing": "FAIL",
+    "observation": "Figure remains about one quarter of image height, above the requested one-eighth maximum. Yellow/teal clothing and glass/wood/fern motifs match; face, dial and new room layout are unverified."
+  },
+  {
+    "shot": "s02",
+    "take": "t05",
+    "face": "PASS",
+    "outfit": "PASS",
+    "prop": "PASS",
+    "set": "PASS",
+    "framing": "PASS",
+    "observation": "Chosen baseline: entire head, torso and waist/hips visible, hands holding an open brass compass. Yellow coat and teal scarf. Brown satchel not visible."
+  },
+  {
+    "shot": "s03",
+    "take": "t03",
+    "face": "PASS",
+    "outfit": "PASS",
+    "prop": "FAIL†",
+    "set": "FAIL†",
+    "framing": "PASS",
+    "observation": "Apparent face and short side-parted hair are compatible; teal scarf/yellow collar edges remain. Prop and set are outside this tight face crop."
+  },
+  {
+    "shot": "s04",
+    "take": "t03",
+    "face": "FAIL†",
+    "outfit": "PASS",
+    "prop": "FAIL",
+    "set": "PASS",
+    "framing": "PASS",
+    "observation": "Left-foreground rear shoulder and head satisfy OTS. Yellow coat, teal scarf and wet glass/ferns match. Compass dial moves onto the hinged upper half, changing the case design."
+  },
+  {
+    "shot": "s05",
+    "take": "t03",
+    "face": "FAIL†",
+    "outfit": "FAIL†",
+    "prop": "FAIL†",
+    "set": "FAIL†",
+    "framing": "PASS",
+    "observation": "Macro contains only hands and compass, with a blurred yellow background. White dial, gold rim and open lid are compatible; exact needle arrangement cannot be verified against the smaller hero detail."
+  },
+  {
+    "shot": "s06",
+    "take": "t01",
+    "face": "FAIL†",
+    "outfit": "PASS",
+    "prop": "FAIL†",
+    "set": "FAIL",
+    "framing": "PASS",
+    "observation": "Strong upward view with a small yellow-coated figure; new domed stairwell architecture; face and prop unverified. Selected SDXL fallback: neither Qwen attempt delivered an image."
+  }
+]

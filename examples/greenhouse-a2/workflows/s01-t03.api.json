@@ -2,7 +2,7 @@
   "1": {
     "class_type": "LoadImage",
     "inputs": {
-      "image": "references/dae1d990c74f83c6eb2b2dd5b7d7a97dbef5ccfea574c94a901e8e99db0153c7.png"
+      "image": "references/100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png"
     }
   },
   "2": {
@@ -20,7 +20,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: extreme wide establishing shot, distant full-body An adult traveler with short dark hair tiny in frame, expansive environment. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. Move the camera far backwards to show the ENTIRE greenhouse interior as an EXTREME WIDE establishing photograph. The same traveler is a SMALL full-body figure, head to shoes visible, no taller than one fifth of the total image height, standing in the middle distance. Show extensive empty floor and greenhouse roof around her. Keep her same yellow coat, dark bob and brown bag; retain her compass without enlarging it. Prioritize this distant scale over showing facial details.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: extreme wide establishing shot, distant full-body An adult traveler with short dark hair tiny in frame, expansive environment. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. EXTREME WIDE SHOT. Recompose the entire image as a long empty greenhouse aisle stretching into the distance, seen from its far end. The woman is a TINY full-body figure in the deep background, only about 60 pixels high in this 704-pixel-high photograph, less than one eighth of the image height. Empty floor dominates the foreground; show the whole glass roof and distant wooden benches with ferns. Do NOT enlarge her to show her face. This must be a distant establishing view, not a portrait or a medium shot.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -38,7 +38,7 @@
         "14",
         0
       ],
-      "prompt": "close-up, portrait, cropped body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+      "prompt": "large person, foreground person, medium shot, waist-up, three-quarter portrait, close-up, cropped body, close-up, portrait, cropped body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
     }
   },
   "4": {
@@ -68,7 +68,7 @@
         "4",
         0
       ],
-      "seed": 20261020,
+      "seed": 20261022,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

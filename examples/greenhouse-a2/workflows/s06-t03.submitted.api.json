@@ -5,9 +5,9 @@
       "image": {
         "__type": "core/ASSET",
         "info": {
-          "id": "5e3c1e85-9d15-44c1-a569-dbc9300d7767",
-          "hash": "blake3:1680332a2d71b29a4306b7a297c6818c750df762acd004bb44d88d5a2a1cdf9e",
-          "file_path": "dae1d990c74f83c6eb2b2dd5b7d7a97dbef5ccfea574c94a901e8e99db0153c7.png"
+          "id": "ebe3596c-c34c-4350-8b5c-7b0dc0ccc712",
+          "hash": "blake3:c5d24229495958ac622e744f6e01d06c42f5cc5dbb5f36b0e93e423b1ba512eb",
+          "file_path": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png"
         }
       }
     }
@@ -27,7 +27,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: dramatic worm's-eye view from floor level looking steeply upward at An adult traveler with short dark hair, towering figure, architecture overhead, strong foreshortening. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. dramatic worm's-eye view from floor level looking steeply upward at An adult traveler with short dark hair, towering figure, architecture overhead, strong foreshortening, live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: dramatic worm's-eye view from floor level looking steeply upward at An adult traveler with short dark hair, towering figure, architecture overhead, strong foreshortening. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. Move down to FLOOR LEVEL for a dramatic LOW-ANGLE photograph looking steeply UPWARD at the same woman. Show her head and torso foreshortened against the underside of the same glass roof and dark window beams. Keep the yellow coat and teal scarf, and the same open compass held near her waist. Preserve the greenhouse materials. No staircase, dome, high-angle view or eye-level portrait.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -75,7 +75,7 @@
         "4",
         0
       ],
-      "seed": 20261020,
+      "seed": 20261021,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

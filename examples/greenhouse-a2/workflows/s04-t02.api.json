@@ -2,7 +2,7 @@
   "1": {
     "class_type": "LoadImage",
     "inputs": {
-      "image": "references/dae1d990c74f83c6eb2b2dd5b7d7a97dbef5ccfea574c94a901e8e99db0153c7.png"
+      "image": "references/100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png"
     }
   },
   "2": {
@@ -20,7 +20,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: over-the-shoulder POV, back of An adult traveler with short dark hair's head and clothed shoulder clearly visible filling left third foreground, camera immediately behind the person looking past their shoulder toward small brass compass on table, rear three-quarter view. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. over-the-shoulder POV, back of An adult traveler with short dark hair's head and clothed shoulder clearly visible filling left third foreground, camera immediately behind the person looking past their shoulder toward small brass compass on table, rear three-quarter view, live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: over-the-shoulder POV, back of An adult traveler with short dark hair's head and clothed shoulder clearly visible filling left third foreground, camera immediately behind the person looking past their shoulder toward small brass compass on table, rear three-quarter view. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. OVER-THE-SHOULDER photograph from immediately behind the same woman. The back of her head and yellow-coated LEFT SHOULDER occupy the LEFT THIRD of the foreground. Look past that shoulder toward her hands holding the same open brass compass above the wooden bench in the right middle ground. Keep the white dial, thin needle and hinged case. Show the same wet glass and ferns. Her face is hidden. Do not place her on the right side.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {

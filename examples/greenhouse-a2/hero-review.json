@@ -1,0 +1,82 @@
+[
+  {
+    "shot": "s02",
+    "take": "t01",
+    "face": "FAIL",
+    "outfit": "FAIL",
+    "prop": "FAIL",
+    "set": "PASS",
+    "framing": "FAIL",
+    "observation": "Waist is cropped; holds a photographic camera instead of a compass."
+  },
+  {
+    "shot": "s02",
+    "take": "t02",
+    "face": "FAIL",
+    "outfit": "FAIL",
+    "prop": "FAIL",
+    "set": "PASS",
+    "framing": "PASS",
+    "observation": "Head and waist visible, but the prop is a camera; coat fastenings and apparent face differ from the chosen hero."
+  },
+  {
+    "shot": "s02",
+    "take": "t03",
+    "face": "FAIL",
+    "outfit": "FAIL",
+    "prop": "FAIL†",
+    "set": "PASS",
+    "framing": "PASS",
+    "observation": "Side-on medium; no visible compass; inner clothing differs."
+  },
+  {
+    "shot": "s02",
+    "take": "t04",
+    "face": "FAIL",
+    "outfit": "FAIL",
+    "prop": "FAIL†",
+    "set": "PASS",
+    "framing": "PASS",
+    "observation": "Head and waist/belt visible; no compass is visible."
+  },
+  {
+    "shot": "s02",
+    "take": "t05",
+    "face": "PASS",
+    "outfit": "PASS",
+    "prop": "PASS",
+    "set": "PASS",
+    "framing": "PASS",
+    "observation": "Chosen baseline: entire head, torso and waist/hips visible, hands holding an open brass compass. Yellow coat and teal scarf. Brown satchel not visible."
+  },
+  {
+    "shot": "s02",
+    "take": "t06",
+    "face": "FAIL",
+    "outfit": "FAIL",
+    "prop": "FAIL",
+    "set": "PASS",
+    "framing": "PASS",
+    "observation": "Medium side view; compass is on the table, not held; apparent face and inner clothing differ."
+  },
+  {
+    "shot": "s02",
+    "take": "t07",
+    "face": "FAIL",
+    "outfit": "FAIL",
+    "prop": "FAIL",
+    "set": "PASS",
+    "framing": "FAIL",
+    "observation": "Chest-up crop hides the waist; different hair/fringe and patterned inner clothing; compass dial design differs."
+  },
+  {
+    "shot": "s02",
+    "take": "t08",
+    "face": "FAIL",
+    "outfit": "FAIL",
+    "prop": "FAIL",
+    "set": "PASS",
+    "framing": "PASS",
+    "observation": "Medium framing; multiple compass-like objects, different inner neckline and coat details."
+  }
+]
