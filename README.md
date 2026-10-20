@@ -69,3 +69,19 @@ Tests exercise template ordering and conflicting angles, dimensions / CFG, expli
 ## Licenses
 
 App source is [MIT](LICENSE). SDXL is CreativeML Open RAIL++-M, with use restrictions. Qwen diffusion, encoder, vision projector and VAE are Apache-2.0. ComfyUI is GPL-3.0 and runs as a separate process. ComfyUI-GGUF is Apache-2.0. No weights or engine source are redistributed. See [third-party notices](THIRD_PARTY_NOTICES.md) and model locks for exact upstream references and revisions.
+
+## Example and storyboard endpoints
+
+The home gallery is available with the CPU app alone; no engine or import command is required. **Explore the board** copies a bundled example into private workspace state on first open. Later opens preserve edits and picks. The CLI import commands above remain optional; imported boards appear under **My boards**.
+
+| Endpoint | Result |
+|---|---|
+| `GET /api/examples` | Bundled examples with board snapshots and available visual reviews |
+| `GET /api/examples/{slug}/images/{filename}` | A bundled take, restricted to the example's recorded images |
+| `POST /api/examples/{slug}/open` | Open or copy an example into workspace state without generation |
+| `GET /api/boards/{id}/storyboard?layout=landscape` | Selected cuts as a 1600 × 900 PNG |
+| `GET /api/boards/{id}/storyboard?layout=portrait` | Selected cuts as a 1080 × 1350 PNG |
+| `GET /api/boards/{id}/storyboard?layout=landscape&download=true` | The same PNG with an attachment filename |
+| `GET /api/boards/{id}/export` | ZIP with both storyboards, selected stills, graphs, references and manifest |
+
+Storyboards require a completed pick for every cut and verify each source image hash. Pillow 13.0.0 renders them on CPU with its embedded default font; no OS font lookup, model load or inference is needed. Identical board data and image bytes produce identical PNG bytes under the locked runtime. Images are fitted without cropping. The manifest lists dimensions, SHA-256, layout version, credit and the picked take IDs for both PNGs; available visual reviews and the frozen hero recipe are retained. Unicode coverage follows Pillow's embedded font. Keyboard controls: left/right to move between cuts, Enter/Space to compare, Escape to close dialogs. Motion respects the system's reduced-motion preference.

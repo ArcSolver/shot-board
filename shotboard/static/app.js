@@ -1,5 +1,5 @@
 const $ = (id) => document.getElementById(id);
-let board = null, currentShot = null, editing = false, lastSignature = '', polling = false;
+let examples = [], board = null, currentShot = null, editing = false, lastSignature = '', polling = false;
 const choices = {lens:'35', angle:'Eye level', move:'Static', lighting:'Window light', look:'Muted film'};
 const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const busy = () => board?.shots.some(s => s.takes.some(t => ['queued','running'].includes(t.status)));
@@ -22,7 +22,7 @@ function chips(config) {
 function allTakes(){return board.shots.flatMap(s=>s.takes);}
 function render() {
   if(!board)return;
-  $('composer').hidden=true;$('workspace').hidden=false;
+  $('home').hidden=true;$('composer').hidden=true;$('workspace').hidden=false;
   $('board-title').textContent=board.title;
   $('board-meta').textContent=`${board.shots.length} cuts  /  ${board.config.lens} mm  /  ${board.config.lighting}  /  ${board.config.look}  /  ${board.continuity?.enabled?'Qwen continuity':'SDXL Base 1.0'}`;
   const continuity=board.continuity||{}, heroRef=continuity.hero;
@@ -32,23 +32,25 @@ function render() {
   $('continuity-detail').textContent=continuity.enabled?`Qwen-Image-Edit-2511 Q8_0 + Qwen2.5-VL-7B · 24 steps. The hero stays; other cuts become reference edits. Real elapsed time appears on each take. Identity and shot accuracy need review.`:'SDXL coverage · framing-first prompts, cut-specific dimensions and CFG. Use a picked take as the hero to enable reference edits.';
   const picked=board.shots.filter(s=>s.picked).length, takes=allTakes(), completed=takes.filter(t=>t.status==='succeeded').length;
   $('pick-count').textContent=`${picked} / ${board.shots.length} selected`;
-  $('export').disabled=picked!==board.shots.length;
+  $('export').disabled=picked!==board.shots.length;$('storyboard').disabled=picked!==board.shots.length;
   $('generate').disabled=busy();$('cancel').hidden=!busy();
   $('generate').textContent=board.continuity?.enabled?'▶ Render reference edits':takes.length?'▶ Render more takes':'▶ Render board';
-  $('queue-panel').hidden=!takes.length;
+  $('queue-panel').hidden=!busy()&&!takes.some(t=>['failed','interrupted'].includes(t.status));
   const running=takes.find(t=>t.status==='running'),queued=takes.filter(t=>t.status==='queued').length,failed=takes.filter(t=>['failed','interrupted','cancelled'].includes(t.status)).length;
   $('queue-status').textContent=busy()?`${completed} / ${takes.length} takes ready · ${queued} queued`:`${completed} / ${takes.length} takes ready${failed?' · '+failed+' stopped':''}`;
   $('queue-detail').textContent=running?`${running.phase} · ${Math.floor((Date.now()/1000)-running.started_at)}s elapsed`:busy()?'Waiting for local worker':failed?'Review stopped takes before retrying':'Local rendering complete';
   $('queue-progress').max=takes.length||1;$('queue-progress').value=completed;
+  $('recipe-label').textContent=heroRef?`Hero ${heroRef.shot_id.toUpperCase()} / ${heroRef.take_id.toUpperCase()} · ${heroRef.settings.label} · recipe & visual review`:'SDXL Base 1.0 · recipe & visual review';
+  $('recipe-detail').textContent=heroRef?`Hero: ${heroRef.settings.label}, ${heroRef.settings.steps} steps, seed ${heroRef.seed}. Reference-edit preset: Qwen-Image-Edit-2511 Q8_0, 24 steps. Each take retains its own recipe. `+(board.review?.length?'Bundled review (original selections): framing passes in 5/6 cuts; the hero medium is too tight. Prop details and wide set drift. Hidden faces remain unverified.':'Review each take; identity and shot accuracy are unverified.'):'SDXL Base 1.0, 20 steps. Existing takes keep their original recipes. Identity and shot accuracy require visual review.';
   const signature=JSON.stringify([board.continuity,board.shots.map(s=>[s.title,s.prompt,s.picked,s.locked_seed,s.takes.map(t=>[t.id,t.status,t.image,t.error])])]);
   if(signature!==lastSignature){
     lastSignature=signature;
     $('board-grid').innerHTML=board.shots.map((s,i)=>{
       const ready=s.takes.filter(t=>t.status==='succeeded'),hero=ready.find(t=>t.id===s.picked)||ready[0];
       const active=s.takes.find(t=>t.status==='running');
-      return `<article class="shot-card ${s.picked?'picked':''}"><div class="shot-label"><h3><b>${String(i+1).padStart(2,'0')}</b>${escapeHTML(s.title)}</h3><span class="pill">${heroRef?.shot_id===s.id&&continuity.enabled?'★ HERO':s.picked?'✓ SELECTED':'COVERAGE'}</span></div><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?`<img src="${imageURL(hero)}" alt="${escapeHTML(s.title)} ${hero.id}">`:`<span class="empty-frame">${String(i+1).padStart(2,'0')}</span>`}<span class="frame-status">${hero?(s.picked?'SELECT / ':'PREVIEW / ')+hero.id.toUpperCase():active?'RENDERING LOCALLY':s.takes.some(t=>t.status==='queued')?'IN THE QUEUE':s.takes.some(t=>t.status==='failed')?'RENDER FAILED · RETRY':'AWAITING FIRST TAKE'}</span></div><div class="take-strip">${s.takes.map(t=>`<button class="take-thumb ${s.picked===t.id?'selected':''}" data-compare="${s.id}" aria-label="Compare ${s.title} ${t.id}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${t.id}">`:t.status==='running'?'…':t.status==='queued'?t.id:escapeHTML(t.status)}</button>`).join('') || '<small class="muted">Two takes. A little room to explore.</small>'}<span class="take-count">${ready.length} TAKES</span></div><div class="card-bottom"><small>${s.locked_seed!==null?'▣ SEED LOCKED':'SHARED SEED FAMILY'}</small><button data-compare="${s.id}">Compare & pick ↗</button></div></article>`;
+      return `<article class="shot-card ${s.picked?'picked':''}"><div class="shot-label"><h3>${pictogram(s.shot_type||s.title)}<b>${String(i+1).padStart(2,'0')}</b>${escapeHTML(s.title)}</h3><span class="pill">${heroRef?.shot_id===s.id&&continuity.enabled?'★ HERO':s.picked?'✓ SELECTED':'COVERAGE'}</span></div><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?`<img src="${imageURL(hero)}" alt="${escapeHTML(s.title)} ${hero.id}">`:`<span class="empty-frame">${String(i+1).padStart(2,'0')}</span>`}<span class="frame-status">${hero?(s.picked?'SELECT / ':'PREVIEW / ')+hero.id.toUpperCase():active?'RENDERING LOCALLY':s.takes.some(t=>t.status==='queued')?'IN THE QUEUE':s.takes.some(t=>t.status==='failed')?'RENDER FAILED · RETRY':'AWAITING FIRST TAKE'}</span></div><div class="take-strip">${s.takes.map(t=>`<button class="take-thumb ${s.picked===t.id?'selected':''}" data-compare="${s.id}" aria-label="Compare ${escapeHTML(s.title)} ${t.id}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${t.id}">`:t.status==='running'?'…':t.status==='queued'?t.id:escapeHTML(t.status)}</button>`).join('') || '<small class="muted">Two takes. A little room to explore.</small>'}<span class="take-count">${ready.length} TAKES</span></div><p class="card-review">${escapeHTML(reviewSummary(s))}</p><div class="card-bottom"><small>${s.locked_seed!==null?'▣ SEED LOCKED':'SHARED SEED FAMILY'}</small><button data-compare="${s.id}">Compare & pick ↗</button></div></article>`;
     }).join('');
-    document.querySelectorAll('[data-compare]').forEach(el=>{el.onclick=()=>openCompare(el.dataset.compare);el.onkeydown=e=>{if(e.key==='Enter')openCompare(el.dataset.compare);};});
+    document.querySelectorAll('[data-compare]').forEach(el=>{el.onclick=()=>openCompare(el.dataset.compare);el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openCompare(el.dataset.compare);}};});
     if($('compare-dialog').open)renderCompare();
   }
 }
@@ -57,7 +59,10 @@ async function openBoard(id){board=await api('/boards/'+id);location.hash=id;las
 function renderCompare(){
   const s=board.shots.find(s=>s.id===currentShot);if(!s)return;
   $('compare-title').textContent=s.title;
-  $('compare-images').innerHTML=s.takes.length?s.takes.map(t=>`<div class="compare-take ${s.picked===t.id?'chosen':''}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${escapeHTML(s.title)} ${t.id}">`:'<div class="shot-hero"><span class="empty-frame">'+escapeHTML(t.status)+'</span></div>'}<div><div><strong>${t.id.toUpperCase()}${s.picked===t.id?' · SELECTED':''}</strong><small>SEED ${t.seed} · ${t.elapsed_seconds||0}s · ${escapeHTML(t.status)}${t.reference?' · REFERENCE EDIT':''}</small>${t.settings?`<small>${escapeHTML(t.settings.label)} · ${t.settings.width} × ${t.settings.height} · CFG ${t.settings.cfg}</small>`:''}${t.error?`<small>${escapeHTML(t.error)}</small>`:''}</div><button class="${s.picked===t.id?'primary':'quiet'}" data-pick="${t.id}" ${t.status!=='succeeded'?'disabled':''}>${s.picked===t.id?'✓ Selected':'Pick this take'}</button></div></div>`).join(''):'<p class="muted">No takes yet. Render this cut to start comparing.</p>';
+  $('compare-index').textContent=` / ${board.shots.indexOf(s)+1} OF ${board.shots.length}`;
+  const review=board.review?.find(r=>r.shot===s.id&&r.take===s.picked);
+  $('compare-review').textContent=review?`${s.picked.toUpperCase()} review · ${review.observation}`:'Visual review pending for this selection. Compare identity, framing, props and set.';
+  $('compare-images').innerHTML=s.takes.length?s.takes.map(t=>`<div class="compare-take ${s.picked===t.id?'chosen':''}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${escapeHTML(s.title)} ${t.id}">`:'<div class="shot-hero"><span class="empty-frame">'+escapeHTML(t.status)+'</span></div>'}<div><div><strong>${t.id.toUpperCase()}${s.picked===t.id?' · SELECTED':''}</strong><small>SEED ${t.seed} · ${t.elapsed_seconds||0}s · ${escapeHTML(t.status)}${t.reference?' · REFERENCE EDIT':''}</small>${t.settings?`<small>${escapeHTML(t.settings.label)} · ${t.settings.width} × ${t.settings.height} · CFG ${t.settings.cfg}</small>`:''}${t.settings?`<small>${t.settings.steps} steps · ${escapeHTML(t.settings.sampler_name)} / ${escapeHTML(t.settings.scheduler)}</small>`:''}${t.error?`<small>${escapeHTML(t.error)}</small>`:''}</div><button class="${s.picked===t.id?'primary':'quiet'}" data-pick="${t.id}" ${t.status!=='succeeded'?'disabled':''}>${s.picked===t.id?'✓ Selected':'Pick this take'}</button></div></div>`).join(''):'<p class="muted">No takes yet. Render this cut to start comparing.</p>';
   document.querySelectorAll('[data-pick]').forEach(el=>el.onclick=guarded(async()=>{await api(`/boards/${board.id}/shots/${s.id}/pick`,'POST',{take_id:el.dataset.pick});await refresh();$('reuse-seed').value=board.shots.find(x=>x.id===s.id).takes.find(t=>t.id===el.dataset.pick).seed;}));
   $('seed-lock').textContent=s.locked_seed!==null?'Unlock seed':'Lock seed';
   $('seed-lock').disabled=!s.takes.some(t=>t.status==='succeeded');
@@ -81,8 +86,68 @@ $('export').onclick=()=>{location.href=`/api/boards/${board.id}/export`;};
 $('close-compare').onclick=()=>$('compare-dialog').close();$('close-boards').onclick=()=>$('boards-dialog').close();
 $('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$('board-grid').hidden=editing;$('edit-toggle').textContent=editing?'Return to board':'Edit shot list';if(editing)showEditors();};
 $('board-tab').onclick=()=>{editing=false;$('shot-list').hidden=true;$('board-grid').hidden=false;$('edit-toggle').textContent='Edit shot list';};
-$('new-board').onclick=()=>{board=null;location.hash='';$('composer').hidden=false;$('workspace').hidden=true;};
+$('new-board').onclick=()=>{board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;$('scene').focus();};
 $('load-example').onclick=guarded(async()=>{const boards=await api('/boards');$('boards-list').innerHTML=boards.map(b=>`<button class="board-link" data-board="${b.id}">${escapeHTML(b.title)} ↗</button>`).join('')||'<p class="muted">Your first scene starts here. Build a shot list to begin.</p>';document.querySelectorAll('[data-board]').forEach(b=>b.onclick=guarded(async()=>{await openBoard(b.dataset.board);$('boards-dialog').close();}));$('boards-dialog').showModal();});
 async function health(){try{const h=await api('/health');$('connection').textContent=board?.continuity?.enabled&&!h.reference_components_present?'Continuity setup needed':h.proxy_ready&&h.checkpoint_present?'Local engine ready':!h.checkpoint_present?'SDXL setup needed':'Local engine offline';}catch{$('connection').textContent='Local server unavailable';}}
-guarded(async()=>{chips(await api('/config'));await health();if(location.hash.length>1)await openBoard(location.hash.slice(1));})();
+guarded(async()=>{chips(await api('/config'));await loadGallery();if(location.hash.length>1)await openBoard(location.hash.slice(1));await health();})();
 setInterval(async()=>{if(polling)return;polling=true;try{await refresh();}catch{}finally{polling=false;}},1600);setInterval(health,15000);
+
+// Original composition diagrams: readable at chip size, with text labels alongside.
+function pictogram(type){
+  const paths={
+    'Establishing':'<path d="M4 23 12 14 18 20 27 9 38 23"/><circle cx="22" cy="17" r="2"/><path d="M22 19v5"/>',
+    'Medium':'<circle cx="21" cy="10" r="4"/><path d="M13 25v-5a8 8 0 0 1 16 0v5"/>',
+    'Close-up':'<ellipse cx="21" cy="16" rx="10" ry="13"/><path d="M16 13h2m6 0h2m-9 8q4 3 8 0"/>',
+    'Over shoulder':'<circle cx="10" cy="13" r="6"/><path d="M2 27v-4q8-9 16 0v4"/><circle cx="29" cy="10" r="3"/><path d="M24 20v-3q5-6 10 0v3"/>',
+    'Insert':'<circle cx="22" cy="15" r="9"/><path d="m22 9-4 10 9-5-5-5Zm-14 14 6-4m16 5 5 2"/>',
+    'Low angle':'<path d="m12 25 4-13h10l5 13M8 23l-3 3m0 0v-7m0 7h7"/><circle cx="21" cy="7" r="4"/>'
+  };
+  return `<svg viewBox="0 0 42 30" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1" y="1" width="40" height="28" rx="3" opacity=".4"/>${paths[type]||paths.Medium}</svg>`;
+}
+function reviewSummary(shot){
+  const review=board.review?.find(r=>r.shot===shot.id&&r.take===shot.picked);
+  if(!review)return 'Visual review pending';
+  const fields=[['same_person','Identity'],['outfit','Outfit'],['prop','Prop'],['set','Set'],['shot_type','Framing']];
+  return fields.filter(([key])=>!review[key].startsWith('PASS')).map(([key,label])=>`${label}: ${review[key].includes('not ')?'unverified':'failed'}`).join(' · ')||'Visible features reviewed';
+}
+async function loadGallery(){
+  examples=await api('/examples');
+  const featured=examples[0], b=featured.board;
+  const picked=s=>s.takes.find(t=>t.id===s.picked);
+  const url=(ex,s)=>`/api/examples/${ex.slug}/images/${picked(s).image}`;
+  $('featured-board').innerHTML=`<div class="featured-content"><div class="feature-cover"><img src="${url(featured,b.shots[1])}" alt="Traveler in a mustard raincoat examining a brass compass"><div class="feature-caption"><span class="tag">FEATURED BOARD / 01</span><h2>The greenhouse</h2><p>A small discovery.<br>Six ways into the same moment.</p></div></div><div class="feature-mosaic">${b.shots.map((s,i)=>`<button class="feature-cut" data-example="${featured.slug}" data-cut="${s.id}" aria-label="Open ${escapeHTML(s.title)}"><img src="${url(featured,s)}" alt="${escapeHTML(s.title)} selected render"><span>${String(i+1).padStart(2,'0')} / ${escapeHTML(s.title)}</span></button>`).join('')}</div></div><div class="feature-bottom"><p><b>6 selected cuts · 35 mm · Muted film</b><br>SDXL hero + Qwen reference edits · partial continuity · review & recipe inside</p><button class="primary" data-example="${featured.slug}">Explore the board ↗</button></div>`;
+  $('example-gallery').innerHTML=examples.map(ex=>`<button class="gallery-card" data-example="${ex.slug}"><div class="gallery-images">${[0,2,4].map(i=>`<img loading="lazy" src="${url(ex,ex.board.shots[i])}" alt="${escapeHTML(ex.board.shots[i].title)} render">`).join('')}</div><div class="gallery-caption"><span>${escapeHTML(ex.label)} ↗</span><small>${ex.slug==='greenhouse-a2'?'SDXL + QWEN / 6 CUTS':'SDXL / 6 CUTS'}</small></div></button>`).join('');
+  document.querySelectorAll('[data-example]').forEach(el=>el.onclick=guarded(async()=>{const opened=await api(`/examples/${el.dataset.example}/open`,'POST');await openBoard(opened.id);window.scrollTo(0,0);if(el.dataset.cut)openCompare(el.dataset.cut);}));
+  $('coverage-preview').innerHTML=['Establishing','Medium','Close-up','Over shoulder','Insert','Low angle'].map(type=>`<div class="composition-chip">${pictogram(type)}${type==='Establishing'?'Wide':type==='Over shoulder'?'OTS':type}</div>`).join('');
+}
+let storyboardRequest=0;
+async function previewStoryboard(){
+  const request=++storyboardRequest, layout=$('storyboard-layout').value;
+  $('storyboard-preview').hidden=true;$('download-storyboard').hidden=true;$('storyboard-error').hidden=false;$('storyboard-error').textContent='Preparing your storyboard…';
+  const path=`/api/boards/${board.id}/storyboard?layout=${layout}`;
+  const response=await fetch(path);
+  if(!response.ok){const error=await response.json();throw new Error(error.detail);}
+  const blob=await response.blob();
+  if(request!==storyboardRequest)return;
+  const old=$('storyboard-preview').dataset.objectUrl;
+  if(old)URL.revokeObjectURL(old);
+  const objectUrl=URL.createObjectURL(blob);
+  $('storyboard-preview').dataset.objectUrl=objectUrl;
+  $('storyboard-preview').src=objectUrl;$('storyboard-preview').hidden=false;
+  $('download-storyboard').href=path+'&download=true';$('download-storyboard').hidden=false;$('storyboard-error').hidden=true;
+}
+const safePreview=async()=>{try{await previewStoryboard();}catch(error){$('storyboard-error').textContent=error.message;}};
+$('storyboard').onclick=()=>{$('storyboard-dialog').showModal();safePreview();};
+$('storyboard-layout').onchange=safePreview;
+$('close-storyboard').onclick=()=>{$('storyboard-dialog').close();storyboardRequest++;};
+function navigateCut(delta){const index=board.shots.findIndex(s=>s.id===currentShot);openCompare(board.shots[(index+delta+board.shots.length)%board.shots.length].id);$('compare-dialog').scrollTop=0;}
+$('previous-cut').onclick=()=>navigateCut(-1);$('next-cut').onclick=()=>navigateCut(1);
+document.addEventListener('keydown',event=>{
+  if(['INPUT','TEXTAREA','SELECT','SUMMARY'].includes(event.target.tagName)||event.altKey||event.ctrlKey||event.metaKey)return;
+  if(!board||!['ArrowLeft','ArrowRight'].includes(event.key))return;
+  if($('storyboard-dialog').open||$('boards-dialog').open)return;
+  event.preventDefault();const delta=event.key==='ArrowRight'?1:-1;
+  if($('compare-dialog').open)navigateCut(delta);
+  else{const cards=[...document.querySelectorAll('.shot-hero[data-compare]')];const index=cards.indexOf(document.activeElement);cards[(index+delta+cards.length)%cards.length]?.focus();}
+});
+window.addEventListener('hashchange',guarded(async()=>{const id=location.hash.slice(1);if(id&&id!==board?.id)await openBoard(id);else if(!id&&$('composer').hidden){board=null;$('workspace').hidden=true;$('home').hidden=false;}}));

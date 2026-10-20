@@ -73,7 +73,7 @@ class ExportTests(unittest.TestCase):
         data = export_board(self.board, self.data)
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
             manifest = json.loads(archive.read("manifest.json"))
-            self.assertEqual(len(archive.namelist()), 13)
+            self.assertEqual(len(archive.namelist()), 15)
             self.assertEqual(len(manifest["shots"]), 6)
             for item in manifest["shots"]:
                 graph = json.loads(archive.read(item["workflow"]))
@@ -83,6 +83,51 @@ class ExportTests(unittest.TestCase):
                 import hashlib
                 self.assertEqual(hashlib.sha256(archive.read(item["image"])).hexdigest(), item["image_sha256"])
                 self.assertEqual(hashlib.sha256(archive.read(item["workflow"])).hexdigest(), item["workflow_sha256"])
+
+    def test_storyboards_are_deterministic_and_match_manifest(self):
+        import hashlib
+        from shotboard.storyboard import storyboard_png, SIZES
+        with zipfile.ZipFile(io.BytesIO(export_board(self.board, self.data))) as archive:
+            manifest = json.loads(archive.read("manifest.json"))
+            self.assertEqual(len(manifest["storyboards"]), 2)
+            for item in manifest["storyboards"]:
+                layout = "portrait" if item["width"] == 1080 else "landscape"
+                first = storyboard_png(self.board, self.data, layout)
+                self.assertEqual(first, storyboard_png(self.board, self.data, layout))
+                self.assertEqual(first, archive.read(item["file"]))
+                self.assertEqual(hashlib.sha256(first).hexdigest(), item["sha256"])
+                self.assertEqual(len(item["selections"]), 6)
+                with Image.open(io.BytesIO(first)) as image:
+                    self.assertEqual(image.size, SIZES[layout])
+                    self.assertEqual(image.info, {})
+
+    def test_storyboard_depends_on_picks_and_rejects_tampering(self):
+        from shotboard.storyboard import storyboard_png
+        original = storyboard_png(self.board, self.data)
+        shot = self.board["shots"][0]
+        alternate = deepcopy(shot["takes"][0])
+        path = self.data / "testboard/alternate.png"
+        Image.new("RGB", (9, 16), "blue").save(path)
+        alternate.update(id="t02", image=path.name, image_sha256=sha256(path))
+        shot["takes"].append(alternate)
+        shot["picked"] = "t02"
+        self.assertNotEqual(original, storyboard_png(self.board, self.data))
+        path.write_bytes(b"changed")
+        with self.assertRaisesRegex(ValueError, "changed on disk"):
+            storyboard_png(self.board, self.data)
+
+    def test_storyboard_contains_portrait_without_cropping(self):
+        from shotboard.storyboard import storyboard_png
+        path = self.data / "testboard/s01.png"
+        image = Image.new("RGB", (20, 100), "red")
+        image.paste("blue", (0, 0, 20, 10))
+        image.paste("lime", (0, 90, 20, 100))
+        image.save(path)
+        self.board["shots"][0]["takes"][0]["image_sha256"] = sha256(path)
+        with Image.open(io.BytesIO(storyboard_png(self.board, self.data))) as result:
+            colors = result.getcolors(result.width*result.height)
+            for color in [(255,0,0), (0,0,255), (0,255,0)]:
+                self.assertTrue(any(rgb == color and count > 20 for count, rgb in colors))
 
     def test_later_prompt_edits_do_not_rewrite_picked_take(self):
         shot = self.board["shots"][0]

@@ -21,6 +21,7 @@ import httpx
 from PIL import Image
 from pydantic import BaseModel, Field
 
+from .storyboard import storyboard_png
 from .memory import MemoryGuard, MemorySafetyError
 
 from .core import (ROOT, PRESETS, LENSES, ANGLES, MOVES, LIGHTS, LOOKS,
@@ -245,7 +246,7 @@ async def local_guard(request: Request, call_next):
         return Response("Same-origin access only", status_code=403)
     response = await call_next(request)
     response.headers["X-Content-Type-Options"] = "nosniff"
-    response.headers["Content-Security-Policy"] = "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"
+    response.headers["Content-Security-Policy"] = "default-src 'self'; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"
     return response
 
 
@@ -291,6 +292,53 @@ def health():
         checkpoint_present = available("sdxl-base")
         reference_components_present = available("qwen-reference")
     return dict(proxy_ready=ready, reference_components_present=reference_components_present, checkpoint_present=checkpoint_present)
+
+
+EXAMPLES = {"greenhouse-a2": "The greenhouse / continuity", "greenhouse": "The greenhouse / early study"}
+
+
+def example_board(slug):
+    if slug not in EXAMPLES:
+        raise HTTPException(404, "Example not found")
+    folder = ROOT / "examples" / slug
+    board = json.loads((folder / "board.json").read_text())
+    review = folder / "continuity-review.json"
+    board["review"] = json.loads(review.read_text()) if review.exists() else []
+    return board
+
+
+@app.get("/api/examples")
+def examples():
+    return [dict(slug=slug, label=label, board=example_board(slug)) for slug, label in EXAMPLES.items()]
+
+
+@app.get("/api/examples/{slug}/images/{filename}")
+def example_image(slug: str, filename: str):
+    board = example_board(slug)
+    if not any(t.get("image") == filename for s in board["shots"] for t in s["takes"]):
+        raise HTTPException(404, "Image not found")
+    return FileResponse(ROOT / "examples" / slug / "takes" / filename)
+
+
+@app.post("/api/examples/{slug}/open")
+def open_example(slug: str):
+    source = example_board(slug)
+    with store.lock:
+        # Reopening preserves user picks and edits in the private workspace.
+        if source["id"] not in store.boards:
+            destination = DATA / source["id"]
+            destination.mkdir(parents=True, exist_ok=True)
+            for shot in source["shots"]:
+                for take in shot["takes"]:
+                    shutil.copyfile(ROOT / "examples" / slug / "takes" / take["image"], destination / take["image"])
+            refs = ROOT / "examples" / slug / "references"
+            if refs.is_dir():
+                shutil.copytree(refs, destination / "references", dirs_exist_ok=True)
+            store.boards[source["id"]] = source
+            store.save(source)
+        else:
+            store.boards[source["id"]].setdefault("review", source["review"])
+        return dict(id=source["id"])
 
 
 @app.get("/api/boards")
@@ -474,6 +522,17 @@ def lock_seed(bid: str, sid: str, request: SeedLock):
         shot_for(board, sid)["locked_seed"] = request.seed
         store.save(board)
     return dict(ok=True)
+
+
+@app.get("/api/boards/{bid}/storyboard")
+def storyboard(bid: str, layout: Literal["landscape", "portrait"] = "landscape", download: bool = False):
+    with store.lock:
+        try:
+            png = storyboard_png(board_for(bid), DATA, layout)
+        except ValueError as exc:
+            raise HTTPException(409, str(exc)) from exc
+    headers = {"Content-Disposition": f'attachment; filename="storyboard-{layout}.png"'} if download else {}
+    return Response(png, media_type="image/png", headers=headers)
 
 
 @app.get("/api/boards/{bid}/export")

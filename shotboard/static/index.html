@@ -1,37 +1,45 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Shot Board — A scene, seen six ways.</title>
-  <link rel="icon" href="data:,"><link rel="stylesheet" href="/static/style.css">
-  <script src="/static/app.js" defer></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shot Board — A scene, seen six ways.</title>
+<link rel="icon" href="data:,"><link rel="stylesheet" href="/static/style.css"><script src="/static/app.js" defer></script>
 </head>
 <body>
-<header class="topbar"><a class="brand" href="/">▣ <span>SHOT BOARD</span><small>STILL STUDIO / 01</small></a><div class="topright"><span id="connection" class="connection">Checking local engine</span><button id="load-example" class="quiet">Open a board</button><button id="new-board" class="quiet">+ New scene</button></div></header>
+<header class="topbar"><a class="brand" href="/" aria-label="Shot Board home"><span class="brand-mark">▧</span> SHOT BOARD<span class="brand-sub">STILL STUDIO</span></a><nav><button id="load-example" class="quiet">My boards</button><button id="new-board" class="primary">+ New scene</button></nav></header>
 <main>
-  <section id="composer">
-    <div class="intro"><p class="eyebrow">YOUR SCENE. EVERY ANGLE.</p><h1>A scene,<br>seen six ways<span>.</span></h1><p>Find the coverage. Explore the takes.<br>Keep the frame that tells your story.</p><div class="intro-footer"><span class="dot"></span> OPEN WEIGHTS. LOCAL RENDERING.<br><small>No credits. No cloud. Your creative process.</small></div></div>
-    <form id="scene-form" class="composer-panel">
-      <label class="section-label" for="scene">01 / THE SCENE</label>
-      <textarea id="scene" name="scene" rows="2" required>A traveler discovers a small brass compass in a rain-soaked greenhouse.</textarea>
-      <details class="bible" open><summary>Continuity bible <span>SHARED ACROSS EVERY CUT</span></summary><div class="bible-fields"><label>Character<input id="character" name="character" value="An adult traveler with short dark hair, mustard raincoat, brown satchel" required></label><label>Key prop / insert subject<input id="prop" name="prop" value="small brass compass" required></label><label>Set<input id="setting" name="setting" value="A quiet glass greenhouse, ferns, rain on windows, wooden potting table" required></label></div></details>
-      <div class="section-label">02 / CAMERA LANGUAGE</div><div id="camera-chips"></div>
-      <div class="section-label">03 / THE ATMOSPHERE</div><div id="look-chips"></div>
-      <div class="form-bottom"><label>Coverage<select id="count" name="count"><option value="6">6 cuts · essential</option><option value="7">7 cuts</option><option value="8">8 cuts</option><option value="9">9 cuts · extended</option></select></label><label>Seed family<input type="number" id="seed" name="seed" min="0" max="4294967295" value="20261020"></label><label>Model<select aria-label="Model preset"><option>SDXL Base 1.0</option><option disabled>Qwen continuity · pick a hero first</option><option disabled>FLUX.2 klein 4B · planned</option></select></label></div>
-      <button type="submit" class="primary full">Build shot list <span>↗</span></button><p class="fine">Starts with a shot list. Rendering begins when you say action.</p>
-    </form>
-  </section>
-  <section id="workspace" hidden>
-    <div class="board-heading"><div><p class="eyebrow">SCENE / <span id="board-number">01</span></p><h2 id="board-title"></h2><p id="board-meta" class="muted"></p></div><div class="heading-actions"><button id="edit-toggle" class="quiet">Edit shot list</button><button id="export" class="primary" disabled>Export selects ↗</button></div></div>
-    <div class="toolbar"><div class="tabs"><button id="board-tab" class="tab active">Shot board</button><span id="pick-count" class="count"></span></div><div class="render-actions"><label>Takes per cut<select id="takes-count"><option value="2">2 takes</option><option value="1">1 take</option><option value="3">3 takes</option><option value="4">4 takes</option></select></label><button id="generate" class="primary">▶ Render board</button><button id="cancel" class="quiet" hidden>Stop queue</button></div></div>
-    <div class="continuity-panel"><label><input type="checkbox" id="keep-continuity"> Keep continuity</label><strong id="hero-status">Pick a take, then use it as the hero in Compare & pick.</strong><p id="continuity-detail">SDXL coverage uses framing-first prompts and cut-specific dimensions. Reference edits use the hero photograph.</p></div>
-    <div id="queue-panel" class="queue-panel" hidden><div><span class="live-dot"></span><strong id="queue-status"></strong><span id="queue-detail"></span></div><progress id="queue-progress" value="0" max="12"></progress><small>One take at a time. Model loading and rendering may take a few minutes. Elapsed time is measured; no estimated sampling percentage.</small></div>
-    <div id="shot-list" hidden></div><div id="board-grid" class="board-grid"></div>
-    <p class="board-note">CONTINUITY <span>Reference editing guides identity, outfit, props and set from your hero. Review every cut; identity and camera angle can still drift. Move chips express composition intent in a still.</span></p>
-  </section>
+<section id="home">
+  <div class="home-heading"><div><p class="eyebrow">ONE SCENE. A WHOLE STORY.</p><h1>Find your next frame<span>.</span></h1></div><p class="home-description">Explore the angles. Make your picks. <br>Turn a scene into a storyboard.</p></div>
+  <div id="featured-board" class="featured-board" aria-label="Featured greenhouse continuity board"></div>
+  <div class="gallery-heading"><h2>From the cutting room</h2><span>REAL RENDERS / OPEN RECIPES</span></div>
+  <div id="example-gallery" class="example-gallery"></div>
+</section>
+<section id="composer" hidden>
+  <div class="composer-intro"><p class="eyebrow">A NEW SCENE</p><h1>Start with a moment<span>.</span></h1><p class="muted">Describe the scene. We’ll lay out the coverage.</p></div>
+  <form id="scene-form" class="composer-panel">
+    <label class="section-label" for="scene">WHAT HAPPENS IN YOUR SCENE?</label>
+    <textarea id="scene" name="scene" rows="3" required maxlength="600" placeholder="A traveler discovers a small brass compass in a rain-soaked greenhouse.">A traveler discovers a small brass compass in a rain-soaked greenhouse.</textarea>
+    <div class="coverage-preview" id="coverage-preview" aria-label="Six planned compositions"></div>
+    <details class="advanced"><summary>Fine-tune the scene <span>Character, camera & atmosphere</span></summary>
+      <div class="bible-fields"><label>Character<input id="character" name="character" value="An adult traveler with short dark hair, mustard raincoat, brown satchel" required maxlength="400"></label><label>Key prop<input id="prop" name="prop" value="small brass compass" required maxlength="160"></label><label>Set<input id="setting" name="setting" value="A quiet glass greenhouse, ferns, rain on windows, wooden potting table" required maxlength="400"></label></div>
+      <div class="section-label">CAMERA LANGUAGE</div><div id="camera-chips"></div><div class="section-label">ATMOSPHERE</div><div id="look-chips"></div>
+      <div class="form-bottom"><label>Coverage<select id="count" name="count"><option value="6">6 cuts · essential</option><option value="7">7 cuts</option><option value="8">8 cuts</option><option value="9">9 cuts · extended</option></select></label><label>Seed family<input type="number" id="seed" name="seed" min="0" max="4294967295" value="20261020"></label><label>Model<select aria-label="Model preset"><option>SDXL Base 1.0</option></select></label></div>
+    </details>
+    <button type="submit" class="primary full">Build shot list <span>↗</span></button><p class="fine">Preview the cuts first. Render when you’re ready.</p>
+  </form>
+</section>
+<section id="workspace" hidden>
+  <div class="board-heading"><div><p class="eyebrow">THE CUTTING ROOM / <span id="board-number">01</span></p><h2 id="board-title"></h2><p id="board-meta" class="muted"></p></div><div class="heading-actions"><button id="storyboard" class="primary" disabled>Storyboard ↗</button><button id="export" class="quiet" disabled>Export ZIP ↓</button></div></div>
+  <div class="toolbar"><div class="tabs"><button id="board-tab" class="tab active">Shot board</button><span id="pick-count" class="count"></span></div><button id="edit-toggle" class="quiet">Edit cuts</button><details class="render-settings"><summary>Render & continuity</summary><div class="render-actions"><label>Takes per cut<select id="takes-count"><option value="2">2 takes</option><option value="1">1 take</option><option value="3">3 takes</option><option value="4">4 takes</option></select></label><button id="generate" class="primary">▶ Render board</button><button id="cancel" class="quiet" hidden>Stop queue</button></div><div class="continuity-panel"><label><input type="checkbox" id="keep-continuity"> Keep continuity</label><strong id="hero-status"></strong><p id="continuity-detail"></p></div></details></div>
+  <details class="recipe"><summary id="recipe-label">Hero recipe & visual review</summary><p id="recipe-detail"></p></details>
+  <div id="queue-panel" class="queue-panel" hidden><div><span class="live-dot"></span><strong id="queue-status"></strong><span id="queue-detail"></span></div><progress id="queue-progress" value="0" max="12"></progress><small>One take at a time. Actual elapsed time includes model loading.</small></div>
+  <div id="shot-list" hidden></div><div id="board-grid" class="board-grid"></div>
+  <p class="board-note">← → Navigate cuts <span>Enter to compare · Esc to close · Review each pick before sharing.</span></p>
+</section>
 </main>
-<footer><span>SHOT BOARD</span><span>A LITTLE MORE INTENTION IN EVERY FRAME.</span><span>LOCAL / OPEN / YOURS</span></footer>
-<dialog id="compare-dialog"><div class="dialog-heading"><div><p class="eyebrow">THE CUTTING ROOM</p><h2 id="compare-title"></h2></div><button id="close-compare" class="quiet" aria-label="Close compare">✕</button></div><div id="compare-images" class="compare-images"></div><div class="compare-controls"><label>Reusable seed<input id="reuse-seed" type="number" min="0" max="4294967295"></label><button id="seed-lock" class="quiet">Lock seed</button><button id="use-hero" class="quiet">Use selected as hero</button><button id="more-takes" class="primary">+ Render takes</button></div><p id="compare-message" class="muted"></p></dialog>
-<dialog id="boards-dialog"><div class="dialog-heading"><h2>Your boards</h2><button id="close-boards" class="quiet" aria-label="Close boards">✕</button></div><div id="boards-list"></div></dialog>
+<footer><span>SHOT BOARD / STILL STUDIO</span><span id="connection">Checking engine</span><span>Open weights. Local rendering. No cloud required.</span></footer>
+<dialog id="compare-dialog"><div class="dialog-heading"><div><p class="eyebrow">COMPARE & PICK <span id="compare-index"></span></p><h2 id="compare-title"></h2></div><div class="dialog-nav"><button id="previous-cut" aria-label="Previous cut">←</button><button id="next-cut" aria-label="Next cut">→</button><button id="close-compare" aria-label="Close compare">✕</button></div></div><p id="compare-review" class="review-line"></p><div id="compare-images" class="compare-images"></div><details class="compare-recipe"><summary>Seed & render controls</summary><div class="compare-controls"><label>Reusable seed<input id="reuse-seed" type="number" min="0" max="4294967295"></label><button id="seed-lock" class="quiet">Lock seed</button><button id="use-hero" class="quiet">Use selected as hero</button><button id="more-takes" class="primary">+ Render takes</button></div><p id="compare-message" class="muted"></p></details></dialog>
+<dialog id="storyboard-dialog"><div class="dialog-heading"><div><p class="eyebrow">READY TO SHARE</p><h2>Your scene. One board.</h2></div><button id="close-storyboard" aria-label="Close storyboard">✕</button></div><div class="storyboard-controls"><label>Format<select id="storyboard-layout"><option value="landscape">Landscape · 1600 × 900</option><option value="portrait">Portrait · 1080 × 1350</option></select></label><a id="download-storyboard" class="button primary" download>Download PNG ↓</a></div><p id="storyboard-error" role="status" hidden></p><img id="storyboard-preview" alt="Storyboard of your selected cuts"><p class="fine">Selected takes, original proportions. Both formats are included in Export ZIP.</p></dialog>
+<dialog id="boards-dialog"><div class="dialog-heading"><h2>Your boards</h2><button id="close-boards" aria-label="Close boards">✕</button></div><div id="boards-list"></div></dialog>
 <div id="toast" role="status" aria-live="polite" hidden></div>
 </body></html>

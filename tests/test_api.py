@@ -34,6 +34,43 @@ class APITests(unittest.TestCase):
         self.assertEqual(self.client.get(self.base+"/export").status_code, 409)
         self.assertEqual(self.client.post(self.base+"/shots/s01/pick",json={"take_id":"t01"}).status_code, 409)
 
+    def test_examples_open_without_generation_and_preserve_user_picks(self):
+        examples = self.client.get("/api/examples").json()
+        self.assertEqual(examples[0]["slug"], "greenhouse-a2")
+        slug = examples[0]["slug"]
+        opened = self.client.post(f"/api/examples/{slug}/open").json()
+        base = "/api/boards/" + opened["id"]
+        board = self.client.get(base).json()
+        self.assertEqual(len(board["review"]), 6)
+        self.assertEqual(board["shots"][0]["picked"], "t03")
+        self.client.post(base+"/shots/s01/pick", json={"take_id":"t01"})
+        self.client.post(f"/api/examples/{slug}/open")
+        self.assertEqual(self.client.get(base).json()["shots"][0]["picked"], "t01")
+        self.assertTrue(server.store.tasks.empty())
+        self.assertEqual(self.client.get(f"/api/examples/{slug}/images/missing.png").status_code, 404)
+        self.assertEqual(self.client.post("/api/examples/unknown/open").status_code, 404)
+
+    def test_storyboard_endpoint_and_download_match_zip(self):
+        import io
+        import json
+        import zipfile
+        slug = "greenhouse-a2"
+        bid = self.client.post(f"/api/examples/{slug}/open").json()["id"]
+        base = "/api/boards/" + bid
+        for layout in ("portrait", "landscape"):
+            response = self.client.get(base+f"/storyboard?layout={layout}")
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.headers["content-type"], "image/png")
+            download = self.client.get(base+f"/storyboard?layout={layout}&download=true")
+            self.assertEqual(response.content, download.content)
+            self.assertIn("attachment", download.headers["content-disposition"])
+            with zipfile.ZipFile(io.BytesIO(self.client.get(base+"/export").content)) as archive:
+                self.assertEqual(response.content, archive.read(f"storyboard-{layout}.png"))
+                self.assertEqual(len(json.loads(archive.read("manifest.json"))["storyboards"]), 2)
+        self.assertEqual(self.client.get(base+"/storyboard?layout=square").status_code, 422)
+        self.assertEqual(self.client.get(self.base+"/storyboard").status_code, 409)
+        self.assertTrue(server.store.tasks.empty())
+
     def test_seed_zero_and_unlock(self):
         self.client.post(self.base+"/shots/s01/seed",json={"seed":0})
         self.assertEqual(self.client.get(self.base).json()["shots"][0]["locked_seed"], 0)

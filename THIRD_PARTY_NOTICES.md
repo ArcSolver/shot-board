@@ -39,7 +39,7 @@ An existing installation may load custom-node packages at startup. The supplied 
 | blake3 | CC0-1.0 or Apache-2.0 | [blake3-py](https://github.com/oconnor663/blake3-py) |
 | Python standard library | PSF-2.0 | [Python](https://www.python.org/doc/copyright/) |
 
-Frontend: original HTML, CSS and JavaScript; system fonts, no downloaded fonts, icons, images or JavaScript libraries.
+Frontend: original HTML, CSS and JavaScript, including original inline SVG composition pictograms. System fonts only; no vendored fonts, icon sets or JavaScript libraries. Storyboard text uses the default font embedded in the separately installed Pillow distribution. The gallery reuses the checked-in renders.
 
 ## Verification tools, not product dependencies
 

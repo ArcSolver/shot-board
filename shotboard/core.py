@@ -7,6 +7,8 @@ import re
 from pathlib import Path
 import zipfile
 
+from .storyboard import storyboard_png, SIZES, CREDIT
+
 ROOT = Path(__file__).resolve().parents[1]
 LENSES = ["24", "35", "50", "85"]
 ANGLES = ["Eye level", "Low angle", "High angle"]
@@ -146,7 +148,9 @@ def export_board(board, data_root):
     manifest = dict(schema_version=2, app="Shot Board", board_id=board["id"],
                     title=board["title"], scene=deepcopy(board["config"]),
                     consistency="Reference edits preserve a hero when enabled; identity and shot accuracy require visual review.",
-                    generation_path="Comfy SDK → local API proxy → ComfyUI", shots=[])
+                    generation_path="Comfy SDK → local API proxy → ComfyUI",
+                    review=deepcopy(board.get("review")), hero=deepcopy(board.get("continuity", {}).get("hero")),
+                    storyboards=[], shots=[])
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
         exported_references = set()
@@ -189,5 +193,12 @@ def export_board(board, data_root):
                 image=image_name, image_sha256=take["image_sha256"], workflow=workflow_name,
                 workflow_sha256=hashlib.sha256(graph.encode()).hexdigest(),
                 elapsed_seconds=take["elapsed_seconds"]))
+        for layout, size in SIZES.items():
+            png = storyboard_png(board, data_root, layout)
+            name = f"storyboard-{layout}.png"
+            archive.writestr(name, png)
+            manifest["storyboards"].append(dict(file=name, width=size[0], height=size[1],
+                sha256=hashlib.sha256(png).hexdigest(), credit=CREDIT,
+                layout_version=1, fit="contain", selections=[dict(shot_id=s["id"], take_id=s["picked"]) for s in board["shots"]]))
         archive.writestr("manifest.json", json.dumps(manifest, indent=2) + "\n")
     return buffer.getvalue()

@@ -25,7 +25,7 @@ def main():
     if (example / 'references').is_dir():
         shutil.copytree(example / 'references', destination / 'references')
     (destination / "board.json").write_text(json.dumps(board, indent=2)+"\n")
-    print("Example imported. Start the app and choose Open a board.")
+    print("Example imported. Start the app and choose My boards.")
 
 
 if __name__ == "__main__":
