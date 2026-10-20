@@ -1,5 +1,7 @@
 # Shot Board
 
+<img src="shotboard/static/logo.svg" width="388" height="64" alt="Shot Board — one scene, six shots">
+
 **A Popcorn-style storyboard app on open weights: one scene, six shots.**
 
 ![Six-shot storyboard of a traveler finding a brass compass in a rainy greenhouse](examples/greenhouse-continuity/storyboard-landscape.png)
