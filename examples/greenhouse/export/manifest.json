@@ -1,0 +1,281 @@
+{
+  "schema_version": 1,
+  "app": "Shot Board",
+  "board_id": "143b497e29fe4f13b2a472aa151a42e6",
+  "title": "A traveler discovers a small brass compass in a rain-soaked greenhouse.",
+  "scene": {
+    "scene": "A traveler discovers a small brass compass in a rain-soaked greenhouse.",
+    "character": "An adult traveler with short dark hair, mustard raincoat, brown satchel",
+    "setting": "A quiet glass greenhouse, ferns, rain on windows, wooden potting table",
+    "lens": "35",
+    "angle": "Eye level",
+    "move": "Static",
+    "lighting": "Window light",
+    "look": "Muted film",
+    "count": 6,
+    "seed": 20261020,
+    "preset": "sdxl-base"
+  },
+  "consistency": "Shared character/set bible and seed families; identity is not guaranteed.",
+  "generation_path": "Comfy SDK \u2192 local API proxy \u2192 ComfyUI",
+  "shots": [
+    {
+      "id": "s01",
+      "title": "Establishing",
+      "take_id": "t01",
+      "seed": 20261020,
+      "seed_locked": true,
+      "settings": {
+        "label": "SDXL Base 1.0",
+        "enabled": true,
+        "checkpoint": "sd_xl_base_1.0.safetensors",
+        "license": "CreativeML Open RAIL++-M",
+        "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+        "width": 1024,
+        "height": 576,
+        "steps": 20,
+        "cfg": 6.0,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "denoise": 1.0
+      },
+      "models": [
+        {
+          "filename": "sd_xl_base_1.0.safetensors",
+          "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+          "license": "CreativeML Open RAIL++-M",
+          "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+          "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+          "components": [
+            "SDXL UNet",
+            "CLIP-L",
+            "OpenCLIP bigG",
+            "VAE (checkpoint embedded)"
+          ]
+        }
+      ],
+      "prompt": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, wide establishing shot, subject small in the frame, show the environment, locked camera composition",
+      "negative": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "image": "stills/s01.png",
+      "image_sha256": "8d23ab1f0fccb8a36541bc8ce7b2bc476758367fb1242e082c0489c0d63edc0d",
+      "workflow": "workflows/s01.api.json",
+      "workflow_sha256": "f85fb251e0c626f761db1acf9cdefbaef16937852df304ad07dc34fc14c9fab4",
+      "elapsed_seconds": 21.326
+    },
+    {
+      "id": "s02",
+      "title": "Medium",
+      "take_id": "t01",
+      "seed": 20261020,
+      "seed_locked": false,
+      "settings": {
+        "label": "SDXL Base 1.0",
+        "enabled": true,
+        "checkpoint": "sd_xl_base_1.0.safetensors",
+        "license": "CreativeML Open RAIL++-M",
+        "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+        "width": 1024,
+        "height": 576,
+        "steps": 20,
+        "cfg": 6.0,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "denoise": 1.0
+      },
+      "models": [
+        {
+          "filename": "sd_xl_base_1.0.safetensors",
+          "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+          "license": "CreativeML Open RAIL++-M",
+          "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+          "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+          "components": [
+            "SDXL UNet",
+            "CLIP-L",
+            "OpenCLIP bigG",
+            "VAE (checkpoint embedded)"
+          ]
+        }
+      ],
+      "prompt": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, medium shot, subject and immediate surroundings, balanced composition, locked camera composition",
+      "negative": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "image": "stills/s02.png",
+      "image_sha256": "f68c82b153365d0d07359ef29327a66d17d267554c52eacc59e61be8e38a4f3e",
+      "workflow": "workflows/s02.api.json",
+      "workflow_sha256": "6ffb8b3c06fc1f92f5c5215c9985dba91c509c972265965603775ec625dc5ba8",
+      "elapsed_seconds": 20.255
+    },
+    {
+      "id": "s03",
+      "title": "Close-up",
+      "take_id": "t01",
+      "seed": 20261020,
+      "seed_locked": false,
+      "settings": {
+        "label": "SDXL Base 1.0",
+        "enabled": true,
+        "checkpoint": "sd_xl_base_1.0.safetensors",
+        "license": "CreativeML Open RAIL++-M",
+        "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+        "width": 1024,
+        "height": 576,
+        "steps": 20,
+        "cfg": 6.0,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "denoise": 1.0
+      },
+      "models": [
+        {
+          "filename": "sd_xl_base_1.0.safetensors",
+          "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+          "license": "CreativeML Open RAIL++-M",
+          "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+          "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+          "components": [
+            "SDXL UNet",
+            "CLIP-L",
+            "OpenCLIP bigG",
+            "VAE (checkpoint embedded)"
+          ]
+        }
+      ],
+      "prompt": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, close-up portrait of the subject, shallow depth of field, intimate framing, locked camera composition",
+      "negative": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "image": "stills/s03.png",
+      "image_sha256": "6ee2e6f8f9ab7cd20b30a454088fe7a0b609b3c6be9afdc7fc21e83982e6a081",
+      "workflow": "workflows/s03.api.json",
+      "workflow_sha256": "3317df3ab4e04a90310a6861690504fbc9f6e7f2843250c64b79b545f331824f",
+      "elapsed_seconds": 17.226
+    },
+    {
+      "id": "s04",
+      "title": "Over shoulder",
+      "take_id": "t01",
+      "seed": 20261020,
+      "seed_locked": false,
+      "settings": {
+        "label": "SDXL Base 1.0",
+        "enabled": true,
+        "checkpoint": "sd_xl_base_1.0.safetensors",
+        "license": "CreativeML Open RAIL++-M",
+        "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+        "width": 1024,
+        "height": 576,
+        "steps": 20,
+        "cfg": 6.0,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "denoise": 1.0
+      },
+      "models": [
+        {
+          "filename": "sd_xl_base_1.0.safetensors",
+          "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+          "license": "CreativeML Open RAIL++-M",
+          "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+          "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+          "components": [
+            "SDXL UNet",
+            "CLIP-L",
+            "OpenCLIP bigG",
+            "VAE (checkpoint embedded)"
+          ]
+        }
+      ],
+      "prompt": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, over-the-shoulder view from behind the subject, looking into the set, locked camera composition",
+      "negative": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "image": "stills/s04.png",
+      "image_sha256": "fc0ecf2e9af4973b87a03386f33b2fab80ba5fa4e24d1798505ab414c04735c1",
+      "workflow": "workflows/s04.api.json",
+      "workflow_sha256": "1187fc63421fc6f177e417864464acfd91d69d1e977c871cf6a71021c5aebf36",
+      "elapsed_seconds": 20.295
+    },
+    {
+      "id": "s05",
+      "title": "Insert",
+      "take_id": "t01",
+      "seed": 20261020,
+      "seed_locked": false,
+      "settings": {
+        "label": "SDXL Base 1.0",
+        "enabled": true,
+        "checkpoint": "sd_xl_base_1.0.safetensors",
+        "license": "CreativeML Open RAIL++-M",
+        "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+        "width": 1024,
+        "height": 576,
+        "steps": 20,
+        "cfg": 6.0,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "denoise": 1.0
+      },
+      "models": [
+        {
+          "filename": "sd_xl_base_1.0.safetensors",
+          "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+          "license": "CreativeML Open RAIL++-M",
+          "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+          "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+          "components": [
+            "SDXL UNet",
+            "CLIP-L",
+            "OpenCLIP bigG",
+            "VAE (checkpoint embedded)"
+          ]
+        }
+      ],
+      "prompt": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, extreme close-up detail of the subject's hands and the object in the scene, locked camera composition",
+      "negative": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "image": "stills/s05.png",
+      "image_sha256": "ee41a7acf1fb25090a898e11def73c182f3fea4ad6726e4d6fdfa0ba8c944928",
+      "workflow": "workflows/s05.api.json",
+      "workflow_sha256": "bb3345fc1b5f31559246cdd6d555b3351df40fc19826101328146e9deb16d90e",
+      "elapsed_seconds": 18.212
+    },
+    {
+      "id": "s06",
+      "title": "Low angle",
+      "take_id": "t01",
+      "seed": 20261020,
+      "seed_locked": false,
+      "settings": {
+        "label": "SDXL Base 1.0",
+        "enabled": true,
+        "checkpoint": "sd_xl_base_1.0.safetensors",
+        "license": "CreativeML Open RAIL++-M",
+        "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+        "width": 1024,
+        "height": 576,
+        "steps": 20,
+        "cfg": 6.0,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "denoise": 1.0
+      },
+      "models": [
+        {
+          "filename": "sd_xl_base_1.0.safetensors",
+          "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+          "license": "CreativeML Open RAIL++-M",
+          "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+          "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+          "components": [
+            "SDXL UNet",
+            "CLIP-L",
+            "OpenCLIP bigG",
+            "VAE (checkpoint embedded)"
+          ]
+        }
+      ],
+      "prompt": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, low-angle medium shot of the subject, camera below eye level, locked camera composition",
+      "negative": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "image": "stills/s06.png",
+      "image_sha256": "df34bea3139ed8d38e5eb9d5e5dc63054f8429474d737cdd0e2071e45b86abc3",
+      "workflow": "workflows/s06.api.json",
+      "workflow_sha256": "ae9bb79616dcf34b0066896fdc2b8c23aa358fe8ce20361fad56a5f4a05c0466",
+      "elapsed_seconds": 19.352
+    }
+  ]
+}

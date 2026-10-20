@@ -1,0 +1,1610 @@
+{
+  "id": "143b497e29fe4f13b2a472aa151a42e6",
+  "title": "A traveler discovers a small brass compass in a rain-soaked greenhouse.",
+  "config": {
+    "scene": "A traveler discovers a small brass compass in a rain-soaked greenhouse.",
+    "character": "An adult traveler with short dark hair, mustard raincoat, brown satchel",
+    "setting": "A quiet glass greenhouse, ferns, rain on windows, wooden potting table",
+    "lens": "35",
+    "angle": "Eye level",
+    "move": "Static",
+    "lighting": "Window light",
+    "look": "Muted film",
+    "count": 6,
+    "seed": 20261020,
+    "preset": "sdxl-base"
+  },
+  "shots": [
+    {
+      "id": "s01",
+      "title": "Establishing",
+      "direction": "wide establishing shot, subject small in the frame, show the environment",
+      "prompt": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, wide establishing shot, subject small in the frame, show the environment, locked camera composition",
+      "negative": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "locked_seed": 20261020,
+      "picked": "t01",
+      "takes": [
+        {
+          "id": "t01",
+          "seed": 20261020,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 576,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, wide establishing shot, subject small in the frame, show the environment, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 576,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20261020,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "elapsed_seconds": 21.326,
+          "started_at": 1792481224.3636281,
+          "job_id": "6c9b9148-4bcb-456b-acd5-b5325efc6ca0",
+          "engine_status": "succeeded",
+          "image": "s01-t01.png",
+          "image_sha256": "8d23ab1f0fccb8a36541bc8ce7b2bc476758367fb1242e082c0489c0d63edc0d"
+        },
+        {
+          "id": "t02",
+          "seed": 20365749,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 576,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, wide establishing shot, subject small in the frame, show the environment, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 576,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20365749,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "elapsed_seconds": 20.251,
+          "started_at": 1792481245.693419,
+          "job_id": "1c0f04ad-906b-4bd9-ab45-9c4bd3167a1f",
+          "engine_status": "succeeded",
+          "image": "s01-t02.png",
+          "image_sha256": "c0535c14447acbd1b9c96fdf99782ed7ce60d4d76e659af737d39dda18bcd16d"
+        }
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Medium",
+      "direction": "medium shot, subject and immediate surroundings, balanced composition",
+      "prompt": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, medium shot, subject and immediate surroundings, balanced composition, locked camera composition",
+      "negative": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "locked_seed": null,
+      "picked": "t01",
+      "takes": [
+        {
+          "id": "t01",
+          "seed": 20261020,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 576,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, medium shot, subject and immediate surroundings, balanced composition, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 576,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20261020,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "elapsed_seconds": 20.255,
+          "started_at": 1792481265.945895,
+          "job_id": "d8d42e11-0be2-4372-97b9-c0e82ec48494",
+          "engine_status": "succeeded",
+          "image": "s02-t01.png",
+          "image_sha256": "f68c82b153365d0d07359ef29327a66d17d267554c52eacc59e61be8e38a4f3e"
+        },
+        {
+          "id": "t02",
+          "seed": 20365749,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 576,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, medium shot, subject and immediate surroundings, balanced composition, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 576,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20365749,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "elapsed_seconds": 19.236,
+          "started_at": 1792481286.2029922,
+          "job_id": "b1a4b53b-3ba5-4e82-9c9e-969b9fef48bf",
+          "engine_status": "succeeded",
+          "image": "s02-t02.png",
+          "image_sha256": "4ac09407ed7dcd800a034d1c8bb3a9942ad9fb9a97787a0be5a40d28441e97f3"
+        }
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Close-up",
+      "direction": "close-up portrait of the subject, shallow depth of field, intimate framing",
+      "prompt": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, close-up portrait of the subject, shallow depth of field, intimate framing, locked camera composition",
+      "negative": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "locked_seed": null,
+      "picked": "t01",
+      "takes": [
+        {
+          "id": "t01",
+          "seed": 20261020,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 576,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, close-up portrait of the subject, shallow depth of field, intimate framing, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 576,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20261020,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "elapsed_seconds": 17.226,
+          "started_at": 1792481305.4408371,
+          "job_id": "3257eb89-63b6-4181-bfc1-930c2cb5b0d7",
+          "engine_status": "succeeded",
+          "image": "s03-t01.png",
+          "image_sha256": "6ee2e6f8f9ab7cd20b30a454088fe7a0b609b3c6be9afdc7fc21e83982e6a081"
+        },
+        {
+          "id": "t02",
+          "seed": 20365749,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 576,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, close-up portrait of the subject, shallow depth of field, intimate framing, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 576,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20365749,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "elapsed_seconds": 19.332,
+          "started_at": 1792481322.668519,
+          "job_id": "ac2724cd-9650-46f3-9af5-aa485e56e50b",
+          "engine_status": "succeeded",
+          "image": "s03-t02.png",
+          "image_sha256": "4558c54f5e5558de90dfffc7a8899091352a50a18c53f8475bfcb582024d2bcd"
+        }
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Over shoulder",
+      "direction": "over-the-shoulder view from behind the subject, looking into the set",
+      "prompt": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, over-the-shoulder view from behind the subject, looking into the set, locked camera composition",
+      "negative": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "locked_seed": null,
+      "picked": "t01",
+      "takes": [
+        {
+          "id": "t01",
+          "seed": 20261020,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 576,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, over-the-shoulder view from behind the subject, looking into the set, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 576,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20261020,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "elapsed_seconds": 20.295,
+          "started_at": 1792481342.00216,
+          "job_id": "40bf53f4-c8b3-40ad-9a0a-bd11d58d01d7",
+          "engine_status": "succeeded",
+          "image": "s04-t01.png",
+          "image_sha256": "fc0ecf2e9af4973b87a03386f33b2fab80ba5fa4e24d1798505ab414c04735c1"
+        },
+        {
+          "id": "t02",
+          "seed": 20365749,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 576,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, over-the-shoulder view from behind the subject, looking into the set, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 576,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20365749,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "elapsed_seconds": 20.37,
+          "started_at": 1792481362.3006,
+          "job_id": "87fb175a-c638-4bd7-9dfa-02fcfe6b544c",
+          "engine_status": "succeeded",
+          "image": "s04-t02.png",
+          "image_sha256": "a3042c8a120f4918eae051aeae57d0bc891b155dee6977ac5c840c8418bced83"
+        }
+      ]
+    },
+    {
+      "id": "s05",
+      "title": "Insert",
+      "direction": "extreme close-up detail of the subject's hands and the object in the scene",
+      "prompt": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, extreme close-up detail of the subject's hands and the object in the scene, locked camera composition",
+      "negative": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "locked_seed": null,
+      "picked": "t01",
+      "takes": [
+        {
+          "id": "t01",
+          "seed": 20261020,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 576,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, extreme close-up detail of the subject's hands and the object in the scene, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 576,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20261020,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "elapsed_seconds": 18.212,
+          "started_at": 1792481382.6725261,
+          "job_id": "c4f05ee0-50f0-4cc0-8217-f4f1c8a2cb3f",
+          "engine_status": "succeeded",
+          "image": "s05-t01.png",
+          "image_sha256": "ee41a7acf1fb25090a898e11def73c182f3fea4ad6726e4d6fdfa0ba8c944928"
+        },
+        {
+          "id": "t02",
+          "seed": 20365749,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 576,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, extreme close-up detail of the subject's hands and the object in the scene, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 576,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20365749,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "elapsed_seconds": 18.269,
+          "started_at": 1792481400.8866959,
+          "job_id": "80e614e9-5f85-4f3f-8fd4-397e5bc6964c",
+          "engine_status": "succeeded",
+          "image": "s05-t02.png",
+          "image_sha256": "e25f8acb683cafe265afdc89505729dbe1dd7fcb6994f8a68d37be1abaf74f9b"
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "title": "Low angle",
+      "direction": "low-angle medium shot of the subject, camera below eye level",
+      "prompt": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, low-angle medium shot of the subject, camera below eye level, locked camera composition",
+      "negative": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "locked_seed": null,
+      "picked": "t01",
+      "takes": [
+        {
+          "id": "t01",
+          "seed": 20261020,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 576,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, low-angle medium shot of the subject, camera below eye level, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 576,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20261020,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "elapsed_seconds": 19.352,
+          "started_at": 1792481419.1576278,
+          "job_id": "07394ce2-c8e6-46f3-9f2f-84904c4e4d67",
+          "engine_status": "succeeded",
+          "image": "s06-t01.png",
+          "image_sha256": "df34bea3139ed8d38e5eb9d5e5dc63054f8429474d737cdd0e2071e45b86abc3"
+        },
+        {
+          "id": "t02",
+          "seed": 20365749,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 576,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, one continuous scene, low-angle medium shot of the subject, camera below eye level, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 576,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20365749,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "elapsed_seconds": 24.402,
+          "started_at": 1792481438.5117598,
+          "job_id": "db9f2f34-154b-4f3e-8b06-cda515f2f329",
+          "engine_status": "succeeded",
+          "image": "s06-t02.png",
+          "image_sha256": "974372d472b3efafbe5e01bdcefbd0fe167679707978dacbedd2f2283ce017ac"
+        }
+      ]
+    }
+  ],
+  "created_at": 1792481153.9868002
+}
