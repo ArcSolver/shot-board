@@ -1,0 +1,16 @@
+shot,title,take,method,seed,width,height,seconds
+s01,Establishing,t01,sdxl-base,20261020,1216,704,16.367
+s01,Establishing,t02,qwen-reference,20261020,1216,704,105.055
+s01,Establishing,t03,qwen-reference,20261020,1216,704,85.862
+s02,Medium,t01,sdxl-base,20261020,1024,768,4.528
+s03,Close-up,t01,sdxl-base,20261020,768,1024,4.509
+s03,Close-up,t02,qwen-reference,20261020,768,1024,106.775
+s03,Close-up,t03,qwen-reference,20261020,768,1024,88.971
+s04,Over shoulder,t01,sdxl-base,20261020,1152,768,4.568
+s04,Over shoulder,t02,qwen-reference,20261020,1152,768,101.361
+s05,Insert,t01,sdxl-base,20261020,1024,1024,4.584
+s05,Insert,t02,qwen-reference,20261020,1024,1024,98.571
+s05,Insert,t03,qwen-reference,20261020,1024,1024,95.869
+s05,Insert,t04,qwen-reference,20261020,1024,1024,95.815
+s06,Low angle,t01,sdxl-base,20261020,768,1024,4.459
+s06,Low angle,t02,qwen-reference,20261020,768,1024,85.911

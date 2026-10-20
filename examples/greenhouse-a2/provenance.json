@@ -1,0 +1,20 @@
+{
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "gpu_count": 1,
+  "engine": "ComfyUI",
+  "engine_revision": "e3bee7ffcb7d6547ed0bcd15221792f3b8646b17",
+  "gguf_revision": "6ea2651e7df66d7585f6ffee804b20e92fb38b8a",
+  "sdk_version": "0.5.0",
+  "proxy_version": "0.1.6",
+  "engine_flags": [
+    "--offline",
+    "--disable-partner-nodes"
+  ],
+  "qwen_runs": 9,
+  "hero": {
+    "shot_id": "s02",
+    "take_id": "t01",
+    "reused": true
+  },
+  "timing": "SDK wall including upload/load/download; excludes setup, queue wait and preflight verification"
+}

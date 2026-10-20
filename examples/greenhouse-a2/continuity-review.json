@@ -1,0 +1,62 @@
+[
+  {
+    "shot": "s01",
+    "take": "t03",
+    "same_person": "FAIL (not verifiable)",
+    "outfit": "PASS",
+    "prop": "FAIL (not visible)",
+    "set": "FAIL",
+    "shot_type": "PASS",
+    "observation": "Full-body small figure achieves the wide shot. Face/compass cannot be inspected. A new huge arched greenhouse and bed layout replace the hero nook."
+  },
+  {
+    "shot": "s02",
+    "take": "t01",
+    "same_person": "PASS (hero reuse)",
+    "outfit": "PASS",
+    "prop": "PASS",
+    "set": "PASS",
+    "shot_type": "FAIL",
+    "observation": "Original SDXL hero reused without another run. It is a face-and-hands crop rather than a waist-up medium."
+  },
+  {
+    "shot": "s03",
+    "take": "t03",
+    "same_person": "PASS",
+    "outfit": "FAIL (not visible)",
+    "prop": "FAIL (not visible)",
+    "set": "FAIL (not verifiable)",
+    "shot_type": "PASS",
+    "observation": "Face close-up visually matches the hero nose, brows, hair and lips better than SDXL; this is visual review, not biometric verification. Background is too defocused to verify the set."
+  },
+  {
+    "shot": "s04",
+    "take": "t02",
+    "same_person": "FAIL (not verifiable)",
+    "outfit": "PASS",
+    "prop": "FAIL",
+    "set": "PASS",
+    "shot_type": "PASS",
+    "observation": "Dark bob and yellow hood clearly present. Face hidden; compass appears as a new hinged-lid object. Rainy glass, ferns and wet wooden table match visible set motifs. Right foreground rather than requested left."
+  },
+  {
+    "shot": "s05",
+    "take": "t04",
+    "same_person": "FAIL (not visible)",
+    "outfit": "FAIL (not verifiable)",
+    "prop": "FAIL",
+    "set": "FAIL (not verifiable)",
+    "shot_type": "PASS",
+    "observation": "Top-down macro contains only hands and compass. Black/brass case and white rose persist, but new green arrow needles replace the hero dial design. No face or greenhouse geometry to verify."
+  },
+  {
+    "shot": "s06",
+    "take": "t02",
+    "same_person": "PASS",
+    "outfit": "PASS",
+    "prop": "FAIL (not verifiable)",
+    "set": "PASS",
+    "shot_type": "PASS",
+    "observation": "Same apparent woman, dark bob, yellow coat and brown satchel in a strong upward view. Compass reverse side is visible; its dial cannot be verified. Rainy panes, roof and potting-table motifs remain."
+  }
+]

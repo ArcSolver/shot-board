@@ -13,3 +13,15 @@ All screenshots are from the running local app in headless Chromium, using the i
 | [06-mobile.png](06-mobile.png) | Responsive 390px board view |
 
 The final board/compare captures were taken after the generation engine was stopped, so the engine-offline badge is expected. Viewing saved takes, picking and exporting remain available.
+
+## Continuity captures
+
+Captures 07–11 show the box-run app with real 4090 renders through an SSH-tunneled SDK proxy. The original A1 captures above remain historical evidence.
+
+| Capture | State |
+|---|---|
+| [07-continuity-hero.png](07-continuity-hero.png) | Picked SDXL hero, continuity enabled |
+| [08-continuity-rendering.png](08-continuity-rendering.png) | Actual five-cut Qwen queue |
+| [09-continuity-board.png](09-continuity-board.png) | Completed reference-edit board with hero preserved |
+| [10-continuity-compare.png](10-continuity-compare.png) | SDXL and Qwen OTS comparison with measured times |
+| [11-continuity-mobile.png](11-continuity-mobile.png) | Completed board at 390px width |

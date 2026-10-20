@@ -68,4 +68,4 @@ Tests exercise template ordering and conflicting angles, dimensions / CFG, expli
 
 ## Licenses
 
-App source is [MIT](LICENSE). SDXL is CreativeML Open RAIL++-M, with use restrictions. Qwen diffusion, encoder, vision projector, VAE and Lightning are Apache-2.0. ComfyUI is GPL-3.0 and runs as a separate process. ComfyUI-GGUF is Apache-2.0. No weights or engine source are redistributed. See [third-party notices](THIRD_PARTY_NOTICES.md) and model locks for exact upstream references and revisions.
+App source is [MIT](LICENSE). SDXL is CreativeML Open RAIL++-M, with use restrictions. Qwen diffusion, encoder, vision projector and VAE are Apache-2.0. ComfyUI is GPL-3.0 and runs as a separate process. ComfyUI-GGUF is Apache-2.0. No weights or engine source are redistributed. See [third-party notices](THIRD_PARTY_NOTICES.md) and model locks for exact upstream references and revisions.

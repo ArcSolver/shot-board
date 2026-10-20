@@ -1,0 +1,56 @@
+[
+  {
+    "shot": "s01",
+    "same_person": "FAIL (not verifiable)",
+    "outfit": "PASS",
+    "prop": "FAIL (not visible)",
+    "set": "FAIL (not verifiable)",
+    "shot_type": "PASS",
+    "observation": "Rear distant figure; yellow coat and greenhouse; face and compass cannot be checked. Exact hero set layout is not recognizable."
+  },
+  {
+    "shot": "s02",
+    "same_person": "PASS (hero reuse)",
+    "outfit": "PASS",
+    "prop": "PASS",
+    "set": "PASS",
+    "shot_type": "FAIL",
+    "observation": "Identity/prop baseline itself. Head and hands fill the frame; waist-up medium was not achieved."
+  },
+  {
+    "shot": "s03",
+    "same_person": "FAIL",
+    "outfit": "FAIL (not visible)",
+    "prop": "FAIL (not visible)",
+    "set": "FAIL (not verifiable)",
+    "shot_type": "PASS",
+    "observation": "Different face, blue eye and brow; face close-up achieved."
+  },
+  {
+    "shot": "s04",
+    "same_person": "FAIL",
+    "outfit": "FAIL",
+    "prop": "FAIL",
+    "set": "PASS",
+    "shot_type": "PASS",
+    "observation": "Person now present, but reads as a different man; coat and brass apparatus differ. OTS is achieved from right foreground rather than requested left."
+  },
+  {
+    "shot": "s05",
+    "same_person": "FAIL (not verifiable)",
+    "outfit": "FAIL (not visible)",
+    "prop": "FAIL",
+    "set": "FAIL (not verifiable)",
+    "shot_type": "PASS",
+    "observation": "Macro hands/compass achieved, but dial, case and suspension ring differ from the hinged hero compass."
+  },
+  {
+    "shot": "s06",
+    "same_person": "FAIL (not verifiable)",
+    "outfit": "PASS",
+    "prop": "FAIL (not visible)",
+    "set": "FAIL",
+    "shot_type": "PASS",
+    "observation": "Strong upward view; distant person cannot establish face identity; new domed architecture. Dome differs from the hero setting."
+  }
+]

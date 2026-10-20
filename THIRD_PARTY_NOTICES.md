@@ -43,16 +43,16 @@ Frontend: original HTML, CSS and JavaScript; system fonts, no downloaded fonts, 
 
 ## Verification tools, not product dependencies
 
-Playwright (Apache-2.0) and its browser distributions were used for the original screenshots. Later continuity captures use the existing local browser. They are not shipped with the app. Python unittest is part of Python. Downloading weights uses the Python standard library.
+Playwright (Apache-2.0) and its browser distributions were used for the original screenshots. Continuity captures use headless Chromium on the CPU app host. They are not shipped with the app. Python unittest is part of Python. Downloading weights uses the Python standard library.
 
 ## Planned capabilities, not used models
 
-FLUX.2 klein **4B** remains a disabled preset placeholder. No FLUX, geometry, research-only depth weights or remote model service is used. The 4B license must not be generalized to other FLUX variants. The original A1 example uses SDXL only; the A2 example also uses the continuity preset below.
+FLUX.2 klein **4B** remains a disabled preset placeholder. No FLUX, geometry, research-only depth weights or paid model API is used. The 4B license must not be generalized to other FLUX variants. The original A1 example uses SDXL only; the A2 example also uses the continuity preset below.
 
 ## Continuity preset
 
-Qwen-Image-Edit-2511 Q8_0 GGUF (Unsloth conversion), Qwen2.5-VL-7B-Instruct Q6_K GGUF and its F16 vision projector, Qwen image VAE (Comfy-Org packaging), and LightX2V Qwen-Image-Edit-2511 Lightning 4-step V1.0 BF16 LoRA are Apache-2.0. The five exact files, upstream repositories, immutable revisions, byte sizes and SHA-256 values are pinned in [qwen-model-lock.json](workflows/qwen-model-lock.json). No angle LoRA is used. These weights are loaded locally, not bundled or redistributed.
+Qwen-Image-Edit-2511 Q8_0 GGUF (Unsloth conversion), Qwen2.5-VL-7B-Instruct Q8_0 GGUF and its F16 vision projector, and Qwen image VAE (Comfy-Org packaging) are Apache-2.0. The four exact files, upstream repositories, immutable revisions, byte sizes and SHA-256 values are pinned in [qwen-model-lock.json](workflows/qwen-model-lock.json). No LoRA is used. These weights are loaded on the separate GPU worker and are not bundled or redistributed.
 
-Upstream model cards: [Qwen edit](https://huggingface.co/Qwen/Qwen-Image-Edit-2511), [diffusion GGUF](https://huggingface.co/unsloth/Qwen-Image-Edit-2511-GGUF), [encoder GGUF](https://huggingface.co/unsloth/Qwen2.5-VL-7B-Instruct-GGUF), [Comfy-Org VAE](https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI), [Lightning](https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning).
+Upstream model cards: [Qwen edit](https://huggingface.co/Qwen/Qwen-Image-Edit-2511), [diffusion GGUF](https://huggingface.co/unsloth/Qwen-Image-Edit-2511-GGUF), [encoder GGUF](https://huggingface.co/unsloth/Qwen2.5-VL-7B-Instruct-GGUF), [Comfy-Org VAE](https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI).
 
 [ComfyUI-GGUF](https://github.com/city96/ComfyUI-GGUF), revision `6ea2651e7df66d7585f6ffee804b20e92fb38b8a`, is Apache-2.0 and supplies the GGUF loaders in the separate existing engine. It is neither modified nor redistributed by this app. The Qwen graph otherwise uses native ComfyUI nodes. The engine revision remains `e3bee7ffcb7d6547ed0bcd15221792f3b8646b17`.

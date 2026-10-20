@@ -1,0 +1,32 @@
+[
+  {
+    "shot": "s01",
+    "take": "t02",
+    "shot_type": "FAIL",
+    "reason": "Subject fills too much of frame; not extreme wide."
+  },
+  {
+    "shot": "s03",
+    "take": "t02",
+    "shot_type": "FAIL",
+    "reason": "Upper body, hands and object instead of tight face close-up."
+  },
+  {
+    "shot": "s04",
+    "take": "t02",
+    "shot_type": "PASS",
+    "reason": "Rear OTS with a person; side differs."
+  },
+  {
+    "shot": "s05",
+    "take": "t02",
+    "shot_type": "FAIL",
+    "reason": "Torso/bag and partial face; compass too small for macro insert."
+  },
+  {
+    "shot": "s06",
+    "take": "t02",
+    "shot_type": "PASS",
+    "reason": "Strong upward view of the traveler."
+  }
+]

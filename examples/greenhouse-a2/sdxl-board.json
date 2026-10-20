@@ -1,0 +1,931 @@
+{
+  "id": "bb800358e0c54f688d4e6072dd2c98a1",
+  "title": "A traveler discovers a small brass compass in a rain-soaked greenhouse.",
+  "config": {
+    "scene": "A traveler discovers a small brass compass in a rain-soaked greenhouse.",
+    "character": "An adult traveler with short dark hair, mustard raincoat, brown satchel",
+    "setting": "A quiet glass greenhouse, ferns, rain on windows, wooden potting table",
+    "prop": "small brass compass",
+    "lens": "35",
+    "angle": "Eye level",
+    "move": "Static",
+    "lighting": "Window light",
+    "look": "Muted film",
+    "count": 6,
+    "seed": 20261020,
+    "preset": "sdxl-base"
+  },
+  "shots": [
+    {
+      "id": "s01",
+      "title": "Establishing",
+      "direction": "extreme wide establishing shot, distant full-body An adult traveler with short dark hair tiny in frame, expansive environment",
+      "template_version": 3,
+      "shot_type": "Establishing",
+      "render_settings": {
+        "width": 1216,
+        "height": 704,
+        "cfg": 6.5
+      },
+      "reference_size": {
+        "width": 1216,
+        "height": 704
+      },
+      "prompt": "(extreme wide establishing shot, distant full-body An adult traveler with short dark hair tiny in frame, expansive environment:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition",
+      "negative": "close-up, portrait, cropped body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "locked_seed": null,
+      "picked": "t01",
+      "takes": [
+        {
+          "id": "t01",
+          "seed": 20261020,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1216,
+            "height": 704,
+            "steps": 20,
+            "cfg": 6.5,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0,
+            "preset_id": "sdxl-base"
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "(extreme wide establishing shot, distant full-body An adult traveler with short dark hair tiny in frame, expansive environment:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "close-up, portrait, cropped body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1216,
+                "height": 704,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20261020,
+                "steps": 20,
+                "cfg": 6.5,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "reference": null,
+          "elapsed_seconds": 16.367,
+          "started_at": 1792487519.8209507,
+          "job_id": "4c9207fe-afc5-4d0c-aca2-141ff644233c",
+          "engine_status": "succeeded",
+          "image": "s01-t01.png",
+          "image_sha256": "47aa5290cc8c0a4aac9ccc9c80694f18c6968fab85a30062fc8c613d9d1a000e"
+        }
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Medium",
+      "direction": "medium waist-up shot, head and torso visible, An adult traveler with short dark hair examining small brass compass",
+      "template_version": 3,
+      "shot_type": "Medium",
+      "render_settings": {
+        "width": 1024,
+        "height": 768,
+        "cfg": 6.0
+      },
+      "reference_size": {
+        "width": 1024,
+        "height": 768
+      },
+      "prompt": "(medium waist-up shot, head and torso visible, An adult traveler with short dark hair examining small brass compass:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition",
+      "negative": "extreme close-up, distant figure, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "locked_seed": null,
+      "picked": "t01",
+      "takes": [
+        {
+          "id": "t01",
+          "seed": 20261020,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 768,
+            "steps": 20,
+            "cfg": 6.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0,
+            "preset_id": "sdxl-base"
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "(medium waist-up shot, head and torso visible, An adult traveler with short dark hair examining small brass compass:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, eye level, soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "extreme close-up, distant figure, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 768,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20261020,
+                "steps": 20,
+                "cfg": 6.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "reference": null,
+          "elapsed_seconds": 4.528,
+          "started_at": 1792487536.1906383,
+          "job_id": "c1688f00-db6e-40e7-92fd-8e2ed2967d38",
+          "engine_status": "succeeded",
+          "image": "s02-t01.png",
+          "image_sha256": "dae1d990c74f83c6eb2b2dd5b7d7a97dbef5ccfea574c94a901e8e99db0153c7"
+        }
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Close-up",
+      "direction": "tight face close-up portrait, face fills almost the entire frame, eyes in sharp focus, cropped at chin and forehead",
+      "template_version": 3,
+      "shot_type": "Close-up",
+      "render_settings": {
+        "width": 768,
+        "height": 1024,
+        "cfg": 7.0
+      },
+      "reference_size": {
+        "width": 768,
+        "height": 1024
+      },
+      "prompt": "(tight face close-up portrait, face fills almost the entire frame, eyes in sharp focus, cropped at chin and forehead:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition",
+      "negative": "wide shot, medium shot, waist, torso, full body, hands, object in foreground, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "locked_seed": null,
+      "picked": "t01",
+      "takes": [
+        {
+          "id": "t01",
+          "seed": 20261020,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 768,
+            "height": 1024,
+            "steps": 20,
+            "cfg": 7.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0,
+            "preset_id": "sdxl-base"
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "(tight face close-up portrait, face fills almost the entire frame, eyes in sharp focus, cropped at chin and forehead:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "wide shot, medium shot, waist, torso, full body, hands, object in foreground, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 768,
+                "height": 1024,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20261020,
+                "steps": 20,
+                "cfg": 7.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "reference": null,
+          "elapsed_seconds": 4.509,
+          "started_at": 1792487540.7206936,
+          "job_id": "09c7e053-1321-4d36-af89-28e548610250",
+          "engine_status": "succeeded",
+          "image": "s03-t01.png",
+          "image_sha256": "2fce0fbfa3a0f1440d7b9e368be1f221b19d75240b8c6669cafbfda36e9f0505"
+        }
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Over shoulder",
+      "direction": "over-the-shoulder POV, back of An adult traveler with short dark hair's head and clothed shoulder clearly visible filling left third foreground, camera immediately behind the person looking past their shoulder toward small brass compass on table, rear three-quarter view",
+      "template_version": 3,
+      "shot_type": "Over shoulder",
+      "render_settings": {
+        "width": 1152,
+        "height": 768,
+        "cfg": 7.0
+      },
+      "reference_size": {
+        "width": 1152,
+        "height": 768
+      },
+      "prompt": "(over-the-shoulder POV, back of An adult traveler with short dark hair's head and clothed shoulder clearly visible filling left third foreground, camera immediately behind the person looking past their shoulder toward small brass compass on table, rear three-quarter view:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition",
+      "negative": "empty room, no person, unoccupied, front view, facing camera, portrait, eye contact, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "locked_seed": null,
+      "picked": "t01",
+      "takes": [
+        {
+          "id": "t01",
+          "seed": 20261020,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1152,
+            "height": 768,
+            "steps": 20,
+            "cfg": 7.0,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0,
+            "preset_id": "sdxl-base"
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "(over-the-shoulder POV, back of An adult traveler with short dark hair's head and clothed shoulder clearly visible filling left third foreground, camera immediately behind the person looking past their shoulder toward small brass compass on table, rear three-quarter view:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "empty room, no person, unoccupied, front view, facing camera, portrait, eye contact, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1152,
+                "height": 768,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20261020,
+                "steps": 20,
+                "cfg": 7.0,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "reference": null,
+          "elapsed_seconds": 4.568,
+          "started_at": 1792487545.2315066,
+          "job_id": "ebdd2fa5-5b2e-42e3-9f6c-826667826c93",
+          "engine_status": "succeeded",
+          "image": "s04-t01.png",
+          "image_sha256": "9e57f44a904aa21b1c453c1239c52cec362263dc5c27b483dff9743cacb1cf25"
+        }
+      ]
+    },
+    {
+      "id": "s05",
+      "title": "Insert",
+      "direction": "macro insert detail shot of small brass compass held in fingers, object fills frame, only hands and object visible",
+      "template_version": 3,
+      "shot_type": "Insert",
+      "render_settings": {
+        "width": 1024,
+        "height": 1024,
+        "cfg": 6.5
+      },
+      "reference_size": {
+        "width": 1024,
+        "height": 1024
+      },
+      "prompt": "(macro insert detail shot of small brass compass held in fingers, object fills frame, only hands and object visible:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition",
+      "negative": "face, head, portrait, torso, full body, wide shot, medium shot, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "locked_seed": null,
+      "picked": "t01",
+      "takes": [
+        {
+          "id": "t01",
+          "seed": 20261020,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 1024,
+            "height": 1024,
+            "steps": 20,
+            "cfg": 6.5,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0,
+            "preset_id": "sdxl-base"
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "(macro insert detail shot of small brass compass held in fingers, object fills frame, only hands and object visible:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "face, head, portrait, torso, full body, wide shot, medium shot, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 1024,
+                "height": 1024,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20261020,
+                "steps": 20,
+                "cfg": 6.5,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "reference": null,
+          "elapsed_seconds": 4.584,
+          "started_at": 1792487549.8017256,
+          "job_id": "46ddef01-3b66-41d3-afdf-d9b8de0ffe84",
+          "engine_status": "succeeded",
+          "image": "s05-t01.png",
+          "image_sha256": "8647ae9f6a69d00d83332f1caa0125a0149bfc533bc189d2b3ffe4e63ca9f1fc"
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "title": "Low angle",
+      "direction": "dramatic worm's-eye view from floor level looking steeply upward at An adult traveler with short dark hair, towering figure, architecture overhead, strong foreshortening",
+      "template_version": 3,
+      "shot_type": "Low angle",
+      "render_settings": {
+        "width": 768,
+        "height": 1024,
+        "cfg": 7.5
+      },
+      "reference_size": {
+        "width": 768,
+        "height": 1024
+      },
+      "prompt": "(dramatic worm's-eye view from floor level looking steeply upward at An adult traveler with short dark hair, towering figure, architecture overhead, strong foreshortening:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition",
+      "negative": "eye level, high angle, overhead view, flat perspective, looking down, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "locked_seed": null,
+      "picked": "t01",
+      "takes": [
+        {
+          "id": "t01",
+          "seed": 20261020,
+          "status": "succeeded",
+          "phase": "Complete",
+          "settings": {
+            "label": "SDXL Base 1.0",
+            "enabled": true,
+            "checkpoint": "sd_xl_base_1.0.safetensors",
+            "license": "CreativeML Open RAIL++-M",
+            "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+            "width": 768,
+            "height": 1024,
+            "steps": 20,
+            "cfg": 7.5,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1.0,
+            "preset_id": "sdxl-base"
+          },
+          "models": [
+            {
+              "filename": "sd_xl_base_1.0.safetensors",
+              "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+              "license": "CreativeML Open RAIL++-M",
+              "repository": "stabilityai/stable-diffusion-xl-base-1.0",
+              "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+              "components": [
+                "SDXL UNet",
+                "CLIP-L",
+                "OpenCLIP bigG",
+                "VAE (checkpoint embedded)"
+              ]
+            }
+          ],
+          "workflow": {
+            "1": {
+              "class_type": "CheckpointLoaderSimple",
+              "inputs": {
+                "ckpt_name": "sd_xl_base_1.0.safetensors"
+              }
+            },
+            "2": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "(dramatic worm's-eye view from floor level looking steeply upward at An adult traveler with short dark hair, towering figure, architecture overhead, strong foreshortening:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition"
+              }
+            },
+            "3": {
+              "class_type": "CLIPTextEncode",
+              "inputs": {
+                "clip": [
+                  "1",
+                  1
+                ],
+                "text": "eye level, high angle, overhead view, flat perspective, looking down, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+              }
+            },
+            "4": {
+              "class_type": "EmptyLatentImage",
+              "inputs": {
+                "width": 768,
+                "height": 1024,
+                "batch_size": 1
+              }
+            },
+            "5": {
+              "class_type": "KSampler",
+              "inputs": {
+                "model": [
+                  "1",
+                  0
+                ],
+                "positive": [
+                  "2",
+                  0
+                ],
+                "negative": [
+                  "3",
+                  0
+                ],
+                "latent_image": [
+                  "4",
+                  0
+                ],
+                "seed": 20261020,
+                "steps": 20,
+                "cfg": 7.5,
+                "sampler_name": "euler",
+                "scheduler": "normal",
+                "denoise": 1.0
+              }
+            },
+            "6": {
+              "class_type": "VAEDecode",
+              "inputs": {
+                "samples": [
+                  "5",
+                  0
+                ],
+                "vae": [
+                  "1",
+                  2
+                ]
+              }
+            },
+            "7": {
+              "class_type": "SaveImage",
+              "inputs": {
+                "images": [
+                  "6",
+                  0
+                ],
+                "filename_prefix": "shotboard/take"
+              }
+            }
+          },
+          "reference": null,
+          "elapsed_seconds": 4.459,
+          "started_at": 1792487554.3876133,
+          "job_id": "682ff1c7-4cd2-49b6-a787-1770249feb7a",
+          "engine_status": "succeeded",
+          "image": "s06-t01.png",
+          "image_sha256": "1e97ec4a9ba2de985b2035be25fea0a7c35a8eb1769813c988caf8a3ca267aeb"
+        }
+      ]
+    }
+  ],
+  "continuity": {
+    "enabled": false,
+    "hero": null
+  },
+  "created_at": 1792487519.8159328
+}
