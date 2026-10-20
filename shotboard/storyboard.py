@@ -43,12 +43,18 @@ def storyboard_png(board, data_root, layout="landscape"):
     margin, gap = (42, 20) if layout == "landscape" else (34, 18)
     draw.text((margin, 26), "SHOT BOARD", font=font(21), fill="#d9f994")
     draw.text((width-margin, 30), f"{len(selected):02} CUTS / {board['config']['lens']} MM", anchor="ra", font=font(14), fill="#aeb8af")
-    scene_lines = wrap(draw, board["config"]["scene"], font(24), width-2*margin)
-    # Reserve space for the entire scene line, even for long user scenes.
+    scene = ' '.join(board["config"]["scene"].split())
+    # Bound the header so all 6–9 cuts retain image space, including old boards
+    # saved before input normalization. All valid 600-character scenes fit.
+    scene_font = font(24)
+    scene_lines = wrap(draw, scene, scene_font, width-2*margin)
+    while len(scene_lines) * (scene_font.size + 6) > 180 and scene_font.size > 6:
+        scene_font = font(scene_font.size - 1)
+        scene_lines = wrap(draw, scene, scene_font, width-2*margin)
     y = 65
     for line in scene_lines:
-        draw.text((margin, y), line, font=font(24), fill="#f2f2e8")
-        y += 30
+        draw.text((margin, y), line, font=scene_font, fill="#f2f2e8")
+        y += scene_font.size + 6
     top, bottom = y+20, height-63
     cols = 3 if layout == "landscape" else 2
     rows = (len(selected)+cols-1)//cols

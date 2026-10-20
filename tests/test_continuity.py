@@ -134,6 +134,23 @@ class ContinuityAPITests(unittest.TestCase):
         self.assertEqual(self.enable().status_code,409)
         self.assertEqual(len(self.shot['takes']),1)
 
+    def test_qwen_edit_or_non_sdxl_take_cannot_be_hero(self):
+        original = deepcopy(self.take)
+        for change in ('reference', 'preset', 'checkpoint', 'graph'):
+            with self.subTest(change=change):
+                self.take.clear(); self.take.update(deepcopy(original))
+                if change == 'reference': self.take['reference'] = {'image': 'old-hero.png'}
+                elif change == 'preset': self.take['settings'] = settings_for(self.shot, 'qwen-reference')
+                elif change == 'checkpoint': self.take['settings']['checkpoint'] = 'unknown.safetensors'
+                else: self.take['workflow']['1']['class_type'] = 'LoadImage'
+                response = self.enable()
+                self.assertEqual(response.status_code, 409)
+                self.assertIn('Only an SDXL original', response.json()['detail'])
+                self.assertFalse((self.data/self.bid/'references').exists())
+                self.assertFalse(self.board['continuity']['enabled'])
+        self.take.clear(); self.take.update(original)
+        self.assertEqual(self.enable().status_code, 200)
+
     def test_frozen_hero_and_take_settings_survive_edits_and_disable(self):
         self.enable()
         with patch.object(server,'verify_models',return_value=[{'sha256':'a'*64}]):

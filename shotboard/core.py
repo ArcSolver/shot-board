@@ -150,7 +150,7 @@ def export_board(board, data_root):
                     consistency="Reference edits preserve a hero when enabled; identity and shot accuracy require visual review.",
                     generation_path="Comfy SDK → local API proxy → ComfyUI",
                     review=deepcopy(board.get("review")), hero=deepcopy(board.get("continuity", {}).get("hero")),
-                    storyboards=[], shots=[])
+                    storyboards=[], storyboard_errors=[], shots=[])
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
         exported_references = set()
@@ -194,7 +194,15 @@ def export_board(board, data_root):
                 workflow_sha256=hashlib.sha256(graph.encode()).hexdigest(),
                 elapsed_seconds=take["elapsed_seconds"]))
         for layout, size in SIZES.items():
-            png = storyboard_png(board, data_root, layout)
+            try:
+                png = storyboard_png(board, data_root, layout)
+            except Exception as exc:
+                # Picks, hashes and recipes are already validated above. A CPU
+                # preview failure must not prevent their independent export.
+                # Do not copy exception messages containing private paths.
+                manifest['storyboard_errors'].append(dict(layout=layout, error=type(exc).__name__,
+                    message='Storyboard rendering failed; selected stills and recipes are included.'))
+                continue
             name = f"storyboard-{layout}.png"
             archive.writestr(name, png)
             manifest["storyboards"].append(dict(file=name, width=size[0], height=size[1],

@@ -129,6 +129,36 @@ class ExportTests(unittest.TestCase):
             for color in [(255,0,0), (0,0,255), (0,255,0)]:
                 self.assertTrue(any(rgb == color and count > 20 for count, rgb in colors))
 
+    def test_valid_multiline_and_max_length_scenes_render_both_layouts(self):
+        from shotboard.storyboard import storyboard_png, SIZES
+        for scene in ('A\n'*50, 'W'*600, ('wide scene \n\t'*60)[:600], '界'*600):
+            for count in (6, 9):
+                with self.subTest(scene=scene[:20], count=count):
+                    self.board['config'].update(scene=scene, count=count)
+                    self.board['shots'] = (self.board['shots'][:6] + deepcopy(self.board['shots'][:3]))[:count]
+                    for i, shot in enumerate(self.board['shots']): shot['id'] = f's{i+1:02}'
+                    for layout, size in SIZES.items():
+                        with Image.open(io.BytesIO(storyboard_png(self.board, self.data, layout))) as image:
+                            self.assertEqual(image.size, size)
+        with zipfile.ZipFile(io.BytesIO(export_board(self.board, self.data))) as archive:
+            self.assertEqual(len(json.loads(archive.read('manifest.json'))['storyboards']), 2)
+
+    def test_one_failed_layout_does_not_block_other_storyboard_or_recipes(self):
+        from unittest.mock import patch
+        from shotboard.storyboard import storyboard_png
+        def render(board, data, layout):
+            if layout == 'landscape': raise OSError('private detail')
+            return storyboard_png(board, data, layout)
+        with patch('shotboard.core.storyboard_png', side_effect=render):
+            payload = export_board(self.board, self.data)
+        with zipfile.ZipFile(io.BytesIO(payload)) as archive:
+            manifest = json.loads(archive.read('manifest.json'))
+            self.assertEqual(len(manifest['shots']), 6)
+            self.assertEqual([s['file'] for s in manifest['storyboards']], ['storyboard-portrait.png'])
+            self.assertEqual(manifest['storyboard_errors'][0]['layout'], 'landscape')
+            self.assertEqual(manifest['storyboard_errors'][0]['error'], 'OSError')
+            self.assertNotIn('private detail', archive.read('manifest.json').decode())
+
     def test_later_prompt_edits_do_not_rewrite_picked_take(self):
         shot = self.board["shots"][0]
         original = shot["prompt"]

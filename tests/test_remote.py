@@ -35,3 +35,19 @@ class RemoteEngineTests(unittest.TestCase):
                 self.assertEqual(client.return_value.__enter__.return_value.post.call_args.args[0],'http://127.0.0.1:18188/free')
         with patch.dict('os.environ',{'COMFY_ENGINE_URL':'https://example.org'}):
             with self.assertRaises(ValueError): MemoryGuard()
+
+    def test_sdxl_report_requires_size_even_when_hash_matches(self):
+        lock = json.loads((ROOT/'workflows/model-lock.json').read_text())
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/'models.json'
+            report = dict(schema_version=1, verified=True, models=[dict(lock, verified=True)])
+            with patch.object(server, 'ENGINE_MANIFEST', str(path)):
+                path.write_text(json.dumps(report))
+                self.assertEqual(server.verify_models('sdxl-base')[0]['bytes'], lock['bytes'])
+                for value in (None, 0, lock['bytes']-1):
+                    changed = json.loads(json.dumps(report))
+                    if value is None: changed['models'][0].pop('bytes')
+                    else: changed['models'][0]['bytes'] = value
+                    path.write_text(json.dumps(changed))
+                    with self.assertRaisesRegex(ValueError, 'size differs'):
+                        server.verify_models('sdxl-base')

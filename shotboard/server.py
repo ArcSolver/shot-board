@@ -19,7 +19,7 @@ from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 import httpx
 from PIL import Image
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from .storyboard import storyboard_png
 from .memory import MemoryGuard, MemorySafetyError
@@ -57,6 +57,11 @@ class Scene(BaseModel):
     count: int = Field(default=6, ge=6, le=9)
     seed: int = Field(default=20261020, ge=0, le=2**32-1)
     preset: Literal["sdxl-base"] = "sdxl-base"
+
+    @field_validator('scene', 'character', 'setting', 'prop', mode='before')
+    @classmethod
+    def normalize_text(cls, value):
+        return ' '.join(value.split()) if isinstance(value, str) else value
 
 
 class RenderSettings(BaseModel):
@@ -421,7 +426,7 @@ def verify_models(preset_id):
     """Every external component is pinned, including GGUF's implicit vision projector."""
     if preset_id == "sdxl-base":
         lock = json.loads((ROOT / "workflows/model-lock.json").read_text())
-        requirements = [dict(filename=lock["filename"], sha256=lock["sha256"],
+        requirements = [dict(filename=lock["filename"], sha256=lock["sha256"], bytes=lock["bytes"],
                              license=lock["license"], repository=lock["repository"], revision=lock["revision"],
                              components=["SDXL UNet", "CLIP-L", "OpenCLIP bigG", "VAE (checkpoint embedded)"])]
     else:
@@ -451,6 +456,8 @@ def verify_models(preset_id):
             raise ValueError("Model component missing: " + model["filename"] + ". Follow README setup.")
         if sha256(path) != model["sha256"]:
             raise ValueError("Model hash differs from the pinned component: " + model["filename"])
+        if path.stat().st_size != model["bytes"]:
+            raise ValueError("Model size differs from the pinned component: " + model["filename"])
     return requirements
 
 
@@ -469,6 +476,10 @@ def set_continuity(bid: str, request: Continuity):
             take = next((t for t in shot["takes"] if t["id"] == request.take_id and t["status"] == "succeeded"), None)
             if not take or shot["picked"] != request.take_id:
                 raise HTTPException(409, "Pick the hero take before enabling continuity.")
+            if (take.get('reference') or take.get('settings', {}).get('checkpoint') != PRESETS['sdxl-base']['checkpoint']
+                    or take.get('settings', {}).get('preset_id', 'sdxl-base') != 'sdxl-base'
+                    or take.get('workflow', {}).get('1', {}).get('class_type') != 'CheckpointLoaderSimple'):
+                raise HTTPException(409, "Only an SDXL original can be the hero. Qwen edits cannot be heroes; edits are never chained.")
             source = DATA / bid / take["image"]
             if sha256(source) != take["image_sha256"]:
                 raise HTTPException(409, "The picked hero changed on disk.")

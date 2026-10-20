@@ -1,3 +1,10 @@
+const HERO_RULE = 'Only an SDXL original can be the hero. Qwen edits cannot be heroes; edits are never chained.';
+function isSDXLOriginal(take) {
+  return !!take && take.status==='succeeded' && !take.reference &&
+    take.settings?.checkpoint==='sd_xl_base_1.0.safetensors' &&
+    (take.settings?.preset_id||'sdxl-base')==='sdxl-base' &&
+    take.workflow?.['1']?.class_type==='CheckpointLoaderSimple';
+}
 const $ = (id) => document.getElementById(id);
 let examples = [], board = null, currentShot = null, editing = false, lastSignature = '', polling = false;
 const choices = {lens:'35', angle:'Eye level', move:'Static', lighting:'Window light', look:'Muted film'};
@@ -66,7 +73,9 @@ function renderCompare(){
   document.querySelectorAll('[data-pick]').forEach(el=>el.onclick=guarded(async()=>{await api(`/boards/${board.id}/shots/${s.id}/pick`,'POST',{take_id:el.dataset.pick});await refresh();$('reuse-seed').value=board.shots.find(x=>x.id===s.id).takes.find(t=>t.id===el.dataset.pick).seed;}));
   $('seed-lock').textContent=s.locked_seed!==null?'Unlock seed':'Lock seed';
   $('seed-lock').disabled=!s.takes.some(t=>t.status==='succeeded');
-  $('use-hero').disabled=busy()||!s.picked;
+  const picked=s.takes.find(t=>t.id===s.picked), heroAllowed=isSDXLOriginal(picked);
+  $('use-hero').disabled=busy()||!heroAllowed;
+  $('hero-rule').textContent=heroAllowed?'Use this SDXL original as the shared reference.':HERO_RULE;
   $('more-takes').disabled=busy()||(board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id);
   $('compare-message').textContent=s.locked_seed!==null?`Seed ${s.locked_seed} locked. New takes reuse this seed; edit the shot prompt to explore a change.`:'Pick a take, then lock its seed to reuse it. You can also enter a seed manually.';
 }
@@ -80,7 +89,7 @@ $('generate').onclick=guarded(async()=>{const button=$('generate');button.disabl
 $('more-takes').onclick=guarded(async()=>{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value),shot_id:currentShot});await refresh();});
 $('cancel').onclick=guarded(async()=>{await api(`/boards/${board.id}/cancel`,'POST',{});await refresh();});
 $('seed-lock').onclick=guarded(async()=>{const s=board.shots.find(x=>x.id===currentShot);const seed=s.locked_seed!==null?null:Number($('reuse-seed').value);await api(`/boards/${board.id}/shots/${s.id}/seed`,'POST',{seed});await refresh();});
-$('use-hero').onclick=guarded(async()=>{const s=board.shots.find(s=>s.id===currentShot);await api(`/boards/${board.id}/continuity`,'POST',{enabled:true,shot_id:s.id,take_id:s.picked});await refresh();toast('Hero locked. Other cuts will use Qwen reference editing.');});
+$('use-hero').onclick=guarded(async()=>{const s=board.shots.find(s=>s.id===currentShot);if(!isSDXLOriginal(s.takes.find(t=>t.id===s.picked)))throw new Error(HERO_RULE);await api(`/boards/${board.id}/continuity`,'POST',{enabled:true,shot_id:s.id,take_id:s.picked});await refresh();toast('Hero locked. Other cuts will use Qwen reference editing.');});
 $('keep-continuity').onchange=guarded(async()=>{const hero=board.continuity?.hero;await api(`/boards/${board.id}/continuity`,'POST',{enabled:$('keep-continuity').checked,shot_id:hero?.shot_id,take_id:hero?.take_id});await refresh();});
 $('export').onclick=()=>{location.href=`/api/boards/${board.id}/export`;};
 $('close-compare').onclick=()=>$('compare-dialog').close();$('close-boards').onclick=()=>$('boards-dialog').close();

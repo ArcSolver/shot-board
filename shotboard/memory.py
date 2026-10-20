@@ -29,6 +29,11 @@ class MemoryGuard:
         parsed = urlparse(self.engine_url)
         if parsed.scheme != 'http' or parsed.hostname not in ('127.0.0.1', 'localhost', '::1'):
             raise ValueError('Engine control requires a loopback HTTP URL')
+        # A nonstandard loopback port is the remote SSH-tunnel convention.
+        # Use ENGINE_MODE for tunnels on 8188 or local engines on other ports.
+        self.mode = os.environ.get('ENGINE_MODE') or ('remote' if parsed.port not in (None, 8188) else 'local')
+        if self.mode not in ('local', 'remote'):
+            raise ValueError('ENGINE_MODE must be local or remote')
         self.preset = None
         self.previous = None
         self.checked_at = 0
@@ -40,7 +45,7 @@ class MemoryGuard:
                 client.post(self.engine_url + '/free', json={
                     'unload_models': True, 'free_memory': True}).raise_for_status()
         self.preset = preset
-        if preset == 'qwen-reference' and sys.platform == 'darwin':
+        if self.mode == 'local' and preset == 'qwen-reference' and sys.platform == 'darwin':
             self.sample()
 
     def sample(self):
@@ -56,5 +61,5 @@ class MemoryGuard:
             raise MemorySafetyError('Memory safety stop: below 25% free or rapid swap growth. Queued renders cancelled.')
 
     def check_running(self):
-        if self.preset == 'qwen-reference' and sys.platform == 'darwin' and time.monotonic()-self.checked_at >= 5:
+        if self.mode == 'local' and self.preset == 'qwen-reference' and sys.platform == 'darwin' and time.monotonic()-self.checked_at >= 5:
             self.sample()

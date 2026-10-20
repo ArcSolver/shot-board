@@ -32,3 +32,28 @@ class MemoryTests(unittest.TestCase):
     def test_unreadable_pressure_stops(self):
         with patch('shotboard.memory.memory_sample',side_effect=subprocess.TimeoutExpired('memory_pressure',10)):
             with self.assertRaises(MemorySafetyError): MemoryGuard().sample()
+
+    def test_remote_tunnel_and_explicit_mode_skip_client_pressure(self):
+        for env in ({'COMFY_ENGINE_URL':'http://127.0.0.1:18188'},
+                    {'COMFY_ENGINE_URL':'http://127.0.0.1:8188', 'ENGINE_MODE':'remote'}):
+            with self.subTest(env=env), patch.dict('os.environ', env, clear=True), patch('shotboard.memory.sys.platform', 'darwin'), patch('shotboard.memory.httpx.Client') as client, patch('shotboard.memory.memory_sample', return_value=(0, 9999)) as sample:
+                guard = MemoryGuard()
+                self.assertEqual(guard.mode, 'remote')
+                guard.prepare('qwen-reference')
+                guard.check_running()
+                sample.assert_not_called()
+                client.return_value.__enter__.return_value.post.assert_called_once()
+
+    def test_local_mode_keeps_prepare_and_running_pressure_stops(self):
+        for env in ({}, {'COMFY_ENGINE_URL':'http://127.0.0.1:18188', 'ENGINE_MODE':'local'}):
+            with self.subTest(env=env), patch.dict('os.environ', env, clear=True), patch('shotboard.memory.sys.platform', 'darwin'), patch('shotboard.memory.httpx.Client'), patch('shotboard.memory.memory_sample', return_value=(24, 0)):
+                guard = MemoryGuard()
+                self.assertEqual(guard.mode, 'local')
+                with self.assertRaises(MemorySafetyError): guard.prepare('qwen-reference')
+                guard.checked_at = 0
+                with self.assertRaises(MemorySafetyError): guard.check_running()
+
+    def test_unknown_engine_mode_rejected(self):
+        with patch.dict('os.environ', {'ENGINE_MODE':'invalid'}):
+            with self.assertRaisesRegex(ValueError, 'ENGINE_MODE'):
+                MemoryGuard()

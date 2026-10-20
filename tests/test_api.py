@@ -71,6 +71,31 @@ class APITests(unittest.TestCase):
         self.assertEqual(self.client.get(self.base+"/storyboard").status_code, 409)
         self.assertTrue(server.store.tasks.empty())
 
+    def test_scene_input_normalizes_newlines_and_whitespace(self):
+        response = self.client.post('/api/boards', json={'scene': 'A\n'*50, 'character': '  An\tadult  traveler\n'})
+        self.assertEqual(response.status_code, 201)
+        board = response.json()
+        self.assertEqual(board['config']['scene'], ' '.join(['A']*50))
+        self.assertEqual(board['title'], board['config']['scene'][:80])
+        self.assertEqual(board['config']['character'], 'An adult traveler')
+        self.assertEqual(self.client.post('/api/boards', json={'scene':' \n\t '}).status_code, 422)
+
+    def test_export_succeeds_when_storyboards_fail(self):
+        import io, json, zipfile
+        bid = self.client.post('/api/examples/greenhouse-a2/open').json()['id']
+        with patch('shotboard.core.storyboard_png', side_effect=ValueError('private renderer detail')):
+            response = self.client.get('/api/boards/'+bid+'/export')
+        self.assertEqual(response.status_code, 200)
+        with zipfile.ZipFile(io.BytesIO(response.content)) as archive:
+            manifest = json.loads(archive.read('manifest.json'))
+            self.assertEqual(len(manifest['storyboard_errors']), 2)
+            self.assertEqual(manifest['storyboards'], [])
+            self.assertEqual(len(manifest['shots']), 6)
+            self.assertNotIn('private renderer detail', archive.read('manifest.json').decode())
+            for shot in manifest['shots']:
+                self.assertIn(shot['image'], archive.namelist())
+                self.assertIn(shot['workflow'], archive.namelist())
+
     def test_seed_zero_and_unlock(self):
         self.client.post(self.base+"/shots/s01/seed",json={"seed":0})
         self.assertEqual(self.client.get(self.base).json()["shots"][0]["locked_seed"], 0)
