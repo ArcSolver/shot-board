@@ -8,3 +8,11 @@
 6. **1:40–1:55 — Leave a door open.** Show Reframe's experimental coming-soon response. Mention close-up/small parallax as future work, with no claim of implemented geometry editing.
 
 The included example can be imported and browsed without running diffusion again. No deployment or hosted service is needed for this walkthrough.
+
+## Continuity walkthrough
+
+1. Open the A2 example, compare the SDXL takes and choose S02 / T01 as the hero.
+2. Click **Use selected as hero**. Show the checked **Keep continuity** control and hero badge.
+3. Set one take per cut and **Render reference edits**. The hero stays; five other cuts queue. Show measured elapsed seconds, including model load; label any recording time skip.
+4. Compare original SDXL and reference-edited takes. Inspect face, coat, compass and greenhouse separately from camera framing. Do not describe a failed OTS or hidden face as a verified pass.
+5. Export the picks. Inspect the bundled hero PNG, portable and submitted graphs, model hashes and elapsed times. Reframe still queues nothing.

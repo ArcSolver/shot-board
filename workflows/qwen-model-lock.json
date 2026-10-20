@@ -1,0 +1,52 @@
+[
+  {
+    "filename": "qwen-image-edit-2511-Q8_0.gguf",
+    "component": "diffusion",
+    "folder": "diffusion_models",
+    "sha256": "ab4f0622fb002fccaaa679a2ecce6fd1b3190d8ea28a5b7b2b17b8669bc24afa",
+    "bytes": 21761817184,
+    "repository": "unsloth/Qwen-Image-Edit-2511-GGUF",
+    "revision": "0d33d9692b4b26212297240d87b0d4719aa4fd06",
+    "license": "Apache-2.0"
+  },
+  {
+    "filename": "Qwen2.5-VL-7B-Instruct-Q6_K.gguf",
+    "component": "text encoder",
+    "folder": "text_encoders",
+    "sha256": "15f3ccbef1e7020939d8c32501d66a777df46b1b3ace9ddec37b5d2df102a89f",
+    "bytes": 6254197632,
+    "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+    "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+    "license": "Apache-2.0"
+  },
+  {
+    "filename": "Qwen2.5-VL-7B-Instruct-mmproj-F16.gguf",
+    "component": "vision projector",
+    "folder": "text_encoders",
+    "sha256": "987dd0733033fb5dd9b124d1ca926ae865572e432384eee7618b2eec3e735e17",
+    "bytes": 1354163040,
+    "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+    "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+    "license": "Apache-2.0"
+  },
+  {
+    "filename": "qwen_image_vae.safetensors",
+    "component": "VAE",
+    "folder": "vae",
+    "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+    "bytes": 253806246,
+    "repository": "Comfy-Org/Qwen-Image_ComfyUI",
+    "revision": "1f12b17be14c89b026c51a91d67c32f84bb047bc",
+    "license": "Apache-2.0"
+  },
+  {
+    "filename": "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors",
+    "component": "Lightning LoRA",
+    "folder": "loras",
+    "sha256": "22226e8d05d354bb356627d428809f5afd7819399b077238a2b70a82883a904f",
+    "bytes": 849608296,
+    "repository": "lightx2v/Qwen-Image-Edit-2511-Lightning",
+    "revision": "107d238d68b8387e32843d0b4a2e24ceb0d3ad86",
+    "license": "Apache-2.0"
+  }
+]

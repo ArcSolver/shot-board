@@ -35,7 +35,7 @@ class CoverageTests(unittest.TestCase):
 
     def test_chips_change_prompt_without_losing_identity(self):
         self.config.update(lens="85", angle="High angle", move="Lateral drift", lighting="Blue hour", look="Monochrome")
-        prompt = expand_shots(self.config)[0]["prompt"]
+        prompt = expand_shots(self.config)[1]["prompt"]
         for text in ("85mm", "high angle", "blue hour", "black and white", "lateral camera drift", self.config["character"]):
             self.assertIn(text, prompt)
 

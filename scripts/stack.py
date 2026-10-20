@@ -17,6 +17,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--comfy-dir", default=os.environ.get("COMFYUI_DIR", "../vendor/ComfyUI"))
     parser.add_argument("--comfy-python", default=os.environ.get("COMFYUI_PYTHON", "../local/venv/bin/python"))
+    parser.add_argument("--reference-model-dir", default=os.environ.get("SHOTBOARD_REFERENCE_MODEL_DIR", "../models"))
     parser.add_argument("--log-dir", default=os.environ.get("SHOTBOARD_LOG_DIR", ".runtime/logs"))
     args = parser.parse_args()
     comfy = Path(args.comfy_dir).resolve()
@@ -35,7 +36,10 @@ def main():
     logs = Path(args.log_dir).resolve()
     logs.mkdir(parents=True, exist_ok=True)
     config = runtime / "model-paths.yaml"
-    config.write_text("shotboard:\n  base_path: models\n  checkpoints: checkpoints/\n")
+    reference_models = Path(args.reference_model_dir).resolve()
+    config.write_text("shotboard:\n  base_path: models\n  checkpoints: checkpoints/\n  diffusion_models: diffusion_models/\n"
+                      + "reference_models:\n  base_path: " + json.dumps(os.path.relpath(reference_models, runtime))
+                      + "\n  diffusion_models: diffusion_models/\n  text_encoders: text_encoders/\n  vae: vae/\n  loras: loras/\n")
     env = os.environ.copy()
     for key in ("COMFY_API_KEY", "HF_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy", "all_proxy"):
         env.pop(key, None)

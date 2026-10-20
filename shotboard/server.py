@@ -1,11 +1,12 @@
 """Local-only API. All inference submissions and output retrieval use Comfy SDK."""
 from contextlib import asynccontextmanager
 from copy import deepcopy
-import io
+import hashlib
 import json
 import os
 from pathlib import Path
 import queue
+import shutil
 import threading
 import time
 from typing import Literal
@@ -21,10 +22,12 @@ from PIL import Image
 from pydantic import BaseModel, Field
 
 from .core import (ROOT, PRESETS, LENSES, ANGLES, MOVES, LIGHTS, LOOKS,
-                   expand_shots, seed_for, workflow_for, export_board, sha256)
+                   expand_shots, seed_for, workflow_for, settings_for, export_board, sha256)
 
 DATA = Path(os.environ.get("SHOTBOARD_DATA_DIR", ROOT / ".runtime/boards"))
 MODEL_DIR = Path(os.environ.get("SHOTBOARD_MODEL_DIR", ROOT / ".runtime/models/checkpoints"))
+REFERENCE_MODEL_DIR = Path(os.environ.get("SHOTBOARD_REFERENCE_MODEL_DIR", ROOT.parent / "models"))
+QWEN_MODEL_DIR = Path(os.environ.get("SHOTBOARD_QWEN_MODEL_DIR", ROOT / ".runtime/models/diffusion_models"))
 SDK_URL = os.environ.get("COMFY_BASE_URL", "http://127.0.0.1:8189")
 if urlparse(SDK_URL).hostname not in ("127.0.0.1", "localhost", "::1") or urlparse(SDK_URL).scheme != "http":
     raise RuntimeError("Shot Board only accepts a local HTTP Comfy proxy.")
@@ -40,6 +43,7 @@ class Scene(BaseModel):
     scene: str = Field(min_length=3, max_length=600)
     character: str = Field(default="An adult traveler with short dark hair, mustard raincoat, brown satchel", min_length=3, max_length=400)
     setting: str = Field(default="A quiet glass greenhouse, ferns, rain on windows, wooden potting table", min_length=3, max_length=400)
+    prop: str = Field(default="the scene's key object", min_length=3, max_length=160)
     lens: Literal["24", "35", "50", "85"] = "35"
     angle: Literal["Eye level", "Low angle", "High angle"] = "Eye level"
     move: Literal["Static", "Push in", "Lateral drift"] = "Static"
@@ -50,15 +54,29 @@ class Scene(BaseModel):
     preset: Literal["sdxl-base"] = "sdxl-base"
 
 
+class RenderSettings(BaseModel):
+    width: int = Field(ge=512, le=1536, multiple_of=64)
+    height: int = Field(ge=512, le=1536, multiple_of=64)
+    cfg: float = Field(ge=1, le=12)
+
+
 class ShotEdit(BaseModel):
     title: str = Field(min_length=1, max_length=100)
     prompt: str = Field(min_length=3, max_length=4000)
     negative: str = Field(max_length=1000)
+    render_settings: RenderSettings | None = None
 
 
 class Generate(BaseModel):
     takes: int = Field(default=2, ge=1, le=4)
     shot_id: str | None = None
+    preset: Literal["sdxl-base", "qwen-reference"] | None = None
+
+
+class Continuity(BaseModel):
+    enabled: bool
+    shot_id: str | None = None
+    take_id: str | None = None
 
 
 class Pick(BaseModel):
@@ -118,7 +136,20 @@ class Store:
             job = None
             try:
                 with Comfy(timeout=30) as client:
-                    job = client.submit(client.workflows.from_json(take["workflow"]))
+                    workflow = client.workflows.from_json(deepcopy(take["workflow"]))
+                    if take.get("reference"):
+                        source = DATA / bid / take["reference"]["image"]
+                        if sha256(source) != take["reference"]["image_sha256"]:
+                            raise ValueError("Hero reference changed")
+                        asset = client.assets.from_file(source)
+                        # Record the exact SDK materialized input without replacing the portable graph.
+                        binding = asset.as_reference()
+                        workflow.set_input("1", "image", binding)
+                        take["reference"]["sdk_asset"] = binding
+                        take["submitted_workflow"] = deepcopy(workflow.json)
+                        take["submission_fingerprint_sha256"] = hashlib.sha256(
+                            json.dumps(workflow.json, sort_keys=True).encode()).hexdigest()
+                    job = client.submit(workflow)
                     with self.lock:
                         self.active_job = job
                         take.update(job_id=job.id, phase="Waiting for local engine", engine_status=job.status)
@@ -232,7 +263,11 @@ def health():
         ready = response.status_code == 200
     except httpx.HTTPError:
         ready = False
-    return dict(proxy_ready=ready, checkpoint_present=(MODEL_DIR / PRESETS["sdxl-base"]["checkpoint"]).is_file())
+    reference_components_present = all(
+        ((QWEN_MODEL_DIR / m["filename"]) if m["component"] == "diffusion" else
+         (REFERENCE_MODEL_DIR / m["folder"] / m["filename"])).is_file()
+        for m in json.loads((ROOT / "workflows/qwen-model-lock.json").read_text()))
+    return dict(proxy_ready=ready, reference_components_present=reference_components_present, checkpoint_present=(MODEL_DIR / PRESETS["sdxl-base"]["checkpoint"]).is_file())
 
 
 @app.get("/api/boards")
@@ -245,7 +280,8 @@ def list_boards():
 def create_board(scene: Scene):
     with store.lock:
         config = scene.model_dump()
-        board = dict(id=uuid4().hex, title=scene.scene[:80], config=config, shots=expand_shots(config), created_at=time.time())
+        board = dict(id=uuid4().hex, title=scene.scene[:80], config=config, shots=expand_shots(config),
+                     continuity=dict(enabled=False, hero=None), created_at=time.time())
         store.boards[board["id"]] = board
         store.save(board)
         return deepcopy(board)
@@ -261,7 +297,7 @@ def get_board(bid: str):
 def edit_shot(bid: str, sid: str, edit: ShotEdit):
     with store.lock:
         board = board_for(bid)
-        shot_for(board, sid).update(edit.model_dump())
+        shot_for(board, sid).update(edit.model_dump(exclude_none=True))
         store.save(board)
     return dict(ok=True)
 
@@ -270,37 +306,98 @@ def edit_shot(bid: str, sid: str, edit: ShotEdit):
 def generate(bid: str, request: Generate):
     with store.lock:
         board = board_for(bid)
+        continuity = board.get("continuity", {})
+        preset_id = request.preset or ("qwen-reference" if continuity.get("enabled") else "sdxl-base")
+        reference = None
+        if preset_id == "qwen-reference":
+            if not continuity.get("enabled") or not continuity.get("hero"):
+                raise HTTPException(409, "Pick a hero and enable Keep continuity first.")
+            reference = deepcopy(continuity["hero"])
+            if sha256(DATA / bid / reference["image"]) != reference["image_sha256"]:
+                raise HTTPException(409, "Hero reference changed on disk.")
         shots = [shot_for(board, request.shot_id)] if request.shot_id else board["shots"]
+        if reference:
+            if request.shot_id == reference["shot_id"]:
+                raise HTTPException(409, "The hero cut stays selected. Choose another cut for a reference edit.")
+            shots = [s for s in shots if s["id"] != reference["shot_id"]]
         if any(t["status"] in ("queued", "running") for s in board["shots"] for t in s["takes"]):
             raise HTTPException(409, "This board already has work in the queue.")
         if any(len(s["takes"])+request.takes > 16 for s in shots):
             raise HTTPException(409, "Maximum 16 takes per shot. Create a new board for more coverage.")
-        preset = deepcopy(PRESETS[board["config"]["preset"]])
-        model = MODEL_DIR / preset["checkpoint"]
-        if not model.is_file():
-            raise HTTPException(409, "SDXL checkpoint missing. Follow the model setup in README.")
-        digest = sha256(model)
-        lock_path = ROOT / "workflows/model-lock.json"
-        lock = json.loads(lock_path.read_text()) if lock_path.exists() else {}
-        if lock.get("sha256") and digest != lock["sha256"]:
-            raise HTTPException(409, "Model hash differs from the pinned checkpoint.")
-        models = [dict(filename=preset["checkpoint"], sha256=digest, license=preset["license"],
-                       repository=preset["repository"], revision=lock.get("revision"),
-                       components=["SDXL UNet", "CLIP-L", "OpenCLIP bigG", "VAE (checkpoint embedded)"])]
+        try:
+            models = verify_models(preset_id)
+        except ValueError as exc:
+            raise HTTPException(409, str(exc)) from exc
         tasks = []
         for shot in shots:
+            preset = settings_for(shot, preset_id)
             offset = len(shot["takes"])
             for i in range(request.takes):
                 tid = f"t{offset+i+1:02}"
                 seed = seed_for(board["config"]["seed"], offset+i, shot["locked_seed"])
                 take = dict(id=tid, seed=seed, status="queued", phase="Queued locally", settings=preset,
-                            models=models, workflow=workflow_for(shot, seed, preset), elapsed_seconds=0)
+                            models=deepcopy(models), workflow=workflow_for(shot, seed, preset, reference),
+                            reference=deepcopy(reference), elapsed_seconds=0)
                 shot["takes"].append(take)
                 tasks.append((bid, shot["id"], tid))
         store.save(board)
         for task in tasks:
             store.tasks.put(task)
         return dict(queued=len(tasks))
+
+
+def verify_models(preset_id):
+    """Every external component is pinned, including GGUF's implicit vision projector."""
+    if preset_id == "sdxl-base":
+        lock = json.loads((ROOT / "workflows/model-lock.json").read_text())
+        requirements = [dict(filename=lock["filename"], sha256=lock["sha256"],
+                             license=lock["license"], repository=lock["repository"], revision=lock["revision"],
+                             components=["SDXL UNet", "CLIP-L", "OpenCLIP bigG", "VAE (checkpoint embedded)"])]
+    else:
+        requirements = json.loads((ROOT / "workflows/qwen-model-lock.json").read_text())
+    for model in requirements:
+        if preset_id == "sdxl-base":
+            path = MODEL_DIR / model["filename"]
+        elif model["component"] == "diffusion":
+            path = QWEN_MODEL_DIR / model["filename"]
+        else:
+            path = REFERENCE_MODEL_DIR / model["folder"] / model["filename"]
+        if not path.is_file():
+            raise ValueError("Model component missing: " + model["filename"] + ". Follow README setup.")
+        if sha256(path) != model["sha256"]:
+            raise ValueError("Model hash differs from the pinned component: " + model["filename"])
+    return requirements
+
+
+@app.post("/api/boards/{bid}/continuity")
+def set_continuity(bid: str, request: Continuity):
+    with store.lock:
+        board = board_for(bid)
+        if any(t["status"] in ("queued", "running") for s in board["shots"] for t in s["takes"]):
+            raise HTTPException(409, "Wait for the current queue before changing the hero.")
+        if not request.enabled:
+            board.setdefault("continuity", {})["enabled"] = False
+        else:
+            if not request.shot_id or not request.take_id:
+                raise HTTPException(409, "Choose a picked hero take.")
+            shot = shot_for(board, request.shot_id)
+            take = next((t for t in shot["takes"] if t["id"] == request.take_id and t["status"] == "succeeded"), None)
+            if not take or shot["picked"] != request.take_id:
+                raise HTTPException(409, "Pick the hero take before enabling continuity.")
+            source = DATA / bid / take["image"]
+            if sha256(source) != take["image_sha256"]:
+                raise HTTPException(409, "The picked hero changed on disk.")
+            relative = "references/" + take["image_sha256"] + ".png"
+            dest = DATA / bid / relative
+            dest.parent.mkdir(exist_ok=True)
+            shutil.copyfile(source, dest)
+            hero = dict(shot_id=shot["id"], take_id=take["id"], image=relative,
+                        image_sha256=take["image_sha256"], seed=take["seed"],
+                        settings=deepcopy(take["settings"]), models=deepcopy(take["models"]),
+                        workflow=deepcopy(take["workflow"]))
+            board["continuity"] = dict(enabled=True, hero=hero)
+        store.save(board)
+    return deepcopy(board["continuity"])
 
 
 @app.post("/api/boards/{bid}/cancel")
@@ -322,6 +419,10 @@ def pick(bid: str, sid: str, request: Pick):
     with store.lock:
         board = board_for(bid)
         shot = shot_for(board, sid)
+        continuity = board.get("continuity", {})
+        hero = continuity.get("hero") or {}
+        if continuity.get("enabled") and hero.get("shot_id") == sid and hero.get("take_id") != request.take_id:
+            raise HTTPException(409, "Turn off Keep continuity before changing the hero pick.")
         if not any(t["id"] == request.take_id and t["status"] == "succeeded" for t in shot["takes"]):
             raise HTTPException(409, "Pick a completed take")
         shot["picked"] = request.take_id
