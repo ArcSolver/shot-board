@@ -10,7 +10,7 @@ Higgsfield Popcorn is Higgsfield's storyboard tool for visual consistency: you w
 
 ## Try it without a GPU
 
-The three bundled examples open in the CPU app with no engine running. You can browse, pick, review and export them; the footer shows the engine as offline. You need Git and uv.
+The three bundled examples open in the CPU app with no engine running. You can browse, pick, review and export them; the footer reads "SDXL setup needed", or "Continuity setup needed" on the continuity board. You need Git and uv.
 
 ```sh
 git clone [REPO_URL] shot-board
@@ -76,7 +76,7 @@ SHOTBOARD_ENGINE_MANIFEST=/path/to/private/engine-models.json \
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-The same start command works with no worker connected. The gallery, the examples, reviews and export all run; the footer shows the engine as offline, and rendering waits for a worker.
+The same start command works with no worker connected. The gallery, the examples, reviews and export all run; the footer reads "SDXL setup needed", or "Continuity setup needed" on the continuity board, and rendering waits for a worker.
 
 `ENGINE_MODE` tells the app where the models run, `local` or `remote`. If you leave it unset, engine port 8188 counts as local and any other loopback port counts as a remote tunnel, so the block above runs as remote. Set it yourself for a tunnel on 8188 or for a local engine on another port. SETUP.md shows the remote command and a local GPU command, each with `ENGINE_MODE` set. In both modes the engine and proxy URLs must stay loopback HTTP. The app's memory pressure and swap check runs only for a local engine on macOS, during Qwen edits; in remote mode, and on other systems, it does not run.
 
@@ -166,8 +166,8 @@ All captures come from the current CPU app in headless Chromium, showing outputs
 | [Home](docs/screenshots/12-home.png) | Featured continuity board and the three examples, desktop |
 | [New scene](docs/screenshots/21-new-scene.png) | Empty scene input with shot pictograms |
 | [Scene settings](docs/screenshots/01-scene.png) | The greenhouse scene with Character, Key prop and Set filled in, plus camera and atmosphere chips |
-| [Hangar queue](docs/screenshots/03-rendering.png) | The live SDXL queue while the hangar board rendered |
-| [Qwen queue](docs/screenshots/08-continuity-rendering.png) | The live Qwen queue, before its connection failures |
+| [Hangar board](docs/screenshots/03-rendering.png) | The finished hangar board: six cuts, two takes each, all six picked and reviewed |
+| [Qwen board](docs/screenshots/08-continuity-rendering.png) | The finished greenhouse continuity board with the render panel open: 18 of 23 takes ready, 5 stopped, all six cuts picked |
 | [Continuity board](docs/screenshots/13-board.png) | Six picks with hero badge, verdicts and notes |
 | [Compare & pick](docs/screenshots/14-compare.png) | Over-shoulder cut: SDXL take, failed slot and selected Qwen edit, each with its review |
 | [Storyboard](docs/screenshots/15-storyboard.png) | Storyboard export, landscape |
