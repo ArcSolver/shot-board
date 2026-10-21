@@ -127,12 +127,11 @@ ENGINE_MODE=remote COMFY_BASE_URL=http://127.0.0.1:18189 COMFY_ENGINE_URL=http:/
 # Open http://127.0.0.1:8790
 ```
 
-Local GPU alternative — app on the GPU worker, no tunnel
+Local GPU alternative — app on the GPU worker
 
 ```sh
 cd /opt/shot-board
 uv venv .venv --python 3.12
 uv pip install --python .venv/bin/python -r requirements.lock.txt --require-hashes
 ENGINE_MODE=local COMFY_BASE_URL=http://127.0.0.1:8189 COMFY_ENGINE_URL=http://127.0.0.1:8188 SHOTBOARD_ENGINE_MANIFEST="$PWD/.runtime/engine-models.json" .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
-# ENGINE_MODE: local or remote
 ```

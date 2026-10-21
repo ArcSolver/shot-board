@@ -1,4 +1,4 @@
-# Hangar — SDXL coverage
+# Hangar
 
 | Field | Value |
 |---|---|

@@ -1,4 +1,4 @@
-# Greenhouse — SDXL hero and Qwen edits
+# Greenhouse continuity
 
 | Field | Value |
 |---|---|

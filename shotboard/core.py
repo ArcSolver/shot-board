@@ -57,7 +57,6 @@ PRESETS = {
         "width": 512, "height": 512, "steps": 24, "cfg": 4.0,
         "sampler_name": "euler", "scheduler": "simple", "denoise": 1.0,
         "shift": 3.1, "reference_megapixels": 1.0,
-        "performance_note": "Actual SDK elapsed time includes upload, model loading and output download.",
     },
     "flux-klein-4b": {"label": "FLUX.2 klein 4B · planned", "enabled": False,
                       "license": "Apache-2.0", "capability": "text-and-reference"},
@@ -151,7 +150,6 @@ def export_board(board, data_root):
     """Export immutable take snapshots, never the later-edited shot settings."""
     manifest = dict(schema_version=2, app="Shot Board", board_id=board["id"],
                     title=board["title"], scene=deepcopy(board["config"]),
-                    consistency="Reference edits preserve a hero when enabled; identity and shot accuracy require visual review.",
                     generation_path="Comfy SDK → local API proxy → ComfyUI",
                     review=deepcopy(board.get("review", [])), hero=deepcopy(board.get("continuity", {}).get("hero")),
                     storyboards=[], storyboard_errors=[], shots=[])

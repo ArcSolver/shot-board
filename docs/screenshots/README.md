@@ -16,6 +16,6 @@
 |---|---|
 | [07-continuity-hero.png](07-continuity-hero.png) | Hero pick |
 | [08-continuity-rendering.png](08-continuity-rendering.png) | Continuity board, render panel open |
-| [09-continuity-board.png](09-continuity-board.png) | Final board: four Qwen edits, the SDXL hero and an SDXL low angle |
-| [10-continuity-compare.png](10-continuity-compare.png) | SDXL take and selected Qwen over-shoulder edit |
+| [09-continuity-board.png](09-continuity-board.png) | Final continuity board |
+| [10-continuity-compare.png](10-continuity-compare.png) | Compare & pick, 04 Over shoulder |
 | [11-continuity-mobile.png](11-continuity-mobile.png) | Continuity board, mobile |

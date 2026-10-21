@@ -17,7 +17,6 @@
     "seed": 20261020,
     "preset": "sdxl-base"
   },
-  "consistency": "Reference edits preserve a hero when enabled; identity and shot accuracy require visual review.",
   "generation_path": "Comfy SDK \u2192 local API proxy \u2192 ComfyUI",
   "review": [
     {
