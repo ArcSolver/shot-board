@@ -5,7 +5,6 @@ Requires an NVIDIA GPU with 24 GB VRAM.
 CPU client — tests
 
 ```sh
-# No PyTorch or GPU required for gallery, export or tests
 # Prerequisites: Git, uv, Node; SSH/SCP for a remote worker
 cd /path/to/shot-board
 uv venv .venv --python 3.12
@@ -14,7 +13,7 @@ uv pip install --python .venv/bin/python -r requirements.lock.txt --require-hash
 node --check shotboard/static/app.js
 ```
 
-CPU client — copy committed app source to an existing GPU worker
+CPU client — copy the app to the GPU worker
 
 ```sh
 cd /path/to/shot-board
@@ -85,7 +84,7 @@ VAE
 # Placement: .runtime/ComfyUI/models/vae/qwen_image_vae.safetensors
 ```
 
-GPU worker — model report (repeat after any model file change)
+GPU worker — model report
 
 ```sh
 cd /opt/shot-board
@@ -109,7 +108,7 @@ cd /opt/shot-board
 .runtime/engine-venv/bin/comfy-api-proxy run --host 127.0.0.1 --port 8189 --comfyui http://127.0.0.1:8188 --state-dir "$PWD/.runtime/proxy"
 ```
 
-CPU client — optional remote worker report copy and SSH tunnel
+CPU client — SSH tunnel to the GPU worker
 
 ```sh
 cd /path/to/shot-board
@@ -136,14 +135,4 @@ uv venv .venv --python 3.12
 uv pip install --python .venv/bin/python -r requirements.lock.txt --require-hashes
 ENGINE_MODE=local COMFY_BASE_URL=http://127.0.0.1:8189 COMFY_ENGINE_URL=http://127.0.0.1:8188 SHOTBOARD_ENGINE_MANIFEST="$PWD/.runtime/engine-models.json" .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 # ENGINE_MODE: local or remote
-# Engine and proxy control URLs must remain loopback HTTP in both modes
-```
-
-App model check without a report — model-directory variables
-
-```sh
-# Used only when SHOTBOARD_ENGINE_MANIFEST is unset
-# SHOTBOARD_MODEL_DIR: SDXL checkpoint; default .runtime/models/checkpoints
-# SHOTBOARD_QWEN_MODEL_DIR: Qwen diffusion GGUF; default .runtime/models/diffusion_models
-# SHOTBOARD_REFERENCE_MODEL_DIR: Qwen encoder, vision projector and VAE under text_encoders/ and vae/; default ../models, outside the repository
 ```

@@ -304,7 +304,7 @@ def health():
     return dict(proxy_ready=ready, reference_components_present=reference_components_present, checkpoint_present=checkpoint_present)
 
 
-EXAMPLES = {"greenhouse-continuity": "The greenhouse / continuity", "greenhouse": "The greenhouse / early study", "hangar": "The hangar / SDXL coverage"}
+EXAMPLES = {"greenhouse-continuity": "The greenhouse / continuity", "greenhouse": "The greenhouse / early study", "hangar": "The hangar"}
 
 
 def example_board(slug):
@@ -492,7 +492,7 @@ def set_continuity(bid: str, request: Continuity):
             if (take.get('reference') or take.get('settings', {}).get('checkpoint') != PRESETS['sdxl-base']['checkpoint']
                     or take.get('settings', {}).get('preset_id', 'sdxl-base') != 'sdxl-base'
                     or take.get('workflow', {}).get('1', {}).get('class_type') != 'CheckpointLoaderSimple'):
-                raise HTTPException(409, "Only an SDXL original can be the hero. Qwen edits cannot be heroes; edits are never chained.")
+                raise HTTPException(409, "Only an SDXL original can be the hero.")
             source = DATA / bid / take["image"]
             if sha256(source) != take["image_sha256"]:
                 raise HTTPException(409, "The picked hero changed on disk.")

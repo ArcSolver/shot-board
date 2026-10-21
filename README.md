@@ -57,8 +57,6 @@ All inference requests and reference uploads go through the Comfy SDK and a loop
 
 See [docs/SETUP.md](docs/SETUP.md) for local setup.
 
-The app is a CPU client. ComfyUI runs on a separate GPU worker, and the app reaches the engine and the SDK proxy through SSH loopback tunnels.
-
 ```sh
 uv venv .venv --python 3.12
 uv pip install --python .venv/bin/python -r requirements.lock.txt --require-hashes
@@ -69,22 +67,11 @@ SHOTBOARD_ENGINE_MANIFEST=/path/to/engine-models.json \
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-Open **http://127.0.0.1:8790** and choose **+ New scene**. Type a scene, or press **Use example** to load the greenhouse scene with its Character, Key prop and Set filled in. Build the shot list and render SDXL takes. Pick an SDXL medium take with a visible face, choose **Use selected as hero**, then **Render reference edits**. Compare the takes, save a verdict on each, and pick.
-
-### Open the examples without rendering
-
-To import from the command line instead, stop the app first:
-
-```sh
-.venv/bin/python scripts/import_example.py
-.venv/bin/python scripts/import_example.py --example greenhouse-continuity
-```
-
-The first line imports the early greenhouse study; use `--example hangar` for the hangar board. Restart and choose **My boards**.
+Open **http://127.0.0.1:8790** and choose **+ New scene**. Type a scene or press **Use example**, then build the shot list and render SDXL takes. Pick an SDXL take, choose **Use selected as hero**, then **Render reference edits**. Compare the takes, save a verdict on each, and pick.
 
 ### Reuse a recipe outside the app
 
-Each `workflows/sNN.api.json` in an export ZIP is a ComfyUI API-format graph with the cut's prompt, seed and settings filled in. SDXL graphs load `sd_xl_base_1.0.safetensors`. Qwen graphs load the hero from `references/<sha256>.png`, so copy the ZIP's `references` folder into ComfyUI's input directory before you queue one. You need the same pinned model files and ComfyUI-GGUF.
+Each `workflows/sNN.api.json` in an export ZIP is a ComfyUI API-format graph with the cut's prompt, seed and settings filled in. Qwen graphs load the hero from `references/<sha256>.png`, so copy the ZIP's `references` folder into ComfyUI's input directory before you queue one. You need the same pinned model files and ComfyUI-GGUF.
 
 ## Example outputs
 
@@ -98,5 +85,5 @@ Explore the greenhouse and hangar boards, with saved takes, reviews and recipes.
 
 Shot Board source is [MIT](LICENSE).
 
-SDXL Base 1.0 is licensed under CreativeML Open RAIL++-M, which carries use restrictions. The Qwen diffusion model, encoder, vision projector and VAE are Apache-2.0. ComfyUI is GPL-3.0. ComfyUI-GGUF is Apache-2.0. Comfy SDK and comfy-api-proxy are MIT. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [workflows/](workflows/).
+SDXL Base 1.0 is licensed under CreativeML Open RAIL++-M. The Qwen diffusion model, encoder, vision projector and VAE are Apache-2.0. ComfyUI is GPL-3.0. ComfyUI-GGUF is Apache-2.0. Comfy SDK and comfy-api-proxy are MIT. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [workflows/](workflows/).
 
