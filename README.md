@@ -1,6 +1,6 @@
 # Shot Board
 
-<img src="shotboard/static/logo.svg" width="388" height="64" alt="Shot Board — one scene, six shots">
+<picture><source media="(prefers-color-scheme: light)" srcset="docs/logo-light.svg"><img src="shotboard/static/logo.svg" width="244" height="64" alt="Shot Board — one scene, six shots"></picture>
 
 **A storyboard app for film coverage: one scene, six shots.**
 

@@ -140,7 +140,7 @@ class ExportTests(unittest.TestCase):
         path = self.data / "testboard/s01.png"
         image = Image.new("RGB", (20, 100), "red")
         image.paste("blue", (0, 0, 20, 10))
-        image.paste("lime", (0, 90, 20, 100))
+        image.paste((0, 255, 0), (0, 90, 20, 100))
         image.save(path)
         self.board["shots"][0]["takes"][0]["image_sha256"] = sha256(path)
         with Image.open(io.BytesIO(storyboard_png(self.board, self.data))) as result:
