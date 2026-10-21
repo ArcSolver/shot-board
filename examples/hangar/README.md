@@ -3,16 +3,7 @@
 | Field | Value |
 |---|---|
 | Scene | A gray utility robot with a square metal head, a single blue optical sensor and mechanical gripper arms repairs a small spaceship engine on a workbench in a quiet hangar at night. |
-| Continuity | SDXL only. |
-
-| Cut | Selected take |
-|---|---|
-| s01 Establishing | t01 |
-| s02 Medium | t02 |
-| s03 Close-up | t02 |
-| s04 Over shoulder | t01 |
-| s05 Insert | t02 |
-| s06 Low angle | t02 |
+| Model | SDXL Base 1.0 |
 
 | File | Data |
 |---|---|

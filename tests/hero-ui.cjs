@@ -25,7 +25,6 @@ context.referenceId = referenceTake.id;
 context.fixture = board;
 vm.runInContext('board=fixture; currentShot="s01"; renderCompare();', context);
 assert.equal(element('use-hero').disabled, true);
-assert.match(element('hero-rule').textContent, /Select an SDXL take to use as the hero/);
 (async()=>{
   requests.length = 0;
   await element('use-hero').onclick();

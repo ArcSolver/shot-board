@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Scene | A traveler discovers a small brass compass in a rain-soaked greenhouse. |
-| Selected takes | s01/t01, s02/t01, s03/t01, s04/t01, s05/t01, s06/t01 |
+| Selected takes | First take on every cut |
 
 | File | Data |
 |---|---|
