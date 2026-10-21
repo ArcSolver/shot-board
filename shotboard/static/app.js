@@ -12,7 +12,16 @@ const choices = {lens:'35', angle:'Eye level', move:'Static', lighting:'Window l
 const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const busy = () => board?.shots.some(s => s.takes.some(t => ['queued','running'].includes(t.status)));
 const imageURL = (take) => `/api/boards/${board.id}/images/${take.image}`;
-function toast(message) { $('toast').textContent=message; $('toast').hidden=false; clearTimeout(toast.timer); toast.timer=setTimeout(()=>$('toast').hidden=true,6000); }
+// The toast is a manual popover so it shows in the top layer, above an open Compare or Storyboard dialog and its backdrop.
+// Inside a modal dialog it moves into that dialog, so it is not inert and its status is still announced.
+function toast(message) {
+  const el=$('toast'), layer=!!el.showPopover, host=document.querySelector?.('dialog[open]')||document.body;
+  if(el.parentNode&&el.parentNode!==host){if(layer&&el.matches(':popover-open'))el.hidePopover();host.append(el);}
+  el.textContent=message; el.hidden=false;
+  if(layer){if(el.matches(':popover-open'))el.hidePopover();el.showPopover();}
+  clearTimeout(toast.timer);
+  toast.timer=setTimeout(()=>{el.hidden=true;if(layer&&el.matches(':popover-open'))el.hidePopover();},6000);
+}
 async function api(path, method='GET', data) {
   const response=await fetch('/api'+path,{method,headers:data?{'Content-Type':'application/json'}:{},body:data?JSON.stringify(data):undefined});
   if(!response.ok){let error=await response.json().catch(()=>({detail:'Local server unavailable'}));throw new Error(typeof error.detail==='string'?error.detail:'Please check your inputs.');}
