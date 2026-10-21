@@ -36,11 +36,11 @@ def storyboard_png(board, data_root, layout="landscape"):
         raise ValueError("Choose landscape or portrait.")
     selected = selected_takes(board, data_root)
     width, height = SIZES[layout]
-    canvas = Image.new("RGB", (width, height), "#131314")
+    canvas = Image.new("RGB", (width, height), "#ffffff")
     draw = ImageDraw.Draw(canvas)
     font = lambda size: ImageFont.load_default(size=size)
     margin, gap = (42, 20) if layout == "landscape" else (34, 18)
-    draw.text((margin, 26), "SHOT BOARD", font=font(21), fill="#0a84ff")
+    draw.text((margin, 26), "SHOT BOARD", font=font(21), fill="#0066cc")
     scene = ' '.join(board["config"]["scene"].split())
     # Bound the header so all 6–9 cuts retain image space, including old boards
     # saved before input normalization. All valid 600-character scenes fit.
@@ -51,7 +51,7 @@ def storyboard_png(board, data_root, layout="landscape"):
         scene_lines = wrap(draw, scene, scene_font, width-2*margin)
     y = 65
     for line in scene_lines:
-        draw.text((margin, y), line, font=scene_font, fill="#f1f1f4")
+        draw.text((margin, y), line, font=scene_font, fill="#1d1d1f")
         y += scene_font.size + 6
     top, bottom = y+20, height-63
     cols = 3 if layout == "landscape" else 2
@@ -62,7 +62,7 @@ def storyboard_png(board, data_root, layout="landscape"):
         raise ValueError("Scene line is too long for this storyboard layout. Shorten the scene before exporting.")
     for i, (shot, take, path) in enumerate(selected):
         x, y = margin+(i % cols)*(cell_w+gap), top+(i//cols)*(cell_h+gap)
-        draw.rectangle((x,y,x+cell_w,y+cell_h), fill="#1f2021")
+        draw.rectangle((x,y,x+cell_w,y+cell_h), fill="#f5f5f7")
         image_h = cell_h-43
         with Image.open(path) as original:
             image = original.convert("RGB")
@@ -75,7 +75,7 @@ def storyboard_png(board, data_root, layout="landscape"):
             label_font = font(label_font.size-1)
             lines = wrap(draw, label, label_font, cell_w-90)
         for line_index, line in enumerate(lines):
-            draw.text((x+12,y+image_h+5+line_index*18), line, font=label_font, fill="#f1f1f4")
+            draw.text((x+12,y+image_h+5+line_index*18), line, font=label_font, fill="#1d1d1f")
     buffer = io.BytesIO()
     canvas.save(buffer, format="PNG", compress_level=9)
     return buffer.getvalue()
