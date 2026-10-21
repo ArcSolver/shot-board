@@ -1,6 +1,6 @@
 # Shot Board
 
-<picture><source media="(prefers-color-scheme: light)" srcset="docs/logo-light.svg"><img src="shotboard/static/logo.svg" width="244" height="64" alt="Shot Board — one scene, six shots"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/logo-dark.svg"><img src="shotboard/static/logo.svg" width="244" height="64" alt="Shot Board — one scene, six shots"></picture>
 
 **A storyboard app for film coverage: one scene, six shots.**
 
@@ -18,7 +18,7 @@ uv pip install --python .venv/bin/python -r requirements.lock.txt --require-hash
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-Open **http://127.0.0.1:8790** and choose **Explore the board** on an example. Rendering new takes requires a GPU worker; see [Run it locally](#run-it-locally).
+Open **http://127.0.0.1:8790** and choose **Explore the board**, or open one of the examples. Rendering new takes requires a GPU worker; see [Run it locally](#run-it-locally).
 
 ## What it does
 
@@ -28,7 +28,7 @@ You write one scene. Shot Board turns it into a shot list and renders takes for 
 - **Editable cuts.** Edit each cut’s prompt and negative prompt.
 - **Takes you can compare.** SDXL renders takes for each cut. Compare & pick shows every take of a cut side by side, with its render details one click away. Seeds can be locked and reused.
 - **Hero reference.** Use an SDXL hero for Qwen reference edits. Every other cut is re-rendered with Qwen-Image-Edit-2511 from that same image.
-- **Reviews.** Save a pass, fail or pending verdict and a note with each take.
+- **Reviews.** Save a pass, fail or pending verdict and a note with each take in Compare & pick.
 - **Export.** Export landscape or portrait storyboards, plus stills, ComfyUI workflows and saved recipes.
 
 | Home | Board | Compare & pick | Storyboard |
@@ -67,7 +67,7 @@ SHOTBOARD_ENGINE_MANIFEST=/path/to/engine-models.json \
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-Open **http://127.0.0.1:8790** and choose **+ New scene**. Type a scene or press **Use example**, then build the shot list and render SDXL takes. Pick an SDXL take, choose **Use selected as hero**, then **Render reference edits**. Compare the takes, save a verdict on each, and pick.
+Open **http://127.0.0.1:8790** and choose **New scene**. Type a scene or press **Use example**, then build the shot list and render SDXL takes. In **Compare & pick**, pick an SDXL take, open **Seed, hero & more takes** and choose **Use selected as hero**, then **Render reference edits**. Compare the takes, save a verdict on each, and pick.
 
 ### Reuse a recipe outside the app
 

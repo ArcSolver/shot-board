@@ -22,7 +22,7 @@ function guarded(fn) { return async (...args) => {try{await fn(...args);}catch(e
 function chips(config) {
   for(const [key, values] of Object.entries(config)) {
     if(!Object.hasOwn(choices,key))continue;
-    let row=document.createElement('div');row.className='chip-row';row.innerHTML=`<span class="chip-label">${{lens:'LENS',angle:'ANGLE',move:'MOVE',lighting:'LIGHT',look:'FILM LOOK'}[key]}</span>`;
+    let row=document.createElement('div');row.className='chip-row';row.innerHTML=`<span class="chip-label">${{lens:'Lens',angle:'Angle',move:'Move',lighting:'Light',look:'Film look'}[key]}</span>`;
     values.forEach(value=>{let button=document.createElement('button');button.type='button';button.textContent=key==='lens'?value+' mm':value;button.className='chip'+(choices[key]===value?' active':'');button.setAttribute('aria-pressed',choices[key]===value);button.onclick=()=>{choices[key]=value;row.querySelectorAll('button').forEach(b=>{b.classList.toggle('active',b===button);b.setAttribute('aria-pressed',b===button);});};row.append(button);});
     (['lens','angle','move'].includes(key)?$('camera-chips'):$('look-chips')).append(row);
   }
@@ -31,42 +31,51 @@ function allTakes(){return board.shots.flatMap(s=>s.takes);}
 function render() {
   if(!board)return;
   $('home').hidden=true;$('composer').hidden=true;$('workspace').hidden=false;
-  $('board-title').textContent=board.title;
+  const scene=board.config?.scene||'';const title=board.title.trim();$('board-title').textContent=title+(scene.trim().length>title.length&&!/[.!?…]$/.test(title)?'…':'');
   const continuity=board.continuity||{}, heroRef=continuity.hero;
   $('keep-continuity').checked=!!continuity.enabled;
   $('keep-continuity').disabled=busy()||!heroRef;
-  $('hero-status').textContent=heroRef?`Hero: ${heroRef.shot_id.toUpperCase()} / ${heroRef.take_id.toUpperCase()}${continuity.enabled?' · Qwen reference edits':' · continuity off'}`:'Pick a take, then use it as the hero in Compare & pick.';
+  $('hero-status').textContent=heroRef?(continuity.enabled?'On · other cuts render as Qwen reference edits':'Off'):'No hero yet';
   const picked=board.shots.filter(s=>s.picked).length, takes=allTakes(), completed=takes.filter(t=>t.status==='succeeded').length;
-  $('export').disabled=picked!==board.shots.length;$('storyboard').disabled=picked!==board.shots.length;
+  const allPicked=picked===board.shots.length, ready=s=>s.takes.some(t=>t.status==='succeeded');
+  const needsRender=board.shots.some(s=>!ready(s))||(!!continuity.enabled&&board.shots.some(s=>s.id!==heroRef?.shot_id&&!s.takes.some(t=>t.reference&&t.status==='succeeded')));
+  $('export').disabled=!allPicked;$('storyboard').disabled=!allPicked;
+  $('storyboard').className=allPicked?'primary':'quiet';
   $('generate').disabled=busy();$('cancel').hidden=!busy();
-  $('generate').textContent=board.continuity?.enabled?'▶ Render reference edits':takes.length?'▶ Render more takes':'▶ Render board';
+  $('generate').className=needsRender&&!allPicked?'primary':'quiet';
+  $('generate').textContent=board.continuity?.enabled?'Render reference edits':takes.length?'Render more takes':'Render board';
+  $('pick-count').textContent=`${picked} of ${board.shots.length} picked`;
+  $('pick-meter').innerHTML=board.shots.map(s=>`<i class="${s.picked?'on':''}"></i>`).join('');
   $('queue-panel').hidden=!busy();
   const running=takes.find(t=>t.status==='running'),queued=takes.filter(t=>t.status==='queued').length;
   $('queue-status').textContent=`${completed} / ${takes.length} takes ready · ${queued} queued`;
   $('queue-detail').textContent=running?`${running.phase} · ${Math.floor((Date.now()/1000)-running.started_at)}s elapsed`:'Waiting for the worker';
   $('queue-progress').max=takes.length||1;$('queue-progress').value=completed;
-  $('recipe-label').textContent=heroRef?`Hero ${heroRef.shot_id.toUpperCase()} / ${heroRef.take_id.toUpperCase()} · ${heroRef.settings.label} · recipe`:'SDXL Base 1.0 · recipe';
-  $('recipe-detail').textContent=heroRef?`Hero: ${heroRef.settings.label}, ${heroRef.settings.steps} steps, seed ${heroRef.seed}.`:'SDXL Base 1.0, 20 steps.';
+  $('recipe-label').textContent=heroRef?`Hero ${heroRef.shot_id.toUpperCase()} / ${heroRef.take_id.toUpperCase()} · ${heroRef.settings.label}`:'SDXL Base 1.0';
+  $('recipe-detail').textContent=heroRef?`${heroRef.settings.steps} steps · seed ${heroRef.seed}`:'20 steps';
   const signature=JSON.stringify([board.continuity,board.review,board.shots.map(s=>[s.title,s.prompt,s.picked,s.locked_seed,s.takes.map(t=>[t.id,t.status,t.image,t.error])])]);
   if(signature!==lastSignature){
     lastSignature=signature;
     $('board-grid').innerHTML=board.shots.map((s,i)=>{
       const ready=s.takes.filter(t=>t.status==='succeeded'),hero=ready.find(t=>t.id===s.picked)||ready[0];
       const active=s.takes.find(t=>t.status==='running'), strip=busy()?s.takes:ready;
-      return `<article class="shot-card ${s.picked?'picked':''}"><div class="shot-label"><h3>${pictogram(s.shot_type||s.title)}<b>${String(i+1).padStart(2,'0')}</b>${escapeHTML(s.title)}</h3>${heroRef?.shot_id===s.id&&continuity.enabled?'<span class="pill">★ HERO</span>':s.picked?'<span class="pill">✓ SELECTED</span>':''}</div><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?`<img src="${imageURL(hero)}" alt="${escapeHTML(s.title)} ${hero.id}">`:`<span class="empty-frame">${String(i+1).padStart(2,'0')}</span>`}${hero&&s.picked?'':`<span class="frame-status">${hero?'PREVIEW / '+hero.id.toUpperCase():active?'RENDERING':s.takes.some(t=>t.status==='queued')?'IN THE QUEUE':s.takes.some(t=>t.status==='failed')?'RENDER FAILED · RETRY':'AWAITING FIRST TAKE'}</span>`}</div><div class="take-strip">${strip.map(t=>`<button class="take-thumb ${s.picked===t.id?'selected':''}" data-compare="${s.id}" aria-label="Compare ${escapeHTML(s.title)} ${t.id}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${t.id}">`:t.status==='running'?'…':t.status==='queued'?t.id:escapeHTML(t.status)}</button>`).join('')}</div>${hero?reviewEditor(s,hero):''}<div class="card-bottom"><small>${s.locked_seed!==null?'▣ SEED LOCKED':''}</small><button data-compare="${s.id}">Compare & pick ↗</button></div></article>`;
+      const review=hero&&board.review?.find(r=>r.shot===s.id&&r.take===hero.id), verdict=review&&review.verdict!=='pending'?`<span class="verdict ${review.verdict}" title="${escapeHTML(review.note||'')}">${review.verdict==='pass'?'Pass':'Fail'}</span>`:'';
+      const badge=heroRef?.shot_id===s.id&&continuity.enabled?'<span class="badge hero">★ Hero</span>':'';
+      const at=strip.findIndex(t=>t.id===s.picked), shown=strip.length<=5?strip:at<4?strip.slice(0,4):[...strip.slice(0,3),strip[at]];
+      const label=hero?(s.picked?'':'Preview · '+hero.id.toUpperCase()):active?'Rendering':s.takes.some(t=>t.status==='queued')?'Queued':s.takes.some(t=>t.status==='failed')?'Failed':'', status=label?`<span class="frame-status">${label}</span>`:'';
+      return `<article class="shot-card ${s.picked?'picked':''}"><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?`<img src="${imageURL(hero)}" alt="${escapeHTML(s.title)} ${hero.id}">`:`<span class="empty-frame">${String(i+1).padStart(2,'0')}</span>`}${badge}${status}</div><div class="shot-label"><h3>${pictogram(s.shot_type||s.title)}<b>${String(i+1).padStart(2,'0')}</b><span>${escapeHTML(s.title)}</span></h3>${verdict}</div><div class="card-bottom"><div class="take-strip">${shown.map(t=>`<button class="take-thumb ${s.picked===t.id?'selected':''}" data-compare="${s.id}" aria-label="Compare ${escapeHTML(s.title)} ${t.id}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${t.id}">`:t.status==='running'?'…':t.status==='queued'?t.id:escapeHTML(t.status)}</button>`).join('')}${shown.length<strip.length?`<button class="take-thumb more" data-compare="${s.id}" aria-label="Compare all ${strip.length} takes of ${escapeHTML(s.title)}">+${strip.length-shown.length}</button>`:''}</div><button class="${s.picked||!ready.length?'quiet':'tinted'}" data-compare="${s.id}">Compare &amp; pick</button></div></article>`;
     }).join('');
     document.querySelectorAll('[data-compare]').forEach(el=>{el.onclick=()=>openCompare(el.dataset.compare);el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openCompare(el.dataset.compare);}};});
-    bindReviewEditors('#board-grid');
     if($('compare-dialog').open)renderCompare();
   }
 }
 async function refresh() {if(board){board=await api('/boards/'+board.id);render();}}
-async function openBoard(id){board=await api('/boards/'+id);location.hash=id;lastSignature='';editing=false;$('shot-list').hidden=true;$('board-grid').hidden=false;render();}
+async function openBoard(id){board=await api('/boards/'+id);location.hash=id;lastSignature='';editing=false;$('shot-list').hidden=true;$('board-grid').hidden=false;$('edit-toggle').textContent='Edit cuts';render();}
 function renderCompare(){
   const s=board.shots.find(s=>s.id===currentShot);if(!s)return;
   $('compare-title').textContent=s.title;
-  $('compare-index').textContent=` / ${board.shots.indexOf(s)+1} OF ${board.shots.length}`;
-  $('compare-images').innerHTML=s.takes.length?s.takes.map(t=>`<div class="compare-take ${s.picked===t.id?'chosen':''} ${t.status!=='succeeded'?'unavailable':''}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${escapeHTML(s.title)} ${t.id}">`:'<div class="shot-hero"><span class="empty-frame">'+escapeHTML(t.status)+'</span></div>'}<div><div><strong>${t.id.toUpperCase()}</strong><small>${t.reference?'Qwen reference edit':t.settings?escapeHTML(t.settings.label):''}</small><details class="take-details"><summary>Render details</summary><small>SEED ${t.seed}</small>${t.settings?`<small>${escapeHTML(t.settings.label)} · ${t.settings.width} × ${t.settings.height} · CFG ${t.settings.cfg}</small><small>${t.settings.steps} steps · ${escapeHTML(t.settings.sampler_name)} / ${escapeHTML(t.settings.scheduler)}</small>`:''}${t.error?`<small>${escapeHTML(t.error)}</small>`:''}</details></div><button class="${s.picked===t.id?'primary':'quiet'}" data-pick="${t.id}" ${t.status!=='succeeded'?'disabled':''}>${s.picked===t.id?'✓ Selected':'Pick this take'}</button></div>${reviewEditor(s,t)}</div>`).join(''):'<p class="muted">No takes yet. Render this cut to start comparing.</p>';
+  $('compare-index').textContent=`· ${board.shots.indexOf(s)+1} of ${board.shots.length}`;
+  $('compare-images').innerHTML=s.takes.length?s.takes.map(t=>`<div class="compare-take ${s.picked===t.id?'chosen':''} ${t.status!=='succeeded'?'unavailable':''}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${escapeHTML(s.title)} ${t.id}">`:'<div class="shot-hero"><span class="empty-frame take-state">'+escapeHTML(t.status)+'</span></div>'}<div><div><strong>${t.id.toUpperCase()}</strong><small>${t.reference?'Qwen reference edit':t.settings?escapeHTML(t.settings.label):''}</small><details class="take-details"><summary>Render details</summary><small>SEED ${t.seed}</small>${t.settings?`<small>${escapeHTML(t.settings.label)} · ${t.settings.width} × ${t.settings.height} · CFG ${t.settings.cfg}</small><small>${t.settings.steps} steps · ${escapeHTML(t.settings.sampler_name)} / ${escapeHTML(t.settings.scheduler)}</small>`:''}${t.error?`<small>${escapeHTML(t.error)}</small>`:''}</details></div><button class="${s.picked===t.id?'primary':'tinted'}" data-pick="${t.id}" ${t.status!=='succeeded'?'disabled':''}>${s.picked===t.id?'✓ Picked':'Pick'}</button></div>${reviewEditor(s,t)}</div>`).join(''):'<p class="muted">No takes yet.</p>';
   document.querySelectorAll('[data-pick]').forEach(el=>el.onclick=guarded(async()=>{await api(`/boards/${board.id}/shots/${s.id}/pick`,'POST',{take_id:el.dataset.pick});await refresh();$('reuse-seed').value=board.shots.find(x=>x.id===s.id).takes.find(t=>t.id===el.dataset.pick).seed;}));
   bindReviewEditors('#compare-images');
   $('seed-lock').textContent=s.locked_seed!==null?'Unlock seed':'Lock seed';
@@ -95,11 +104,10 @@ $('use-hero').onclick=guarded(async()=>{const s=board.shots.find(s=>s.id===curre
 $('keep-continuity').onchange=guarded(async()=>{const hero=board.continuity?.hero;await api(`/boards/${board.id}/continuity`,'POST',{enabled:$('keep-continuity').checked,shot_id:hero?.shot_id,take_id:hero?.take_id});await refresh();});
 $('export').onclick=()=>{location.href=`/api/boards/${board.id}/export`;};
 $('close-compare').onclick=()=>$('compare-dialog').close();$('close-boards').onclick=()=>$('boards-dialog').close();
-$('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$('board-grid').hidden=editing;$('edit-toggle').textContent=editing?'Return to board':'Edit shot list';if(editing)showEditors();};
-$('board-tab').onclick=()=>{editing=false;$('shot-list').hidden=true;$('board-grid').hidden=false;$('edit-toggle').textContent='Edit shot list';};
+$('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$('board-grid').hidden=editing;$('edit-toggle').textContent=editing?'Done':'Edit cuts';if(editing)showEditors();};
 $('new-board').onclick=()=>{$('scene-form').reset();document.querySelector('.advanced').open=false;board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;$('scene').focus();};
-$('load-example').onclick=guarded(async()=>{const boards=await api('/boards');$('boards-list').innerHTML=boards.map(b=>`<button class="board-link" data-board="${b.id}">${escapeHTML(b.title)} ↗</button>`).join('')||'<p class="muted">No boards yet.</p>';document.querySelectorAll('[data-board]').forEach(b=>b.onclick=guarded(async()=>{await openBoard(b.dataset.board);$('boards-dialog').close();}));$('boards-dialog').showModal();});
-async function health(){try{const h=await api('/health');$('connection').textContent=board?.continuity?.enabled&&!h.reference_components_present?'Engine offline':h.proxy_ready&&h.checkpoint_present?'Local engine ready':!h.checkpoint_present?'Engine offline':'Local engine offline';}catch{$('connection').textContent='Local server unavailable';}}
+$('load-example').onclick=guarded(async()=>{const boards=await api('/boards');$('boards-list').innerHTML=boards.map(b=>`<button class="board-link" data-board="${b.id}">${escapeHTML(b.title)}</button>`).join('')||'<p class="muted">No boards yet.</p>';document.querySelectorAll('[data-board]').forEach(b=>b.onclick=guarded(async()=>{await openBoard(b.dataset.board);$('boards-dialog').close();}));$('boards-dialog').showModal();});
+async function health(){try{const h=await api('/health');$('connection').textContent=board?.continuity?.enabled&&!h.reference_components_present?'Engine offline':h.proxy_ready&&h.checkpoint_present?'Local engine ready':!h.checkpoint_present?'Engine offline':'Local engine offline';$('connection').dataset.state=$('connection').textContent==='Local engine ready'?'ready':'offline';}catch{$('connection').textContent='Local server unavailable';$('connection').dataset.state='offline';}}
 guarded(async()=>{chips(await api('/config'));await loadGallery();if(location.hash.length>1)await openBoard(location.hash.slice(1));await health();})();
 setInterval(async()=>{if(polling)return;polling=true;try{await refresh();}catch{}finally{polling=false;}},1600);setInterval(health,15000);
 
@@ -141,8 +149,8 @@ async function loadGallery(){
   const featured=examples[0], b=featured.board;
   const picked=s=>s.takes.find(t=>t.id===s.picked);
   const url=(ex,s)=>`/api/examples/${ex.slug}/images/${picked(s).image}`;
-  $('featured-board').innerHTML=`<div class="featured-content"><div class="feature-cover"><img src="${url(featured,b.shots[1])}" alt="Traveler in a mustard raincoat examining a brass compass"><div class="feature-caption"><h2>The greenhouse</h2><p>A small discovery.<br>Six ways into the same moment.</p></div></div><div class="feature-mosaic">${b.shots.map((s,i)=>`<button class="feature-cut" data-example="${featured.slug}" data-cut="${s.id}" aria-label="Open ${escapeHTML(s.title)}"><img src="${url(featured,s)}" alt="${escapeHTML(s.title)} selected render"><span>${String(i+1).padStart(2,'0')} / ${escapeHTML(s.title)}</span></button>`).join('')}</div></div><div class="feature-bottom"><button class="primary" data-example="${featured.slug}">Explore the board ↗</button></div>`;
-  $('example-gallery').innerHTML=examples.map(ex=>`<button class="gallery-card" data-example="${ex.slug}"><div class="gallery-images">${[0,2,4].map(i=>`<img loading="lazy" src="${url(ex,ex.board.shots[i])}" alt="${escapeHTML(ex.board.shots[i].title)} render">`).join('')}</div><div class="gallery-caption"><span>${escapeHTML(ex.label)} ↗</span></div></button>`).join('');
+  $('featured-board').innerHTML=`<div class="featured-content"><div class="feature-cover"><img src="${url(featured,b.shots[1])}" alt="Traveler in a mustard raincoat examining a brass compass"><div class="feature-caption"><h2>The greenhouse</h2><button class="on-photo" data-example="${featured.slug}">Explore the board</button></div></div><div class="feature-mosaic">${b.shots.map((s,i)=>`<button class="feature-cut" data-example="${featured.slug}" data-cut="${s.id}" aria-label="Open ${escapeHTML(s.title)}"><img src="${url(featured,s)}" alt="${escapeHTML(s.title)} selected render"><span>${String(i+1).padStart(2,'0')} ${escapeHTML(s.title)}</span></button>`).join('')}</div></div>`;
+  $('example-gallery').innerHTML=examples.map(ex=>`<button class="gallery-card" data-example="${ex.slug}"><div class="gallery-images">${[0,2,4].map(i=>`<img loading="lazy" src="${url(ex,ex.board.shots[i])}" alt="${escapeHTML(ex.board.shots[i].title)} render">`).join('')}</div><div class="gallery-caption"><span>${escapeHTML(ex.label)}</span><small>${ex.board.shots.length} cuts</small></div></button>`).join('');
   document.querySelectorAll('[data-example]').forEach(el=>el.onclick=guarded(async()=>{const opened=await api(`/examples/${el.dataset.example}/open`,'POST');await openBoard(opened.id);window.scrollTo(0,0);if(el.dataset.cut)openCompare(el.dataset.cut);}));
   $('coverage-preview').innerHTML=['Establishing','Medium','Close-up','Over shoulder','Insert','Low angle'].map(type=>`<div class="composition-chip">${pictogram(type)}${type==='Establishing'?'Wide':type==='Over shoulder'?'OTS':type}</div>`).join('');
 }

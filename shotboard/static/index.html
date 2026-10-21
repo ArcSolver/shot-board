@@ -1,45 +1,50 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shot Board — A scene, seen six ways.</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><meta name="theme-color" content="#f5f5f7">
+<title>Shot Board</title>
 <link rel="icon" type="image/svg+xml" href="/static/favicon.svg"><link rel="alternate icon" href="/static/favicon.ico"><link rel="stylesheet" href="/static/style.css"><script src="/static/app.js" defer></script>
 </head>
 <body>
-<header class="topbar"><a class="brand" href="/" aria-label="Shot Board home"><img class="brand-logo" src="/static/logo.svg" width="122" height="32" alt="Shot Board"></a><nav><button id="load-example" class="quiet">My boards</button><button id="new-board" class="primary">+ New scene</button></nav></header>
+<header class="topbar"><a class="brand" href="/" aria-label="Shot Board home"><img class="brand-logo" src="/static/logo.svg" width="122" height="32" alt="Shot Board"></a><nav><button id="load-example" class="plain">My boards</button><button id="new-board" class="primary">New scene</button></nav></header>
 <main>
 <section id="home">
-  <div class="home-heading"><div><p class="eyebrow">ONE SCENE. A WHOLE STORY.</p><h1>Find your next frame<span>.</span></h1></div><p class="home-description">Turn a scene into a storyboard.</p></div>
+  <h1 class="home-title">One scene. Six shots.</h1>
   <div id="featured-board" class="featured-board" aria-label="Featured greenhouse continuity board"></div>
-  <div class="gallery-heading"><h2>From the cutting room</h2></div>
+  <h2 class="section-title">Examples</h2>
   <div id="example-gallery" class="example-gallery"></div>
 </section>
 <section id="composer" hidden>
-  <div class="composer-intro"><p class="eyebrow">A NEW SCENE</p><h1>Start with a moment<span>.</span></h1></div>
+  <h1>New scene</h1>
   <form id="scene-form" class="composer-panel">
-    <label class="section-label" for="scene">WHAT HAPPENS IN YOUR SCENE?</label>
-    <textarea id="scene" name="scene" rows="3" required maxlength="600"></textarea>
-    <button id="use-example" type="button" class="quiet">Use example</button>
+    <div class="field-head"><label for="scene">Scene</label><button id="use-example" type="button" class="link">Use example</button></div>
+    <textarea id="scene" name="scene" rows="3" required maxlength="600" placeholder="Describe one moment."></textarea>
     <div class="coverage-preview" id="coverage-preview" aria-label="Six planned compositions"></div>
-    <details class="advanced"><summary>Fine-tune the scene</summary>
+    <details class="advanced"><summary>Options</summary>
       <div class="bible-fields"><label>Character<input id="character" name="character" maxlength="400"></label><label>Key prop<input id="prop" name="prop" maxlength="160"></label><label>Set<input id="setting" name="setting" maxlength="400"></label></div>
-      <div class="section-label">CAMERA LANGUAGE</div><div id="camera-chips"></div><div class="section-label">ATMOSPHERE</div><div id="look-chips"></div>
-      <div class="form-bottom"><label>Coverage<select id="count" name="count"><option value="6">6 cuts</option><option value="7">7 cuts</option><option value="8">8 cuts</option><option value="9">9 cuts</option></select></label><label>Seed family<input type="number" id="seed" name="seed" min="0" max="4294967295" value="20261020"></label></div>
+      <div class="section-label">Camera</div><div id="camera-chips"></div><div class="section-label">Look</div><div id="look-chips"></div>
+      <div class="form-bottom"><label>Cuts<select id="count" name="count"><option value="6">6 cuts</option><option value="7">7 cuts</option><option value="8">8 cuts</option><option value="9">9 cuts</option></select></label><label>Seed<input type="number" id="seed" name="seed" min="0" max="4294967295" value="20261020"></label></div>
     </details>
-    <button type="submit" class="primary full">Build shot list <span>↗</span></button>
+    <button type="submit" class="primary large">Build shot list</button>
   </form>
 </section>
 <section id="workspace" hidden>
-  <div class="board-heading"><div><p class="eyebrow">THE CUTTING ROOM / <span id="board-number">01</span></p><h2 id="board-title"></h2></div><div class="heading-actions"><button id="storyboard" class="primary" disabled>Storyboard ↗</button><button id="export" class="quiet" disabled>Export ZIP ↓</button></div></div>
-  <div class="toolbar"><div class="tabs"><button id="board-tab" class="tab active">Shot board</button></div><button id="edit-toggle" class="quiet">Edit cuts</button><details class="render-settings"><summary>Render & continuity</summary><div class="render-actions"><label>Takes per cut<select id="takes-count"><option value="2">2 takes</option><option value="1">1 take</option><option value="3">3 takes</option><option value="4">4 takes</option></select></label><button id="generate" class="primary">▶ Render board</button><button id="cancel" class="quiet" hidden>Stop queue</button></div><div class="continuity-panel"><label><input type="checkbox" id="keep-continuity"> Use hero reference</label><strong id="hero-status"></strong></div></details></div>
-  <details class="recipe"><summary id="recipe-label">Hero recipe</summary><p id="recipe-detail"></p></details>
+  <h1 id="board-title" class="board-title"></h1>
+  <div class="loop-bar">
+    <button id="edit-toggle" class="quiet">Edit cuts</button>
+    <span class="loop-divider" aria-hidden="true"></span>
+    <div class="render-group"><label class="takes-select"><span class="visually-hidden">Takes per cut</span><select id="takes-count"><option value="2">2 takes</option><option value="1">1 take</option><option value="3">3 takes</option><option value="4">4 takes</option></select></label><button id="generate" class="primary">Render board</button><button id="cancel" class="quiet" hidden>Stop</button>
+      <details class="render-settings"><summary>Hero reference</summary><div class="popover"><label class="toggle"><input type="checkbox" id="keep-continuity"> Use hero reference</label><p id="hero-status" class="popover-meta"></p><div class="recipe"><p id="recipe-label" class="popover-label"></p><p id="recipe-detail" class="popover-meta"></p></div></div></details>
+    </div>
+    <div class="export-group"><div class="pick-progress" id="pick-progress" aria-live="polite"><span id="pick-count"></span><span id="pick-meter" class="pick-meter" aria-hidden="true"></span></div><button id="storyboard" class="quiet" disabled>Storyboard</button><button id="export" class="quiet" disabled>Export ZIP</button></div>
+  </div>
   <div id="queue-panel" class="queue-panel" hidden><div><span class="live-dot"></span><strong id="queue-status"></strong><span id="queue-detail"></span></div><progress id="queue-progress" value="0" max="12"></progress></div>
   <div id="shot-list" hidden></div><div id="board-grid" class="board-grid"></div>
 </section>
 </main>
-<footer><span>SHOT BOARD</span><span id="connection">Checking engine</span><span>Open weights. Powered by ComfyUI.</span></footer>
-<dialog id="compare-dialog"><div class="dialog-heading"><div><p class="eyebrow">COMPARE & PICK <span id="compare-index"></span></p><h2 id="compare-title"></h2></div><div class="dialog-nav"><button id="previous-cut" aria-label="Previous cut">←</button><button id="next-cut" aria-label="Next cut">→</button><button id="close-compare" aria-label="Close compare">✕</button></div></div><div id="compare-images" class="compare-images"></div><details class="compare-recipe"><summary>Seed & render controls</summary><div class="compare-controls"><label>Reusable seed<input id="reuse-seed" type="number" min="0" max="4294967295"></label><button id="seed-lock" class="quiet">Lock seed</button><button id="use-hero" class="quiet">Use selected as hero</button><button id="more-takes" class="primary">+ Render takes</button></div></details></dialog>
-<dialog id="storyboard-dialog"><div class="dialog-heading"><div><h2>Your scene. One board.</h2></div><button id="close-storyboard" aria-label="Close storyboard">✕</button></div><div class="storyboard-controls"><label>Format<select id="storyboard-layout"><option value="landscape">Landscape</option><option value="portrait">Portrait</option></select></label><a id="download-storyboard" class="button primary" download>Download PNG ↓</a></div><p id="storyboard-error" role="status" hidden></p><img id="storyboard-preview" alt="Storyboard of your selected cuts"></dialog>
-<dialog id="boards-dialog"><div class="dialog-heading"><h2>Your boards</h2><button id="close-boards" aria-label="Close boards">✕</button></div><div id="boards-list"></div></dialog>
+<footer><span class="engine"><span class="engine-dot" aria-hidden="true"></span><span id="connection">Checking engine</span></span><span>Open weights. Powered by ComfyUI.</span></footer>
+<dialog id="compare-dialog" aria-labelledby="compare-title"><div class="dialog-heading"><div><p class="dialog-kicker">Compare &amp; pick <span id="compare-index"></span></p><h2 id="compare-title"></h2></div><div class="dialog-nav"><button id="previous-cut" class="icon" aria-label="Previous cut">←</button><button id="next-cut" class="icon" aria-label="Next cut">→</button><button id="close-compare" class="icon" aria-label="Close compare">✕</button></div></div><div id="compare-images" class="compare-images"></div><details class="compare-recipe"><summary>Seed, hero &amp; more takes</summary><div class="compare-controls"><label>Seed<input id="reuse-seed" type="number" min="0" max="4294967295"></label><button id="seed-lock" class="quiet">Lock seed</button><button id="use-hero" class="quiet">Use selected as hero</button><button id="more-takes" class="quiet">Render more takes</button></div></details></dialog>
+<dialog id="storyboard-dialog" aria-labelledby="storyboard-heading"><div class="dialog-heading"><h2 id="storyboard-heading">Storyboard</h2><button id="close-storyboard" class="icon" aria-label="Close storyboard">✕</button></div><div class="storyboard-controls"><label>Format<select id="storyboard-layout"><option value="landscape">Landscape</option><option value="portrait">Portrait</option></select></label><a id="download-storyboard" class="button primary" download>Download PNG</a></div><p id="storyboard-error" role="status" hidden></p><img id="storyboard-preview" alt="Storyboard of your selected cuts"></dialog>
+<dialog id="boards-dialog" aria-labelledby="boards-heading"><div class="dialog-heading"><h2 id="boards-heading">My boards</h2><button id="close-boards" class="icon" aria-label="Close boards">✕</button></div><div id="boards-list"></div></dialog>
 <div id="toast" role="status" aria-live="polite" hidden></div>
 </body></html>
