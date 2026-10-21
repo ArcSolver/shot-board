@@ -5,7 +5,6 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 SIZES = {"landscape": (1600, 900), "portrait": (1080, 1350)}
-CREDIT = "Made with open weights in ComfyUI"
 
 
 def selected_takes(board, data_root):
@@ -42,7 +41,6 @@ def storyboard_png(board, data_root, layout="landscape"):
     font = lambda size: ImageFont.load_default(size=size)
     margin, gap = (42, 20) if layout == "landscape" else (34, 18)
     draw.text((margin, 26), "SHOT BOARD", font=font(21), fill="#d9f994")
-    draw.text((width-margin, 30), f"{len(selected):02} CUTS / {board['config']['lens']} MM", anchor="ra", font=font(14), fill="#aeb8af")
     scene = ' '.join(board["config"]["scene"].split())
     # Bound the header so all 6–9 cuts retain image space, including old boards
     # saved before input normalization. All valid 600-character scenes fit.
@@ -78,10 +76,6 @@ def storyboard_png(board, data_root, layout="landscape"):
             lines = wrap(draw, label, label_font, cell_w-90)
         for line_index, line in enumerate(lines):
             draw.text((x+12,y+image_h+5+line_index*18), line, font=label_font, fill="#f2f2e8")
-        draw.text((x+cell_w-12,y+image_h+13), f"{board['config']['lens']} mm", anchor="ra", font=font(14), fill="#d9f994")
-    draw.line((margin,height-46,width-margin,height-46),fill="#354034")
-    draw.text((margin,height-32), CREDIT, font=font(14), fill="#aeb8af")
-    draw.text((width-margin,height-32), "SELECTED STILLS", anchor="ra", font=font(13), fill="#aeb8af")
     buffer = io.BytesIO()
     canvas.save(buffer, format="PNG", compress_level=9)
     return buffer.getvalue()

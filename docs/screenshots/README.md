@@ -8,7 +8,7 @@
 | [03-rendering.png](03-rendering.png) | Finished hangar SDXL board, two takes per cut, six picks |
 | [04-board.png](04-board.png) | All twelve takes complete, six picks |
 | [05-compare.png](05-compare.png) | Side-by-side takes, picked still and locked seed |
-| [06-mobile.png](06-mobile.png) | Responsive 390px board view |
+| [06-mobile.png](06-mobile.png) | Mobile board view |
 
 ## Continuity captures
 
@@ -18,4 +18,4 @@
 | [08-continuity-rendering.png](08-continuity-rendering.png) | Finished Qwen board with the render panel open, six picks |
 | [09-continuity-board.png](09-continuity-board.png) | Final board: four Qwen edits, SDXL hero and S06 SDXL fallback |
 | [10-continuity-compare.png](10-continuity-compare.png) | SDXL take, failed attempt and selected Qwen over-shoulder edit |
-| [11-continuity-mobile.png](11-continuity-mobile.png) | Completed board at 390px width |
+| [11-continuity-mobile.png](11-continuity-mobile.png) | Mobile board view |

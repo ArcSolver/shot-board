@@ -39,12 +39,10 @@ assert.match(element('hero-rule').textContent, /Select an SDXL take to use as th
     {shot:'s01',take:'t01',verdict:'pass',note:'<b>Clear</b> "subject"'},
     {shot:'s01',take:referenceTake.id,verdict:'fail',note:'Too tight'}
   ];
-  vm.runInContext('board.shots[0].picked="t01";', context);
-  assert.equal(vm.runInContext('reviewSummary(board.shots[0])', context), 'Pass');
-  vm.runInContext('board.shots[0].picked=referenceId;', context);
-  assert.equal(vm.runInContext('reviewSummary(board.shots[0])', context), 'Fail');
+  const verdict = expr => /<option value="(\w+)" selected>/.exec(vm.runInContext(expr, context))[1];
+  assert.equal(verdict('reviewEditor(board.shots[0],board.shots[0].takes.find(t=>t.id===referenceId))'), 'fail');
   vm.runInContext('board.shots[0].picked=null;', context);
-  assert.equal(vm.runInContext('reviewSummary(board.shots[0],"t01")', context), 'Pass');
+  assert.equal(verdict('reviewEditor(board.shots[0],board.shots[0].takes[0])'), 'pass');
   const editor = vm.runInContext('reviewEditor(board.shots[0],board.shots[0].takes[0])', context);
   assert.match(editor, /&lt;b&gt;Clear&lt;\/b&gt; &quot;subject&quot;/);
   assert.doesNotMatch(editor, /<b>Clear<\/b>/);

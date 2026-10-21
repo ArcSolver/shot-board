@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 import zipfile
 
-from .storyboard import storyboard_png, SIZES, CREDIT
+from .storyboard import storyboard_png, SIZES
 
 ROOT = Path(__file__).resolve().parents[1]
 LENSES = ["24", "35", "50", "85"]
@@ -213,7 +213,7 @@ def export_board(board, data_root):
             name = f"storyboard-{layout}.png"
             archive.writestr(name, png)
             manifest["storyboards"].append(dict(file=name, width=size[0], height=size[1],
-                sha256=hashlib.sha256(png).hexdigest(), credit=CREDIT,
+                sha256=hashlib.sha256(png).hexdigest(),
                 layout_version=1, fit="contain", selections=[dict(shot_id=s["id"], take_id=s["picked"]) for s in board["shots"]]))
         archive.writestr("manifest.json", json.dumps(manifest, indent=2) + "\n")
     return buffer.getvalue()

@@ -259,14 +259,14 @@
     },
     {
       "file": "storyboard-landscape.png",
-      "sha256": "75fe290241990373081838c8651484846e2885ad0253dd73439a292a85b82daa",
+      "sha256": "0856e81942c69f1b6dfae134197722a95ab3f0b5b27f28c917d3dfe15361a6f4",
       "device": "NVIDIA GeForce RTX 4090",
       "kind": "derived-or-copy",
       "source": "board.json take image hashes"
     },
     {
       "file": "storyboard-portrait.png",
-      "sha256": "865b69a48da944f991e2b8a8dff5eace60990ff5208191693bfe4f3f05febd6f",
+      "sha256": "755a607726f681c6f5f1dd4dc48277a811f217506cb8651c4e07148386eaf17b",
       "device": "NVIDIA GeForce RTX 4090",
       "kind": "derived-or-copy",
       "source": "board.json take image hashes"

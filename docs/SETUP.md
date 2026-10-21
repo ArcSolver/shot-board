@@ -7,14 +7,12 @@ worker — tested environment
 ```sh
 # Container: runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404 (Ubuntu 24.04)
 # Python: 3.12.3; PyTorch: 2.8.0+cu128; torchvision: 0.23.0+cu128
-# GPU: one NVIDIA GeForce RTX 4090, 24 GB
-# SDK: 0.5.0; proxy: 0.1.6; no Lightning or angle LoRA
+# SDK: 0.5.0; proxy: 0.1.6
 ```
 
 CPU client — verified tests
 
 ```sh
-# Debian GNU/Linux 13; CPython 3.12.15; Node v24.21.0
 # No PyTorch or GPU required for gallery, export or tests
 # Prerequisites: Git, uv, Node; SSH/SCP for a remote worker
 cd /path/to/shot-board
@@ -49,7 +47,6 @@ python3.12 -m venv --system-site-packages .runtime/engine-venv
 # image already provides torch; explicit versions for a fresh Python environment
 .runtime/engine-venv/bin/python -m pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128
 .runtime/engine-venv/bin/python -m pip install -r "$COMFY_DIR/requirements.txt" -r "$COMFY_DIR/custom_nodes/ComfyUI-GGUF/requirements.txt" comfy-sdk==0.5.0 comfy-api-proxy==0.1.6
-# Remaining engine dependency versions are not locked here
 .runtime/engine-venv/bin/python --version
 .runtime/engine-venv/bin/python -c 'import torch; print(torch.__version__, torch.cuda.get_device_name(0))'
 ```
@@ -166,7 +163,6 @@ CPU client — another terminal, app for the remote worker; Ctrl-C to stop
 cd /path/to/shot-board
 ENGINE_MODE=remote COMFY_BASE_URL=http://127.0.0.1:18189 COMFY_ENGINE_URL=http://127.0.0.1:18188 SHOTBOARD_ENGINE_MANIFEST="$PWD/.runtime/engine-models.json" .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 # Open http://127.0.0.1:8790
-# Hero: a picked SDXL original only; Qwen edits cannot be heroes
 ```
 
 Local GPU alternative — app on the GPU worker, no tunnel
@@ -191,22 +187,7 @@ App model check without a report — model-directory variables
 # SHOTBOARD_REFERENCE_MODEL_DIR: Qwen encoder, vision projector and VAE under text_encoders/ and vae/; default ../models, outside the repository
 ```
 
-SDXL lock maintenance — explicit operator action, separate from setup
-
-```sh
-# Replace the revision below with a reviewed full 40-character commit
-.venv/bin/python scripts/update_model_lock.py --update-lock --revision 462165984030d82259a11f4367a4eed129e94a7b
-# Review and commit workflows/model-lock.json separately; downloads never rewrite it
-```
-
 ## Engine configuration and runtime limits
 
-`ENGINE_MODE` tells the app where the models run, `local` or `remote`. If you leave it unset, engine port 8188 counts as local and any other loopback port counts as a remote tunnel. Set it yourself for a tunnel on 8188 or for a local engine on another port. In both modes the engine and proxy URLs must stay loopback HTTP. The memory pressure and swap check runs only for a local engine on macOS, during Qwen edits.
-
-`SHOTBOARD_ENGINE_MANIFEST` accepts schema version 1 with `verified: true` and a `models` array that lists `filename`, actual `sha256`, `bytes` and `verified: true` for each component. The app checks every component, SDXL included, against its pinned locks and rejects anything missing, unverified, or with the wrong hash or size. The report is a file you supply and the app reads it as written, so regenerate it whenever the worker's model files change. The app server never downloads weights or starts a worker. Without a report, it checks local model files at the paths set by the model-directory variables above.
-
-Keep ComfyUI running with `--offline --disable-partner-nodes` if you change the engine command.
-
 - This is a single-user loopback app. Do not run multiple app workers or `--reload` during generation; queued or running takes are marked interrupted after a restart.
-- One render request queues up to four takes per cut, so a six-cut board can queue up to 24 takes at once. A cut holds at most sixteen takes.
-- The app stops waiting for a take thirty minutes after the SDK submits it. Reference upload before that and image download after it are not counted.
+- A render request times out after 30 minutes.

@@ -1,6 +1,6 @@
 # Demo walkthrough
 
-A 1:53 walkthrough: plan shots, render takes, choose a hero, compare and export.
+Follow the demo in the app.
 
 ## Follow the same path yourself
 
@@ -10,5 +10,3 @@ Everything except rendering works in the CPU app with no GPU. Start it as in [Tr
 2. Explore the greenhouse continuity example. Open **Render & continuity** and find the hero badge on 02 Medium (S02/T05).
 3. Open **Compare & pick** on 04 Over shoulder. Compare the SDXL take with the selected Qwen edit. Save a verdict and a note; reviews are saved with the board.
 4. Click **Storyboard ↗**, switch to Portrait and click **Download PNG**. Then click **Export ZIP ↓** and open `manifest.json` to see the recipes and reviews.
-
-Rendering new takes requires the GPU worker described in [SETUP.md](SETUP.md).
