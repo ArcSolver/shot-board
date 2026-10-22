@@ -1,15 +1,22 @@
 """Bundled examples must match their recorded hashes and the current storyboard renderer."""
 import hashlib
+import io
 import json
 from pathlib import Path
 import tempfile
 import unittest
 import zipfile
 
+from PIL import Image
 from shotboard.core import ROOT
 from shotboard.storyboard import storyboard_png
 
 EXAMPLES = ROOT / "examples"
+
+
+def pixels(png):
+    with Image.open(io.BytesIO(png)) as image:
+        return image.size, image.mode, image.tobytes()
 
 
 def read(folder, name):
@@ -35,13 +42,14 @@ class ExampleTests(unittest.TestCase):
                 for layout in ("landscape", "portrait"):
                     name = f"storyboard-{layout}.png"
                     with self.subTest(example=folder.name, layout=layout):
-                        expected = storyboard_png(board, tmp, layout)
-                        self.assertEqual(read(folder, name), expected)
-                        self.assertEqual(read(folder, f"export/{name}"), expected)
-                        self.assertEqual(read(folder, f"selects.zip!{name}"), expected)
+                        stored = read(folder, name)
+                        self.assertEqual(read(folder, f"export/{name}"), stored)
+                        self.assertEqual(read(folder, f"selects.zip!{name}"), stored)
                         manifest = json.loads(read(folder, "selects.zip!manifest.json"))
-                        self.assertIn(hashlib.sha256(expected).hexdigest(), [s["sha256"] for s in manifest["storyboards"]])
+                        self.assertIn(hashlib.sha256(stored).hexdigest(), [s["sha256"] for s in manifest["storyboards"]])
                         self.assertEqual(read(folder, "export/manifest.json"), read(folder, "selects.zip!manifest.json"))
+                        # Compare pixels, not bytes: PNG compression may differ between Pillow builds.
+                        self.assertEqual(pixels(stored), pixels(storyboard_png(board, tmp, layout)))
 
 
 if __name__ == "__main__":
