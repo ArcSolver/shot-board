@@ -4,7 +4,7 @@ Shot Board source is MIT. Each dependency keeps its own license.
 
 ## Generation models
 
-**SDXL Base 1.0** — Stability AI, [model card](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0), [CreativeML Open RAIL++-M license](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/LICENSE.md).
+**SDXL Base 1.0**: Stability AI, [model card](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0), [CreativeML Open RAIL++-M license](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/LICENSE.md).
 
 ## Generation engine
 

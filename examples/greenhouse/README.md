@@ -1,4 +1,4 @@
-# Greenhouse — early recipe
+# Greenhouse: early recipe
 
 | Field | Value |
 |---|---|

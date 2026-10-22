@@ -1,6 +1,6 @@
 # Shot Board
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/logo-dark.svg"><img src="shotboard/static/logo.svg" width="244" height="64" alt="Shot Board — one scene, six shots"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/logo-dark.svg"><img src="shotboard/static/logo.svg" width="244" height="64" alt="Shot Board: one scene, six shots"></picture>
 
 **A storyboard app for film coverage: one scene, six shots.**
 
@@ -8,24 +8,24 @@
 
 ## Try it without a GPU
 
-Browse, review and export the three bundled examples. You need Git and uv.
+Browse, review and export the three boards that ship with the repo. You need Git and uv.
 
 ```sh
-git clone [REPO_URL] shot-board
+git clone https://github.com/ArcSolver/shot-board.git shot-board
 cd shot-board
 uv venv .venv --python 3.12
 uv pip install --python .venv/bin/python -r requirements.lock.txt --require-hashes
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-Open **http://127.0.0.1:8790** and choose **Explore the board**, or open one of the examples. Rendering new takes requires a GPU worker; see [Run it locally](#run-it-locally).
+Open **http://127.0.0.1:8790** and choose **Explore the board**, or open another board from the home page. To render new takes, see [Run it locally](#run-it-locally).
 
 ## What it does
 
 You write one scene. Shot Board turns it into a shot list and renders takes for each cut. You compare, review and pick, then export the picks as a storyboard plus a ZIP that records how each frame was made.
 
 - **Coverage from one scene.** Plan six editable shots from one scene: establishing, medium, face close-up, over shoulder, insert and low angle. You can add up to three more. Add character, prop and setting details if needed.
-- **Editable cuts.** Edit each cut’s prompt and negative prompt.
+- **Editable cuts.** Edit each cut's prompt and negative prompt.
 - **Takes you can compare.** SDXL renders takes for each cut. Compare & pick shows every take of a cut side by side, with its render details one click away. Seeds can be locked and reused.
 - **Hero reference.** Use an SDXL hero for Qwen reference edits. Every other cut is re-rendered with Qwen-Image-Edit-2511 from that same image.
 - **Reviews.** Save a pass, fail or pending verdict and a note with each take in Compare & pick.
@@ -73,7 +73,7 @@ Open **http://127.0.0.1:8790** and choose **New scene**. Type a scene or press *
 
 Each `workflows/sNN.api.json` in an export ZIP is a ComfyUI API-format graph with the cut's prompt, seed and settings filled in. Qwen graphs load the hero from `references/<sha256>.png`, so copy the ZIP's `references` folder into ComfyUI's input directory before you queue one. You need the same pinned model files and ComfyUI-GGUF.
 
-## Example outputs
+## Boards in the repo
 
 Explore the greenhouse and hangar boards, with saved takes, reviews and recipes.
 

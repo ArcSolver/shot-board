@@ -2,7 +2,7 @@
 
 Requires an NVIDIA GPU with 24 GB VRAM.
 
-CPU client — tests
+CPU client: tests
 
 ```sh
 # Prerequisites: Git, uv, Node; SSH/SCP for a remote worker
@@ -13,7 +13,7 @@ uv pip install --python .venv/bin/python -r requirements.lock.txt --require-hash
 node --check shotboard/static/app.js
 ```
 
-CPU client — copy the app to the GPU worker
+CPU client: copy the app to the GPU worker
 
 ```sh
 cd /path/to/shot-board
@@ -24,7 +24,7 @@ scp .runtime/source.tar.gz "$GPU_SSH:/tmp/shot-board-source.tar.gz"
 ssh "$GPU_SSH" 'mkdir -p /opt/shot-board && tar -xzf /tmp/shot-board-source.tar.gz -C /opt/shot-board'
 ```
 
-GPU worker — pinned engine installation
+GPU worker: pinned engine installation
 
 ```sh
 cd /opt/shot-board
@@ -40,7 +40,7 @@ python3.12 -m venv --system-site-packages .runtime/engine-venv
 .runtime/engine-venv/bin/python -m pip install -r "$COMFY_DIR/requirements.txt" -r "$COMFY_DIR/custom_nodes/ComfyUI-GGUF/requirements.txt" comfy-sdk==0.5.0 comfy-api-proxy==0.1.6
 ```
 
-GPU worker — model downloads
+GPU worker: model downloads
 
 ```sh
 cd /opt/shot-board
@@ -84,14 +84,14 @@ VAE
 # Placement: .runtime/ComfyUI/models/vae/qwen_image_vae.safetensors
 ```
 
-GPU worker — model report
+GPU worker: model report
 
 ```sh
 cd /opt/shot-board
 .runtime/engine-venv/bin/python scripts/model_report.py --models-dir .runtime/ComfyUI/models > .runtime/engine-models.json.tmp && mv .runtime/engine-models.json.tmp .runtime/engine-models.json
 ```
 
-GPU worker — terminal 1, engine
+GPU worker: terminal 1, engine
 
 ```sh
 cd /opt/shot-board
@@ -101,14 +101,14 @@ mkdir -p .runtime/input .runtime/output .runtime/user
 .runtime/engine-venv/bin/python .runtime/ComfyUI/main.py --listen 127.0.0.1 --port 8188 --input-directory "$PWD/.runtime/input" --output-directory "$PWD/.runtime/output" --user-directory "$PWD/.runtime/user" --offline --disable-partner-nodes --disable-auto-launch --preview-method none --cache-lru 8 --reserve-vram 1 --disable-dynamic-vram --disable-fast-disk
 ```
 
-GPU worker — terminal 2, SDK proxy
+GPU worker: terminal 2, SDK proxy
 
 ```sh
 cd /opt/shot-board
 .runtime/engine-venv/bin/comfy-api-proxy run --host 127.0.0.1 --port 8189 --comfyui http://127.0.0.1:8188 --state-dir "$PWD/.runtime/proxy"
 ```
 
-CPU client — SSH tunnel to the GPU worker
+CPU client: SSH tunnel to the GPU worker
 
 ```sh
 cd /path/to/shot-board
@@ -119,7 +119,7 @@ scp "$GPU_SSH:/opt/shot-board/.runtime/engine-models.json" .runtime/engine-model
 ssh -N -o ExitOnForwardFailure=yes -L 127.0.0.1:18188:127.0.0.1:8188 -L 127.0.0.1:18189:127.0.0.1:8189 "$GPU_SSH"
 ```
 
-CPU client — another terminal, app for the remote worker
+CPU client: another terminal, app for the remote worker
 
 ```sh
 cd /path/to/shot-board
@@ -127,7 +127,7 @@ ENGINE_MODE=remote COMFY_BASE_URL=http://127.0.0.1:18189 COMFY_ENGINE_URL=http:/
 # Open http://127.0.0.1:8790
 ```
 
-Local GPU alternative — app on the GPU worker
+Local GPU alternative: app on the GPU worker
 
 ```sh
 cd /opt/shot-board
