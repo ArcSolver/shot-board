@@ -22,14 +22,11 @@ Open **http://127.0.0.1:8790** and choose **Explore the board**, or open another
 
 ## What it does
 
-You write one scene. Shot Board turns it into a shot list and renders takes for each cut. You compare, review and pick, then export the picks as a storyboard plus a ZIP that records how each frame was made.
+You write one scene and Shot Board plans six editable cuts: establishing, medium, face close-up, over shoulder, insert and low angle. You can add up to three more, give it character, prop and setting details, and edit each cut's prompt and negative prompt.
 
-- **Coverage from one scene.** Plan six editable shots from one scene: establishing, medium, face close-up, over shoulder, insert and low angle. You can add up to three more. Add character, prop and setting details if needed.
-- **Editable cuts.** Edit each cut's prompt and negative prompt.
-- **Takes you can compare.** SDXL renders takes for each cut. Compare & pick shows every take of a cut side by side, with its render details one click away. Seeds can be locked and reused.
-- **Hero reference.** Use an SDXL hero for Qwen reference edits. Every other cut is re-rendered with Qwen-Image-Edit-2511 from that same image.
-- **Reviews.** Save a pass, fail or pending verdict and a note with each take in Compare & pick.
-- **Export.** Export landscape or portrait storyboards, plus stills, ComfyUI workflows and saved recipes.
+SDXL renders takes for each cut. Compare & pick shows every take of a cut side by side with its render details one click away, and you can lock a seed and reuse it. Make one SDXL take the hero and Qwen-Image-Edit-2511 re-renders every other cut from that image. You can save a pass, fail or pending verdict and a note on any take.
+
+When every cut has a pick, export a landscape or portrait storyboard, plus the stills, ComfyUI workflows and saved recipes.
 
 | Home | Board | Compare & pick | Storyboard |
 |---|---|---|---|
