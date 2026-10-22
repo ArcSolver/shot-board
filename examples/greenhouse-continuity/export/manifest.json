@@ -23,139 +23,139 @@
       "shot": "s01",
       "take": "t01",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: PASS; Prop: FAIL\u2020; Set: FAIL; Framing: PASS. Distant rear figure hides face and compass; yellow coat visible. Large symmetrical arched space differs from the hero view."
+      "note": "Distant rear figure hides face and compass in a large arched space."
     },
     {
       "shot": "s02",
       "take": "t01",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL; Set: PASS; Framing: FAIL. Waist is cropped; holds a photographic camera instead of a compass."
+      "note": "Waist is cropped; holds a photographic camera instead of a compass."
     },
     {
       "shot": "s02",
       "take": "t02",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL; Set: PASS; Framing: PASS. Head and waist visible, but the prop is a camera; coat fastenings and apparent face differ from the chosen hero."
+      "note": "Holds a camera instead of a compass; face and coat differ from the hero."
     },
     {
       "shot": "s02",
       "take": "t03",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL\u2020; Set: PASS; Framing: PASS. Side-on medium; no visible compass; inner clothing differs."
+      "note": "Side-on medium with no visible compass."
     },
     {
       "shot": "s02",
       "take": "t04",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL\u2020; Set: PASS; Framing: PASS. Head and waist/belt visible; no compass is visible."
+      "note": "Head and waist visible, but no compass."
     },
     {
       "shot": "s02",
       "take": "t05",
       "verdict": "pass",
-      "note": "Face: PASS; Outfit: PASS; Prop: PASS; Set: PASS; Framing: PASS. Chosen baseline: entire head, torso and waist/hips visible, hands holding an open brass compass. Yellow coat and teal scarf. Brown satchel not visible."
+      "note": "Hero: full figure holding the open compass."
     },
     {
       "shot": "s02",
       "take": "t06",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL; Set: PASS; Framing: PASS. Medium side view; compass is on the table, not held; apparent face and inner clothing differ."
+      "note": "Compass is on the table, not held."
     },
     {
       "shot": "s02",
       "take": "t07",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL; Set: PASS; Framing: FAIL. Chest-up crop hides the waist; different hair/fringe and patterned inner clothing; compass dial design differs."
+      "note": "Chest-up crop hides the waist; hair and compass dial differ."
     },
     {
       "shot": "s02",
       "take": "t08",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL; Set: PASS; Framing: PASS. Medium framing; multiple compass-like objects, different inner neckline and coat details."
+      "note": "Several compass-like objects; coat details differ."
     },
     {
       "shot": "s03",
       "take": "t01",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL\u2020; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: PASS. Extreme face detail has a different apparent face; clothing, prop and architecture cannot be checked."
+      "note": "Extreme face detail with a different face."
     },
     {
       "shot": "s04",
       "take": "t01",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: FAIL; Prop: FAIL; Set: PASS; Framing: FAIL. Rear figure wears a tan jacket and handles a box-like device; figure is in the right foreground, not the requested left."
+      "note": "Rear figure wears a tan jacket and handles a box-like device; figure is in the right foreground, not the requested left."
     },
     {
       "shot": "s05",
       "take": "t01",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: FAIL\u2020; Prop: FAIL; Set: FAIL\u2020; Framing: PASS. Macro framing succeeds; black-and-gold compass rose/ring differs from the hero white dial and open case."
+      "note": "Black-and-gold compass rose differs from the hero white dial."
     },
     {
       "shot": "s06",
       "take": "t01",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: PASS; Prop: FAIL\u2020; Set: FAIL; Framing: PASS. Strong upward view with a small yellow-coated figure; new domed stairwell architecture; face and prop unverified. Selected SDXL fallback: neither Qwen attempt delivered an image."
+      "note": "Upward view of a small yellow-coated figure in a domed stairwell; kept as the SDXL original."
     },
     {
       "shot": "s01",
       "take": "t02",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: PASS; Prop: FAIL\u2020; Set: PASS; Framing: FAIL. Figure is about one third of image height, above the requested one-fifth maximum. Visible glass/wood/fern motifs match; off-screen layout and small face/dial are unverified."
+      "note": "Figure too large for an establishing shot."
     },
     {
       "shot": "s03",
       "take": "t02",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: FAIL\u2020; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: FAIL\u2020. SDK transport failed before output download; no published image to review. Engine log records a completed job after the connection failed."
+      "note": "No image returned."
     },
     {
       "shot": "s04",
       "take": "t02",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: FAIL\u2020; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: FAIL\u2020. SDK transport failed before output download; no published image to review. Submission did not reach a remote job."
+      "note": "No image returned."
     },
     {
       "shot": "s05",
       "take": "t02",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: FAIL\u2020; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: FAIL\u2020. SDK transport failed before output download; no published image to review. Submission did not reach a remote job."
+      "note": "No image returned."
     },
     {
       "shot": "s06",
       "take": "t02",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: FAIL\u2020; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: FAIL\u2020. SDK transport failed before output download; no published image to review. Submission did not reach a remote job."
+      "note": "No image returned."
     },
     {
       "shot": "s01",
       "take": "t03",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: PASS; Prop: FAIL\u2020; Set: PASS; Framing: FAIL. Figure remains about one quarter of image height, above the requested one-eighth maximum. Yellow/teal clothing and glass/wood/fern motifs match; face, dial and new room layout are unverified."
+      "note": "Figure still large; coat and greenhouse match."
     },
     {
       "shot": "s03",
       "take": "t03",
       "verdict": "fail",
-      "note": "Face: PASS; Outfit: PASS; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: PASS. Apparent face and short side-parted hair are compatible; teal scarf/yellow collar edges remain. Prop and set are outside this tight face crop."
+      "note": "Face and side-parted hair match the hero; teal scarf and yellow collar remain."
     },
     {
       "shot": "s04",
       "take": "t03",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: PASS; Prop: FAIL; Set: PASS; Framing: PASS. Left-foreground rear shoulder and head satisfy OTS. Yellow coat, teal scarf and wet glass/ferns match. Compass dial moves onto the hinged upper half, changing the case design."
+      "note": "Compass dial moves onto the lid."
     },
     {
       "shot": "s05",
       "take": "t03",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: FAIL\u2020; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: PASS. Macro contains only hands and compass, with a blurred yellow background. White dial, gold rim and open lid are compatible; exact needle arrangement cannot be verified against the smaller hero detail."
+      "note": "Hands and the open compass with a white dial and gold rim."
     },
     {
       "shot": "s06",
       "take": "t03",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: FAIL\u2020; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: FAIL\u2020. Engine log records completion, but the SDK did not download the image across the wall-clock gap and GPU worker shutdown. No published image to review."
+      "note": "No image returned."
     }
   ],
   "hero": {
@@ -287,8 +287,7 @@
       "file": "storyboard-landscape.png",
       "width": 1600,
       "height": 900,
-      "sha256": "75fe290241990373081838c8651484846e2885ad0253dd73439a292a85b82daa",
-      "credit": "Made with open weights in ComfyUI",
+      "sha256": "53f7a24087e31f482d1aec4df8676d6eb4f0c60f3e145258f8c8dd899b1be37c",
       "layout_version": 1,
       "fit": "contain",
       "selections": [
@@ -322,8 +321,7 @@
       "file": "storyboard-portrait.png",
       "width": 1080,
       "height": 1350,
-      "sha256": "865b69a48da944f991e2b8a8dff5eace60990ff5208191693bfe4f3f05febd6f",
-      "credit": "Made with open weights in ComfyUI",
+      "sha256": "c2e667595b50207a0646b0c1c70b3383e111b56ff8b2ab742b96de15a65f2fe1",
       "layout_version": 1,
       "fit": "contain",
       "selections": [
@@ -364,7 +362,7 @@
         "shot": "s01",
         "take": "t03",
         "verdict": "fail",
-        "note": "Face: FAIL\u2020; Outfit: PASS; Prop: FAIL\u2020; Set: PASS; Framing: FAIL. Figure remains about one quarter of image height, above the requested one-eighth maximum. Yellow/teal clothing and glass/wood/fern motifs match; face, dial and new room layout are unverified."
+        "note": "Figure still large; coat and greenhouse match."
       },
       "seed": 20261022,
       "seed_locked": true,
@@ -584,7 +582,7 @@
         "shot": "s02",
         "take": "t05",
         "verdict": "pass",
-        "note": "Face: PASS; Outfit: PASS; Prop: PASS; Set: PASS; Framing: PASS. Chosen baseline: entire head, torso and waist/hips visible, hands holding an open brass compass. Yellow coat and teal scarf. Brown satchel not visible."
+        "note": "Hero: full figure holding the open compass."
       },
       "seed": 20679936,
       "seed_locked": true,
@@ -639,7 +637,7 @@
         "shot": "s03",
         "take": "t03",
         "verdict": "fail",
-        "note": "Face: PASS; Outfit: PASS; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: PASS. Apparent face and short side-parted hair are compatible; teal scarf/yellow collar edges remain. Prop and set are outside this tight face crop."
+        "note": "Face and side-parted hair match the hero; teal scarf and yellow collar remain."
       },
       "seed": 20261021,
       "seed_locked": true,
@@ -859,7 +857,7 @@
         "shot": "s04",
         "take": "t03",
         "verdict": "fail",
-        "note": "Face: FAIL\u2020; Outfit: PASS; Prop: FAIL; Set: PASS; Framing: PASS. Left-foreground rear shoulder and head satisfy OTS. Yellow coat, teal scarf and wet glass/ferns match. Compass dial moves onto the hinged upper half, changing the case design."
+        "note": "Compass dial moves onto the lid."
       },
       "seed": 20261021,
       "seed_locked": true,
@@ -1079,7 +1077,7 @@
         "shot": "s05",
         "take": "t03",
         "verdict": "fail",
-        "note": "Face: FAIL\u2020; Outfit: FAIL\u2020; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: PASS. Macro contains only hands and compass, with a blurred yellow background. White dial, gold rim and open lid are compatible; exact needle arrangement cannot be verified against the smaller hero detail."
+        "note": "Hands and the open compass with a white dial and gold rim."
       },
       "seed": 20261021,
       "seed_locked": true,
@@ -1299,7 +1297,7 @@
         "shot": "s06",
         "take": "t01",
         "verdict": "fail",
-        "note": "Face: FAIL\u2020; Outfit: PASS; Prop: FAIL\u2020; Set: FAIL; Framing: PASS. Strong upward view with a small yellow-coated figure; new domed stairwell architecture; face and prop unverified. Selected SDXL fallback: neither Qwen attempt delivered an image."
+        "note": "Upward view of a small yellow-coated figure in a domed stairwell; kept as the SDXL original."
       },
       "seed": 20261020,
       "seed_locked": true,

@@ -224,14 +224,14 @@
     },
     {
       "file": "export/storyboard-landscape.png",
-      "sha256": "75fe290241990373081838c8651484846e2885ad0253dd73439a292a85b82daa",
+      "sha256": "53f7a24087e31f482d1aec4df8676d6eb4f0c60f3e145258f8c8dd899b1be37c",
       "device": "NVIDIA GeForce RTX 4090",
       "kind": "derived-or-copy",
       "source": "board.json take image hashes"
     },
     {
       "file": "export/storyboard-portrait.png",
-      "sha256": "865b69a48da944f991e2b8a8dff5eace60990ff5208191693bfe4f3f05febd6f",
+      "sha256": "c2e667595b50207a0646b0c1c70b3383e111b56ff8b2ab742b96de15a65f2fe1",
       "device": "NVIDIA GeForce RTX 4090",
       "kind": "derived-or-copy",
       "source": "board.json take image hashes"
@@ -259,14 +259,14 @@
     },
     {
       "file": "storyboard-landscape.png",
-      "sha256": "0856e81942c69f1b6dfae134197722a95ab3f0b5b27f28c917d3dfe15361a6f4",
+      "sha256": "53f7a24087e31f482d1aec4df8676d6eb4f0c60f3e145258f8c8dd899b1be37c",
       "device": "NVIDIA GeForce RTX 4090",
       "kind": "derived-or-copy",
       "source": "board.json take image hashes"
     },
     {
       "file": "storyboard-portrait.png",
-      "sha256": "755a607726f681c6f5f1dd4dc48277a811f217506cb8651c4e07148386eaf17b",
+      "sha256": "c2e667595b50207a0646b0c1c70b3383e111b56ff8b2ab742b96de15a65f2fe1",
       "device": "NVIDIA GeForce RTX 4090",
       "kind": "derived-or-copy",
       "source": "board.json take image hashes"
@@ -441,14 +441,14 @@
     },
     {
       "file": "sdxl-selects.zip!storyboard-landscape.png",
-      "sha256": "58fc35fcb38100df870b77c6c2305eb358dd21b5e030200e6b4852ef2b8c97cb",
+      "sha256": "d33f508278620f3d4cb0190283ef66ee0d60ef7b37848ff2dc04e608f9d0a8e3",
       "device": "NVIDIA GeForce RTX 4090",
       "kind": "derived-or-copy",
       "source": "board.json take image hashes"
     },
     {
       "file": "sdxl-selects.zip!storyboard-portrait.png",
-      "sha256": "756992b5f89c90349a44ea51ce9affbb45c106faf7a4f378a908a7de404f83b7",
+      "sha256": "922444bf79664478b20a440b71d384334c0c956fe371d8093ab7ad06f7f5eb18",
       "device": "NVIDIA GeForce RTX 4090",
       "kind": "derived-or-copy",
       "source": "board.json take image hashes"
@@ -504,14 +504,14 @@
     },
     {
       "file": "selects.zip!storyboard-landscape.png",
-      "sha256": "75fe290241990373081838c8651484846e2885ad0253dd73439a292a85b82daa",
+      "sha256": "53f7a24087e31f482d1aec4df8676d6eb4f0c60f3e145258f8c8dd899b1be37c",
       "device": "NVIDIA GeForce RTX 4090",
       "kind": "derived-or-copy",
       "source": "board.json take image hashes"
     },
     {
       "file": "selects.zip!storyboard-portrait.png",
-      "sha256": "865b69a48da944f991e2b8a8dff5eace60990ff5208191693bfe4f3f05febd6f",
+      "sha256": "c2e667595b50207a0646b0c1c70b3383e111b56ff8b2ab742b96de15a65f2fe1",
       "device": "NVIDIA GeForce RTX 4090",
       "kind": "derived-or-copy",
       "source": "board.json take image hashes"

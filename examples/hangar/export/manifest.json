@@ -98,8 +98,7 @@
       "file": "storyboard-landscape.png",
       "width": 1600,
       "height": 900,
-      "sha256": "9527059360c1ec9b831ec6ef292d9025f9fbc425f11eb5e089e1aca523ba4744",
-      "credit": "Made with open weights in ComfyUI",
+      "sha256": "30ea44aa0077912d7c8ec21a220ae9977b66175bf8a2f47855e843d88793c186",
       "layout_version": 1,
       "fit": "contain",
       "selections": [
@@ -133,8 +132,7 @@
       "file": "storyboard-portrait.png",
       "width": 1080,
       "height": 1350,
-      "sha256": "ac80e6471255462208c9ff9457409058dc309a601910490334d9684612c4c227",
-      "credit": "Made with open weights in ComfyUI",
+      "sha256": "4b1d51c93a4c5fd7e1cd5913073652c173646481e1418c62420504dd74430163",
       "layout_version": 1,
       "fit": "contain",
       "selections": [
