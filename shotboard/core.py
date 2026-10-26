@@ -28,18 +28,49 @@ LOOK_PROMPTS = {
     "Monochrome": "black and white film photograph, rich tonal range, fine grain",
 }
 # Shot framing takes precedence over camera chips that would contradict coverage.
-# Dimensions are multiples of 64 for SDXL and 16 for Qwen.
+# Dimensions are multiples of 64 for SDXL; Qwen edits reuse them.
 COVERAGE = [
-    ("Establishing", "extreme wide establishing shot, distant full-body {subject} tiny in frame, expansive environment", "close-up, portrait, cropped body", 1216, 704, 6.5, 640, 368),
-    ("Medium", "medium waist-up shot, head and torso visible, {subject} examining {prop}", "extreme close-up, distant figure, full body", 1024, 768, 6.0, 576, 432),
-    ("Close-up", "tight face close-up portrait, face fills almost the entire frame, eyes in sharp focus, cropped at chin and forehead", "wide shot, medium shot, waist, torso, full body, hands, object in foreground", 768, 1024, 7.0, 448, 576),
-    ("Over shoulder", "over-the-shoulder POV, back of {subject}'s head and clothed shoulder clearly visible filling left third foreground, camera immediately behind the person looking past their shoulder toward {prop} on table, rear three-quarter view", "empty room, no person, unoccupied, front view, facing camera, portrait, eye contact, full body", 1152, 768, 7.0, 640, 432),
-    ("Insert", "macro insert detail shot of {prop} held in fingers, object fills frame, only hands and object visible", "face, head, portrait, torso, full body, wide shot, medium shot", 1024, 1024, 6.5, 512, 512),
-    ("Low angle", "dramatic worm's-eye view from floor level looking steeply upward at {subject}, towering figure, architecture overhead, strong foreshortening", "eye level, high angle, overhead view, flat perspective, looking down", 768, 1024, 7.5, 448, 576),
-    ("Profile", "side profile medium shot of {subject}, face in profile", "front view, facing camera", 1024, 768, 6.5, 576, 432),
-    ("High angle", "high-angle wide shot looking down on {subject} and environment from above", "low angle, eye level", 1216, 704, 6.5, 640, 368),
-    ("Closing", "wide rear view of {subject} walking away into the scene", "front view, portrait", 1216, 704, 6.5, 640, 368),
+    ("Establishing", "extreme wide establishing shot, distant full-body {subject} tiny in frame, expansive environment", "close-up, portrait, cropped body", 1216, 704, 6.5),
+    ("Medium", "medium waist-up shot, head and torso visible, {subject} examining {prop}", "extreme close-up, distant figure, full body", 1024, 768, 6.0),
+    ("Close-up", "tight face close-up portrait, face fills almost the entire frame, eyes in sharp focus, cropped at chin and forehead", "wide shot, medium shot, waist, torso, full body, hands, object in foreground", 768, 1024, 7.0),
+    ("Over shoulder", "over-the-shoulder POV, back of {subject}'s head and clothed shoulder clearly visible filling left third foreground, camera immediately behind the person looking past their shoulder toward {prop} on table, rear three-quarter view", "empty room, no person, unoccupied, front view, facing camera, portrait, eye contact, full body", 1152, 768, 7.0),
+    ("Insert", "macro insert detail shot of {prop} held in fingers, object fills frame, only hands and object visible", "face, head, portrait, torso, full body, wide shot, medium shot", 1024, 1024, 6.5),
+    ("Low angle", "dramatic worm's-eye view from floor level looking steeply upward at {subject}, towering figure, architecture overhead, strong foreshortening", "eye level, high angle, overhead view, flat perspective, looking down", 768, 1024, 7.5),
+    ("Profile", "side profile medium shot of {subject}, face in profile", "front view, facing camera", 1024, 768, 6.5),
+    ("High angle", "high-angle wide shot looking down on {subject} and environment from above", "low angle, eye level", 1216, 704, 6.5),
+    ("Closing", "wide rear view of {subject} walking away into the scene", "front view, portrait", 1216, 704, 6.5),
 ]
+# A scene without a person keeps six cuts but drops faces, hands and shoulders.
+OBJECT_COVERAGE = {
+    "Establishing": ("Establishing", "extreme wide establishing shot, {subject} small in frame, expansive environment", "close-up, cropped", 1216, 704, 6.5),
+    "Medium": ("Medium", "medium shot, {subject} fully visible with its immediate surroundings", "extreme close-up, distant view", 1024, 768, 6.0),
+    "Close-up": ("Detail", "tight detail close-up of {subject}, surface texture and fine detail fill the frame, sharp focus", "wide shot, medium shot, full view", 768, 1024, 7.0),
+    "Over shoulder": ("Side angle", "side angle view of {subject} at eye level, the environment visible behind it", "front view, overhead view", 1152, 768, 7.0),
+    "Insert": ("Insert", "macro insert detail shot of {prop}, object fills frame", "wide shot, medium shot", 1024, 1024, 6.5),
+    "Low angle": ("Low angle", "dramatic worm's-eye view from floor level looking steeply upward at {subject}, architecture overhead, strong foreshortening", "eye level, high angle, overhead view, flat perspective, looking down", 768, 1024, 7.5),
+    "Profile": ("Three-quarter", "three-quarter view medium shot of {subject}", "front view, rear view", 1024, 768, 6.5),
+    "Closing": ("Closing", "wide final shot of {subject} in the quiet environment, slow pull back", "close-up, portrait", 1216, 704, 6.5),
+}
+NO_PERSON_NEGATIVE = "person, people, human figure, face, hands"
+PERSON_WORDS = (
+    "person", "people", "man", "men", "woman", "women", "boy", "girl", "child", "children", "kid", "baby",
+    "he", "she", "him", "his", "her", "traveler", "traveller", "stranger", "friend", "couple", "crowd",
+    "mother", "father", "detective", "soldier", "worker", "technician", "chef", "doctor", "nurse",
+    "pilot", "driver", "dancer", "singer", "actor", "student", "teacher", "farmer", "officer", "guard",
+)
+PERSON_PATTERN = re.compile(r"\b(?:" + "|".join(PERSON_WORDS) + r")s?\b", re.IGNORECASE)
+
+
+def has_person(config):
+    """A filled Character field or a person named in the scene keeps the face and shoulder cuts."""
+    return bool(config.get("character", "").strip()) or bool(PERSON_PATTERN.search(config.get("scene", "")))
+
+
+def coverage_for(config):
+    person = has_person(config)
+    return [entry if person else OBJECT_COVERAGE.get(entry[0], entry) for entry in COVERAGE[:config["count"]]]
+
+
 PRESETS = {
     "sdxl-base": {
         "label": "SDXL Base 1.0", "enabled": True,
@@ -65,7 +96,11 @@ NEGATIVE = "anime, cartoon, illustration, drawing, painting, 3d render, text, wa
 
 
 def expand_shots(config):
-    """Same bible and chips always produce the same editable six to nine cuts."""
+    """Same bible and chips always produce the same editable six to nine cuts.
+
+    The six-cut template is fixed except for one branch: without a person, the
+    face close-up and over-shoulder become a detail close-up and a side angle.
+    """
     bible = config['scene'].rstrip('. ')
     for key, label in (("character", "Character"), ("setting", "Set"), ("prop", "Key prop")):
         if config.get(key, '').strip():
@@ -75,10 +110,11 @@ def expand_shots(config):
                             "cinematic still photograph"])
     motion = {"Static": "locked camera composition", "Push in": "visual intent of a slow push in",
               "Lateral drift": "visual intent of a lateral camera drift"}[config["move"]]
+    person = has_person(config)
     shots = []
-    for i, (title, direction, avoid, width, height, cfg, qw, qh) in enumerate(COVERAGE[:config["count"]]):
+    for i, (title, direction, avoid, width, height, cfg) in enumerate(coverage_for(config)):
         # Only compatible cuts inherit angle; a low-angle chip must not undo OTS.
-        angle = config["angle"].lower() if title in ("Medium", "Profile") else ""
+        angle = config["angle"].lower() if title in ("Medium", "Profile", "Three-quarter") else ""
         direction = direction.format(subject=config.get('character', '').split(',')[0].strip() or "the main subject",
                                      prop=config.get('prop', '').strip() or "the focal detail")
         prompt = f"({direction}:1.45), live-action RAW photograph, {bible}, {config['lens']}mm lens, {angle}, {atmosphere}, {motion}"
@@ -86,7 +122,7 @@ def expand_shots(config):
                           template_version=4, shot_type=title,
                           render_settings=dict(width=width, height=height, cfg=cfg),
                           reference_size=dict(width=width, height=height),
-                          prompt=prompt, negative=f"{avoid}, {NEGATIVE}",
+                          prompt=prompt, negative=f"{avoid}, {NEGATIVE}" if person else f"{avoid}, {NO_PERSON_NEGATIVE}, {NEGATIVE}",
                           locked_seed=None, picked=None, takes=[]))
     return shots
 

@@ -58,6 +58,44 @@ class CoverageTests(unittest.TestCase):
         for text in ("85mm", "high angle", "blue hour", "black and white", "lateral camera drift", self.config["character"]):
             self.assertIn(text, prompt)
 
+    def test_scene_with_a_person_keeps_the_face_and_shoulder_cuts(self):
+        person = ["Establishing", "Medium", "Close-up", "Over shoulder", "Insert", "Low angle"]
+        for extras in (dict(scene="She reads a letter by the window."),
+                       dict(scene="A traveler finds a compass."),
+                       dict(scene="Rain on a quiet street.", character="a courier in a red coat")):
+            with self.subTest(**extras):
+                shots = expand_shots(Scene(**extras).model_dump())
+                self.assertEqual([s["title"] for s in shots], person)
+                self.assertIn("face", shots[2]["direction"])
+
+    def test_scene_without_a_person_drops_faces_hands_and_shoulders(self):
+        config = Scene(scene="A lighthouse in a winter storm.", prop="a cracked lamp lens").model_dump()
+        shots = expand_shots(config)
+        self.assertEqual([s["title"] for s in shots],
+                         ["Establishing", "Medium", "Detail", "Side angle", "Insert", "Low angle"])
+        self.assertEqual(len({s["prompt"] for s in shots}), 6)
+        for shot in shots:
+            for word in ("face", "hands", "fingers", "shoulder", "figure", "portrait"):
+                self.assertNotRegex(shot["direction"], rf"\b{word}\b")
+            self.assertIn("person, people", shot["negative"])
+            self.assertIn(config["scene"].rstrip("."), shot["prompt"])
+        config["count"] = 9
+        nine = expand_shots(config)
+        self.assertEqual(nine[:6], shots)
+        self.assertNotRegex(" ".join(s["direction"] for s in nine), r"\bface\b")
+
+    def test_person_words_match_whole_words_only(self):
+        for scene in ("A manhole cover steams at night.", "Here the old herbarium sits empty."):
+            with self.subTest(scene=scene):
+                self.assertEqual(expand_shots(Scene(scene=scene).model_dump())[2]["title"], "Detail")
+
+    def test_config_lists_both_coverage_templates(self):
+        from shotboard import server
+        coverage = server.config()["coverage"]
+        self.assertEqual(coverage["person"][2:4], ["Close-up", "Over shoulder"])
+        self.assertEqual(coverage["object"][2:4], ["Detail", "Side angle"])
+        self.assertIn("traveler", coverage["person_words"])
+
     def test_seed_reuse_and_families(self):
         self.assertNotEqual(seed_for(41, 0), seed_for(41, 1))
         self.assertEqual(seed_for(41, 12, locked=0), 0)

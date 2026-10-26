@@ -102,6 +102,7 @@ $('use-example').onclick=guarded(async()=>{
   if(!examples.length)examples=await api('/examples');
   const config=examples[0].board.config;
   for(const key of ['scene','character','prop','setting'])$(key).value=config[key]||'';
+  coveragePreview();
   document.querySelector('.advanced').open=true;
 });
 $('scene-form').onsubmit=guarded(async event=>{event.preventDefault();const data=Object.fromEntries(new FormData(event.target));Object.assign(data,choices,{seed:Number(data.seed),count:Number(data.count)});const created=await api('/boards','POST',data);await openBoard(created.id);});
@@ -117,7 +118,7 @@ $('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$(
 $('new-board').onclick=()=>{$('scene-form').reset();document.querySelector('.advanced').open=false;board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;$('scene').focus();};
 $('load-example').onclick=guarded(async()=>{const boards=await api('/boards');$('boards-list').innerHTML=boards.map(b=>`<button class="board-link" data-board="${b.id}">${escapeHTML(b.title)}</button>`).join('')||'<p class="muted">No boards yet.</p>';document.querySelectorAll('[data-board]').forEach(b=>b.onclick=guarded(async()=>{await openBoard(b.dataset.board);$('boards-dialog').close();}));$('boards-dialog').showModal();});
 async function health(){try{const h=await api('/health');$('connection').textContent=board?.continuity?.enabled&&!h.reference_components_present?'Engine offline':h.proxy_ready&&h.checkpoint_present?'Local engine ready':!h.checkpoint_present?'Engine offline':'Local engine offline';$('connection').dataset.state=$('connection').textContent==='Local engine ready'?'ready':'offline';}catch{$('connection').textContent='Local server unavailable';$('connection').dataset.state='offline';}}
-guarded(async()=>{chips(await api('/config'));await loadGallery();if(location.hash.length>1)await openBoard(location.hash.slice(1));await health();})();
+guarded(async()=>{const appConfig=await api('/config');chips(appConfig);if(appConfig.coverage)coverage=appConfig.coverage;coveragePreview();await loadGallery();if(location.hash.length>1)await openBoard(location.hash.slice(1));await health();})();
 setInterval(async()=>{if(polling)return;polling=true;try{await refresh();}catch{}finally{polling=false;}},1600);setInterval(health,15000);
 
 // Original composition diagrams: readable at chip size, with text labels alongside.
@@ -128,7 +129,9 @@ function pictogram(type){
     'Close-up':'<ellipse cx="21" cy="16" rx="10" ry="13"/><path d="M16 13h2m6 0h2m-9 8q4 3 8 0"/>',
     'Over shoulder':'<circle cx="10" cy="13" r="6"/><path d="M2 27v-4q8-9 16 0v4"/><circle cx="29" cy="10" r="3"/><path d="M24 20v-3q5-6 10 0v3"/>',
     'Insert':'<circle cx="22" cy="15" r="9"/><path d="m22 9-4 10 9-5-5-5Zm-14 14 6-4m16 5 5 2"/>',
-    'Low angle':'<path d="m12 25 4-13h10l5 13M8 23l-3 3m0 0v-7m0 7h7"/><circle cx="21" cy="7" r="4"/>'
+    'Low angle':'<path d="m12 25 4-13h10l5 13M8 23l-3 3m0 0v-7m0 7h7"/><circle cx="21" cy="7" r="4"/>',
+    'Detail':'<circle cx="18" cy="14" r="8"/><path d="m24 20 8 7M14 14h8m-4-4v8"/>',
+    'Side angle':'<path d="M6 24h30M14 24V12h14v12"/><path d="M4 8l6 3"/><circle cx="4" cy="8" r="1.5"/>'
   };
   return `<svg viewBox="0 0 42 30" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1" y="1" width="40" height="28" rx="3" opacity=".4"/>${paths[type]||paths.Medium}</svg>`;
 }
@@ -161,8 +164,20 @@ async function loadGallery(){
   $('featured-board').innerHTML=`<div class="featured-content"><div class="feature-cover"><img src="${url(featured,b.shots[1])}" alt="Traveler in a mustard raincoat examining a brass compass"><div class="feature-caption"><h2>The greenhouse</h2><button class="on-photo" data-example="${featured.slug}">Explore the board</button></div></div><div class="feature-mosaic">${b.shots.map((s,i)=>`<button class="feature-cut" data-example="${featured.slug}" data-cut="${s.id}" aria-label="Open ${escapeHTML(s.title)}"><img src="${url(featured,s)}" alt="${escapeHTML(s.title)} selected render"><span>${String(i+1).padStart(2,'0')} ${escapeHTML(s.title)}</span></button>`).join('')}</div></div>`;
   $('example-gallery').innerHTML=examples.map(ex=>`<button class="gallery-card" data-example="${ex.slug}"><div class="gallery-images">${[0,2,4].map(i=>`<img loading="lazy" src="${url(ex,ex.board.shots[i])}" alt="${escapeHTML(ex.board.shots[i].title)} render">`).join('')}</div><div class="gallery-caption"><span>${escapeHTML(ex.label)}</span><small>${ex.board.shots.length} cuts</small></div></button>`).join('');
   document.querySelectorAll('[data-example]').forEach(el=>el.onclick=guarded(async()=>{const opened=await api(`/examples/${el.dataset.example}/open`,'POST');await openBoard(opened.id);window.scrollTo(0,0);if(el.dataset.cut)openCompare(el.dataset.cut);}));
-  $('coverage-preview').innerHTML=['Establishing','Medium','Close-up','Over shoulder','Insert','Low angle'].map(type=>`<div class="composition-chip">${pictogram(type)}${type==='Establishing'?'Wide':type==='Over shoulder'?'OTS':type}</div>`).join('');
+  coveragePreview();
 }
+// The six-cut template drops the face close-up and over-shoulder when the scene has no person.
+let coverage={person:['Establishing','Medium','Close-up','Over shoulder','Insert','Low angle'],object:['Establishing','Medium','Detail','Side angle','Insert','Low angle'],person_words:[]};
+function sceneHasPerson(){
+  if($('character').value.trim())return true;
+  return coverage.person_words.length>0&&new RegExp(`\\b(?:${coverage.person_words.join('|')})s?\\b`,'i').test($('scene').value);
+}
+function coveragePreview(){
+  const types=sceneHasPerson()||!$('scene').value.trim()?coverage.person:coverage.object;
+  const label={'Establishing':'Wide','Over shoulder':'OTS','Side angle':'Side'};
+  $('coverage-preview').innerHTML=types.map(type=>`<div class="composition-chip">${pictogram(type)}${label[type]||type}</div>`).join('');
+}
+$('scene').oninput=$('character').oninput=()=>coveragePreview();
 let storyboardRequest=0;
 async function previewStoryboard(){
   const request=++storyboardRequest, layout=$('storyboard-layout').value;

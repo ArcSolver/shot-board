@@ -24,7 +24,7 @@ from pydantic import BaseModel, Field, field_validator
 from .storyboard import storyboard_png
 from .memory import MemoryGuard, MemorySafetyError
 
-from .core import (ROOT, PRESETS, LENSES, ANGLES, MOVES, LIGHTS, LOOKS,
+from .core import (ROOT, PRESETS, LENSES, ANGLES, MOVES, LIGHTS, LOOKS, COVERAGE, OBJECT_COVERAGE, PERSON_WORDS,
                    expand_shots, seed_for, workflow_for, settings_for, export_board, sha256)
 
 DATA = Path(os.environ.get("SHOTBOARD_DATA_DIR", ROOT / ".runtime/boards"))
@@ -275,7 +275,10 @@ def shot_for(board, sid):
 
 @app.get("/api/config")
 def config():
-    return dict(lens=LENSES, angle=ANGLES, move=MOVES, lighting=LIGHTS, look=LOOKS, presets=PRESETS)
+    return dict(lens=LENSES, angle=ANGLES, move=MOVES, lighting=LIGHTS, look=LOOKS, presets=PRESETS,
+                coverage=dict(person=[c[0] for c in COVERAGE[:6]],
+                              object=[OBJECT_COVERAGE.get(c[0], c)[0] for c in COVERAGE[:6]],
+                              person_words=list(PERSON_WORDS)))
 
 
 @app.get("/api/health")
