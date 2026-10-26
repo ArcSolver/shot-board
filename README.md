@@ -11,7 +11,7 @@
 Browse, review and export the three boards that ship with the repo. You need Git and uv.
 
 ```sh
-git clone https://github.com/ArcSolver/shot-board.git shot-board
+git clone --depth 1 https://github.com/ArcSolver/shot-board.git shot-board
 cd shot-board
 uv venv .venv --python 3.12
 uv pip install --python .venv/bin/python -r requirements.lock.txt --require-hashes
@@ -22,7 +22,7 @@ Open **http://127.0.0.1:8790** and choose **Explore the board**, or open another
 
 ## What it does
 
-You write one scene and Shot Board plans six editable cuts: establishing, medium, face close-up, over shoulder, insert and low angle. You can add up to three more, give it character, prop and setting details, and edit each cut's prompt and negative prompt.
+You write one scene and Shot Board lays out six editable cuts from a coverage template: establishing, medium, face close-up, over shoulder, insert and low angle. When the scene has no person, the face close-up and over shoulder become a detail close-up and a side angle. You can add up to three more, give it character, prop and setting details, and edit each cut's prompt and negative prompt.
 
 SDXL renders takes for each cut. Compare & pick shows every take of a cut side by side with its render details one click away, and you can lock a seed and reuse it. Make one SDXL take the hero and Qwen-Image-Edit-2511 re-renders every other cut from that image. You can save a pass, fail or pending verdict and a note on any take.
 
@@ -48,7 +48,9 @@ Browser ──▶ Shot Board (FastAPI, CPU)
 All inference requests and reference uploads go through the Comfy SDK and a loopback proxy to your own ComfyUI.
 
 - **SDXL Base 1.0** renders the first takes. Pinned in [model-lock.json](workflows/model-lock.json); graph in [sdxl-base.api.json](workflows/sdxl-base.api.json).
-- **Qwen-Image-Edit-2511** handles reference edits through ComfyUI-GGUF. Pinned in [qwen-model-lock.json](workflows/qwen-model-lock.json); graph in [qwen-reference.api.json](workflows/qwen-reference.api.json).
+- **Qwen-Image-Edit-2511** handles reference edits through ComfyUI-GGUF. Pinned in [qwen-model-lock.json](workflows/qwen-model-lock.json) (Q8_0) and [qwen-model-lock-q4_k_m.json](workflows/qwen-model-lock-q4_k_m.json); graph in [qwen-reference.api.json](workflows/qwen-reference.api.json).
+
+On one RTX 4090 (24 GB) an SDXL take took about 4 s and a Q8_0 Qwen edit 80 to 100 s per cut. `SHOTBOARD_QWEN_QUANT=Q4_K_M` cuts the Qwen files from about 31 GB to 20 GB, and a take that loses the engine is retried once.
 
 ## Run it locally
 
