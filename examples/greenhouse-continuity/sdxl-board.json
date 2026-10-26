@@ -1848,80 +1848,80 @@
     {
       "shot": "s01",
       "take": "t01",
-      "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: PASS; Prop: FAIL\u2020; Set: FAIL; Framing: PASS. Distant rear figure hides face and compass; yellow coat visible. Large symmetrical arched space differs from the hero view."
+      "verdict": "pass",
+      "note": "Wide arched hall with the traveler small and seen from behind; yellow coat matches. Face and compass are too small to see."
     },
     {
       "shot": "s02",
       "take": "t01",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL; Set: PASS; Framing: FAIL. Waist is cropped; holds a photographic camera instead of a compass."
+      "note": "Holds a camera instead of the compass, and the waist is cropped."
     },
     {
       "shot": "s02",
       "take": "t02",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL; Set: PASS; Framing: PASS. Head and waist visible, but the prop is a camera; coat fastenings and apparent face differ from the chosen hero."
+      "note": "Holds a camera instead of the compass."
     },
     {
       "shot": "s02",
       "take": "t03",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL\u2020; Set: PASS; Framing: PASS. Side-on medium; no visible compass; inner clothing differs."
+      "note": "Side-on medium with no compass in her hands."
     },
     {
       "shot": "s02",
       "take": "t04",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL\u2020; Set: PASS; Framing: PASS. Head and waist/belt visible; no compass is visible."
+      "note": "Waist-up, but no compass in her hands."
     },
     {
       "shot": "s02",
       "take": "t05",
       "verdict": "pass",
-      "note": "Face: PASS; Outfit: PASS; Prop: PASS; Set: PASS; Framing: PASS. Chosen baseline: entire head, torso and waist/hips visible, hands holding an open brass compass. Yellow coat and teal scarf. Brown satchel not visible."
+      "note": "Hero: waist-up, yellow coat and teal scarf, holding the open compass."
     },
     {
       "shot": "s02",
       "take": "t06",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL; Set: PASS; Framing: PASS. Medium side view; compass is on the table, not held; apparent face and inner clothing differ."
+      "note": "The compass lies on the table instead of in her hands."
     },
     {
       "shot": "s02",
       "take": "t07",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL; Set: PASS; Framing: FAIL. Chest-up crop hides the waist; different hair/fringe and patterned inner clothing; compass dial design differs."
+      "note": "Chest-up crop; fringe and patterned shirt differ."
     },
     {
       "shot": "s02",
       "take": "t08",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL; Prop: FAIL; Set: PASS; Framing: PASS. Medium framing; multiple compass-like objects, different inner neckline and coat details."
+      "note": "Two compasses on the bench."
     },
     {
       "shot": "s03",
       "take": "t01",
       "verdict": "fail",
-      "note": "Face: FAIL; Outfit: FAIL\u2020; Prop: FAIL\u2020; Set: FAIL\u2020; Framing: PASS. Extreme face detail has a different apparent face; clothing, prop and architecture cannot be checked."
+      "note": "A different man's face behind ferns."
     },
     {
       "shot": "s04",
       "take": "t01",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: FAIL; Prop: FAIL; Set: PASS; Framing: FAIL. Rear figure wears a tan jacket and handles a box-like device; figure is in the right foreground, not the requested left."
+      "note": "A different man in a tan jacket, on the right instead of the left."
     },
     {
       "shot": "s05",
       "take": "t01",
       "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: FAIL\u2020; Prop: FAIL; Set: FAIL\u2020; Framing: PASS. Macro framing succeeds; black-and-gold compass rose/ring differs from the hero white dial and open case."
+      "note": "A different compass with a black dial."
     },
     {
       "shot": "s06",
       "take": "t01",
-      "verdict": "fail",
-      "note": "Face: FAIL\u2020; Outfit: PASS; Prop: FAIL\u2020; Set: FAIL; Framing: PASS. Strong upward view with a small yellow-coated figure; new domed stairwell architecture; face and prop unverified."
+      "verdict": "pass",
+      "note": "Steep low angle under a glass dome with the traveler on the stairs; yellow coat and satchel match. The dome is not the hero's bay, and the compass is out of view."
     }
   ]
 }

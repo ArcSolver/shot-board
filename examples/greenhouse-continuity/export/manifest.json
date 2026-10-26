@@ -22,86 +22,86 @@
     {
       "shot": "s01",
       "take": "t01",
-      "verdict": "fail",
-      "note": "Distant rear figure hides face and compass in a large arched space."
+      "verdict": "pass",
+      "note": "Wide arched hall with the traveler small and seen from behind; yellow coat matches. Face and compass are too small to see."
     },
     {
       "shot": "s02",
       "take": "t01",
       "verdict": "fail",
-      "note": "Waist is cropped; holds a photographic camera instead of a compass."
+      "note": "Holds a camera instead of the compass, and the waist is cropped."
     },
     {
       "shot": "s02",
       "take": "t02",
       "verdict": "fail",
-      "note": "Holds a camera instead of a compass; face and coat differ from the hero."
+      "note": "Holds a camera instead of the compass."
     },
     {
       "shot": "s02",
       "take": "t03",
       "verdict": "fail",
-      "note": "Side-on medium with no visible compass."
+      "note": "Side-on medium with no compass in her hands."
     },
     {
       "shot": "s02",
       "take": "t04",
       "verdict": "fail",
-      "note": "Head and waist visible, but no compass."
+      "note": "Waist-up, but no compass in her hands."
     },
     {
       "shot": "s02",
       "take": "t05",
       "verdict": "pass",
-      "note": "Hero: full figure holding the open compass."
+      "note": "Hero: waist-up, yellow coat and teal scarf, holding the open compass."
     },
     {
       "shot": "s02",
       "take": "t06",
       "verdict": "fail",
-      "note": "Compass is on the table, not held."
+      "note": "The compass lies on the table instead of in her hands."
     },
     {
       "shot": "s02",
       "take": "t07",
       "verdict": "fail",
-      "note": "Chest-up crop hides the waist; hair and compass dial differ."
+      "note": "Chest-up crop; fringe and patterned shirt differ."
     },
     {
       "shot": "s02",
       "take": "t08",
       "verdict": "fail",
-      "note": "Several compass-like objects; coat details differ."
+      "note": "Two compasses on the bench."
     },
     {
       "shot": "s03",
       "take": "t01",
       "verdict": "fail",
-      "note": "Extreme face detail with a different face."
+      "note": "A different man's face behind ferns."
     },
     {
       "shot": "s04",
       "take": "t01",
       "verdict": "fail",
-      "note": "Rear figure wears a tan jacket and handles a box-like device; figure is in the right foreground, not the requested left."
+      "note": "A different man in a tan jacket, on the right instead of the left."
     },
     {
       "shot": "s05",
       "take": "t01",
       "verdict": "fail",
-      "note": "Black-and-gold compass rose differs from the hero white dial."
+      "note": "A different compass with a black dial."
     },
     {
       "shot": "s06",
       "take": "t01",
-      "verdict": "fail",
-      "note": "Upward view of a small yellow-coated figure in a domed stairwell; kept as the SDXL original."
+      "verdict": "pass",
+      "note": "Steep low angle under a glass dome with the traveler on the stairs; yellow coat and satchel match. The dome is not the hero's bay, and the compass is out of view."
     },
     {
       "shot": "s01",
       "take": "t02",
-      "verdict": "fail",
-      "note": "Figure too large for an establishing shot."
+      "verdict": "pass",
+      "note": "Wide glass hall with the traveler at the far table; coat and compass match."
     },
     {
       "shot": "s03",
@@ -130,26 +130,26 @@
     {
       "shot": "s01",
       "take": "t03",
-      "verdict": "fail",
-      "note": "Figure still large; coat and greenhouse match."
+      "verdict": "pass",
+      "note": "Long fern-lined aisle with the traveler at the far end; coat matches. She is larger than the edit asked for."
     },
     {
       "shot": "s03",
       "take": "t03",
-      "verdict": "fail",
-      "note": "Face and side-parted hair match the hero; teal scarf and yellow collar remain."
+      "verdict": "pass",
+      "note": "Same face and side-parted hair as the hero; teal scarf and yellow collar at the edge."
     },
     {
       "shot": "s04",
       "take": "t03",
-      "verdict": "fail",
-      "note": "Compass dial moves onto the lid."
+      "verdict": "pass",
+      "note": "Her left shoulder in the foreground and the open compass in her hands; coat and scarf match. The dial sits in the raised half of the case, the reverse of the hero's."
     },
     {
       "shot": "s05",
       "take": "t03",
-      "verdict": "fail",
-      "note": "Hands and the open compass with a white dial and gold rim."
+      "verdict": "pass",
+      "note": "Her hands and the open compass with the white dial and gold rim."
     },
     {
       "shot": "s06",
@@ -361,8 +361,8 @@
       "review": {
         "shot": "s01",
         "take": "t03",
-        "verdict": "fail",
-        "note": "Figure still large; coat and greenhouse match."
+        "verdict": "pass",
+        "note": "Long fern-lined aisle with the traveler at the far end; coat matches. She is larger than the edit asked for."
       },
       "seed": 20261022,
       "seed_locked": true,
@@ -582,7 +582,7 @@
         "shot": "s02",
         "take": "t05",
         "verdict": "pass",
-        "note": "Hero: full figure holding the open compass."
+        "note": "Hero: waist-up, yellow coat and teal scarf, holding the open compass."
       },
       "seed": 20679936,
       "seed_locked": true,
@@ -636,8 +636,8 @@
       "review": {
         "shot": "s03",
         "take": "t03",
-        "verdict": "fail",
-        "note": "Face and side-parted hair match the hero; teal scarf and yellow collar remain."
+        "verdict": "pass",
+        "note": "Same face and side-parted hair as the hero; teal scarf and yellow collar at the edge."
       },
       "seed": 20261021,
       "seed_locked": true,
@@ -856,8 +856,8 @@
       "review": {
         "shot": "s04",
         "take": "t03",
-        "verdict": "fail",
-        "note": "Compass dial moves onto the lid."
+        "verdict": "pass",
+        "note": "Her left shoulder in the foreground and the open compass in her hands; coat and scarf match. The dial sits in the raised half of the case, the reverse of the hero's."
       },
       "seed": 20261021,
       "seed_locked": true,
@@ -1076,8 +1076,8 @@
       "review": {
         "shot": "s05",
         "take": "t03",
-        "verdict": "fail",
-        "note": "Hands and the open compass with a white dial and gold rim."
+        "verdict": "pass",
+        "note": "Her hands and the open compass with the white dial and gold rim."
       },
       "seed": 20261021,
       "seed_locked": true,
@@ -1296,8 +1296,8 @@
       "review": {
         "shot": "s06",
         "take": "t01",
-        "verdict": "fail",
-        "note": "Upward view of a small yellow-coated figure in a domed stairwell; kept as the SDXL original."
+        "verdict": "pass",
+        "note": "Steep low angle under a glass dome with the traveler on the stairs; yellow coat and satchel match. The dome is not the hero's bay, and the compass is out of view."
       },
       "seed": 20261020,
       "seed_locked": true,
