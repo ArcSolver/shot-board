@@ -1,0 +1,46 @@
+[
+  {
+    "filename": "qwen-image-edit-2511-Q4_K_M.gguf",
+    "component": "diffusion",
+    "folder": "diffusion_models",
+    "sha256": "8677bac90627adbbc11efab87b1870e701c4eb3689ee865a3de8ab81b705a723",
+    "bytes": 13244758624,
+    "repository": "unsloth/Qwen-Image-Edit-2511-GGUF",
+    "revision": "0d33d9692b4b26212297240d87b0d4719aa4fd06",
+    "license": "Apache-2.0",
+    "path": "qwen-image-edit-2511-Q4_K_M.gguf"
+  },
+  {
+    "filename": "Qwen2.5-VL-7B-Instruct-Q4_K_M.gguf",
+    "component": "text encoder",
+    "folder": "text_encoders",
+    "sha256": "d16776dcd9a28d42758c2958ed3a752aabf20a305252cd64ff2be72b4a78c503",
+    "bytes": 4683072384,
+    "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+    "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+    "license": "Apache-2.0",
+    "path": "Qwen2.5-VL-7B-Instruct-Q4_K_M.gguf"
+  },
+  {
+    "filename": "Qwen2.5-VL-7B-Instruct-mmproj-F16.gguf",
+    "component": "vision projector",
+    "folder": "text_encoders",
+    "sha256": "987dd0733033fb5dd9b124d1ca926ae865572e432384eee7618b2eec3e735e17",
+    "bytes": 1354163040,
+    "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+    "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+    "license": "Apache-2.0",
+    "path": "mmproj-F16.gguf"
+  },
+  {
+    "filename": "qwen_image_vae.safetensors",
+    "component": "VAE",
+    "folder": "vae",
+    "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+    "bytes": 253806246,
+    "repository": "Comfy-Org/Qwen-Image_ComfyUI",
+    "revision": "1f12b17be14c89b026c51a91d67c32f84bb047bc",
+    "license": "Apache-2.0",
+    "path": "split_files/vae/qwen_image_vae.safetensors"
+  }
+]

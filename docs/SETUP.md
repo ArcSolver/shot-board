@@ -1,6 +1,8 @@
 # Technical setup
 
-Requires an NVIDIA GPU with 24 GB VRAM.
+Requires an NVIDIA GPU with 24 GB VRAM. The four Q8_0 Qwen files add up to about 31 GB, so ComfyUI offloads part of them. To use the Q4_K_M files (about 20 GB), download them with `--quant Q4_K_M` and start the app with `SHOTBOARD_QWEN_QUANT=Q4_K_M`.
+
+If ComfyUI stops answering during a take, the app waits up to three minutes for it to come back and retries that take once.
 
 CPU client: tests
 
@@ -47,6 +49,7 @@ cd /opt/shot-board
 unset HF_TOKEN HUGGING_FACE_HUB_TOKEN COMFY_API_KEY
 .runtime/engine-venv/bin/python scripts/download_model.py --model-dir .runtime/ComfyUI/models/checkpoints
 .runtime/engine-venv/bin/python scripts/setup_reference.py --download --reference-model-dir .runtime/ComfyUI/models --qwen-model-dir .runtime/ComfyUI/models/diffusion_models
+# Q4_K_M instead of Q8_0: add --quant Q4_K_M here and to model_report.py
 ```
 
 SDXL checkpoint

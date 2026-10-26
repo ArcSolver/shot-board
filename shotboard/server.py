@@ -24,7 +24,7 @@ from pydantic import BaseModel, Field, field_validator
 from .storyboard import storyboard_png
 from .memory import MemoryGuard, MemorySafetyError
 
-from .core import (ROOT, PRESETS, LENSES, ANGLES, MOVES, LIGHTS, LOOKS, COVERAGE, OBJECT_COVERAGE, PERSON_WORDS,
+from .core import (ROOT, PRESETS, LENSES, ANGLES, MOVES, LIGHTS, LOOKS, COVERAGE, OBJECT_COVERAGE, PERSON_WORDS, QWEN_LOCK,
                    expand_shots, seed_for, workflow_for, settings_for, export_board, sha256)
 
 DATA = Path(os.environ.get("SHOTBOARD_DATA_DIR", ROOT / ".runtime/boards"))
@@ -42,6 +42,9 @@ for key in ("HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy
     os.environ.pop(key, None)
 os.environ["NO_PROXY"] = "localhost,127.0.0.1,::1"
 TERMINAL = {"succeeded", "failed", "cancelled", "canceled", "expired", "error"}
+ENGINE_INCOMPLETE = "Local engine did not complete the take"
+# A take that loses the engine waits this long for it to answer, then retries once.
+RETRY_WAIT_SECONDS = float(os.environ.get("SHOTBOARD_RETRY_WAIT_SECONDS", "180"))
 
 
 class Scene(BaseModel):
@@ -133,6 +136,26 @@ class Store:
         self.thread = threading.Thread(target=self.work, daemon=True)
         self.thread.start()
 
+    def retry_once(self, exc, board, take):
+        """Retry a take once when the engine connection drops, after the engine answers again."""
+        if take.get("cancel_requested") or self.stop.is_set() or isinstance(exc, MemorySafetyError):
+            return False
+        if not (isinstance(exc, httpx.TransportError) or str(exc) == ENGINE_INCOMPLETE):
+            return False
+        with self.lock:
+            take.update(phase="Engine stopped · retrying once", retried=True)
+            self.save(board)
+        deadline = time.monotonic() + RETRY_WAIT_SECONDS
+        while not self.stop.is_set() and time.monotonic() < deadline:
+            try:
+                with httpx.Client(trust_env=False, timeout=2) as client:
+                    if client.get(self.memory_guard.engine_url + "/system_stats").status_code == 200:
+                        return True
+            except httpx.HTTPError:
+                pass
+            self.stop.wait(2)
+        return False
+
     def work(self):
         while not self.stop.is_set():
             try:
@@ -149,76 +172,82 @@ class Store:
                 take.update(status="running", phase="Submitting through Comfy SDK", started_at=time.time())
                 self.save(board)
             start = time.monotonic()
-            job = None
             try:
-                self.memory_guard.prepare(take["settings"]["preset_id"])
-                with Comfy(timeout=30) as client:
-                    workflow = client.workflows.from_json(deepcopy(take["workflow"]))
-                    if take.get("reference"):
-                        source = DATA / bid / take["reference"]["image"]
-                        if sha256(source) != take["reference"]["image_sha256"]:
-                            raise ValueError("Hero reference changed")
-                        asset = client.assets.from_file(source)
-                        # Record the exact SDK materialized input without replacing the portable graph.
-                        binding = asset.as_reference()
-                        workflow.set_input("1", "image", binding)
-                        take["reference"]["sdk_asset"] = binding
-                        take["submitted_workflow"] = deepcopy(workflow.json)
-                        take["submission_fingerprint_sha256"] = hashlib.sha256(
-                            json.dumps(workflow.json, sort_keys=True).encode()).hexdigest()
-                    job = client.submit(workflow)
-                    with self.lock:
-                        self.active_job = job
-                        take.update(job_id=job.id, phase="Waiting for local engine", engine_status=job.status)
-                        self.save(board)
-                    deadline = time.monotonic() + 1800
-                    while job.status not in TERMINAL:
-                        if self.stop.wait(1) or take.get("cancel_requested"):
-                            job.cancel()
-                            raise RuntimeError("Generation cancelled")
-                        if time.monotonic() > deadline:
-                            job.cancel()
-                            raise TimeoutError("Local generation exceeded 30 minutes")
-                        self.memory_guard.check_running()
-                        job.refresh()
-                        with self.lock:
-                            take.update(engine_status=job.status, phase="Local engine · " + job.status,
-                                        elapsed_seconds=round(time.monotonic()-start, 2))
-                    if job.status != "succeeded":
-                        raise RuntimeError("Local engine did not complete the take")
-                    outputs = job.get_outputs("7")
-                    if len(outputs) != 1:
-                        raise RuntimeError("Expected exactly one still")
-                    relative = f"{sid}-{tid}.png"
-                    dest = DATA / bid / relative
-                    raw = dest.with_suffix(".download")
-                    outputs[0].to_file(raw)
-                    # Keep pixels, strip embedded workflow/system metadata before public export.
-                    with Image.open(raw) as image:
-                        image.convert("RGB").save(dest, format="PNG")
-                    raw.unlink()
-                    with self.lock:
-                        take.update(status="succeeded", phase="Complete", image=relative,
-                                    image_sha256=sha256(dest), elapsed_seconds=round(time.monotonic()-start, 3))
-            except Exception as exc:
-                if job is not None:
+                for attempt in (1, 2):
+                    job = None
                     try:
-                        if job.status not in TERMINAL:
-                            job.cancel()
-                    except Exception:
-                        pass
-                with self.lock:
-                    # Do not expose engine exception bodies, credentials, or filesystem paths.
-                    if isinstance(exc, MemorySafetyError):
-                        for pending_board in self.boards.values():
-                            for pending_shot in pending_board["shots"]:
-                                for pending in pending_shot["takes"]:
-                                    if pending["status"] == "queued":
-                                        pending.update(status="cancelled", error=str(exc))
-                            self.save(pending_board)
-                    take.update(status="cancelled" if take.get("cancel_requested") or self.stop.is_set() else "failed",
-                                error=str(exc) if isinstance(exc, MemorySafetyError) else f"{type(exc).__name__}: local generation stopped. Check the local engine and retry.",
-                                elapsed_seconds=round(time.monotonic()-start, 3))
+                        self.memory_guard.prepare(take["settings"]["preset_id"])
+                        with Comfy(timeout=30) as client:
+                            workflow = client.workflows.from_json(deepcopy(take["workflow"]))
+                            if take.get("reference"):
+                                source = DATA / bid / take["reference"]["image"]
+                                if sha256(source) != take["reference"]["image_sha256"]:
+                                    raise ValueError("Hero reference changed")
+                                asset = client.assets.from_file(source)
+                                # Record the exact SDK materialized input without replacing the portable graph.
+                                binding = asset.as_reference()
+                                workflow.set_input("1", "image", binding)
+                                take["reference"]["sdk_asset"] = binding
+                                take["submitted_workflow"] = deepcopy(workflow.json)
+                                take["submission_fingerprint_sha256"] = hashlib.sha256(
+                                    json.dumps(workflow.json, sort_keys=True).encode()).hexdigest()
+                            job = client.submit(workflow)
+                            with self.lock:
+                                self.active_job = job
+                                take.update(job_id=job.id, phase="Waiting for local engine", engine_status=job.status)
+                                self.save(board)
+                            deadline = time.monotonic() + 1800
+                            while job.status not in TERMINAL:
+                                if self.stop.wait(1) or take.get("cancel_requested"):
+                                    job.cancel()
+                                    raise RuntimeError("Generation cancelled")
+                                if time.monotonic() > deadline:
+                                    job.cancel()
+                                    raise TimeoutError("Local generation exceeded 30 minutes")
+                                self.memory_guard.check_running()
+                                job.refresh()
+                                with self.lock:
+                                    take.update(engine_status=job.status, phase="Local engine · " + job.status,
+                                                elapsed_seconds=round(time.monotonic()-start, 2))
+                            if job.status != "succeeded":
+                                raise RuntimeError(ENGINE_INCOMPLETE)
+                            outputs = job.get_outputs("7")
+                            if len(outputs) != 1:
+                                raise RuntimeError("Expected exactly one still")
+                            relative = f"{sid}-{tid}.png"
+                            dest = DATA / bid / relative
+                            raw = dest.with_suffix(".download")
+                            outputs[0].to_file(raw)
+                            # Keep pixels, strip embedded workflow/system metadata before public export.
+                            with Image.open(raw) as image:
+                                image.convert("RGB").save(dest, format="PNG")
+                            raw.unlink()
+                            with self.lock:
+                                take.update(status="succeeded", phase="Complete", image=relative,
+                                            image_sha256=sha256(dest), elapsed_seconds=round(time.monotonic()-start, 3))
+                        break
+                    except Exception as exc:
+                        if job is not None:
+                            try:
+                                if job.status not in TERMINAL:
+                                    job.cancel()
+                            except Exception:
+                                pass
+                        if attempt == 1 and self.retry_once(exc, board, take):
+                            continue
+                        with self.lock:
+                            # Do not expose engine exception bodies, credentials, or filesystem paths.
+                            if isinstance(exc, MemorySafetyError):
+                                for pending_board in self.boards.values():
+                                    for pending_shot in pending_board["shots"]:
+                                        for pending in pending_shot["takes"]:
+                                            if pending["status"] == "queued":
+                                                pending.update(status="cancelled", error=str(exc))
+                                    self.save(pending_board)
+                            take.update(status="cancelled" if take.get("cancel_requested") or self.stop.is_set() else "failed",
+                                        error=str(exc) if isinstance(exc, MemorySafetyError) else f"{type(exc).__name__}: local generation stopped. Check the local engine and retry.",
+                                        elapsed_seconds=round(time.monotonic()-start, 3))
+                        break
             finally:
                 with self.lock:
                     self.active_job = None
@@ -293,7 +322,7 @@ def health():
     reference_components_present = all(
         ((QWEN_MODEL_DIR / m["filename"]) if m["component"] == "diffusion" else
          (REFERENCE_MODEL_DIR / m["folder"] / m["filename"])).is_file()
-        for m in json.loads((ROOT / "workflows/qwen-model-lock.json").read_text()))
+        for m in json.loads(QWEN_LOCK.read_text()))
     checkpoint_present = (MODEL_DIR / PRESETS["sdxl-base"]["checkpoint"]).is_file()
     if ENGINE_MANIFEST:
         def available(preset):
@@ -446,7 +475,7 @@ def verify_models(preset_id):
                              license=lock["license"], repository=lock["repository"], revision=lock["revision"],
                              components=["SDXL UNet", "CLIP-L", "OpenCLIP bigG", "VAE (checkpoint embedded)"])]
     else:
-        requirements = json.loads((ROOT / "workflows/qwen-model-lock.json").read_text())
+        requirements = json.loads(QWEN_LOCK.read_text())
     if ENGINE_MANIFEST:
         try:
             report = json.loads(Path(ENGINE_MANIFEST).read_text())

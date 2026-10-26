@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 import zipfile
 
 from PIL import Image
@@ -252,6 +252,81 @@ class SDKWorkerTests(unittest.TestCase):
         self.assertEqual(captured['output_node'],'7')
         self.assertEqual(take['image_sha256'],sha256(self.data/self.bid/take['image']))
 
+
+class EngineRetryTests(unittest.TestCase):
+    setUp = ContinuityAPITests.setUp
+    enable = ContinuityAPITests.enable
+
+    def run_take(self, failures, engine_up=True):
+        """Queue one Qwen edit; `failures` lists what each submit raises before a success."""
+        from types import SimpleNamespace
+        import httpx
+        from comfy_sdk.workflows import Workflow
+        self.enable()
+        with patch.object(server,'verify_models',return_value=[]):
+            self.client.post(self.base+'/generate',json={'takes':1,'shot_id':'s03'})
+        take=self.board['shots'][2]['takes'][0]
+        calls=[]
+        class Output:
+            def to_file(inner,path):
+                Image.new('RGB',(16,16),'green').save(path,format='PNG')
+        class Job:
+            status='succeeded'
+            id='test-job'
+            def get_outputs(inner,node):
+                return [Output()]
+        class Client:
+            def __init__(inner,**kwargs):
+                inner.workflows=SimpleNamespace(from_json=Workflow)
+                inner.assets=SimpleNamespace(from_file=lambda path:SimpleNamespace(as_reference=lambda:{'__type':'core/ASSET'}))
+            def __enter__(inner): return inner
+            def __exit__(inner,*args): pass
+            def submit(inner,workflow):
+                calls.append(1)
+                if len(calls)<=len(failures):
+                    raise failures[len(calls)-1]
+                return Job()
+        health=SimpleNamespace(get=lambda url:SimpleNamespace(status_code=200 if engine_up else 503))
+        probe=MagicMock()
+        probe.return_value.__enter__.return_value=health
+        done=server.store.tasks.task_done
+        def finish():
+            done();server.store.stop.set()
+        server.store.stop.clear()
+        with patch.object(server.store.tasks,'task_done',finish), \
+             patch.object(server,'Comfy',Client), patch.object(server.store.memory_guard,'prepare'), \
+             patch.object(server.httpx,'Client',probe), patch.object(server,'RETRY_WAIT_SECONDS',0.01):
+            server.store.work()
+        return take, calls, probe
+
+    def test_dropped_engine_is_retried_once_and_succeeds(self):
+        import httpx
+        take, calls, probe = self.run_take([httpx.ReadError('engine closed the connection')])
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(take['status'], 'succeeded')
+        self.assertTrue(take['retried'])
+        self.assertTrue(probe.call_count >= 1)
+
+    def test_second_drop_fails_the_take(self):
+        import httpx
+        take, calls, _ = self.run_take([httpx.ConnectError('refused'), httpx.ConnectError('refused')])
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(take['status'], 'failed')
+        self.assertTrue(take['retried'])
+
+    def test_no_retry_when_the_engine_does_not_come_back(self):
+        import httpx
+        take, calls, _ = self.run_take([httpx.ConnectError('refused')], engine_up=False)
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(take['status'], 'failed')
+        self.assertTrue(take['error'].startswith('ConnectError'))
+
+    def test_other_errors_are_not_retried(self):
+        take, calls, probe = self.run_take([ValueError('bad graph')])
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(take['status'], 'failed')
+        self.assertNotIn('retried', take)
+        probe.assert_not_called()
 
 if __name__=='__main__':
     unittest.main()

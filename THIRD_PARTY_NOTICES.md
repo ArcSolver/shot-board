@@ -35,7 +35,7 @@ Shot Board source is MIT. Each dependency keeps its own license.
 
 ## Continuity preset
 
-Qwen-Image-Edit-2511 Q8_0 GGUF (Unsloth conversion), Qwen2.5-VL-7B-Instruct Q8_0 GGUF and its F16 vision projector, and Qwen image VAE (Comfy-Org packaging) are Apache-2.0. Pinned in [qwen-model-lock.json](workflows/qwen-model-lock.json).
+Qwen-Image-Edit-2511 Q8_0 and Q4_K_M GGUF (Unsloth conversion), Qwen2.5-VL-7B-Instruct Q8_0 and Q4_K_M GGUF and its F16 vision projector, and Qwen image VAE (Comfy-Org packaging) are Apache-2.0. Pinned in [qwen-model-lock.json](workflows/qwen-model-lock.json) and [qwen-model-lock-q4_k_m.json](workflows/qwen-model-lock-q4_k_m.json).
 
 Upstream model cards: [Qwen edit](https://huggingface.co/Qwen/Qwen-Image-Edit-2511), [diffusion GGUF](https://huggingface.co/unsloth/Qwen-Image-Edit-2511-GGUF), [encoder GGUF](https://huggingface.co/unsloth/Qwen2.5-VL-7B-Instruct-GGUF), [Comfy-Org VAE](https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI).
 

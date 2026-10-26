@@ -3,6 +3,7 @@ from copy import deepcopy
 import hashlib
 import io
 import json
+import os
 import re
 from pathlib import Path
 import zipfile
@@ -71,6 +72,13 @@ def coverage_for(config):
     return [entry if person else OBJECT_COVERAGE.get(entry[0], entry) for entry in COVERAGE[:config["count"]]]
 
 
+# Q8_0 is the measured default. Q4_K_M brings the four Qwen files from about 31 GB to about 20 GB.
+QWEN_LOCKS = {"Q8_0": "qwen-model-lock.json", "Q4_K_M": "qwen-model-lock-q4_k_m.json"}
+QWEN_QUANT = os.environ.get("SHOTBOARD_QWEN_QUANT", "Q8_0")
+if QWEN_QUANT not in QWEN_LOCKS:
+    raise RuntimeError("SHOTBOARD_QWEN_QUANT must be one of: " + ", ".join(QWEN_LOCKS))
+QWEN_LOCK = ROOT / "workflows" / QWEN_LOCKS[QWEN_QUANT]
+_QWEN_FILES = {m["component"]: m["filename"] for m in json.loads(QWEN_LOCK.read_text())}
 PRESETS = {
     "sdxl-base": {
         "label": "SDXL Base 1.0", "enabled": True,
@@ -83,8 +91,8 @@ PRESETS = {
     "qwen-reference": {
         "label": "Qwen continuity · reference edit", "enabled": True,
         "license": "Apache-2.0", "capability": "reference-edit",
-        "unet": "qwen-image-edit-2511-Q8_0.gguf",
-        "encoder": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf", "vae": "qwen_image_vae.safetensors",
+        "unet": _QWEN_FILES["diffusion"],
+        "encoder": _QWEN_FILES["text encoder"], "vae": _QWEN_FILES["VAE"],
         "width": 512, "height": 512, "steps": 24, "cfg": 4.0,
         "sampler_name": "euler", "scheduler": "simple", "denoise": 1.0,
         "shift": 3.1, "reference_megapixels": 1.0,
