@@ -95,13 +95,13 @@
       "shot": "s06",
       "take": "t01",
       "verdict": "pass",
-      "note": "Steep low angle under a glass dome with the traveler on the stairs; yellow coat and satchel match. The dome is not the hero's bay, and the compass is out of view."
+      "note": "Steep low angle under a glass dome with the traveler on the stairs; the yellow coat matches. She has longer hair and a brown satchel that the hero frame does not show. The dome is not the hero's bay, and the compass is out of view."
     },
     {
       "shot": "s01",
       "take": "t02",
       "verdict": "pass",
-      "note": "Wide glass hall with the traveler at the far table; coat and compass match."
+      "note": "Wide glass hall with the traveler at the far table; the yellow coat matches. The compass is too small to compare."
     },
     {
       "shot": "s03",
@@ -137,19 +137,19 @@
       "shot": "s03",
       "take": "t03",
       "verdict": "pass",
-      "note": "Same face and side-parted hair as the hero; teal scarf and yellow collar at the edge."
+      "note": "Short bob parted on the same side as the hero's, teal scarf and yellow collar at the edge. Her hair is darker and straighter and her face looks older; the hero looks down, so the eyes can't be compared."
     },
     {
       "shot": "s04",
       "take": "t03",
       "verdict": "pass",
-      "note": "Her left shoulder in the foreground and the open compass in her hands; coat and scarf match. The dial sits in the raised half of the case, the reverse of the hero's."
+      "note": "Her left shoulder in the foreground and the open compass in her hands; the yellow coat matches. Her scarf is navy, not teal, her hair is curly, and her bracelet is a thin single band. The compass has a ring on top and its dial sits in the raised half of the case, the reverse of the hero's."
     },
     {
       "shot": "s05",
       "take": "t03",
       "verdict": "pass",
-      "note": "Her hands and the open compass with the white dial and gold rim."
+      "note": "Her hands and the open compass with a hinged lid, white dial and gold rim. The case is much shallower than the hero's, and the needle is a thin blue and red star instead of the hero's broad grey cross."
     },
     {
       "shot": "s06",
@@ -637,7 +637,7 @@
         "shot": "s03",
         "take": "t03",
         "verdict": "pass",
-        "note": "Same face and side-parted hair as the hero; teal scarf and yellow collar at the edge."
+        "note": "Short bob parted on the same side as the hero's, teal scarf and yellow collar at the edge. Her hair is darker and straighter and her face looks older; the hero looks down, so the eyes can't be compared."
       },
       "seed": 20261021,
       "seed_locked": true,
@@ -857,7 +857,7 @@
         "shot": "s04",
         "take": "t03",
         "verdict": "pass",
-        "note": "Her left shoulder in the foreground and the open compass in her hands; coat and scarf match. The dial sits in the raised half of the case, the reverse of the hero's."
+        "note": "Her left shoulder in the foreground and the open compass in her hands; the yellow coat matches. Her scarf is navy, not teal, her hair is curly, and her bracelet is a thin single band. The compass has a ring on top and its dial sits in the raised half of the case, the reverse of the hero's."
       },
       "seed": 20261021,
       "seed_locked": true,
@@ -1077,7 +1077,7 @@
         "shot": "s05",
         "take": "t03",
         "verdict": "pass",
-        "note": "Her hands and the open compass with the white dial and gold rim."
+        "note": "Her hands and the open compass with a hinged lid, white dial and gold rim. The case is much shallower than the hero's, and the needle is a thin blue and red star instead of the hero's broad grey cross."
       },
       "seed": 20261021,
       "seed_locked": true,
@@ -1297,7 +1297,7 @@
         "shot": "s06",
         "take": "t01",
         "verdict": "pass",
-        "note": "Steep low angle under a glass dome with the traveler on the stairs; yellow coat and satchel match. The dome is not the hero's bay, and the compass is out of view."
+        "note": "Steep low angle under a glass dome with the traveler on the stairs; the yellow coat matches. She has longer hair and a brown satchel that the hero frame does not show. The dome is not the hero's bay, and the compass is out of view."
       },
       "seed": 20261020,
       "seed_locked": true,
