@@ -1,0 +1,4 @@
+/* Static board viewer: hide controls that need the GPU worker or a server. */
+#new-board,#edit-toggle,.loop-divider,.takes-select,#generate,#cancel,#queue-panel,.compare-recipe,.render-settings .toggle{display:none!important}
+.static-note{margin:20px 0 0;color:var(--ink-3);font-size:13px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+.static-note a{color:var(--marker-ink)}
