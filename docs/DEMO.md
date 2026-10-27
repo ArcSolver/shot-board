@@ -8,7 +8,7 @@ Start the app as in [Run it locally](../README.md#run-it-locally).
 
 1. On the home page, choose **New scene**. Type the scene or press **Use example**, then **Build shot list**.
 2. Choose **Render board**. Takes arrive cut by cut.
-3. Open **Compare & pick** on 02 Medium. **Pick** a take, open **Seed, hero & more takes** and choose **Use selected as hero**.
+3. Open **Compare & pick** on 02 Medium. Open **Seed, hero & more takes**. **Pick** an SDXL take, or **Import reference** and pick your image, then choose **Use selected as hero**.
 4. Back on the board, choose **Render reference edits**. Every other cut goes to Qwen-Image-Edit-2511 with the hero as the reference.
 5. Click **Storyboard**, switch to Portrait and click **Download PNG**. Then click **Export ZIP**.
 

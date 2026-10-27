@@ -2,6 +2,7 @@
 from contextlib import asynccontextmanager
 from copy import deepcopy
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -18,7 +19,7 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 import httpx
-from PIL import Image
+from PIL import Image, ImageOps, UnidentifiedImageError
 from pydantic import BaseModel, Field, field_validator
 
 from .storyboard import storyboard_png
@@ -521,10 +522,14 @@ def set_continuity(bid: str, request: Continuity):
             take = next((t for t in shot["takes"] if t["id"] == request.take_id and t["status"] == "succeeded"), None)
             if not take or shot["picked"] != request.take_id:
                 raise HTTPException(409, "Pick the hero take before enabling continuity.")
-            if (take.get('reference') or take.get('settings', {}).get('checkpoint') != PRESETS['sdxl-base']['checkpoint']
+            imported = (take.get('source', {}).get('type') == 'imported'
+                        and take.get('settings', {}).get('preset_id') == 'imported-reference'
+                        and not take.get('workflow') and not take.get('models') and not take.get('reference')
+                        and take.get('seed') is None)
+            if not imported and (take.get('reference') or take.get('settings', {}).get('checkpoint') != PRESETS['sdxl-base']['checkpoint']
                     or take.get('settings', {}).get('preset_id', 'sdxl-base') != 'sdxl-base'
                     or take.get('workflow', {}).get('1', {}).get('class_type') != 'CheckpointLoaderSimple'):
-                raise HTTPException(409, "Only an SDXL original can be the hero.")
+                raise HTTPException(409, "Only an SDXL original or imported reference can be the hero.")
             source = DATA / bid / take["image"]
             if sha256(source) != take["image_sha256"]:
                 raise HTTPException(409, "The picked hero changed on disk.")
@@ -536,9 +541,54 @@ def set_continuity(bid: str, request: Continuity):
                         image_sha256=take["image_sha256"], seed=take["seed"],
                         settings=deepcopy(take["settings"]), models=deepcopy(take["models"]),
                         workflow=deepcopy(take["workflow"]))
+            if imported:
+                hero['source'] = deepcopy(take['source'])
             board["continuity"] = dict(enabled=True, hero=hero)
         store.save(board)
     return deepcopy(board["continuity"])
+
+
+@app.post("/api/boards/{bid}/shots/{sid}/import", status_code=201)
+async def import_reference(bid: str, sid: str, request: Request):
+    """Import an owner-provided still without claiming a generated recipe."""
+    content = bytearray()
+    async for chunk in request.stream():
+        content.extend(chunk)
+        if len(content) > 20 * 1024 * 1024:
+            raise HTTPException(413, "Choose an image smaller than 20 MB.")
+    try:
+        with Image.open(io.BytesIO(content)) as original:
+            if original.format not in ('PNG', 'JPEG', 'WEBP'):
+                raise ValueError()
+            if not (512 <= original.width <= 4096 and 512 <= original.height <= 4096):
+                raise ValueError()
+            image = ImageOps.exif_transpose(original).convert('RGBA')
+            background = Image.new('RGBA', image.size, 'white')
+            image = Image.alpha_composite(background, image).convert('RGB')
+            clean = Image.new('RGB', image.size)
+            clean.paste(image)
+    except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
+        raise HTTPException(422, "Choose a PNG, JPEG or WebP image, 512–4096 pixels per side.") from None
+    with store.lock:
+        board = board_for(bid)
+        shot = shot_for(board, sid)
+        if any(t['status'] in ('queued', 'running') for s in board['shots'] for t in s['takes']):
+            raise HTTPException(409, "Wait for the current queue before importing a reference.")
+        if len(shot['takes']) >= 16:
+            raise HTTPException(409, "Maximum 16 takes per shot. Create a new board for more coverage.")
+        tid = f"t{max((int(t['id'][1:]) for t in shot['takes']), default=0)+1:02}"
+        filename = f'{sid}-{tid}.png'
+        path = DATA / bid / filename
+        clean.save(path)
+        take = dict(id=tid, status='succeeded', phase='Imported', seed=None,
+                    source=dict(type='imported', label='Imported reference'),
+                    settings=dict(preset_id='imported-reference', label='Imported reference',
+                                  width=clean.width, height=clean.height),
+                    image=filename, image_sha256=sha256(path), models=[], workflow={},
+                    elapsed_seconds=0)
+        shot['takes'].append(take)
+        store.save(board)
+        return deepcopy(take)
 
 
 @app.post("/api/boards/{bid}/cancel")

@@ -145,7 +145,7 @@ def settings_for(shot, preset_id):
 def reference_prompt(shot):
     # Qwen follows natural edit instructions; SDXL attention syntax is not portable.
     framing = re.sub(r"\(([^()]+):[0-9.]+\)", r"\1", shot["prompt"])
-    return ("Requested framing: " + shot.get("direction", shot["title"]) + ". "
+    return ("Requested framing: " + shot.get("shot_type", shot["title"]) + ". "
             "Edit the reference photograph into a new camera shot of the SAME scene. "
             "Preserve the exact same person and facial identity, hair, outfit, bag, object design, "
             "materials, lighting and set architecture from the reference. "
@@ -208,7 +208,8 @@ def export_board(board, data_root):
             if sha256(image) != take["image_sha256"]:
                 raise ValueError("A picked image changed on disk; export stopped.")
             image_name = f"stills/{shot['id']}.png"
-            workflow_name = f"workflows/{shot['id']}.api.json"
+            imported = take.get('source', {}).get('type') == 'imported'
+            workflow_name = None if imported else f"workflows/{shot['id']}.api.json"
             archive.write(image, image_name)
             reference = deepcopy(take.get("reference"))
             if reference:
@@ -219,7 +220,8 @@ def export_board(board, data_root):
                     archive.write(source, reference["image"])
                     exported_references.add(reference["image"])
             graph = json.dumps(take["workflow"], indent=2) + "\n"
-            archive.writestr(workflow_name, graph)
+            if workflow_name:
+                archive.writestr(workflow_name, graph)
             submitted_name = None
             submitted_hash = None
             if take.get("submitted_workflow"):
@@ -233,14 +235,15 @@ def export_board(board, data_root):
                                     dict(shot=shot["id"], take=take["id"], verdict="pending", note=""))),
                 seed=take["seed"], seed_locked=shot["locked_seed"] is not None,
                 settings=deepcopy(take["settings"]), models=deepcopy(take["models"]),
-                prompt=take["workflow"]["2"]["inputs"].get("text", take["workflow"]["2"]["inputs"].get("prompt")),
-                negative=take["workflow"]["3"]["inputs"].get("text", take["workflow"]["3"]["inputs"].get("prompt")),
+                prompt=None if imported else take["workflow"]["2"]["inputs"].get("text", take["workflow"]["2"]["inputs"].get("prompt")),
+                negative=None if imported else take["workflow"]["3"]["inputs"].get("text", take["workflow"]["3"]["inputs"].get("prompt")),
+                source=deepcopy(take.get('source')),
                 reference=reference,
                 submitted_workflow=submitted_name,
                 submitted_workflow_sha256=submitted_hash,
                 submission_fingerprint_sha256=take.get("submission_fingerprint_sha256"),
                 image=image_name, image_sha256=take["image_sha256"], workflow=workflow_name,
-                workflow_sha256=hashlib.sha256(graph.encode()).hexdigest(),
+                workflow_sha256=hashlib.sha256(graph.encode()).hexdigest() if workflow_name else None,
                 elapsed_seconds=take["elapsed_seconds"]))
         for layout, size in SIZES.items():
             try:

@@ -24,7 +24,7 @@ Open **http://127.0.0.1:8790** and choose **Explore the board**, or open another
 
 You write one scene and Shot Board lays out six editable cuts from a coverage template: establishing, medium, face close-up, over shoulder, insert and low angle. When the scene has no person, the face close-up and over shoulder become a detail close-up and a side angle. You can add up to three more, give it character, prop and setting details, and edit each cut's prompt and negative prompt.
 
-SDXL renders takes for each cut. Compare & pick shows every take of a cut side by side with its render details one click away, and you can lock a seed and reuse it. Make one SDXL take the hero and Render reference edits sends every other cut to Qwen-Image-Edit-2511 with that image as the reference. You can save a pass, fail or pending verdict and a note on any take.
+SDXL renders takes for each cut. Compare & pick shows every take of a cut side by side with its render details one click away, and you can lock a seed and reuse it. Pick an SDXL take or import your own image as the hero. Render reference edits sends every other cut to Qwen-Image-Edit-2511 with that image as the reference. You can save a pass, fail or pending verdict and a note on any take.
 
 When every cut has a pick, export a landscape or portrait storyboard, plus the stills, ComfyUI workflows and saved recipes.
 
@@ -41,7 +41,7 @@ Browser ──▶ Shot Board (FastAPI, CPU)
             comfy-api-proxy
               ▼
             ComfyUI (GPU worker)
-              ├─ SDXL Base 1.0            → first takes and the hero
+              ├─ SDXL Base 1.0            → first takes
               └─ Qwen-Image-Edit-2511     → reference edits from the hero
 ```
 
@@ -66,11 +66,11 @@ SHOTBOARD_ENGINE_MANIFEST=/path/to/engine-models.json \
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-Open **http://127.0.0.1:8790** and choose **New scene**. Type a scene or press **Use example**, then build the shot list and render SDXL takes. In **Compare & pick**, pick an SDXL take, open **Seed, hero & more takes** and choose **Use selected as hero**, then **Render reference edits**. Compare the takes, save a verdict on each, and pick.
+Open **http://127.0.0.1:8790** and choose **New scene**. Type a scene or press **Use example**, then build the shot list and render SDXL takes. In **Compare & pick**, open **Seed, hero & more takes**. Pick an SDXL take, or choose **Import reference** to add your own PNG, JPEG or WebP. Pick the imported still, choose **Use selected as hero**, then **Render reference edits**. Imported stills are labeled **Imported reference** and keep no invented seed, model or generation workflow. Compare the takes, save a verdict on each, and pick.
 
 ### Reuse a recipe outside the app
 
-Each `workflows/sNN.api.json` in an export ZIP is a ComfyUI API-format graph with the cut's prompt, seed and settings filled in. Qwen graphs load the hero from `references/<sha256>.png`, so copy the ZIP's `references` folder into ComfyUI's input directory before you queue one. You need the same pinned model files and ComfyUI-GGUF.
+Each generated frame's `workflows/sNN.api.json` in an export ZIP is a ComfyUI API-format graph with the cut's prompt, seed and settings filled in. Qwen graphs load the hero from `references/<sha256>.png`, so copy the ZIP's `references` folder into ComfyUI's input directory before you queue one. You need the same pinned model files and ComfyUI-GGUF.
 
 ## Boards in the repo
 

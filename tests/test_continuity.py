@@ -65,6 +65,16 @@ class TemplateTests(unittest.TestCase):
             workflow_for(shot, 0, settings)
         self.assertNotIn('preset_id', PRESETS['qwen-reference'])
 
+    def test_edited_reference_prompt_does_not_repeat_stale_character_direction(self):
+        shot = deepcopy(self.shots[3])
+        shot['direction'] = "Behind a traveler with short dark hair"
+        shot['prompt'] = "Over shoulder, light chestnut chin-length bob and teal scarf."
+        graph = workflow_for(shot, 41, settings_for(shot, 'qwen-reference'), {'image':'references/hero.png'})
+        prompt = graph['2']['inputs']['prompt']
+        self.assertIn('Requested framing: Over shoulder.', prompt)
+        self.assertIn('light chestnut chin-length bob', prompt)
+        self.assertNotIn('short dark hair', prompt)
+
     def test_templates_follow_explicit_subject_and_prop(self):
         config=server.Scene(scene='A robot inspects a silver key on a spaceship',
                             character='An adult robot, blue coat',setting='A spaceship cabin',prop='silver key').model_dump()
@@ -110,6 +120,103 @@ class ContinuityAPITests(unittest.TestCase):
 
     def enable(self):
         return self.client.post(self.base+'/continuity',json={'enabled':True,'shot_id':'s02','take_id':'t01'})
+
+    def imported(self):
+        image = io.BytesIO()
+        Image.new('RGB', (768, 576), 'gold').save(image, format='PNG')
+        response = self.client.post(self.base+'/shots/s02/import', content=image.getvalue(),
+                                    headers={'Content-Type': 'image/png'})
+        self.assertEqual(response.status_code, 201, response.text)
+        take = response.json()
+        self.client.post(self.base+'/shots/s02/pick', json={'take_id':take['id']})
+        response = self.client.post(self.base+'/continuity', json=dict(enabled=True,shot_id='s02',take_id=take['id']))
+        self.assertEqual(response.status_code, 200, response.text)
+        return take, response.json()['hero']
+
+    def test_imported_hero_queues_real_reference_graph_without_invented_seed(self):
+        take, hero = self.imported()
+        self.assertIsNone(take['seed'])
+        self.assertEqual(take['models'], [])
+        self.assertEqual(take['workflow'], {})
+        self.assertEqual(hero['source']['type'], 'imported')
+        self.assertEqual(hero['image_sha256'], sha256(self.data/self.bid/hero['image']))
+        with patch.object(server,'verify_models',return_value=[]):
+            response = self.client.post(self.base+'/generate',json={'takes':1,'shot_id':'s03'})
+        self.assertEqual(response.status_code, 202)
+        queued = self.board['shots'][2]['takes'][0]
+        self.assertEqual(queued['settings']['preset_id'], 'qwen-reference')
+        self.assertEqual(queued['workflow']['1']['inputs']['image'], hero['image'])
+        self.assertEqual(queued['reference']['source']['type'], 'imported')
+        self.assertEqual(self.client.post(self.base+'/shots/s02/import',content=b'invalid').status_code,422)
+
+    def test_imported_export_contains_still_and_no_fabricated_workflow(self):
+        take, hero = self.imported()
+        for shot in self.board['shots']:
+            if shot['id'] != 's02':
+                shot['takes'] = [deepcopy(self.take)]
+                shot['picked'] = self.take['id']
+        data = export_board(self.board, self.data)
+        with zipfile.ZipFile(io.BytesIO(data)) as archive:
+            self.assertNotIn('workflows/s02.api.json', archive.namelist())
+            manifest = json.loads(archive.read('manifest.json'))
+            item = manifest['shots'][1]
+            self.assertIsNone(item['workflow'])
+            self.assertIsNone(item['prompt'])
+            self.assertIsNone(item['seed'])
+            self.assertEqual(item['source']['label'], 'Imported reference')
+            self.assertEqual(hashlib.sha256(archive.read('stills/s02.png')).hexdigest(), take['image_sha256'])
+        (self.data/self.bid/hero['image']).write_bytes(b'changed')
+        self.assertEqual(self.client.post(self.base+'/generate',json={'takes':1,'shot_id':'s03'}).status_code,409)
+
+    def test_import_rejects_small_image_and_queue_and_preserves_hero_pick(self):
+        self.assertEqual(self.client.post(self.base+'/shots/s02/import',content=b'not an image').status_code,422)
+        image = io.BytesIO(); Image.new('RGB',(32,32)).save(image,format='PNG')
+        self.assertEqual(self.client.post(self.base+'/shots/s02/import',content=image.getvalue()).status_code,422)
+        take, _ = self.imported()
+        image = io.BytesIO(); Image.new('RGB',(512,512)).save(image,format='PNG')
+        self.take['status'] = 'queued'
+        self.assertEqual(self.client.post(self.base+'/shots/s02/import',content=image.getvalue()).status_code,409)
+        self.assertEqual(self.shot['picked'],take['id'])
+
+    def test_import_composites_transparency_and_removes_metadata(self):
+        from PIL.PngImagePlugin import PngInfo
+        image = io.BytesIO(); metadata = PngInfo(); metadata.add_text('Comment','private source metadata')
+        Image.new('RGBA',(512,512),(255,0,0,0)).save(image,format='PNG',pnginfo=metadata)
+        response = self.client.post(self.base+'/shots/s02/import',content=image.getvalue())
+        self.assertEqual(response.status_code,201)
+        with Image.open(self.data/self.bid/response.json()['image']) as imported:
+            self.assertEqual(imported.mode,'RGB')
+            self.assertEqual(imported.getpixel((0,0)),(255,255,255))
+            self.assertEqual(imported.info,{})
+
+    def test_import_palette_and_webp_transparency(self):
+        for fmt, mode in [('PNG','P'),('WEBP','RGBA')]:
+            with self.subTest(fmt=fmt):
+                source = Image.new('RGBA',(512,512),(255,0,0,0))
+                if mode == 'P':
+                    source = source.convert('P'); source.info['transparency'] = 0
+                image = io.BytesIO();source.save(image,format=fmt)
+                response = self.client.post(self.base+'/shots/s02/import',content=image.getvalue())
+                self.assertEqual(response.status_code,201)
+                with Image.open(self.data/self.bid/response.json()['image']) as imported:
+                    self.assertEqual(imported.getpixel((0,0)),(255,255,255))
+
+    def test_imported_reference_export_preserves_source_and_real_edit_recipe(self):
+        take, hero = self.imported()
+        for shot in self.board['shots']:
+            if shot['id']=='s02':continue
+            settings = settings_for(shot,'qwen-reference')
+            edit = deepcopy(self.take)
+            edit.update(seed=41,reference=deepcopy(hero),settings=settings,
+                        workflow=workflow_for(shot,41,settings,hero))
+            shot['takes']=[edit];shot['picked']=edit['id']
+        with zipfile.ZipFile(io.BytesIO(export_board(self.board,self.data))) as archive:
+            self.assertEqual(hashlib.sha256(archive.read(hero['image'])).hexdigest(),take['image_sha256'])
+            graph = json.loads(archive.read('workflows/s03.api.json'))
+            self.assertEqual(graph['1']['inputs']['image'],hero['image'])
+            manifest = json.loads(archive.read('manifest.json'))
+            self.assertEqual(manifest['shots'][2]['reference']['source']['type'],'imported')
+            self.assertEqual(manifest['shots'][2]['seed'],41)
 
     def test_per_cut_settings_validation_and_immutable_existing_take(self):
         before=deepcopy(self.take)
