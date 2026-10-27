@@ -24,7 +24,7 @@ Open **http://127.0.0.1:8790** and choose **Explore the board**, or open another
 
 You write one scene and Shot Board lays out six editable cuts from a coverage template: establishing, medium, face close-up, over shoulder, insert and low angle. When the scene has no person, the face close-up and over shoulder become a detail close-up and a side angle. You can add up to three more, give it character, prop and setting details, and edit each cut's prompt and negative prompt.
 
-SDXL renders takes for each cut. Compare & pick shows every take of a cut side by side with its render details one click away, and you can lock a seed and reuse it. Make one SDXL take the hero and Qwen-Image-Edit-2511 re-renders every other cut from that image. You can save a pass, fail or pending verdict and a note on any take.
+SDXL renders takes for each cut. Compare & pick shows every take of a cut side by side with its render details one click away, and you can lock a seed and reuse it. Make one SDXL take the hero and Render reference edits sends every other cut to Qwen-Image-Edit-2511 with that image as the reference. You can save a pass, fail or pending verdict and a note on any take.
 
 When every cut has a pick, export a landscape or portrait storyboard, plus the stills, ComfyUI workflows and saved recipes.
 
