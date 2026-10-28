@@ -373,7 +373,7 @@ dialog::backdrop{background:rgba(221,225,229,.9)}
 /* Footer, on the desk */
 footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 24px 28px;font-size:12px;color:var(--ink-2)}
 .footer-links{gap:16px}
-.footer-links a{color:var(--ink-2);text-decoration:none}
+.footer-links a{display:inline-block;padding:4px 0;color:var(--ink-2);text-decoration:none}
 .footer-links a:hover{color:var(--ink);text-decoration:underline}
 .engine{display:flex;align-items:center;gap:8px}
 .engine-dot{width:7px;height:7px;background:var(--ink-3)}
