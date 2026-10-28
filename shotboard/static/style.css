@@ -570,15 +570,17 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
   .shot-card.is-hero .shot-hero,.fig-hero .take-zoom,.take[aria-pressed="true"] .take-frame{outline:var(--line) solid Highlight;outline-offset:var(--frame-gap)}
   .take-id{border-color:Canvas}.take-id.picked{border-color:Highlight}
   input[type=checkbox]{appearance:auto;-webkit-appearance:auto}
+  summary{color:CanvasText}summary::before,summary:hover::before{forced-color-adjust:none;background:CanvasText}
   :is(textarea,input,select):focus{outline:var(--focus) solid Highlight}
   :focus-visible{outline:var(--focus) solid Highlight;outline-offset:var(--focus-gap)}
 }
 @media(forced-colors:active) and (pointer:coarse){
-  .primary,.quiet,.plain,.state,.chip,.icon,input:not([type=checkbox]):not([type=radio]),select{border-color:Canvas}
-  .primary,.quiet,.state,.icon{border-width:var(--rim) 0;outline:var(--hair) solid ButtonText;outline-offset:calc(-1 * var(--rim) - var(--hair))}
-  .icon{border-width:var(--rim)}
-  .chip,.topbar nav>*{border-width:var(--rim-bar) 0;outline-offset:calc(-1 * var(--rim-bar) - var(--hair))}
-  .chip{outline:var(--hair) solid ButtonText}
+  .primary,.quiet,.plain,.state,.chip,.icon{border-color:Canvas}
+  .primary,.quiet,.state{border-width:var(--rim) 0}.icon{border-width:var(--rim)}.chip,.topbar nav>*{border-width:var(--rim-bar) 0}
+  /* The edge sits exactly on the paint: the padding box, inside the rim. */
+  :is(.primary,.quiet,.state,.icon,.chip)::before{content:"";position:absolute;inset:0;border:var(--hair) solid ButtonText;pointer-events:none}
+  /* A field cannot hold a pseudo-element, so in high contrast it drops the rim and draws its edge round the whole 48px target. */
+  input:not([type=checkbox]):not([type=radio]),select{border:var(--hair) solid ButtonText}
   :focus-visible{outline:var(--focus) solid Highlight;outline-offset:var(--focus-gap)}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-property:opacity,background-color,color,box-shadow,outline-color!important;scroll-behavior:auto!important}:active{transform:none!important}}
