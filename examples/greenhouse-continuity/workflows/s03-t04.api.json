@@ -2,7 +2,7 @@
   "1": {
     "class_type": "LoadImage",
     "inputs": {
-      "image": "references/b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png"
+      "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
     }
   },
   "2": {
@@ -20,7 +20,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: Close-up. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. TIGHT FACE CLOSE-UP: the reference woman with the exact same rounded face, lowered eyes, light chestnut chin-length bob with soft waves curling outward at the ends and right side part, mustard yellow canvas coat with metal buttons, shoulder tabs and flap chest pockets, rich teal cable-knit scarf. Her face fills the portrait frame, cropped just above the head and below the teal scarf. Keep her head tilted and eyes lowered exactly as in the reference, her facial proportions, skin texture and age unchanged. Keep hair colour, side part, soft waves and outward-curled ends unchanged. Show the teal knit scarf and mustard coat collar at the bottom edge. Keep the greenhouse window grid softly blurred. No hands or compass in frame, no eye contact, no added forehead or eye wrinkles.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: Close-up. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. TIGHT FACE CLOSE-UP photograph of the same fictional adult woman from the reference, exact lowered gaze, rounded face, right side part, light chestnut chin-length bob with loose waves and outward-fanning ends, mustard canvas coat with metal buttons and flap chest pockets, shoulder tabs and chunky rich teal cable-knit scarf with dense compact twisted cables and rolled neck loop. This is a camera push-in, not a restyling. Whole head outline visible, including outward-curling jaw-level tips on both sides. Preserve wave clumps, original forehead, brow spacing, nose, relaxed closed lips and face proportions. Crop just above the head to the upper teal cable-knit loop, no chest, hands or compass. Rainy greenhouse window grid softly blurred. Keep same diffuse daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -38,7 +38,7 @@
         "14",
         0
       ],
-      "prompt": "anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, extra limbs, deformed hands, low quality, blurry, different person, dark curly hair, navy scarf, black scarf, thin flat pocket compass, ring bail, compass rose, coloured star needle, numerals on dial, duplicate compass, wide shot, medium shot, waist, hands, object in foreground, looking at camera, tick marks, dial ticks, numbers, engraved pink pivot, large central button, screw slot"
+      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, hands, compass in frame, chest-up, torso, cropped hair tips, looking at camera, tucked inward bob, long narrow face"
     }
   },
   "4": {
@@ -68,7 +68,7 @@
         "4",
         0
       ],
-      "seed": 20261021,
+      "seed": 20261074,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

@@ -1,32 +1,48 @@
 {
   "1": {
-    "class_type": "CheckpointLoaderSimple",
+    "class_type": "LoadImage",
     "inputs": {
-      "ckpt_name": "sd_xl_base_1.0.safetensors"
+      "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
     }
   },
   "2": {
-    "class_type": "CLIPTextEncode",
+    "class_type": "TextEncodeQwenImageEditPlus",
     "inputs": {
       "clip": [
-        "1",
-        1
+        "9",
+        0
       ],
-      "text": "(tight face close-up portrait, face fills almost the entire frame, eyes in sharp focus, cropped at chin and forehead:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition"
+      "vae": [
+        "10",
+        0
+      ],
+      "image1": [
+        "14",
+        0
+      ],
+      "prompt": "Requested framing: Close-up. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. TIGHT FACE CLOSE-UP photograph of the same fictional adult woman from the reference, exact lowered gaze, rounded face, right side part, light chestnut chin-length bob with loose waves and outward-fanning ends, mustard canvas coat with metal buttons and flap chest pockets, shoulder tabs and chunky rich teal cable-knit scarf with dense compact twisted cables and rolled neck loop. This is a camera push-in, not a restyling. Whole head outline visible, including outward-curling jaw-level tips on both sides. Preserve wave clumps, original forehead, brow spacing, nose, relaxed closed lips and face proportions. Crop just above the head to the upper teal cable-knit loop, no chest, hands or compass. Rainy greenhouse window grid softly blurred. Keep same diffuse daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
-    "class_type": "CLIPTextEncode",
+    "class_type": "TextEncodeQwenImageEditPlus",
     "inputs": {
       "clip": [
-        "1",
-        1
+        "9",
+        0
       ],
-      "text": "wide shot, medium shot, waist, torso, full body, hands, object in foreground, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+      "vae": [
+        "10",
+        0
+      ],
+      "image1": [
+        "14",
+        0
+      ],
+      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, hands, compass in frame, chest-up, torso, cropped hair tips, looking at camera, tucked inward bob, long narrow face"
     }
   },
   "4": {
-    "class_type": "EmptyLatentImage",
+    "class_type": "EmptySD3LatentImage",
     "inputs": {
       "width": 768,
       "height": 1024,
@@ -37,26 +53,26 @@
     "class_type": "KSampler",
     "inputs": {
       "model": [
-        "1",
+        "13",
         0
       ],
       "positive": [
-        "2",
+        "15",
         0
       ],
       "negative": [
-        "3",
+        "16",
         0
       ],
       "latent_image": [
         "4",
         0
       ],
-      "seed": 20261020,
-      "steps": 20,
-      "cfg": 7.0,
+      "seed": 20261071,
+      "steps": 24,
+      "cfg": 4.0,
       "sampler_name": "euler",
-      "scheduler": "normal",
+      "scheduler": "simple",
       "denoise": 1.0
     }
   },
@@ -68,8 +84,8 @@
         0
       ],
       "vae": [
-        "1",
-        2
+        "10",
+        0
       ]
     }
   },
@@ -80,7 +96,78 @@
         "6",
         0
       ],
-      "filename_prefix": "shotboard/take"
+      "filename_prefix": "shotboard/reference-take"
+    }
+  },
+  "8": {
+    "class_type": "UnetLoaderGGUF",
+    "inputs": {
+      "unet_name": "qwen-image-edit-2511-Q8_0.gguf"
+    }
+  },
+  "9": {
+    "class_type": "CLIPLoaderGGUF",
+    "inputs": {
+      "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+      "type": "qwen_image"
+    }
+  },
+  "10": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    }
+  },
+  "12": {
+    "class_type": "ModelSamplingAuraFlow",
+    "inputs": {
+      "model": [
+        "8",
+        0
+      ],
+      "shift": 3.1
+    }
+  },
+  "13": {
+    "class_type": "CFGNorm",
+    "inputs": {
+      "model": [
+        "12",
+        0
+      ],
+      "strength": 1.0
+    }
+  },
+  "14": {
+    "class_type": "ImageScaleToTotalPixels",
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "megapixels": 1.0,
+      "resolution_steps": 1
+    }
+  },
+  "15": {
+    "class_type": "FluxKontextMultiReferenceLatentMethod",
+    "inputs": {
+      "conditioning": [
+        "2",
+        0
+      ],
+      "reference_latents_method": "index_timestep_zero"
+    }
+  },
+  "16": {
+    "class_type": "FluxKontextMultiReferenceLatentMethod",
+    "inputs": {
+      "conditioning": [
+        "3",
+        0
+      ],
+      "reference_latents_method": "index_timestep_zero"
     }
   }
 }

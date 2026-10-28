@@ -5,9 +5,9 @@
       "image": {
         "__type": "core/ASSET",
         "info": {
-          "id": "ebe3596c-c34c-4350-8b5c-7b0dc0ccc712",
-          "hash": "blake3:c5d24229495958ac622e744f6e01d06c42f5cc5dbb5f36b0e93e423b1ba512eb",
-          "file_path": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png"
+          "id": "59b3eb13-0e94-4089-80ab-18b3828c96f5",
+          "hash": "blake3:007eef64a0eeed0f64d75f06585ed6d93db0c782f09b5190efa39899af950fb9",
+          "file_path": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
         }
       }
     }
@@ -27,7 +27,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: over-the-shoulder POV, back of An adult traveler with short dark hair's head and clothed shoulder clearly visible filling left third foreground, camera immediately behind the person looking past their shoulder toward small brass compass on table, rear three-quarter view. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. OVER-THE-SHOULDER photograph from immediately behind the same woman. The back of her head and yellow-coated LEFT SHOULDER occupy the LEFT THIRD of the foreground. Look past that shoulder toward her hands holding the same open brass compass above the wooden bench in the right middle ground. Keep the white dial, thin needle and hinged case. Show the same wet glass and ferns. Her face is hidden. Do not place her on the right side.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: Over shoulder. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. OVER THE LEFT SHOULDER photograph: camera diagonally behind and slightly above the same fictional adult woman from the reference, exact lowered gaze, rounded face, right side part, light chestnut chin-length bob with loose waves and outward-fanning ends, mustard canvas coat with metal buttons and flap chest pockets, shoulder tabs and chunky rich teal cable-knit scarf with dense compact twisted cables and rolled neck loop. Her left shoulder and back of head occupy the LEFT THIRD foreground. Look past her shoulder at her two hands holding the exact same real magnetic compass as the reference: one deep cylindrical brass case with slightly flared base and upper-left hinged open plain brass lid with two interior rivets; clear glass cover; cream dial with printed black cardinal letters N at top, E at right, S at bottom, W at left, in that clockwise order; circular black degree tick ring with alternating long and short ticks; one classic STRAIGHT TWO-ENDED needle with a RED north half pointing toward N and SILVER-WHITE south half pointing toward S, small plain brass center pivot. Keep its case depth, lid, glass, precise letter layout, tick spacing, red/silver needle and small pivot from the reference. No X needle or star, no extra compass or ring/chain. over the SAME wooden greenhouse bench with potted ferns and dark green window grid. Offset enough to see side of left cheek and rich teal chunky cable-knit loop; keep its compact twisted cable texture and exact folds, no smooth ribbed replacement. Show the compass dial unobstructed enough to read its four letters, tick ring and red north needle; camera slightly above hands, not through glass glare. Keep same mustard canvas cuffs and dark patterned inner cuffs. Natural unpainted nails, no bracelet, brooch, bag or extra person.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -45,7 +45,7 @@
         "14",
         0
       ],
-      "prompt": "empty room, no person, unoccupied, front view, facing camera, portrait, eye contact, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, front-facing portrait, no compass, scarf clasp, teal cuffs, painted nails"
     }
   },
   "4": {
@@ -75,7 +75,7 @@
         "4",
         0
       ],
-      "seed": 20261021,
+      "seed": 20261073,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

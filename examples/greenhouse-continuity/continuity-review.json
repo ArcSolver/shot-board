@@ -1,320 +1,134 @@
 [
   {
-    "shot": "s01",
-    "take": "t01",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
-  },
-  {
-    "shot": "s02",
-    "take": "t01",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
-  },
-  {
-    "shot": "s02",
+    "shot": "s05",
     "take": "t02",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
+    "verdict": "fail",
+    "note": "Recognizable compass. Flared base and small center pivot are redrawn; coat torso visible behind macro. Not certified identical."
   },
   {
-    "shot": "s02",
+    "shot": "s05",
     "take": "t03",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
+    "verdict": "fail",
+    "note": "Serif cardinal font and much denser tick ring replace the bold sans-serif reference. Needle and brass pivot are reshaped."
   },
   {
-    "shot": "s02",
+    "shot": "s05",
     "take": "t04",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
+    "verdict": "fail",
+    "note": "Cardinal letters and red north half are readable. Pivot/letter/tick/case details differ from reference; strict identity not certified."
   },
   {
-    "shot": "s02",
+    "shot": "s05",
     "take": "t05",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
+    "verdict": "fail",
+    "note": "Recognizable compass face, but the needle becomes a three-part red/white shape with a flat red arm; north half is not the required classic straight needle. Added side knob, serif letters and changed lid. Reject."
   },
   {
-    "shot": "s02",
+    "shot": "s05",
     "take": "t06",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
+    "verdict": "fail",
+    "note": "Clear bold N/E/S/W, ticks and red/silver needle. Added lid-top clasp and redesigned brass pivot; strict carry-over fails."
   },
   {
-    "shot": "s02",
+    "shot": "s05",
     "take": "t07",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
-  },
-  {
-    "shot": "s02",
-    "take": "t08",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
+    "verdict": "fail",
+    "note": "Clear N/E/S/W, degree ticks, red/silver needle and subtle glass. Cardinal font changes to serif, pivot and shallow case differ. Strict carry-over fails."
   },
   {
     "shot": "s03",
     "take": "t01",
     "verdict": "fail",
-    "note": "A different man appears behind ferns; face, hair and framing differ from the imported hero."
-  },
-  {
-    "shot": "s04",
-    "take": "t01",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
-  },
-  {
-    "shot": "s05",
-    "take": "t01",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
-  },
-  {
-    "shot": "s06",
-    "take": "t01",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
-  },
-  {
-    "shot": "s01",
-    "take": "t02",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
+    "note": "No compass in face framing. New scarf buttons and changed wave shape."
   },
   {
     "shot": "s03",
     "take": "t02",
-    "verdict": "pending",
-    "note": "Render failed; no image to review."
-  },
-  {
-    "shot": "s04",
-    "take": "t02",
-    "verdict": "pending",
-    "note": "Render failed; no image to review."
-  },
-  {
-    "shot": "s05",
-    "take": "t02",
-    "verdict": "pending",
-    "note": "Render failed; no image to review."
-  },
-  {
-    "shot": "s06",
-    "take": "t02",
-    "verdict": "pending",
-    "note": "Render failed; no image to review."
-  },
-  {
-    "shot": "s01",
-    "take": "t03",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
+    "verdict": "fail",
+    "note": "No compass in face framing. Closest face view, but inward bob ends and scarf knit differ."
   },
   {
     "shot": "s03",
     "take": "t03",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
+    "verdict": "fail",
+    "note": "Tiny partial brass edge/lid only; no dial. Oversized braided scarf and tilted head differ."
   },
   {
-    "shot": "s04",
-    "take": "t03",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
-  },
-  {
-    "shot": "s05",
-    "take": "t03",
-    "verdict": "pending",
-    "note": "Earlier take; not reviewed against this imported hero."
-  },
-  {
-    "shot": "s06",
-    "take": "t03",
-    "verdict": "pending",
-    "note": "Render failed; no image to review."
-  },
-  {
-    "shot": "s01",
+    "shot": "s03",
     "take": "t04",
     "verdict": "fail",
-    "note": "The traveler fills most of the frame and her lower body is cropped. The compass dial appears in the raised lid rather than the base; this is not the requested distant establishing view."
+    "note": "Tiny partial brass edge/lid only; no dial. Added large braided knot; bob ends differ."
   },
   {
-    "shot": "s01",
+    "shot": "s04",
+    "take": "t01",
+    "verdict": "fail",
+    "note": "Rear shoulder framing, but scarf becomes ribbed and compass font/pivot/lid differ."
+  },
+  {
+    "shot": "s04",
+    "take": "t02",
+    "verdict": "fail",
+    "note": "More side-on than over shoulder; scarf weave and pivot differ."
+  },
+  {
+    "shot": "s04",
+    "take": "t03",
+    "verdict": "fail",
+    "note": "Lid hinges left across dial instead of upper-left upright; new large scarf braid."
+  },
+  {
+    "shot": "s04",
+    "take": "t04",
+    "verdict": "fail",
+    "note": "Best over-shoulder framing; scarf ribbed, lid moved to upper right and case shallower."
+  },
+  {
+    "shot": "s04",
     "take": "t05",
     "verdict": "fail",
-    "note": "The traveler and open compass are clear among fern-lined benches, but she fills most of the frame; this is a medium view, not the requested distant establishing shot."
+    "note": "Scarf becomes narrow ribbing; lid upper right and needle/pivot reshaped."
+  },
+  {
+    "shot": "s04",
+    "take": "t06",
+    "verdict": "fail",
+    "note": "Added ring/bail above lid, changed pivot and narrow rib scarf; side-on framing rather than over shoulder. Reject strict identity."
   },
   {
     "shot": "s01",
-    "take": "t06",
+    "take": "t01",
+    "verdict": "fail",
+    "note": "Distant rear full-body view; only tiny pale object edge at hand. Compass identity cannot be checked. Bench changed."
+  },
+  {
+    "shot": "s01",
+    "take": "t02",
     "verdict": "pass",
-    "note": "A genuine wide greenhouse aisle with a small full-body traveler seen from behind. The mustard coat and short chestnut hair are visible; her face and compass are too small to compare."
+    "note": "Wide greenhouse aisle and a small full-body figure. Framing pass; the compass dial is too small to inspect, so its details are not certified."
   },
   {
-    "shot": "s01",
-    "take": "t07",
-    "verdict": "pass",
-    "note": "Full-body rear traveler in a broad greenhouse aisle. She is larger and closer than the requested tiny figure; her face and compass cannot be compared from this view."
+    "shot": "s06",
+    "take": "t01",
+    "verdict": "fail",
+    "note": "Low angle, readable classic compass; long oversized braids replace compact scarf, pivot and case differ."
+  },
+  {
+    "shot": "s06",
+    "take": "t02",
+    "verdict": "fail",
+    "note": "Selected low angle, readable classic compass; broad braided scarf and inward bob ends differ, lid rivets/pivot reshaped."
   },
   {
     "shot": "s02",
-    "take": "t09",
+    "take": "t01",
     "verdict": "pass",
-    "note": "Imported hero reference."
-  },
-  {
-    "shot": "s03",
-    "take": "t04",
-    "verdict": "fail",
-    "note": "The lowered gaze and warm right-parted bob carry over. This is the cleanest close-up, but the lower curls tuck inward more neatly and the scarf's cable texture is flatter than the hero's."
-  },
-  {
-    "shot": "s03",
-    "take": "t05",
-    "verdict": "fail",
-    "note": "Downward gaze with a warm chestnut side-parted bob and teal scarf. The mouth is flatter and the bob's ends are more smoothly tucked in than the hero's."
-  },
-  {
-    "shot": "s03",
-    "take": "t06",
-    "verdict": "fail",
-    "note": "The lowered gaze is close to the hero's, but the bob is smoother and more tucked in; a compass-lid edge intrudes at the bottom of the close-up."
-  },
-  {
-    "shot": "s03",
-    "take": "t07",
-    "verdict": "fail",
-    "note": "A chest-up portrait rather than a tight face close-up. The chest pockets dominate the lower frame, and the bob is more compact and tucked in than the hero's."
-  },
-  {
-    "shot": "s03",
-    "take": "t08",
-    "verdict": "fail",
-    "note": "The lowered gaze, right part and warm chestnut color are close. Loose ends fan outward more than before, but the curl clusters are rearranged and the scarf's cable texture is flatter; exact face-and-hair continuity is not established."
-  },
-  {
-    "shot": "s03",
-    "take": "t09",
-    "verdict": "fail",
-    "note": "Warm chestnut bob and lowered gaze in a looser chest-up portrait. The curl clusters and lower ends are rearranged, and more chest than requested is visible; t08 is the stronger close-up."
-  },
-  {
-    "shot": "s04",
-    "take": "t04",
-    "verdict": "fail",
-    "note": "Left-shoulder view with a mustard coat and teal ribbed neckband; the compass is soft, and the hero's cable-knit pattern is not reproduced."
-  },
-  {
-    "shot": "s04",
-    "take": "t05",
-    "verdict": "fail",
-    "note": "Clear left-shoulder view with a mustard coat and teal ribbed neckband. The thick brass compass keeps the broad grey-blue X, but the hero's cable-knit scarf is not retained."
-  },
-  {
-    "shot": "s04",
-    "take": "t06",
-    "verdict": "fail",
-    "note": "Compass-focused shoulder view with a thick brass case and broad grey-blue X. The scarf is ribbed, and teal sleeve cuffs have been added."
-  },
-  {
-    "shot": "s04",
-    "take": "t07",
-    "verdict": "fail",
-    "note": "The teal scarf is more visible, but it hangs in a long flatter drape rather than the hero's compact cable-knit folds; the thumbnail also appears lavender."
-  },
-  {
-    "shot": "s04",
-    "take": "t08",
-    "verdict": "fail",
-    "note": "Chunky teal cable-knit now wraps the back of her neck above a mustard canvas coat. The braid layout and wrap differ from the hero's compact rolled folds; exact scarf-pattern continuity is not established."
-  },
-  {
-    "shot": "s04",
-    "take": "t09",
-    "verdict": "fail",
-    "note": "A second long mustard cable-knit scarf has been added over the teal ribbed collar and drapes down her back. This is a visible outfit change from the hero."
+    "note": "Imported hero reference. N/E/S/W, degree ticks, red north/silver south needle, glass cover and brass case are visible."
   },
   {
     "shot": "s05",
-    "take": "t04",
+    "take": "t01",
     "verdict": "fail",
-    "note": "Reference edit failed; no image to review."
-  },
-  {
-    "shot": "s05",
-    "take": "t05",
-    "verdict": "fail",
-    "note": "Deep brass case and blank cream dial carry over, but tiny dark marks appear on the pink pivot and the needle tips are rounder. The coat torso remains visible."
-  },
-  {
-    "shot": "s05",
-    "take": "t06",
-    "verdict": "fail",
-    "note": "The deep case, blank dial and grey-blue X remain, but the open lid is missing."
-  },
-  {
-    "shot": "s05",
-    "take": "t07",
-    "verdict": "fail",
-    "note": "Closest overall design: deep brass case, blank cream dial, broad grey-blue X and two visible lid rivets. The pink pivot is a smooth disc rather than the hero's concentric top detail; fine details are not exact."
-  },
-  {
-    "shot": "s05",
-    "take": "t08",
-    "verdict": "fail",
-    "note": "The lower-right needle tip is blunt, and the lid gains a protruding bracket with a different fastener layout."
-  },
-  {
-    "shot": "s05",
-    "take": "t09",
-    "verdict": "fail",
-    "note": "The main design carries over, but the pink pivot is a thicker smooth button and the side catch is more prominent. The lid rivets are rounder."
-  },
-  {
-    "shot": "s05",
-    "take": "t10",
-    "verdict": "fail",
-    "note": "The lid-to-case connection differs: a hinge-like fitting appears at the upper right while the lid sits left. The hero's upper-left hinge arrangement is not reproduced clearly."
-  },
-  {
-    "shot": "s05",
-    "take": "t11",
-    "verdict": "fail",
-    "note": "The needle changes from the hero's four-arm X to a three-arm Y."
-  },
-  {
-    "shot": "s05",
-    "take": "t12",
-    "verdict": "fail",
-    "note": "Two dark slots appear in the inner rim, and the pink pivot becomes a smooth disc. These details differ from the hero."
-  },
-  {
-    "shot": "s05",
-    "take": "t13",
-    "verdict": "fail",
-    "note": "The broad grey-blue X gains prominent faceted ridges on its arms. The pink pivot still reads as a smooth cap rather than the hero's small concentric top inset. The lid crop shows only one rivet."
-  },
-  {
-    "shot": "s05",
-    "take": "t14",
-    "verdict": "fail",
-    "note": "The needle arms become visibly faceted, and the pink pivot has a pronounced dark collar rather than the hero's small concentric top detail. The lid is nearly edge-on, so its two rivets cannot both be checked."
-  },
-  {
-    "shot": "s06",
-    "take": "t04",
-    "verdict": "fail",
-    "note": "Eye-level or slightly elevated view with the crown visible. Hanging ferns fill the roof area, but the camera does not look steeply upward from floor level."
-  },
-  {
-    "shot": "s06",
-    "take": "t05",
-    "verdict": "fail",
-    "note": "Upward view beneath the pitched glass roof, with the open brass compass held at her waist. The scarf is narrower and ribbed, and the bob is smoother than the hero's."
+    "note": "Cancelled before an image was returned. No image to review."
   }
 ]

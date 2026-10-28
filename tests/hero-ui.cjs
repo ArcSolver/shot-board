@@ -30,6 +30,8 @@ assert.equal(element('use-hero').disabled, true);
   await element('use-hero').onclick();
   assert.equal(requests.length, 0);
   assert.match(element('toast').textContent, /Select an SDXL take or imported reference to use as the hero/);
+  const sdxl = {...board.shots[1].takes[0], id:'sdxl-fixture', source:undefined, reference:null, seed:0, settings:{checkpoint:'sd_xl_base_1.0.safetensors',preset_id:'sdxl-base',width:768,height:576},workflow:{'1':{class_type:'CheckpointLoaderSimple'}}};
+  board.shots[1].takes.push(sdxl);board.shots[1].picked=sdxl.id;
   vm.runInContext('currentShot="s02"; renderCompare();', context);
   assert.equal(element('use-hero').disabled, false);
   const imported = {id:'t16',status:'succeeded',seed:null,image:'imported.png',source:{type:'imported'},settings:{preset_id:'imported-reference',label:'Imported reference',width:768,height:576},workflow:{},models:[]};
@@ -52,9 +54,12 @@ assert.equal(element('use-hero').disabled, true);
   assert.doesNotMatch(element('compare-images').innerHTML,/SEED null|undefined/);
   vm.runInContext('board.shots[1].picked=null; renderCompare();', context);
   assert.equal(element('use-hero').disabled, true);
+  // Keep review fixtures distinct even when every bundled take is a reference edit.
+  board.shots[0].takes = [{...referenceTake,id:'review-pass'}, {...referenceTake,id:'review-fail'}];
+  context.referenceId='review-fail';
   board.review = [
-    {shot:'s01',take:'t01',verdict:'pass',note:'<b>Clear</b> "subject"'},
-    {shot:'s01',take:referenceTake.id,verdict:'fail',note:'Too tight'}
+    {shot:'s01',take:'review-pass',verdict:'pass',note:'<b>Clear</b> "subject"'},
+    {shot:'s01',take:'review-fail',verdict:'fail',note:'Too tight'}
   ];
   const verdict = expr => /<option value="(\w+)" selected>/.exec(vm.runInContext(expr, context))[1];
   assert.equal(verdict('reviewEditor(board.shots[0],board.shots[0].takes.find(t=>t.id===referenceId))'), 'fail');

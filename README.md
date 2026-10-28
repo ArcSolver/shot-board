@@ -78,7 +78,7 @@ Each generated frame's `workflows/sNN.api.json` in an export ZIP is a ComfyUI AP
 
 Explore the greenhouse and hangar boards, with saved takes, reviews and recipes.
 
-- [Greenhouse continuity](examples/greenhouse-continuity/README.md): "A traveler discovers a small brass compass in a rain-soaked greenhouse." An imported hero with five Qwen reference edits, both storyboards, the export ZIP and saved reviews.
+- [Greenhouse continuity](examples/greenhouse-continuity/README.md): "A traveler discovers a small brass compass in a rain-soaked greenhouse." An imported hero holding a brass compass with cardinal letters, degree ticks and a red north needle, plus five Qwen reference edits, both storyboards, the export ZIP and saved reviews.
 - [Greenhouse study](examples/greenhouse/README.md): the same scene with the first SDXL-only recipe.
 - [Hangar](examples/hangar/README.md): "A gray utility robot with a square metal head, a single blue optical sensor and mechanical gripper arms repairs a small spaceship engine on a workbench in a quiet hangar at night."
 

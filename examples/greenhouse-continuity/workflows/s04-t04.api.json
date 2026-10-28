@@ -2,7 +2,7 @@
   "1": {
     "class_type": "LoadImage",
     "inputs": {
-      "image": "references/b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png"
+      "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
     }
   },
   "2": {
@@ -20,7 +20,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: Over shoulder. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. OVER THE LEFT SHOULDER: camera immediately behind the reference woman with the exact same rounded face, lowered eyes, light chestnut chin-length bob with soft waves curling outward at the ends and right side part, mustard yellow canvas coat with metal buttons, shoulder tabs and flap chest pockets, rich teal cable-knit scarf, her left shoulder and back of head clearly visible occupying the LEFT THIRD foreground. Look past her shoulder toward her two hands holding the exact compass in the reference: a deep cylindrical brass case with a slightly flared base, side wall height about 40 percent of dial diameter; plain brass lid with two interior rivets hinged at upper left; a completely plain unmarked cream dial with NO tick marks, NO lines, NO numerals and NO letters; four broad pointed grey-blue triangular arms making an X, with a SMALL smooth flat muted-pink circular pivot with NO engraving or rings; no ring or bail, no chain, no compass rose, only one compass over the same wooden bench. Camera is slightly above hands so the cream dial, X needle and thick case side wall are clearly visible. Keep the teal scarf visibly teal (not navy or black), same knit weave, same bob hair texture and warm chestnut colour. Keep the mustard coat canvas and seams, no additional bracelet, bag, object or person. The scarf must show raised twisted cable-knit all around the back and side of her neck, not a smooth band or straight simple ribbing. Offset camera to her left enough to show her left cheek in profile and the side of the cable-knit scarf.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: Over shoulder. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. OVER THE LEFT SHOULDER photograph: camera diagonally behind and slightly above the same fictional adult woman from the reference, exact lowered gaze, rounded face, right side part, light chestnut chin-length bob with loose waves and outward-fanning ends, mustard canvas coat with metal buttons and flap chest pockets, shoulder tabs and chunky rich teal cable-knit scarf with dense compact twisted cables and rolled neck loop. Her left shoulder and back of head occupy the LEFT THIRD foreground. Look past her shoulder at her two hands holding the exact same real magnetic compass as the reference: one deep cylindrical brass case with slightly flared base and upper-left hinged open plain brass lid with two interior rivets; clear glass cover; cream dial with printed black cardinal letters N at top, E at right, S at bottom, W at left, in that clockwise order; circular black degree tick ring with alternating long and short ticks; one classic STRAIGHT TWO-ENDED needle with a RED north half pointing toward N and SILVER-WHITE south half pointing toward S, small plain brass center pivot. Keep its case depth, lid, glass, precise letter layout, tick spacing, red/silver needle and small pivot from the reference. No X needle or star, no extra compass or ring/chain. over the SAME wooden greenhouse bench with potted ferns and dark green window grid. Offset enough to see side of left cheek and rich teal chunky cable-knit loop; keep its compact twisted cable texture and exact folds, no smooth ribbed replacement. Show the compass dial unobstructed enough to read its four letters, tick ring and red north needle; camera slightly above hands, not through glass glare. Keep same mustard canvas cuffs and dark patterned inner cuffs. Natural unpainted nails, no bracelet, brooch, bag or extra person.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -38,7 +38,7 @@
         "14",
         0
       ],
-      "prompt": "anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, extra limbs, deformed hands, low quality, blurry, different person, dark curly hair, navy scarf, black scarf, thin flat pocket compass, ring bail, compass rose, coloured star needle, numerals on dial, duplicate compass, front view, facing camera, portrait, eye contact, empty room, tick marks, dial ticks, numbers, engraved pink pivot, large central button, screw slot"
+      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, front-facing portrait, no compass, scarf clasp, teal cuffs, painted nails"
     }
   },
   "4": {
@@ -68,7 +68,7 @@
         "4",
         0
       ],
-      "seed": 20261021,
+      "seed": 20261074,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

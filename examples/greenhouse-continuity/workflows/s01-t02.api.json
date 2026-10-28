@@ -2,7 +2,7 @@
   "1": {
     "class_type": "LoadImage",
     "inputs": {
-      "image": "references/100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png"
+      "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
     }
   },
   "2": {
@@ -20,7 +20,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: extreme wide establishing shot, distant full-body An adult traveler with short dark hair tiny in frame, expansive environment. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. Move far backwards for an EXTREME WIDE establishing photograph of the greenhouse interior. The same woman is a SMALL full-body figure, head to shoes visible, no taller than one fifth of the total frame height. Show extensive floor, benches and the glass roof around her. Preserve the visible dark rectangular window frames, wooden potting bench and ferns. Keep her yellow coat and teal scarf. Do not invent a dome or staircase. Prioritize distant scale over face detail.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: Establishing. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. EXTREME DISTANT ESTABLISHING photograph of the SAME rain-soaked greenhouse. Camera 20metres back down the central aisle. Roof window grid, fern-lined benches, wet floor and long perspective fill almost all of the landscape. the same fictional adult woman from the reference, exact lowered gaze, rounded face, right side part, light chestnut chin-length bob with loose waves and outward-fanning ends, mustard canvas coat with metal buttons and flap chest pockets, shoulder tabs and chunky rich teal cable-knit scarf with dense compact twisted cables and rolled neck loop is a TINY FULL-BODY rear three-quarter figure at the SAME bench, feet visible, whole body less than one eighth of frame height. She holds the brass compass low, with dial naturally too small to resolve. Wide empty foreground path, no close foreground person or enlarged portrait. Same rainy diffuse daylight. Do not enlarge or invent compass markings at this distance.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -38,7 +38,7 @@
         "14",
         0
       ],
-      "prompt": "close-up, portrait, cropped body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, large person, medium shot, close-up, cropped feet, cropped legs, foreground compass"
     }
   },
   "4": {
@@ -68,7 +68,7 @@
         "4",
         0
       ],
-      "seed": 20261020,
+      "seed": 20261072,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

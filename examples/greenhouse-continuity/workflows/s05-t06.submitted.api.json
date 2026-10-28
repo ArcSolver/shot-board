@@ -5,9 +5,9 @@
       "image": {
         "__type": "core/ASSET",
         "info": {
-          "id": "adec2bd8-e276-4e21-a985-38b4e4e63a3a",
-          "hash": "blake3:d0b166ee1772823b481cad1de2268674dab75c78d1722576b009381d4c1d978f",
-          "file_path": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png"
+          "id": "59b3eb13-0e94-4089-80ab-18b3828c96f5",
+          "hash": "blake3:007eef64a0eeed0f64d75f06585ed6d93db0c782f09b5190efa39899af950fb9",
+          "file_path": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
         }
       }
     }
@@ -27,7 +27,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: Insert. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. MACRO INSERT: move the camera close to ONLY the same hands holding the exact compass in the reference: a deep cylindrical brass case with a slightly flared base, side wall height about 40 percent of dial diameter; plain brass lid with two interior rivets hinged at upper left; a completely plain unmarked cream dial with NO tick marks, NO lines, NO numerals and NO letters; four broad pointed grey-blue triangular arms making an X, with a SMALL smooth flat muted-pink circular pivot with NO engraving or rings; no ring or bail, no chain, no compass rose, only one compass. This is the very same physical compass, not a new version. The compass fills most of the photograph. Preserve the exact four broad grey-blue triangular arms forming the X, the small smooth flat muted pink pivot, thick cylindrical side wall at least 30 percent of dial diameter, slightly flared base and lid hinge orientation. The cream dial is entirely blank: no tick ring, no ticks, no lines or characters. The small flat pink pivot is smooth and has no concentric engraving. Only hands, compass, slivers of mustard cuff and blurred wood bench are visible. No head, face or torso. No second compass.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: Insert. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. MACRO INSERT photograph, camera moved close to ONLY the existing two hands holding the exact same real magnetic compass as the reference: one deep cylindrical brass case with slightly flared base and upper-left hinged open plain brass lid with two interior rivets; clear glass cover; cream dial with printed black cardinal letters N at top, E at right, S at bottom, W at left, in that clockwise order; circular black degree tick ring with alternating long and short ticks; one classic STRAIGHT TWO-ENDED needle with a RED north half pointing toward N and SILVER-WHITE south half pointing toward S, small plain brass center pivot. Keep its case depth, lid, glass, precise letter layout, tick spacing, red/silver needle and small pivot from the reference. No X needle or star, no extra compass or ring/chain. The compass dominates the frame, dial fully visible and readable. Same hand grip and mustard cuffs, same wooden greenhouse bench softly blurred behind. Frame the complete open lid, thick brass sidewall and glass-covered dial, realistic perspective. No head, face, torso, inset or second compass. Change only camera position and crop; preserve compass design and colors exactly.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -45,7 +45,7 @@
         "14",
         0
       ],
-      "prompt": "anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, extra limbs, deformed hands, low quality, blurry, different person, dark curly hair, navy scarf, black scarf, thin flat pocket compass, ring bail, compass rose, coloured star needle, numerals on dial, duplicate compass, face, head, torso, full body, wide shot, medium shot, tick marks, dial ticks, numbers, engraved pink pivot, large central button, screw slot"
+      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, face, head, torso, full body, wide shot, medium portrait"
     }
   },
   "4": {
@@ -75,7 +75,7 @@
         "4",
         0
       ],
-      "seed": 20261022,
+      "seed": 20261075,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

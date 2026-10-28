@@ -134,7 +134,7 @@ class APITests(unittest.TestCase):
                         if take.get('image'):
                             self.assertEqual(sha256(Path(folder)/bid/take['image']), take['image_sha256'])
                         else:
-                            self.assertEqual(take['status'], 'failed')
+                            self.assertIn(take['status'], ('failed', 'cancelled'))
                 # Backfill only a missing review on an older import, preserving picks.
                 imported.pop('review')
                 imported['shots'][0]['picked'] = 't01'
