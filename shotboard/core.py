@@ -109,11 +109,11 @@ def expand_shots(config):
     The six-cut template is fixed except for one branch: without a person, the
     face close-up and over-shoulder become a detail close-up and a side angle.
     """
-    bible = config['scene'].rstrip('. ')
+    bible_parts = [config['scene'].strip().rstrip('.,; ')]
     for key, label in (("character", "Character"), ("setting", "Set"), ("prop", "Key prop")):
         if config.get(key, '').strip():
-            bible += f". {label}: {config[key].strip()}"
-    bible += "."
+            bible_parts.append(f"{label}: {config[key].strip().rstrip('.,; ')}")
+    bible = ". ".join(bible_parts)
     atmosphere = ", ".join([LIGHT_PROMPTS[config['lighting']], LOOK_PROMPTS[config['look']],
                             "cinematic still photograph"])
     motion = {"Static": "locked camera composition", "Push in": "visual intent of a slow push in",
@@ -123,9 +123,11 @@ def expand_shots(config):
     for i, (title, direction, avoid, width, height, cfg) in enumerate(coverage_for(config)):
         # Only compatible cuts inherit angle; a low-angle chip must not undo OTS.
         angle = config["angle"].lower() if title in ("Medium", "Profile", "Three-quarter") else ""
-        direction = direction.format(subject=config.get('character', '').split(',')[0].strip() or "the main subject",
-                                     prop=config.get('prop', '').strip() or "the focal detail")
-        prompt = f"({direction}:1.45), live-action RAW photograph, {bible}, {config['lens']}mm lens, {angle}, {atmosphere}, {motion}"
+        direction = direction.format(subject=config.get('character', '').split(',')[0].strip().rstrip('.; ') or "the main subject",
+                                     prop=config.get('prop', '').strip().rstrip('.,; ') or "the focal detail")
+        prompt = ", ".join(part for part in (
+            f"({direction}:1.45)", "live-action RAW photograph", bible,
+            f"{config['lens']}mm lens", angle, atmosphere, motion) if part)
         shots.append(dict(id=f"s{i+1:02}", title=title, direction=direction,
                           template_version=4, shot_type=title,
                           render_settings=dict(width=width, height=height, cfg=cfg),

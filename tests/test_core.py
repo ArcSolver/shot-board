@@ -23,7 +23,7 @@ class CoverageTests(unittest.TestCase):
             for key in ("character", "setting", "prop"):
                 self.assertEqual(config[key], "")
             for shot in expand_shots(config):
-                self.assertIn(config["scene"], shot["prompt"])
+                self.assertIn(config["scene"].rstrip("."), shot["prompt"])
                 for token in ("traveler", "greenhouse", "compass", "raincoat", "Character:", "Set:", "Key prop:"):
                     self.assertNotIn(token.lower(), shot["prompt"].lower())
 
@@ -33,6 +33,20 @@ class CoverageTests(unittest.TestCase):
             config = Scene(scene="Repairs begin", **{key: value}).model_dump()
             for shot in expand_shots(config):
                 self.assertIn(f"{label}: {value}", shot["prompt"])
+
+    def test_prompt_assembly_has_no_empty_or_doubled_separators(self):
+        for ending in ("", ".", ",", ";"):
+            config = Scene(scene="A traveler discovers a compass in a greenhouse" + ending,
+                           character="a traveler.", setting="a greenhouse,", prop="a compass;").model_dump()
+            config["count"] = 9
+            for shot in expand_shots(config):
+                with self.subTest(ending=ending, title=shot["title"]):
+                    self.assertNotRegex(shot["prompt"], r"[.,;]\s*,|,\s*,|\.\s*\.")
+                    self.assertIn("Character: a traveler. Set: a greenhouse. Key prop: a compass, 35mm lens", shot["prompt"])
+                    if shot["title"] in ("Medium", "Profile", "Three-quarter"):
+                        self.assertIn(", eye level, ", shot["prompt"])
+                    else:
+                        self.assertNotIn("eye level", shot["prompt"])
 
     def test_deterministic_coverage_and_shared_bible(self):
         shots = expand_shots(self.config)

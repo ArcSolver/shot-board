@@ -201,7 +201,8 @@ dialog::backdrop{background:rgba(245,245,247,.72);backdrop-filter:blur(14px);-we
 .take-details summary::before{width:5px;height:5px}
 .review-editor{display:flex;align-items:flex-end;gap:8px;padding:8px 16px 16px;flex-wrap:wrap}
 .review-editor label{display:block;min-width:0}
-.review-editor select,.review-editor input{display:block;margin-top:6px}
+.review-editor select,.review-editor textarea{display:block;margin-top:6px}
+.review-editor textarea{width:100%;resize:vertical;min-height:112px;font-size:14px;line-height:1.4;padding:10px 12px}
 .review-editor select{min-width:112px}
 .review-note{flex:1;min-width:120px!important}
 .compare-recipe{margin-top:20px;border-top:1px solid var(--rule)}
