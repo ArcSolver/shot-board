@@ -26,7 +26,7 @@
 |---|---|
 | [12-home.png](12-home.png) | Home |
 | [13-board.png](13-board.png) | Continuity board |
-| [14-compare.png](14-compare.png) | Compare & pick, 05 Insert |
+| [14-compare.png](14-compare.png) | Compare & pick, 04 Over shoulder beside the hero |
 | [15-storyboard.png](15-storyboard.png) | Storyboard, landscape |
 | [16-storyboard-portrait.png](16-storyboard-portrait.png) | Storyboard, portrait |
 | [17-mobile-home.png](17-mobile-home.png) | Home, mobile |
