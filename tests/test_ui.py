@@ -77,6 +77,13 @@ class PageTests(unittest.TestCase):
         # Fields paint exactly at button height: border, padding and one 20px line add up to --h.
         self.assertIn('padding:calc((var(--h) - var(--lh-field) - 2 * var(--hair)) / 2) var(--s3);min-height:var(--h)', css)
         self.assertIn('min-height:calc(var(--h) - 2 * var(--hair))', css, 'Segments, border included, are 36px too')
+        hit = re.search(r'\n  ([^{]*)\{min-height:var\(--hit\)\}', touch).group(1)
+        self.assertNotIn('.seg>label', hit, 'Segments keep their 36px paint on touch; their ::after carries the target')
+        # The error edge outranks focus, with the mouse and on touch.
+        self.assertIn(':is(textarea,input:not([type=checkbox]))[aria-invalid="true"]:focus{box-shadow:0 0 0 var(--hair) var(--fail)}', css)
+        self.assertIn('input:not([type=checkbox]):not([type=radio])[aria-invalid="true"]:focus{box-shadow:inset 0 0 0 var(--focus) var(--fail)}', touch)
+        # Wide dialogs hang from the top so stepping cuts never moves their heading; phones stay full screen.
+        self.assertIn('@media(min-width:601px){.sheet-dialog{margin:4dvh auto auto}}', css)
 
     def test_header_buttons_are_slim(self):
         css = (STATIC / 'style.css').read_text()

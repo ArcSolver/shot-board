@@ -190,7 +190,7 @@ function renderCompare(){
   $('compare-switch').hidden=!other;
   $('compare-switch').innerHTML=other?[['take',v?`Take ${TAKE_NO(v)}`:'Take'],['other',other.role]].map(([key,text])=>`<button type="button" data-show="${key}" aria-pressed="${compareShow===key}">${text}</button>`).join(''):'';
   $('compare-images').dataset.show=other?compareShow:'take';
-  $('compare-images').innerHTML=v?(other?figure(other.role,other.detail,other.shot,other.take,false,'data-zoom-other="1"',SIZES.compare):'')+figure('Take',`${TAKE_NO(v)}${takeDetail(v)?' · '+takeDetail(v):''}`,s,v,true,`data-zoom="${v.id}"`,other?SIZES.compare:SIZES.solo):'<p class="muted">No takes yet. Render the board to make the first takes.</p>';
+  $('compare-images').innerHTML=v?(other?figure(other.role,other.detail,other.shot,other.take,false,'data-zoom-other="1"',SIZES.compare):'')+figure('Take',`${TAKE_NO(v)}${takeDetail(v)?' · '+takeDetail(v):''}`,s,v,true,`data-zoom="${v.id}"`,other?SIZES.compare:SIZES.solo):'<p class="muted">No takes yet. Render takes for this cut, or render the whole board.</p>';
   $('take-strip').innerHTML=s.takes.map(t=>{const isPick=s.picked===t.id, review=reviewFor(s,t);return `<button class="take${t.status!=='succeeded'?' unavailable':''}" data-view="${t.id}" aria-pressed="${t.id===v?.id}" aria-label="${TAKE(t)}${isPick?', picked':''}${review&&review.verdict!=='pending'?', '+review.verdict:''}${t.status!=='succeeded'?', '+t.status:''}"><span class="take-frame">${t.status==='succeeded'?img(imageURL(t),'',SIZES.thumb):`<span class="take-state">${takeState(t)}</span>`}</span><span class="tl"><span class="take-id${isPick?' picked':''}">${TAKE(t)}</span>${isPick?'<span class="pk">Picked</span>':''}${verdictMark(review)}</span></button>`;}).join('');
   const queued=s.takes.filter(t=>['queued','running'].includes(t.status)).length;
   $('takes-meta').textContent=`${done.length} rendered${queued?` · ${queued} in queue`:''}${v?.settings?.width?` · ${v.settings.width} × ${v.settings.height}`:''}`;
@@ -200,7 +200,7 @@ function renderCompare(){
   $('pick-take').disabled=!v||v.status!=='succeeded';
   $('pick-take').className=isPicked?'state':'primary';
   $('pick-take').ariaPressed=String(isPicked);
-  $('pick-take').innerHTML=isPicked?`${icon('check')}Picked`:v?`Pick ${TAKE_NO(v)}`:'Pick';
+  $('pick-take').innerHTML=isPicked?`${icon('check')}Picked`:v?(v.status==='succeeded'?`Pick ${TAKE_NO(v)}`:`${TAKE_NO(v)} ${takeState(v).toLowerCase()}`):'Pick';
   $('next-cut-2').className=isPicked?'primary':'quiet';
   $('review-slot').innerHTML=v&&v.status==='succeeded'?reviewEditor(s,v):'';
   $('render-details').innerHTML=v?renderDetails(v,s):'';
@@ -281,7 +281,7 @@ $('use-example').onclick=guarded(async()=>{
   document.querySelector('.advanced').open=true;
 });
 $('scene-form').onsubmit=guarded(async event=>{event.preventDefault();if(!sceneValid())return;const data=Object.fromEntries(new FormData(event.target));Object.assign(data,choices,{seed:Number(data.seed),count:Number(data.count)});const created=await api('/boards','POST',data);await openBoard(created.id);});
-$('generate').onclick=guarded(async()=>{const button=$('generate');button.disabled=true;button.ariaBusy='true';try{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value)});await refresh();}finally{button.disabled=busy();button.ariaBusy=null;}});
+$('generate').onclick=guarded(async()=>{const button=$('generate'), label=button.textContent;button.disabled=true;button.ariaBusy='true';button.textContent='Queuing…';try{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value)});await refresh();}finally{button.disabled=busy();button.ariaBusy=null;if(button.textContent==='Queuing…')button.textContent=label;}});
 $('more-takes').onclick=guarded(async()=>{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value),shot_id:currentShot});await refresh();});
 $('cancel').onclick=guarded(async()=>{await api(`/boards/${board.id}/cancel`,'POST',{});await refresh();});
 // Seed problems are told beside the seed field, not in a toast across the screen.
@@ -293,7 +293,7 @@ $('reuse-seed').oninput=()=>{if(seedError){seedError='';renderCompare();}};
 $('use-hero').onclick=guarded(async()=>{const s=board.shots.find(s=>s.id===currentShot);if(!canBeHero(s.takes.find(t=>t.id===s.picked)))throw new Error(HERO_RULE);await api(`/boards/${board.id}/continuity`,'POST',{enabled:true,shot_id:s.id,take_id:s.picked});await refresh();toast('Hero set.');});
 $('keep-continuity').onchange=guarded(async()=>{const hero=board.continuity?.hero;await api(`/boards/${board.id}/continuity`,'POST',{enabled:$('keep-continuity').checked,shot_id:hero?.shot_id,take_id:hero?.take_id});await refresh();});
 // A download link, not a navigation, so the board's polling request is not cancelled mid-flight.
-$('export').onclick=()=>{const link=document.createElement('a');link.href=`/api/boards/${board.id}/export`;link.download='shot-board.zip';document.body.append(link);link.click();link.remove();};
+$('export').onclick=()=>{const link=document.createElement('a');link.href=`/api/boards/${board.id}/export`;link.download='shot-board.zip';document.body.append(link);link.click();link.remove();toast('Your ZIP is downloading: shot-board.zip.');};
 $('close-compare').onclick=()=>$('compare-dialog').close();$('close-boards').onclick=()=>$('boards-dialog').close();
 $('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$('board-grid').hidden=editing;$('edit-toggle').textContent=editing?'Done':'Edit cuts';if(editing)showEditors();};
 $('new-board').onclick=$('home-new').onclick=()=>{$('scene-form').reset();$('scene-error').hidden=true;$('scene').ariaInvalid=null;document.querySelector('.advanced').open=false;board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;coveragePreview();$('scene').focus();};

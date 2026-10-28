@@ -21,7 +21,7 @@
   --r:2px;
 
   /* Spacing: a 4px base. */
-  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;--s7:28px;--s8:32px;--s10:40px;--s12:48px;
+  --s0:2px;--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;--s7:28px;--s8:32px;--s10:40px;--s12:48px;
   --gutter:32px;--gutter-page:40px;--gutter-phone:16px;
   /* Type: one scale for both faces. Hanken sets the interface; Courier types the script. */
   --t-xs:12px;--t-sm:13px;--t-md:14px;--t-lg:16px;--t-xl:20px;--t-2xl:22px;--t-3xl:28px;--t-hero:44px;
@@ -64,7 +64,7 @@ dialog:focus-visible{outline-offset:calc(var(--focus) * -1)}
 :is(dialog,.script-col,.lightbox-frame){scrollbar-width:thin;scrollbar-color:var(--rule-strong) transparent}
 
 /* Buttons: square, 36px. Graphite for the next step, an outlined page for the rest, plain text for navigation. */
-button,.button{position:relative;cursor:pointer;border:0;border-radius:var(--r);background:transparent;color:var(--ink);padding:0 var(--pad-x);min-height:var(--h);font:var(--w-ui) var(--t-sm)/var(--lh-1) var(--ui);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;transition:background-color var(--dur) var(--ease),color var(--dur) var(--ease),box-shadow var(--dur) var(--ease),transform var(--dur-press) var(--ease)}
+button,.button{position:relative;cursor:pointer;border:0;border-radius:var(--r);background:transparent;color:var(--ink);padding:0 var(--pad-x);min-height:var(--h);font:var(--w-ui) var(--t-sm)/var(--lh-1) var(--ui);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);white-space:nowrap;transition:background-color var(--dur) var(--ease),color var(--dur) var(--ease),box-shadow var(--dur) var(--ease),transform var(--dur-press) var(--ease)}
 /* Only compact buttons press in; frames, cards and rows would jump. */
 :is(.primary,.quiet,.plain,.icon,.chip):active:not(:disabled){transform:scale(.97)}
 button:disabled{cursor:not-allowed;color:var(--ink-3)}
@@ -78,20 +78,21 @@ button[aria-busy="true"]{cursor:progress}
 .plain{color:var(--ink-2)}
 @media(hover:hover){.plain:hover:not(:disabled){color:var(--ink);background:var(--wash)}}
 .state{color:var(--pencil);background:var(--pencil-wash);box-shadow:inset 0 0 0 var(--line) var(--pencil);cursor:default}
-.link{padding:var(--s1) 2px;min-height:0;font-weight:var(--w-ui);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.link{padding:var(--s1) var(--s0);min-height:0;font-weight:var(--w-ui);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
 .link:hover{text-decoration-thickness:2px}
 .icon{width:var(--h);height:var(--h);padding:0;background:var(--page);box-shadow:inset 0 0 0 var(--hair) var(--rule-strong)}
 .icon:hover:not(:disabled){box-shadow:inset 0 0 0 var(--hair) var(--ink-3)}
 .icon:disabled{box-shadow:inset 0 0 0 var(--hair) var(--rule)}
 .large{min-height:var(--h-lg);font-size:var(--t-lg);padding:0 var(--s6)}
-.back{margin-left:-10px;padding:0 10px 0 6px}
+.back{margin-left:calc(var(--s3) * -1);padding:0 var(--s3) 0 var(--s2)}
 
 /* Fields: inset, a shade darker than the page they sit on; one line paints at button height. */
 textarea,input,select{width:100%;background:var(--page-tint);color:var(--ink);border:var(--hair) solid var(--rule-field);border-radius:var(--r);padding:calc((var(--h) - var(--lh-field) - 2 * var(--hair)) / 2) var(--s3);min-height:var(--h);font-size:var(--t-md);line-height:var(--lh-field);transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
 :is(textarea,input,select):hover:not(:disabled):not(:focus){border-color:var(--ink-3)}
 :is(textarea,input:not([type=checkbox]),select):focus{outline:var(--focus) solid transparent;border-color:var(--ink);box-shadow:0 0 0 var(--hair) var(--ink)}
 :is(textarea,input,select):disabled{color:var(--ink-3);background:var(--page);border-color:var(--rule);cursor:not-allowed}
-:is(textarea,input)[aria-invalid="true"]{border-color:var(--fail)}
+:is(textarea,input:not([type=checkbox]))[aria-invalid="true"],:is(textarea,input:not([type=checkbox]))[aria-invalid="true"]:focus{border-color:var(--fail)}
+:is(textarea,input:not([type=checkbox]))[aria-invalid="true"]:focus{box-shadow:0 0 0 var(--hair) var(--fail)}
 .field-error{margin:var(--s2) 0 0;font-size:var(--t-sm);color:var(--fail)}
 ::placeholder{color:var(--ink-3)}
 select{appearance:none;-webkit-appearance:none;padding-right:var(--s8);background-image:var(--chevron);background-repeat:no-repeat;background-position:right var(--s3) center;cursor:pointer}
@@ -117,7 +118,7 @@ details[open]>summary::before{transform:none}
 .cue:first-child{margin-top:0}
 .setup-no{font:var(--w-display) var(--t-sm)/var(--lh-1) var(--script);color:var(--pencil);font-variant-numeric:tabular-nums}
 .take-no{font-family:var(--script);font-weight:var(--w-display);font-variant-numeric:tabular-nums}
-.verdict{display:inline-flex;align-items:baseline;gap:6px;font-size:var(--t-xs);font-weight:var(--w-strong)}
+.verdict{display:inline-flex;align-items:baseline;gap:var(--s1);font-size:var(--t-xs);font-weight:var(--w-strong)}
 .verdict::before{content:"";flex:none;width:8px;height:8px;border:var(--line) solid currentColor}
 .verdict.pass{color:var(--pass)}
 .verdict.pass::before{background:currentColor}
@@ -155,6 +156,7 @@ nav{display:flex;gap:var(--s2);align-items:center}
 .setups .frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .setup:hover .frame{outline-color:var(--rule-strong)}
 .setup:focus-visible{outline-offset:var(--wrap-gap)}
+:is(.take,.setup,.hero-card,.gallery-card,.shot-hero,.take-zoom,.board-link){border-radius:0}
 .setup .cap{padding-top:var(--s2);font-size:var(--t-sm);line-height:var(--lh-text)}
 .setup .cap b{display:block;font-weight:var(--w-strong)}
 .setup .cap .src{display:block;color:var(--ink-2)}
@@ -185,6 +187,7 @@ nav{display:flex;gap:var(--s2);align-items:center}
 .coverage-preview{margin:0 0 var(--s1)}
 .setups.even{gap:var(--s3)}
 .setups.even .setup{flex:1 1 0;cursor:default}
+.setups.even .composition-chip{flex:1}
 .setups.even .setup::before{left:calc(var(--s3) / -2);right:calc(var(--s3) / -2)}
 .setups.even .setup:first-child::before{left:calc(50% - var(--line) / 2)}
 .setups.even .setup:last-child::before{right:calc(50% - var(--line) / 2)}
@@ -193,9 +196,9 @@ nav{display:flex;gap:var(--s2);align-items:center}
 .advanced{border-top:var(--hair) solid var(--rule);margin-top:var(--s6);padding-top:var(--s1)}
 .advanced>summary{min-height:var(--h-lg)}
 .bible-fields{display:grid;gap:var(--s3);margin:var(--s1) 0 var(--s5)}
-.bible-fields input,.form-bottom input,.form-bottom select{display:block;margin-top:6px}
+.bible-fields input,.form-bottom input,.form-bottom select{display:block;margin-top:var(--s2)}
 .section-label{display:block;margin:var(--s4) 0 var(--s2)}
-.chip-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:var(--s2)}
+.chip-row{display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s2)}
 .chip-label{width:72px}
 .chip{min-height:var(--h-bar);padding:0 var(--s3);font-size:var(--t-sm);font-weight:var(--w-ui);background:var(--page);box-shadow:inset 0 0 0 var(--hair) var(--rule-strong);color:var(--ink-2)}
 .chip:hover{color:var(--ink);box-shadow:inset 0 0 0 var(--hair) var(--ink-3)}
@@ -211,11 +214,11 @@ nav{display:flex;gap:var(--s2);align-items:center}
 .board-name{font-size:var(--t-xl);font-weight:var(--w-display);letter-spacing:var(--track-tight);line-height:var(--lh-tight)}
 .board-meta{color:var(--ink-3)}
 .board-meta:empty{display:none}
-.pick-progress{display:flex;align-items:center;flex-wrap:wrap;gap:2px var(--s4);margin-top:var(--s1);font-size:var(--t-sm);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.pick-progress{display:flex;align-items:baseline;flex-wrap:wrap;gap:var(--s0) var(--s4);margin-top:var(--s1);font-size:var(--t-sm);color:var(--ink-2);font-variant-numeric:tabular-nums}
 #pick-count{font-weight:var(--w-strong);color:var(--ink)}
 /* The pick meter is the setup numbers themselves: drawn solid once a cut has a pick, dashed while it is open. */
 .pick-meter{display:flex;gap:var(--s1)}
-.pick-meter i{font:var(--w-display) var(--t-xs)/var(--lh-1) var(--script);font-style:normal;color:var(--ink-3);padding:var(--s1) 2px;border-bottom:var(--line) dashed var(--ink-3)}
+.pick-meter i{font:var(--w-display) var(--t-xs)/var(--lh-1) var(--script);font-style:normal;color:var(--ink-3);padding:var(--s1) var(--s0);border-bottom:var(--line) dashed var(--ink-3)}
 .pick-meter i.on{color:var(--pencil);border-bottom-style:solid;border-color:var(--pencil)}
 .loop-actions{margin-left:auto;display:flex;align-items:center;gap:var(--s2)}
 .render-group{display:flex;align-items:center;gap:var(--s2)}
@@ -230,7 +233,7 @@ progress::-webkit-progress-value{background:var(--pencil)}
 progress::-moz-progress-bar{background:var(--pencil)}
 .lined-board{display:grid;grid-template-columns:340px minmax(0,1fr);gap:var(--s10);padding:var(--s6) var(--gutter) var(--gutter);align-items:start}
 /* The script column stays beside the cuts; a long scene scrolls inside it instead of pushing it off screen. */
-.script-col{position:sticky;top:var(--s4);max-height:calc(100vh - var(--s8));overflow:auto;padding-right:var(--s1)}
+.script-col{position:sticky;top:var(--s4);max-height:calc(100vh - var(--s8));overflow:auto;margin-left:calc(var(--s2) * -1);padding:0 var(--s1) var(--s1) var(--s2)}
 .board-title{margin:0;font:var(--w-body) var(--t-xl)/var(--lh-text) var(--script);color:var(--ink);overflow-wrap:anywhere}
 .script-notes>summary{display:none}
 #script-fields>.cue:first-child{margin-top:var(--s5)}
@@ -239,20 +242,20 @@ progress::-moz-progress-bar{background:var(--pencil)}
 .hero-card{display:flex;align-items:flex-start;justify-content:flex-start;gap:var(--s3);width:100%;padding:0;min-height:0;text-align:left;white-space:normal;font:inherit;color:inherit;margin-top:var(--s1)}
 .hero-thumb{position:relative;flex:none;width:96px;aspect-ratio:4/3;background:var(--page-tint);outline:var(--line) solid var(--pencil);outline-offset:var(--focus-gap)}
 .hero-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-.hero-text{display:flex;flex-direction:column;gap:2px;min-width:0;font-size:var(--t-sm);color:var(--ink-2)}
+.hero-text{display:flex;flex-direction:column;gap:var(--s0);min-width:0;font-size:var(--t-sm);color:var(--ink-2)}
 .hero-name{display:flex;align-items:baseline;gap:var(--s2);font-size:var(--t-lg);font-weight:var(--w-strong);color:var(--ink)}
 .hero-card:hover .hero-name{text-decoration:underline;text-underline-offset:4px}
 /* One setup line runs from the hero down to the cuts a reference edit redraws; it leaves the thumb at its centre. */
 .hero-branch{position:relative;margin:0 0 0 calc(48px - var(--line) / 2);padding:var(--s4) 0 0 var(--s5)}
-.branch-stem{position:absolute;left:0;top:2px;width:var(--s3);height:var(--s7);border-left:var(--line) solid var(--pencil);border-bottom:var(--line) solid var(--pencil)}
+.branch-stem{position:absolute;left:0;top:var(--s0);width:var(--s3);height:var(--s7);border-left:var(--line) solid var(--pencil);border-bottom:var(--line) solid var(--pencil)}
 .hero-branch p{margin:0;font-size:var(--t-sm);color:var(--ink-2)}
 .branch-nos{font:var(--w-display) var(--t-sm)/var(--lh-1) var(--script);color:var(--pencil)}
-.toggle{display:flex;align-items:center;gap:10px;margin-top:var(--s4);font-size:var(--t-md);font-weight:var(--w-ui);color:var(--ink);cursor:pointer}
+.toggle{display:flex;align-items:center;gap:var(--s3);margin-top:var(--s4);font-size:var(--t-md);font-weight:var(--w-ui);color:var(--ink);cursor:pointer}
 .toggle:has(input:disabled){color:var(--ink-3);cursor:not-allowed}
-.hero-meta{margin:6px 0 0;font-size:var(--t-sm);color:var(--ink-3);line-height:var(--lh-text)}
+.hero-meta{margin:var(--s1) 0 0;font-size:var(--t-sm);color:var(--ink-3);line-height:var(--lh-text)}
 .hero-meta:empty{display:none}
 .recipe-label{margin:var(--s4) 0 0}
-.recipe .hero-meta{margin-top:2px}
+.recipe .hero-meta{margin-top:var(--s0)}
 .board-note{margin:0 0 var(--s4);font-size:var(--t-sm);color:var(--ink-3)}
 .board-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s7) var(--s5)}
 .shot-card{display:flex;flex-direction:column;min-width:0}
@@ -268,7 +271,7 @@ progress::-moz-progress-bar{background:var(--pencil)}
 .cut-src b{color:var(--pencil);font-weight:var(--w-strong)}
 /* Each cut carries its setup line: solid once it has a pick, dashed while it is still open.
    The number sits on the title's baseline and the line starts just under it; Edit cuts and the export list share the geometry. */
-.cut-text{--no-top:6px;position:relative;margin-top:var(--s2);padding:0 0 2px var(--setup-indent)}
+.cut-text{--no-top:6px;position:relative;margin-top:var(--s2);padding:0 0 var(--s0) var(--setup-indent)}
 :is(.cut-text,.shot-editor,.export-picks li)>.setup-no{position:absolute;left:0;top:var(--no-top)}
 :is(.cut-text,.shot-editor,.export-picks li)::before{content:"";position:absolute;left:var(--setup-x);top:calc(var(--no-top) + var(--t-sm) + var(--setup-gap));bottom:0;border-left:var(--line) solid var(--pencil)}
 .shot-card:not(.picked) .cut-text::before{border-left-style:dashed;border-color:var(--ink-3)}
@@ -280,33 +283,35 @@ progress::-moz-progress-bar{background:var(--pencil)}
 .go{min-height:var(--h-sm);padding:0;margin-top:var(--s1);font-size:var(--t-sm);font-weight:var(--w-strong);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
 .go:hover{text-decoration-thickness:2px}
 .shot-editor{--no-top:22px;position:relative;display:grid;grid-template-columns:200px minmax(0,1fr);gap:var(--s4) var(--s6);padding:var(--s5) 0 var(--s5) var(--setup-indent);border-bottom:var(--hair) solid var(--rule)}
-.shot-editor:first-child{--no-top:2px;padding-top:0}
+.shot-editor:first-child{--no-top:var(--s0);padding-top:0}
 .shot-editor::before{bottom:var(--s5)}
 .shot-editor label{display:block;margin-bottom:var(--s3)}
-.shot-editor input,.shot-editor textarea{display:block;margin-top:6px}
+.shot-editor input,.shot-editor textarea{display:block;margin-top:var(--s2)}
 .shot-editor textarea{min-height:112px;font-size:var(--t-md)}
-.editor-prompts button{margin-top:2px}
+.editor-prompts button{margin-top:var(--s0)}
 
 /* Dialogs: a page lifted off the desk. */
 dialog{background:var(--page);color:var(--ink);border:0;border-radius:var(--r);padding:var(--gutter);width:94vw;max-width:1392px;max-height:92vh;max-height:92dvh;box-shadow:var(--lift)}
 dialog[open]{animation:dialog-in var(--dur-enter) var(--ease)}
 @keyframes dialog-in{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:none}}
 dialog::backdrop{background:var(--scrim)}
+@media(min-width:601px){.sheet-dialog{margin:4dvh auto auto}}
 /* The heading stays on screen while a long dialog scrolls, so close and the cut arrows are always in reach.
    Sticky offsets count from inside the dialog padding, so top cancels the padding and the heading covers it. */
 .dialog-heading{position:sticky;top:calc(var(--gutter) * -1);z-index:var(--z-sticky);display:flex;align-items:center;gap:var(--s4);margin:calc(var(--gutter) * -1) calc(var(--gutter) * -1) 0;padding:var(--s3) var(--gutter);background:var(--page);box-shadow:0 var(--hair) 0 var(--rule)}
 .heading-text{flex:1;min-width:0}
-.dialog-heading h2{display:flex;align-items:baseline;gap:10px;font-size:var(--t-2xl);font-weight:var(--w-display);letter-spacing:var(--track-head)}
+.dialog-heading h2{display:flex;align-items:baseline;gap:var(--s2);font-size:var(--t-2xl);font-weight:var(--w-display);letter-spacing:var(--track-head)}
 .dialog-heading h2 .setup-no{font-size:.8em}
 /* Opening a dialog focuses its title, not the first button, so no focus ring lands on a button nobody pressed. */
 .dialog-heading h2:focus{outline:0}
 .dialog-nav{display:flex;gap:var(--s2)}
 /* The setup rail: every cut of the board, the one on screen drawn in. */
-.cut-rail{display:flex;gap:2px}
-.rail-cut{min-height:var(--h-bar);padding:0 7px;font:var(--w-display) var(--t-xs)/var(--lh-1) var(--script);color:var(--ink-3);border-bottom:var(--line) dashed var(--ink-3);border-radius:0}
+.cut-rail{display:flex;gap:var(--s0)}
+.rail-cut{min-height:var(--h-bar);padding:0 var(--s2);font:var(--w-display) var(--t-xs)/var(--lh-1) var(--script);color:var(--ink-3);border-bottom:var(--line) dashed var(--ink-3);border-radius:0}
 .rail-cut.picked{color:var(--pencil);border-bottom-style:solid;border-color:var(--pencil)}
 .rail-cut:hover{background:var(--wash);color:var(--ink)}
-.rail-cut[aria-current]{background:var(--pencil);color:var(--on-ink);border-color:var(--pencil)}
+.rail-cut[aria-current]{background:var(--pencil-wash);color:var(--pencil)}
+.rail-cut.picked[aria-current]{border-color:var(--pencil)}
 
 /* Compare & pick: the take beside what it should match, the takes under it, the take's sheet at the side. */
 .compare-body{display:grid;grid-template-columns:minmax(0,1fr) 360px;margin:0 calc(var(--gutter) * -1) calc(var(--gutter) * -1)}
@@ -338,13 +343,13 @@ dialog::backdrop{background:var(--scrim)}
 .take:hover .take-frame{outline-color:var(--rule-strong)}
 .take[aria-pressed="true"] .take-frame{outline:var(--line) solid var(--ink)}
 .take:focus-visible{outline-offset:var(--wrap-gap)}
-.tl{display:flex;align-items:baseline;gap:6px;padding-top:var(--s2);font-size:var(--t-xs)}
-.take-id{font:var(--w-display) var(--t-sm)/var(--lh-1) var(--script);padding:3px var(--s1);margin-left:calc(var(--s1) * -1 - var(--line));border:var(--line) solid transparent}
+.tl{display:flex;align-items:baseline;gap:var(--s2);padding-top:var(--s2);font-size:var(--t-xs)}
+.take-id{font:var(--w-display) var(--t-sm)/var(--lh-1) var(--script);padding:var(--s1);margin-left:calc(var(--s1) * -1 - var(--line));border:var(--line) solid transparent}
 .take-id.picked{border-color:var(--pencil);color:var(--pencil)}
 .pk{font-weight:var(--w-strong);color:var(--pencil)}
 .tl .verdict{margin-left:auto}
 .sheet-head{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3)}
-.sheet-head h3{font-size:var(--t-xl);font-weight:var(--w-display);letter-spacing:var(--track-tight)}
+.sheet-head h3{flex:none;white-space:nowrap;font-size:var(--t-xl);font-weight:var(--w-display);letter-spacing:var(--track-tight)}
 .sheet-head>span{font-size:var(--t-sm);color:var(--ink-3);text-align:right}
 .sheet-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:var(--s4)}
 /* Verdict, then the note on its own row, then the save row. */
@@ -358,7 +363,7 @@ dialog::backdrop{background:var(--scrim)}
 .review-state{font-size:var(--t-xs);color:var(--ink-3)}
 /* Segmented choices: native radios and buttons, drawn as one ruled strip at button height. */
 .seg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);border:var(--hair) solid var(--rule-strong);border-radius:var(--r)}
-.seg>label,.seg>button{position:relative;display:flex;align-items:center;justify-content:center;gap:var(--s2);min-height:calc(var(--h) - 2 * var(--hair));margin:0;padding:0 10px;border-radius:0;font:var(--w-ui) var(--t-sm)/var(--lh-1) var(--ui);color:var(--ink-2);background:var(--page);cursor:pointer;box-shadow:none}
+.seg>label,.seg>button{position:relative;display:flex;align-items:center;justify-content:center;gap:var(--s2);min-height:calc(var(--h) - 2 * var(--hair));margin:0;padding:0 var(--s3);border-radius:0;font:var(--w-ui) var(--t-sm)/var(--lh-1) var(--ui);color:var(--ink-2);background:var(--page);cursor:pointer;box-shadow:none}
 .seg>label+label,.seg>button+button{border-left:var(--hair) solid var(--rule)}
 .seg>label input{position:absolute;inset:0;width:100%;height:100%;min-height:0;margin:0;opacity:0;cursor:pointer}
 .seg>label:hover,.seg>button:hover{color:var(--ink)}
@@ -403,13 +408,13 @@ dialog::backdrop{background:var(--scrim)}
 .export-actions{display:grid;grid-template-columns:1fr auto;gap:var(--s2);margin-top:var(--s4)}
 .export-label{margin:var(--s6) 0 var(--s2)}
 .export-picks{list-style:none;margin:0;padding:0}
-.export-picks li{--no-top:8px;position:relative;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;padding:var(--s1) 0 var(--s2) var(--setup-indent);font-size:var(--t-sm)}
+.export-picks li{--no-top:8px;position:relative;display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s0) var(--s3);padding:var(--s1) 0 var(--s2) var(--setup-indent);font-size:var(--t-sm)}
 .pick-title{font-weight:var(--w-strong)}
 .pick-take{font:var(--w-display) var(--t-xs)/var(--lh-1) var(--script);color:var(--ink-2)}
 .export-picks .verdict{margin-left:auto}
 .pick-src{flex-basis:100%;font-size:var(--t-xs);color:var(--ink-3)}
 .zip-files{list-style:none;margin:0;padding:0;border-top:var(--hair) solid var(--rule-strong)}
-.zip-files li{display:grid;grid-template-columns:1fr auto;gap:2px var(--s4);padding:var(--s2) 0;border-bottom:var(--hair) solid var(--rule);font-size:var(--t-sm)}
+.zip-files li{display:grid;grid-template-columns:1fr auto;gap:var(--s0) var(--s4);padding:var(--s2) 0;border-bottom:var(--hair) solid var(--rule);font-size:var(--t-sm)}
 .zip-files b{font-weight:var(--w-strong)}
 .zip-files .n{color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums}
 .zip-files .p{grid-column:1/-1;font:var(--w-body) var(--t-xs)/var(--lh-text) var(--script);color:var(--ink-2);overflow-wrap:anywhere}
@@ -417,7 +422,7 @@ dialog::backdrop{background:var(--scrim)}
 
 /* My boards: what the board is, its scene as typed, and how far the picking got. */
 #boards-dialog{max-width:640px}
-.board-link{display:grid;grid-template-columns:minmax(0,1fr) auto;justify-content:stretch;align-items:baseline;gap:2px var(--s4);width:100%;min-height:var(--hit);padding:var(--s3) 0;text-align:left;white-space:normal;font:inherit;border-radius:0;border-bottom:var(--hair) solid var(--rule)}
+.board-link{display:grid;grid-template-columns:minmax(0,1fr) auto;justify-content:stretch;align-items:baseline;gap:var(--s0) var(--s4);width:100%;min-height:var(--hit);padding:var(--s3) 0;text-align:left;white-space:normal;font:inherit;border-radius:0;border-bottom:var(--hair) solid var(--rule)}
 .board-link:hover{background:var(--page-tint)}
 .board-link-name{font-weight:var(--w-strong)}
 .board-link-meta{font-size:var(--t-xs);color:var(--ink-3);text-align:right;font-variant-numeric:tabular-nums}
@@ -468,30 +473,30 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
   .intro-actions{order:0;margin-top:var(--s4)}.intro-actions button{flex:1}
   .lined-scene{order:1;margin-top:var(--s5)}.facts{order:3}
   .scene-line{text-align:left;font-size:var(--t-lg);line-height:var(--lh-text)}
-  .setups{flex-wrap:wrap;gap:10px;padding-top:0;margin-top:10px}
+  .setups{flex-wrap:wrap;gap:var(--s3);padding-top:0;margin-top:var(--s3)}
   .setups::before,.setup::before{display:none}
-  .setup{flex:0 0 calc(var(--mw,.5) * (100% - 10px))}
+  .setup{flex:0 0 calc(var(--mw,.5) * (100% - var(--s3)))}
   .setups .setup-no{position:static;font-size:var(--t-xs);line-height:14px}
-  .setups .stem{align-self:flex-start;margin-left:6px;height:6px}
+  .setups .stem{align-self:flex-start;margin-left:calc(var(--s2) - var(--line));height:var(--s2)}
   .setups .frame{margin-top:0}
-  .setup .cap{display:flex;flex-wrap:wrap;gap:0 6px;padding-top:var(--s1);font-size:var(--t-xs)}
+  .setup .cap{display:flex;flex-wrap:wrap;gap:0 var(--s2);padding-top:var(--s1);font-size:var(--t-xs)}
   .setup .cap .src{display:inline}
   .lined-note{margin-top:var(--s4)}
   .facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 var(--s3);margin-top:var(--s6)}
   .section-title{margin:var(--s7) var(--gutter-phone) var(--s3)}.example-gallery{grid-template-columns:1fr;gap:var(--s3);padding:0 var(--gutter-phone);margin-bottom:var(--s7)}
   .composer-page{margin:0 0 var(--s6);padding:var(--s5) var(--gutter-phone) var(--s7)}.composer-page h1{font-size:var(--t-2xl);margin-bottom:var(--s4)}
-  .setups.even{gap:10px var(--s2)}.setups.even .setup{flex:0 0 calc((100% - 2 * var(--s2)) / 3)}
+  .setups.even{gap:var(--s3) var(--s2)}.setups.even .setup{flex:0 0 calc((100% - 2 * var(--s2)) / 3)}
   .composer-page>.primary{align-self:stretch}
   #workspace{padding:0 0 var(--s6)}
   .loop-bar{padding:var(--s2) var(--gutter-phone) var(--s3);gap:var(--s2)}
   .loop-actions{display:contents}
-  .board-head{flex:1 1 100%}.board-name{font-size:var(--t-lg)}.pick-progress{gap:2px 10px}
+  .board-head{flex:1 1 100%}.pick-progress{gap:var(--s0) var(--s3)}
   .render-group{order:1;flex:1 1 100%}.render-group>button{flex:1}
   .loop-actions>#storyboard{order:2;flex:1 1 auto}
   #edit-toggle{order:3}
   .queue-panel{padding:var(--s3) var(--gutter-phone) 0}
   .lined-board{grid-template-columns:minmax(0,1fr);gap:var(--s5);padding:var(--s4) var(--gutter-phone) var(--s7)}
-  .script-col{position:static;max-height:none;overflow:visible;padding:0}
+  .script-col{position:static;max-height:none;overflow:visible;margin:0;padding:0}
   .board-title{font-size:var(--t-lg)}
   .script-notes{margin-top:var(--s3);border-top:var(--hair) solid var(--rule);border-bottom:var(--hair) solid var(--rule)}
   .script-notes>summary{display:flex;min-height:var(--h-lg)}
@@ -502,8 +507,9 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
   .hero-thumb,.shot-card.is-hero .shot-hero{outline-offset:calc(var(--line) * -1)}
   .board-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s6) var(--s3)}
   .shot-hero{aspect-ratio:4/3}
-  .cut-text h3{font-size:var(--t-md)}.cut-facts{font-size:var(--t-xs);gap:2px 10px}
-  .shot-editor{display:block}.shot-editor .editor-settings{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.shot-editor .editor-settings label:first-child{grid-column:1/-1}
+  /* The 14px title sits 2px higher on its line, so the number follows it. */
+  .cut-text{--no-top:var(--s1)}.cut-text h3{font-size:var(--t-md)}.cut-facts{font-size:var(--t-xs);gap:var(--s0) var(--s3)}
+  .shot-editor{display:block}.shot-editor .editor-settings{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--s3)}.shot-editor .editor-settings label:first-child{grid-column:1/-1}
   dialog,#image-dialog,#image-dialog[open]{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;padding:var(--gutter-phone);box-shadow:none;animation:none}
   .dialog-heading{top:calc(var(--gutter-phone) * -1);margin:calc(var(--gutter-phone) * -1) calc(var(--gutter-phone) * -1) 0;padding:var(--s2) var(--gutter-phone) var(--s3);flex-wrap:wrap;gap:var(--s1) var(--s2)}
   .dialog-heading .heading-text{order:3;flex:1 1 100%}
@@ -525,7 +531,7 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
   .take-zoom,.frame-empty,.compare-images:not(:has(.fig-hero)):not(:has(.fig-picked)) .take-zoom{height:300px}
   .fig figcaption,.fig figcaption b{font-size:var(--t-xs)}
   .takes-head{margin-top:var(--s5)}
-  .take-strip{display:flex;overflow-x:auto;gap:var(--s5);margin:0 calc(var(--gutter-phone) * -1);padding:var(--s1) var(--gutter-phone) var(--s2);scroll-padding-left:var(--gutter-phone);scroll-snap-type:x mandatory;scrollbar-width:none}
+  .take-strip{display:flex;overflow-x:auto;gap:var(--s5);margin:calc(var(--s2) * -1) calc(var(--gutter-phone) * -1) 0;padding:var(--s3) var(--gutter-phone);scroll-padding-left:var(--gutter-phone);scroll-snap-type:x mandatory;scrollbar-width:none}
   .take-strip::-webkit-scrollbar{display:none}
   .take{flex:0 0 140px;scroll-snap-align:start}
   .dialog-heading .layout-switch{order:4;width:100%}
@@ -540,17 +546,18 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
 }
 /* Touch: every control is at least 48px tall (iOS asks 44, Android 48), also on rotated phones. */
 @media(pointer:coarse){
-  button,.button,nav button,.go,.link,.chip,.takes-select select,select,input:not([type=checkbox]):not([type=radio]),summary,.advanced>summary,.script-notes>summary,.seg>label,.seg>button{min-height:var(--hit)}
+  button,.button,nav button,.go,.link,.chip,.takes-select select,select,input:not([type=checkbox]):not([type=radio]),summary,.advanced>summary,.script-notes>summary{min-height:var(--hit)}
   .icon{width:var(--hit);height:var(--hit)}.rail-cut{min-height:var(--hit)}
   /* The 48px target stays, but filled and outlined buttons paint inside a transparent rim: 36px for page buttons,
      32px in the header and for chips. The focus ring keeps a 3px gap from the paint. */
   .primary,.quiet,.plain,.state,.chip{border:solid transparent;border-width:var(--rim) 0;background-clip:padding-box;padding-top:0;padding-bottom:0}
-  .icon{border:var(--rim) solid transparent;background-clip:padding-box;outline-offset:-3px}
+  .icon{border:var(--rim) solid transparent;background-clip:padding-box;outline-offset:calc(var(--frame-gap) * -1)}
   .topbar nav>*{min-height:var(--hit);border-width:var(--rim-bar) 0}.chip{border-width:var(--rim-bar) 0}
   /* Single-line fields paint at button height inside the same 48px rim; their edge is an inset line. */
   input:not([type=checkbox]):not([type=radio]),select{border:solid transparent;border-width:var(--rim) 0;background-clip:padding-box;box-shadow:inset 0 0 0 var(--hair) var(--rule-field)}
   input:not([type=checkbox]):not([type=radio]):focus,select:focus{border-color:transparent;box-shadow:inset 0 0 0 var(--focus) var(--ink)}
-  input[aria-invalid="true"]{box-shadow:inset 0 0 0 var(--hair) var(--fail)}
+  input:not([type=checkbox]):not([type=radio])[aria-invalid="true"]{box-shadow:inset 0 0 0 var(--hair) var(--fail)}
+  input:not([type=checkbox]):not([type=radio])[aria-invalid="true"]:focus{box-shadow:inset 0 0 0 var(--focus) var(--fail)}
   /* Segments paint at button height; the touch band reaches 6px above and below the strip. */
   .seg>label::after,.seg>button::after{content:"";position:absolute;inset:calc(var(--rim) * -1) 0}.seg{margin:var(--rim) 0}
   .back{margin-left:-14px}
@@ -564,10 +571,11 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
 @media(forced-colors:active){
   .primary,.quiet,.icon,.state,.chip,.seg,dialog{border-color:ButtonText;border-style:solid}
   .primary,.quiet,.icon,.state,.chip,.seg,dialog{border-width:var(--hair)}
-  .seg>label:has(input:checked),.seg>button[aria-pressed="true"],.rail-cut[aria-current],.chip.active{outline:var(--focus) solid Highlight;outline-offset:-3px}
+  .seg>label:has(input:checked),.seg>button[aria-pressed="true"],.rail-cut[aria-current],.chip.active{outline:var(--focus) solid Highlight;outline-offset:calc(var(--frame-gap) * -1)}
   .seg-pass span::before,.verdict.pass::before{forced-color-adjust:none;background:CanvasText;border-color:CanvasText}
   .setups .frame,.shot-hero,.take-frame{outline-style:none}
-  .shot-card.is-hero .shot-hero,.fig-hero .take-zoom,.take[aria-pressed="true"] .take-frame{outline:var(--line) solid Highlight;outline-offset:var(--frame-gap)}
+  .shot-card.is-hero .shot-hero,.fig-hero .take-zoom,.take[aria-pressed="true"] .take-frame,.hero-thumb{outline:var(--line) solid Highlight;outline-offset:var(--frame-gap)}
+  select{appearance:auto;-webkit-appearance:auto;background-image:none}
   .take-id{border-color:Canvas}.take-id.picked{border-color:Highlight}
   input[type=checkbox]{appearance:auto;-webkit-appearance:auto}
   summary{color:CanvasText}summary::before,summary:hover::before{forced-color-adjust:none;background:CanvasText}
