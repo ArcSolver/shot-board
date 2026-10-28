@@ -52,6 +52,8 @@ button:disabled{cursor:not-allowed;color:var(--ink-faint)}
 .brand{display:flex;align-items:center;border-radius:8px}
 .brand-logo{display:block;width:129px;height:32px}
 nav{display:flex;gap:8px;align-items:center}
+/* Header buttons are slimmer than page buttons so the bar reads as navigation, not a call to action. */
+.topbar nav>*{min-height:32px;padding:0 14px}
 
 /* Home */
 .home-title{font-size:48px;font-weight:600;letter-spacing:-.025em;line-height:1.08;padding:56px 0 12px}
@@ -249,7 +251,7 @@ footer{display:flex;justify-content:space-between;align-items:center;gap:16px;pa
 @media(max-width:1340px){.loop-bar{border-radius:var(--r-card)}}
 @media(max-width:1100px){.example-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.board-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.featured-content{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);min-height:380px}.feature-mosaic{grid-template-columns:repeat(2,minmax(0,1fr))}.take-zoom,.compare-take>.shot-hero{height:300px}}
 @media(max-width:600px){
-  main{padding:0 16px}.topbar{height:56px;padding:0 16px}.brand-logo{width:clamp(110px,30vw,129px);height:auto}nav{gap:4px}nav button{padding:7px 12px;font-size:13px;min-height:34px}
+  main{padding:0 16px}.topbar{height:56px;padding:0 16px}.brand-logo{width:clamp(110px,30vw,129px);height:auto}nav{gap:4px}.topbar nav>*{padding:0 12px;font-size:13px}
   .home-title{font-size:34px;padding:28px 0 8px}.home-lede{font-size:16px;margin-bottom:20px}
   .featured-content{display:block;min-height:0}.feature-cover{height:340px}.feature-caption{left:20px;right:20px;bottom:20px}.feature-caption h2{font-size:28px}
   .feature-mosaic{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:8px}.feature-cut{aspect-ratio:1;border-radius:8px}.feature-cut span{font-size:11px;left:4px;bottom:4px;padding:2px 6px}
@@ -268,8 +270,10 @@ footer{display:flex;justify-content:space-between;align-items:center;gap:16px;pa
 @media(pointer:coarse){
   button,.button,nav button,.card-bottom>button,.link,.chip,.takes-select select,select,input:not([type=checkbox]),summary{min-height:48px}
   .icon{width:48px;height:48px}.take-thumb{width:64px;height:48px}.take-strip{gap:8px}
-  /* The 48px target stays, but filled buttons paint inside a transparent rim so they keep desktop proportions and visible gaps. */
-  .primary,.quiet,.tinted,.plain,.chip,.icon,.on-photo{border:4px solid transparent;background-clip:padding-box;outline-offset:-1px}.icon{border-width:6px}.on-photo{box-shadow:0 2px 8px -4px rgba(0,0,0,.24)}
+  /* The 48px target stays, but filled buttons paint inside a transparent rim: 36px for page buttons, 32px in the header and card
+     footers, 30px for chips. The focus ring keeps its 3px desktop gap from the paint. */
+  .primary,.quiet,.tinted,.plain,.chip,.icon,.on-photo{border:6px solid transparent;background-clip:padding-box;outline-offset:-3px;padding-top:0;padding-bottom:0}.on-photo{box-shadow:0 2px 8px -6px rgba(0,0,0,.24)}
+  .topbar nav>*{min-height:48px;border-width:8px;outline-offset:-5px}.card-bottom>button{border-width:8px;outline-offset:-5px}.chip{border-width:9px;outline-offset:-6px}
   .brand{min-height:48px}.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-width:48px;min-height:48px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-property:opacity,background-color,color,box-shadow!important;scroll-behavior:auto!important}button:active:not(:disabled){transform:none}}

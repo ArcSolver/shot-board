@@ -54,8 +54,15 @@ class PageTests(unittest.TestCase):
         self.assertGreater(css.index('@media(pointer:coarse)'), css.index('@media(max-width:600px)'),
                            'Touch sizes come after the phone layout so they win')
         self.assertIn('background-clip:padding-box', touch, 'Filled buttons paint inside the 48px target')
-        rim = re.search(r'([.\w,-]+)\{border:4px solid transparent', touch).group(1).split(',')
+        rim = re.search(r'([.\w,-]+)\{border:6px solid transparent;[^}]*padding-top:0;padding-bottom:0', touch).group(1).split(',')
         self.assertIn('.on-photo', rim, 'The button on the cover photo paints at the same size as the others')
+        self.assertIn('.topbar nav>*{min-height:48px;border-width:8px', touch, 'Header buttons paint 32px inside a 48px target')
+
+    def test_header_buttons_are_slim(self):
+        css = (STATIC / 'style.css').read_text()
+        self.assertIn('.topbar nav>*{min-height:32px;padding:0 14px}', css)
+        phone = css[css.index('@media(max-width:600px)'):]
+        self.assertIn('.topbar nav>*{padding:0 12px;font-size:13px}', phone[:phone.index('\n}\n')])
 
     def test_review_note_spans_the_take_and_dialogs_focus_their_title(self):
         css = (STATIC / 'style.css').read_text()
