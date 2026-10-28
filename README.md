@@ -22,13 +22,13 @@ uv pip install --python .venv/bin/python -r requirements.lock.txt --require-hash
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-Open **http://127.0.0.1:8790** and choose **Explore the board**, or open another board from the home page. To render new takes, see [Run it locally](#run-it-locally).
+Open **http://127.0.0.1:8790** and choose **Open this board**, or open another board from the home page. To render new takes, see [Run it locally](#run-it-locally).
 
 ## What it does
 
 You write one scene and Shot Board lays out six editable cuts from a coverage template: establishing, medium, face close-up, over shoulder, insert and low angle. When the scene has no person, the face close-up and over shoulder become a detail close-up and a side angle. You can add up to three more, give it character, prop and setting details, and edit each cut's prompt and negative prompt.
 
-SDXL renders takes for each cut. Compare & pick shows every take of a cut side by side with its render details one click away, and you can lock a seed and reuse it. Pick an SDXL take or import your own image as the hero. Render reference edits sends every other cut to Qwen-Image-Edit-2511 with that image as the reference. You can save a pass, fail or pending verdict and a note on any take.
+SDXL renders takes for each cut. Compare & pick shows the take you are looking at beside the hero, with every take of the cut in a strip under it and the render details at the side, and you can lock a seed and reuse it. Pick an SDXL take or import your own image as the hero. Render reference edits sends every other cut to Qwen-Image-Edit-2511 with that image as the reference. You can save a pass, fail or pending verdict and a note on any take.
 
 ![Imported hero details alongside close-up, over shoulder and insert reference edits](docs/hero-reference.png)
 
@@ -72,7 +72,7 @@ SHOTBOARD_ENGINE_MANIFEST=/path/to/engine-models.json \
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-Open **http://127.0.0.1:8790** and choose **New scene**. Type a scene or press **Use example**, then build the shot list and render SDXL takes. In **Compare & pick**, open **Seed, hero & more takes**. Pick an SDXL take, or choose **Import reference** to add your own PNG, JPEG or WebP. Pick the imported still, choose **Use selected as hero**, then **Render reference edits**. Imported stills are labeled **Imported reference**, with the source image and dimensions recorded in the export. Compare the takes, save a verdict on each, and pick.
+Open **http://127.0.0.1:8790** and choose **New scene**. Type a scene or press **Use example**, then build the shot list and render SDXL takes. In **Compare & pick**, pick an SDXL take, or choose **Import reference** under **Hero** to add your own PNG, JPEG or WebP. Pick the imported still, choose **Use selected as hero**, then **Render reference edits**. Imported stills are labeled **Imported reference**, with the source image and dimensions recorded in the export. Compare the takes, save a verdict on each, and pick.
 
 ### Reuse a recipe outside the app
 
