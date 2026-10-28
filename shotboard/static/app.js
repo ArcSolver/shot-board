@@ -23,6 +23,7 @@ const TAKE = t => t.id.toUpperCase();
 // Take IDs are slate marks, typed like the setup numbers.
 const TAKE_NO = t => `<span class="take-no">${TAKE(t)}</span>`;
 const WAIT = 'Wait for the queue to finish.';
+const OFFLINE = 'The local Shot Board server is not answering. Start it again, then reload the page.';
 const phone = () => !!window.matchMedia?.('(max-width:600px)')?.matches;
 const icon = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 // Every board image goes through img(): lazy unless it is the first one on screen. The static viewer
@@ -50,7 +51,7 @@ function toast(message) {
   toast.timer=setTimeout(()=>{el.hidden=true;if(layer&&el.matches(':popover-open'))el.hidePopover();},6000);
 }
 async function api(path, method='GET', data) {
-  const response=await fetch('/api'+path,{method,headers:data?{'Content-Type':'application/json'}:{},body:data?JSON.stringify(data):undefined});
+  const response=await fetch('/api'+path,{method,headers:data?{'Content-Type':'application/json'}:{},body:data?JSON.stringify(data):undefined}).catch(()=>{throw new Error(OFFLINE);});
   if(!response.ok){let error=await response.json().catch(()=>({detail:'Local server unavailable'}));throw new Error(typeof error.detail==='string'?error.detail:'Please check your inputs.');}
   return response.json();
 }
@@ -116,7 +117,7 @@ function render() {
   $('storyboard').className=allPicked?'primary':'quiet';
   $('generate').disabled=busy();$('cancel').hidden=!busy();
   $('generate').className=needsRender&&!allPicked?'primary':'quiet';
-  $('generate').textContent=board.continuity?.enabled?'Render reference edits':takes.length?'Render more takes':'Render board';
+  $('generate').textContent=board.continuity?.enabled?'Render reference edits':takes.length?'More takes for every cut':'Render board';
   $('pick-count').textContent=`${picked} of ${board.shots.length} picked`;
   const example=examples.find(ex=>ex.board.id===board.id), heroIndex=shotIndex(heroRef?.shot_id);
   $('board-name').textContent=example?example.label:'Your scene';
@@ -202,6 +203,8 @@ function renderCompare(){
   $('pick-take').ariaPressed=String(isPicked);
   $('pick-take').innerHTML=isPicked?`${icon('check')}Picked`:v?(v.status==='succeeded'?`Pick ${TAKE_NO(v)}`:`${TAKE_NO(v)} ${takeState(v).toLowerCase()}`):'Pick';
   $('next-cut-2').className=isPicked?'primary':'quiet';
+  const pickReason=v&&v.status!=='succeeded'?(v.status==='failed'?'This take failed. Render more takes or view another.':v.status==='cancelled'?'This take was stopped. Render more takes or view another.':'This take is still rendering.'):'';
+  $('pick-reason').hidden=!pickReason;$('pick-reason').textContent=pickReason;
   $('review-slot').innerHTML=v&&v.status==='succeeded'?reviewEditor(s,v):'';
   $('render-details').innerHTML=v?renderDetails(v,s):'';
   $('render-box').hidden=!v;
@@ -218,19 +221,19 @@ function renderCompare(){
   $('import-reference').disabled=busy();
   // An imported still has no seed: say so instead of showing the board seed next to it.
   $('seed-row').hidden=imported&&s.locked_seed===null;
-  const seedNote=$('seed-row').hidden?`The picked take ${s.picked?.toUpperCase()||''} is an imported reference, so it has no seed. Pick an SDXL take to reuse its seed.`:busy()?WAIT:seedError;
-  $('seed-note').hidden=!seedNote;$('seed-note').textContent=seedNote;
+  const seedNote=$('seed-row').hidden?`The picked take ${TAKE_NO(picked)} is an imported reference, so it has no seed. Pick an SDXL take to reuse its seed.`:busy()?WAIT:seedError;
+  $('seed-note').hidden=!seedNote;$('seed-note').innerHTML=seedNote;
   $('reuse-seed').ariaInvalid=seedError&&!$('seed-row').hidden?'true':null;
   const heroAllowed=canBeHero(picked), h=board.continuity?.hero;
   const isHero=!!h&&board.continuity.enabled&&h.shot_id===s.id&&h.take_id===s.picked;
   $('use-hero').disabled=busy()||!heroAllowed||isHero;
   // The hero is always the pick; when another take is on screen, say which take the button uses.
-  const reason=busy()?WAIT:isHero?'':!picked?'Pick a take first.':!heroAllowed?`${HERO_RULE} ${TAKE(picked)} is a reference edit.`:v&&v.id!==picked.id?`This uses the pick, ${TAKE(picked)}.`:'';
-  $('hero-reason').hidden=!reason;$('hero-reason').textContent=reason;
+  const reason=busy()?WAIT:isHero?'':!picked?'Pick a take first.':!heroAllowed?`${HERO_RULE} ${TAKE_NO(picked)} is a reference edit.`:v&&v.id!==picked.id?`This uses the pick, ${TAKE_NO(picked)}.`:'';
+  $('hero-reason').hidden=!reason;$('hero-reason').innerHTML=reason;
   $('compare-hero-line').innerHTML=h?heroLine():'';
   document.querySelectorAll('#compare-hero-line [data-compare]').forEach(el=>el.onclick=()=>{openCompare(el.dataset.compare);$('compare-dialog').scrollTop=0;});
-  $('hero-note').textContent=h&&h.shot_id===s.id&&h.take_id===s.picked?`The picked take ${s.picked.toUpperCase()} is the hero. Render reference edits redraws the other cuts from it.`
-    :h?`Hero: ${NN(shotIndex(h.shot_id))} ${board.shots[shotIndex(h.shot_id)]?.title||''}, ${h.source?.type==='imported'?'imported reference':h.take_id.toUpperCase()}.${heroAllowed&&!busy()?' Use the picked take here to replace it.':''}`
+  $('hero-note').innerHTML=h&&h.shot_id===s.id&&h.take_id===s.picked?`The picked take ${TAKE_NO(picked)} is the hero. Render reference edits redraws the other cuts from it.`
+    :h?`Hero: <span class="setup-no">${NN(shotIndex(h.shot_id))}</span> ${escapeHTML(board.shots[shotIndex(h.shot_id)]?.title||'')}, ${h.source?.type==='imported'?'imported reference':`<span class="take-no">${escapeHTML(h.take_id.toUpperCase())}</span>`}.${heroAllowed&&!busy()?' Use the picked take here to replace it.':''}`
     :'No hero yet. Pick an SDXL take or import a reference, then use the pick as hero.';
   const heroCut=!!board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id;
   $('more-takes').disabled=busy()||heroCut;
@@ -254,6 +257,7 @@ let ownBack=0;
 function showDialog(dialog){if(dialog.open)return;dialog.showModal();if(window.history?.pushState){history.pushState({dialog:dialog.id},'');dialog.dataset.history='1';}}
 function closedDialog(dialog){if(dialog.dataset.history!=='1')return;delete dialog.dataset.history;if(dialog.dataset.popped)delete dialog.dataset.popped;else{ownBack++;history.back();}}
 window.addEventListener('popstate',()=>{if(ownBack){ownBack--;return;}const open=[$('image-dialog'),$('storyboard-dialog'),$('compare-dialog')].find(d=>d.open&&d.dataset.history==='1');if(open){open.dataset.popped='1';open.close();}else if(history.state?.dialog){ownBack++;history.back();}});
+if(window.ResizeObserver)for(const heading of document.querySelectorAll('dialog > .dialog-heading'))new ResizeObserver(()=>heading.parentElement.style.setProperty('--heading-h',heading.offsetHeight+'px')).observe(heading);
 $('compare-dialog').onclose=()=>closedDialog($('compare-dialog'));$('image-dialog').onclose=()=>closedDialog($('image-dialog'));
 $('storyboard-dialog').onclose=()=>{storyboardRequest++;closedDialog($('storyboard-dialog'));};
 // The original PNG opens full size; the sized copy already on screen stands in until it arrives.
@@ -293,10 +297,10 @@ $('reuse-seed').oninput=()=>{if(seedError){seedError='';renderCompare();}};
 $('use-hero').onclick=guarded(async()=>{const s=board.shots.find(s=>s.id===currentShot);if(!canBeHero(s.takes.find(t=>t.id===s.picked)))throw new Error(HERO_RULE);await api(`/boards/${board.id}/continuity`,'POST',{enabled:true,shot_id:s.id,take_id:s.picked});await refresh();toast('Hero set.');});
 $('keep-continuity').onchange=guarded(async()=>{const hero=board.continuity?.hero;await api(`/boards/${board.id}/continuity`,'POST',{enabled:$('keep-continuity').checked,shot_id:hero?.shot_id,take_id:hero?.take_id});await refresh();});
 // A download link, not a navigation, so the board's polling request is not cancelled mid-flight.
-$('export').onclick=()=>{const link=document.createElement('a');link.href=`/api/boards/${board.id}/export`;link.download='shot-board.zip';document.body.append(link);link.click();link.remove();toast('Your ZIP is downloading: shot-board.zip.');};
+$('export').onclick=()=>{const link=document.createElement('a');link.href=`/api/boards/${board.id}/export`;link.download='shot-board.zip';document.body.append(link);link.click();link.remove();toast('Preparing shot-board.zip…');};
 $('close-compare').onclick=()=>$('compare-dialog').close();$('close-boards').onclick=()=>$('boards-dialog').close();
 $('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$('board-grid').hidden=editing;$('edit-toggle').textContent=editing?'Done':'Edit cuts';if(editing)showEditors();};
-$('new-board').onclick=$('home-new').onclick=()=>{$('scene-form').reset();$('scene-error').hidden=true;$('scene').ariaInvalid=null;document.querySelector('.advanced').open=false;board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;coveragePreview();$('scene').focus();};
+$('new-board').onclick=()=>{$('scene-form').reset();$('scene-error').hidden=true;$('scene').ariaInvalid=null;document.querySelector('.advanced').open=false;board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;coveragePreview();$('scene').focus();};
 $('load-example').onclick=guarded(async()=>{const boards=await api('/boards');if(!examples.length)examples=await api('/examples');
   $('boards-list').innerHTML=boards.map(b=>{const ex=examples.find(e=>e.board.id===b.id), meta=b.cuts?`${b.cuts} cuts · ${b.picked} of ${b.cuts} picked`:'';
     return `<button class="board-link" data-board="${b.id}"><span class="board-link-name">${escapeHTML(ex?ex.label:'Your scene')}</span><span class="board-link-meta">${meta}</span><span class="board-link-scene">${escapeHTML(b.title)}</span></button>`;}).join('')||'<p class="muted">No boards yet.</p>';document.querySelectorAll('[data-board]').forEach(b=>b.onclick=guarded(async()=>{await openBoard(b.dataset.board);$('boards-dialog').close();}));$('boards-dialog').showModal();});

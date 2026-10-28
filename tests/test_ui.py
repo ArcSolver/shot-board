@@ -84,6 +84,8 @@ class PageTests(unittest.TestCase):
         self.assertIn('input:not([type=checkbox]):not([type=radio])[aria-invalid="true"]:focus{box-shadow:inset 0 0 0 var(--focus) var(--fail)}', touch)
         # Wide dialogs hang from the top so stepping cuts never moves their heading; phones stay full screen.
         self.assertIn('@media(min-width:601px){.sheet-dialog{margin:4dvh auto auto}}', css)
+        self.assertIn('dialog{scroll-padding-top:calc(var(--heading-h,68px) + var(--s2))', css, 'Tab never leaves focus under the sticky heading')
+        self.assertIn("style.setProperty('--heading-h'", (STATIC / 'app.js').read_text())
 
     def test_header_buttons_are_slim(self):
         css = (STATIC / 'style.css').read_text()

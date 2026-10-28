@@ -14,7 +14,7 @@
     <div class="intro">
       <div class="intro-words"><h1 class="home-title">One scene. Six shots.</h1>
         <p class="home-lede">Shot Board turns one scene into six camera cuts. Compare the takes, pick one per cut, then export a storyboard and ZIP.</p></div>
-      <div class="intro-actions"><button id="home-new" class="quiet">New scene</button><button id="home-open" class="primary">Open this board</button></div>
+      <div class="intro-actions"><button id="home-open" class="primary">Open this board</button></div>
     </div>
     <div id="featured-board" class="lined-scene" aria-label="Featured greenhouse continuity board"></div>
     <dl class="facts">
@@ -83,7 +83,7 @@
     </div>
     <div class="take-side">
       <div class="sheet-head"><h3 id="sheet-title"></h3><span id="sheet-cut"></span></div>
-      <div class="sheet-actions"><button id="pick-take" class="primary">Pick</button><button id="next-cut-2" class="quiet">Next cut<svg class="i" aria-hidden="true"><use href="#i-next"/></svg></button></div>
+      <div class="sheet-actions"><button id="pick-take" class="primary" aria-describedby="pick-reason">Pick</button><button id="next-cut-2" class="quiet">Next cut<svg class="i" aria-hidden="true"><use href="#i-next"/></svg></button></div><p id="pick-reason" class="hero-meta pick-reason" hidden></p>
       <div id="take-sheet" class="take-sheet">
         <div id="review-slot"></div>
         <details class="render-details" id="render-box" open><summary>Render details</summary><dl id="render-details" class="details"></dl></details>

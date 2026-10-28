@@ -291,7 +291,8 @@ progress::-moz-progress-bar{background:var(--pencil)}
 .editor-prompts button{margin-top:var(--s0)}
 
 /* Dialogs: a page lifted off the desk. */
-dialog{background:var(--page);color:var(--ink);border:0;border-radius:var(--r);padding:var(--gutter);width:94vw;max-width:1392px;max-height:92vh;max-height:92dvh;box-shadow:var(--lift)}
+/* Focus moved by Tab scrolls clear of the sticky heading; app.js keeps --heading-h at its real height. */
+dialog{scroll-padding-top:calc(var(--heading-h,68px) + var(--s2));background:var(--page);color:var(--ink);border:0;border-radius:var(--r);padding:var(--gutter);width:94vw;max-width:1392px;max-height:92vh;max-height:92dvh;box-shadow:var(--lift)}
 dialog[open]{animation:dialog-in var(--dur-enter) var(--ease)}
 @keyframes dialog-in{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:none}}
 dialog::backdrop{background:var(--scrim)}
@@ -310,8 +311,8 @@ dialog::backdrop{background:var(--scrim)}
 .rail-cut{min-height:var(--h-bar);padding:0 var(--s2);font:var(--w-display) var(--t-xs)/var(--lh-1) var(--script);color:var(--ink-3);border-bottom:var(--line) dashed var(--ink-3);border-radius:0}
 .rail-cut.picked{color:var(--pencil);border-bottom-style:solid;border-color:var(--pencil)}
 .rail-cut:hover{background:var(--wash);color:var(--ink)}
-.rail-cut[aria-current]{background:var(--pencil-wash);color:var(--pencil)}
-.rail-cut.picked[aria-current]{border-color:var(--pencil)}
+/* The cut on screen is framed in ink, as the take on screen is; its number and line keep the pick state. */
+.rail-cut[aria-current]{box-shadow:inset 0 0 0 var(--line) var(--ink)}
 
 /* Compare & pick: the take beside what it should match, the takes under it, the take's sheet at the side. */
 .compare-body{display:grid;grid-template-columns:minmax(0,1fr) 360px;margin:0 calc(var(--gutter) * -1) calc(var(--gutter) * -1)}
@@ -394,7 +395,7 @@ dialog::backdrop{background:var(--scrim)}
 .compare-hero-body>.hero-line:not(:empty){flex:0 1 300px;min-width:240px}
 .compare-hero-text{flex:1 1 320px;min-width:0}
 .compare-hero-text>.hero-meta:first-child{margin-top:0}
-.hero-reason{margin-top:var(--s2);color:var(--ink-2)}
+.hero-reason,.pick-reason{margin-top:var(--s2);color:var(--ink-2)}
 
 /* Storyboard export: the sheet that goes out, the picks on it, and what the ZIP holds. */
 .layout-switch{width:240px;flex:none}
@@ -521,6 +522,7 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
   .compare-main,.take-side{display:contents}
   .compare-viewer{order:1;padding:var(--s4) var(--gutter-phone) 0}
   .sheet-actions{order:2;margin:var(--s3) var(--gutter-phone) 0}
+  .pick-reason{order:2;margin:var(--s2) var(--gutter-phone) 0}
   .compare-takes{order:3;padding:0 var(--gutter-phone)}
   .compare-hero{order:4;margin:var(--s6) var(--gutter-phone) 0}
   .sheet-head{order:5;margin-top:var(--s6);padding:var(--s5) var(--gutter-phone) 0;border-top:var(--hair) solid var(--rule)}
@@ -560,7 +562,6 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
   input:not([type=checkbox]):not([type=radio])[aria-invalid="true"]:focus{box-shadow:inset 0 0 0 var(--focus) var(--fail)}
   /* Segments paint at button height; the touch band reaches 6px above and below the strip. */
   .seg>label::after,.seg>button::after{content:"";position:absolute;inset:calc(var(--rim) * -1) 0}.seg{margin:var(--rim) 0}
-  .back{margin-left:-14px}
   .brand{min-height:var(--hit)}.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-width:var(--hit);min-height:var(--hit)}
   .toggle{min-height:var(--hit);margin-top:var(--s2)}
   /* The composer's main action keeps its 44px paint inside the rim, so it stays the largest button on the screen. */
