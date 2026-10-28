@@ -53,3 +53,16 @@ class PageTests(unittest.TestCase):
             self.assertIn(rule, touch)
         self.assertGreater(css.index('@media(pointer:coarse)'), css.index('@media(max-width:600px)'),
                            'Touch sizes come after the phone layout so they win')
+        self.assertIn('background-clip:padding-box', touch, 'Filled buttons paint inside the 48px target')
+
+    def test_review_note_spans_the_take_and_dialogs_focus_their_title(self):
+        css = (STATIC / 'style.css').read_text()
+        self.assertIn('.review-note{grid-column:1/-1}', css)
+        js = (STATIC / 'app.js').read_text()
+        form = js[js.index('<form class="review-editor"'):js.index('</form>', js.index('<form class="review-editor"'))]
+        self.assertLess(form.index('name="note"'), form.index('name="verdict"'), 'Note comes first so focus order matches the layout')
+        self.assertLess(form.index('name="verdict"'), form.index('type="submit"'))
+        html = (STATIC / 'index.html').read_text()
+        for dialog in re.findall(r'<dialog id="[^"]+"[^>]*>.*?</dialog>', html, re.S):
+            if 'dialog-heading' in dialog:
+                self.assertRegex(dialog, r'<h2 id="[^"]+" tabindex="-1" autofocus>', 'Opening a dialog focuses its title, not the first button')
