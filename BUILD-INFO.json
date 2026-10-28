@@ -1,5 +1,5 @@
 {
-  "app_commit": "debb84432ab77e5fbef25409f6cde38c58248b1a",
+  "app_commit": "ee3042767a2bf18f1e9f349c6d724dc79f7d1aa2",
   "app_worktree_dirty": false,
   "repo_url": "https://github.com/ArcSolver/shot-board",
   "examples": [
@@ -20,5 +20,5 @@
     }
   ],
   "files": 252,
-  "bytes": 91345132
+  "bytes": 91345821
 }

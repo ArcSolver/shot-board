@@ -189,6 +189,8 @@ dialog::backdrop{background:rgba(245,245,247,.72);backdrop-filter:blur(14px);-we
    Sticky offsets count from inside the dialog padding, so top cancels the padding and the heading covers it. */
 .dialog-heading{position:sticky;top:-28px;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:-28px -28px 6px;padding:28px 28px 14px;background:var(--sheet);box-shadow:0 1px 0 var(--rule)}
 .dialog-heading h2{font-size:28px;font-weight:600;letter-spacing:-.02em}
+/* Opening a dialog focuses its title, not the first arrow, so no focus ring lands on a button nobody pressed. */
+.dialog-heading h2:focus{outline:0}
 .dialog-kicker{margin:0 0 4px;font-size:13px;font-weight:500;color:var(--ink-3);font-variant-numeric:tabular-nums}
 .dialog-nav{display:flex;gap:8px}
 .compare-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
@@ -205,12 +207,13 @@ dialog::backdrop{background:rgba(245,245,247,.72);backdrop-filter:blur(14px);-we
 .compare-take>div>button{min-width:96px}
 .take-details summary{padding:6px 0 0;font-size:13px;color:var(--ink-3);font-weight:400}
 .take-details summary::before{width:5px;height:5px}
-.review-editor{display:flex;align-items:flex-end;gap:8px;padding:8px 16px 16px;flex-wrap:wrap}
+/* The note gets the full width of the take; the verdict and Save share the row under it. */
+.review-editor{display:grid;grid-template-columns:minmax(112px,200px) minmax(0,1fr);align-items:end;gap:12px 8px;padding:8px 16px 16px}
 .review-editor label{display:block;min-width:0}
 .review-editor select,.review-editor textarea{display:block;margin-top:6px}
-.review-editor textarea{width:100%;resize:vertical;min-height:112px;font-size:14px;line-height:1.4;padding:10px 12px}
-.review-editor select{min-width:112px}
-.review-note{flex:1;min-width:120px!important}
+.review-editor textarea{width:100%;resize:vertical;min-height:96px;font-size:14px;line-height:1.4;padding:10px 12px}
+.review-note{grid-column:1/-1}
+.review-editor>button{justify-self:end}
 .compare-recipe{margin-top:20px;border-top:1px solid var(--rule)}
 .compare-controls{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;padding-bottom:4px}
 .compare-controls label{max-width:200px}
@@ -265,6 +268,8 @@ footer{display:flex;justify-content:space-between;align-items:center;gap:16px;pa
 @media(pointer:coarse){
   button,.button,nav button,.card-bottom>button,.link,.chip,.takes-select select,select,input:not([type=checkbox]),summary{min-height:48px}
   .icon{width:48px;height:48px}.take-thumb{width:64px;height:48px}
+  /* The 48px target stays, but filled buttons paint inside a transparent rim so they keep desktop proportions and visible gaps. */
+  .primary,.quiet,.tinted,.plain,.chip,.icon{border:4px solid transparent;background-clip:padding-box;outline-offset:-1px}.icon{border-width:6px}
   .brand{min-height:48px}.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-width:48px;min-height:48px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-property:opacity,background-color,color,box-shadow!important;scroll-behavior:auto!important}button:active:not(:disabled){transform:none}}

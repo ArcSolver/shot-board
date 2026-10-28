@@ -180,7 +180,7 @@ function pictogram(type){
 function reviewEditor(shot,take){
   const saved=board.review?.find(r=>r.shot===shot.id&&r.take===take.id);
   const draft=reviewDrafts.get(`${board.id}/${shot.id}/${take.id}`)||saved||{};
-  return `<form class="review-editor" data-shot="${shot.id}" data-take="${take.id}" aria-label="Review ${shot.id} ${take.id}"><label>Review<select name="verdict">${['pending','pass','fail'].map(value=>`<option value="${value}" ${(draft.verdict||'pending')===value?'selected':''}>${{pending:'Pending',pass:'Pass',fail:'Fail'}[value]}</option>`).join('')}</select></label><label class="review-note">Note<textarea name="note" maxlength="400" rows="4">${escapeHTML(draft.note||'')}</textarea></label><button type="submit" class="quiet">Save</button></form>`;
+  return `<form class="review-editor" data-shot="${shot.id}" data-take="${take.id}" aria-label="Review ${shot.id} ${take.id}"><label class="review-note">Note<textarea name="note" maxlength="400" rows="4">${escapeHTML(draft.note||'')}</textarea></label><label class="review-verdict">Review<select name="verdict">${['pending','pass','fail'].map(value=>`<option value="${value}" ${(draft.verdict||'pending')===value?'selected':''}>${{pending:'Pending',pass:'Pass',fail:'Fail'}[value]}</option>`).join('')}</select></label><button type="submit" class="quiet">Save</button></form>`;
 }
 function bindReviewEditors(root){
   document.querySelectorAll(`${root} .review-editor`).forEach(form=>{
