@@ -133,8 +133,8 @@ function render() {
       const verdict=hero?verdictMark(reviewFor(s,hero)):'';
       const isHero=heroRef?.shot_id===s.id&&continuity.enabled;
       const label=hero?(s.picked?'':'Preview · '+TAKE(hero)):active?'Rendering':s.takes.some(t=>t.status==='queued')?'Queued':s.takes.some(t=>t.status==='failed')?'Failed':'', status=label?`<span class="frame-status">${label}</span>`:'';
-      const progress=busy()&&s.takes.some(t=>['queued','running'].includes(t.status))?` · ${done.length} of ${s.takes.length} ready`:'';
-      const facts=hero?`<span>${TAKE(hero)} of ${done.length}${progress}</span>`:`<span>${s.takes.length?`${done.length} of ${s.takes.length} ready`:'No takes yet'}</span>`;
+      const inQueue=s.takes.some(t=>['queued','running'].includes(t.status));
+      const facts=hero?`<span>${inQueue?`${TAKE(hero)} · ${done.length} of ${s.takes.length} ready`:`${TAKE(hero)} of ${done.length}`}</span>`:`<span>${s.takes.length?`${done.length} of ${s.takes.length} ready`:'No takes yet'}</span>`;
       const lock=s.locked_seed!==null?`<span class="seed" title="Seed locked">${icon('lock')}<span class="visually-hidden">Seed locked </span>${s.locked_seed}</span>`:'';
       const src=sourceLabel(hero);
       return `<article class="shot-card${s.picked?' picked':''}${isHero?' is-hero':''}"><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?img(imageURL(hero),`${s.title} ${hero.id}`,SIZES.card,i===0,SLOT.card):`<span class="empty-frame">${NN(i)}</span>`}${status}</div><p class="cut-src">${isHero?`<b>Hero</b> · ${src}`:src}</p><div class="cut-text"><span class="setup-no">${NN(i)}</span><h3>${escapeHTML(s.title)}</h3><p class="cut-facts">${facts}${verdict}${lock}</p><button class="go" data-compare="${s.id}">Compare &amp; pick</button></div></article>`;
