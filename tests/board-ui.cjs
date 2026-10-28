@@ -16,12 +16,14 @@ const element = id => {
   }
   return elements.get(id);
 };
-const queue = [], listeners = {}, history = {entries:1, backs:0, state:null,
-  pushState(state){history.entries++; history.state=state;},
-  replaceState(state){history.state=state;},
-  back(){history.backs++; history.entries--; queue.push(()=>listeners.popstate());}};
+const queue = [], listeners = {}, states = [null], history = {backs:0,
+  get entries(){return states.length;}, get state(){return states.at(-1);},
+  pushState(state){states.push(state);},
+  replaceState(state){states[states.length-1]=state;},
+  back(){history.backs++; states.pop(); queue.push(()=>listeners.popstate());}};
 const flush = () => { while (queue.length) queue.shift()(); };
-const browserBack = () => { history.entries--; listeners.popstate(); flush(); };
+const browserBack = () => { states.pop(); listeners.popstate(); flush(); };
+const browserForward = state => { states.push(state); listeners.popstate(); flush(); };
 const window = {addEventListener:(type, fn)=>{listeners[type]=fn;}, history};
 const context = vm.createContext({
   document:{getElementById:element, querySelectorAll:()=>[], addEventListener:()=>{}},
@@ -70,6 +72,10 @@ for (const card of cards.slice(1)) assert.doesNotMatch(card, /fetchpriority/);
 assert.equal((element('board-grid').innerHTML.match(/fetchpriority/g) || []).length, 1);
 assert.equal(element('review-legend').hidden, false);
 assert.equal(element('review-legend').textContent, 'Pass and Fail are continuity review results against the hero, 02 Medium.');
+continuity.continuity.enabled = false;
+vm.runInContext('lastSignature=""; render();', context);
+assert.equal(element('review-legend').textContent, "Pass and Fail are review results against each cut's prompt.", 'No hero sentence once continuity is off');
+continuity.continuity.enabled = true;
 const hangar = example('hangar');
 hangar.review = reviews('hangar');
 context.fixture = hangar;
@@ -118,6 +124,11 @@ browserBack();
 assert.deepEqual([element('image-dialog').open, element('compare-dialog').open], [false, true], 'Back closes the image first');
 browserBack();
 assert.equal(element('compare-dialog').open, false);
+assert.equal(history.entries, 1);
+// Forward into an entry whose dialog is gone steps back again instead of leaving a dead Back press.
+const backs = history.backs;
+browserForward({dialog:'compare-dialog'});
+assert.equal(history.backs, backs + 1);
 assert.equal(history.entries, 1);
 element('image-full').onload();
 assert.equal(element('image-full').classList.contains('loaded'), true);

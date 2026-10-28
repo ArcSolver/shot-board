@@ -185,8 +185,9 @@ dialog{background:var(--sheet);color:var(--ink);border:0;border-radius:var(--r-d
 dialog[open]{animation:dialog-in .22s var(--ease)}
 @keyframes dialog-in{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
 dialog::backdrop{background:rgba(245,245,247,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-/* The heading stays on screen while a long dialog scrolls, so close and the cut arrows are always in reach. */
-.dialog-heading{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:-28px -28px 6px;padding:28px 28px 14px;background:var(--sheet);box-shadow:0 1px 0 var(--rule)}
+/* The heading stays on screen while a long dialog scrolls, so close and the cut arrows are always in reach.
+   Sticky offsets count from inside the dialog padding, so top cancels the padding and the heading covers it. */
+.dialog-heading{position:sticky;top:-28px;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:-28px -28px 6px;padding:28px 28px 14px;background:var(--sheet);box-shadow:0 1px 0 var(--rule)}
 .dialog-heading h2{font-size:28px;font-weight:600;letter-spacing:-.02em}
 .dialog-kicker{margin:0 0 4px;font-size:13px;font-weight:500;color:var(--ink-3);font-variant-numeric:tabular-nums}
 .dialog-nav{display:flex;gap:8px}
@@ -255,7 +256,7 @@ footer{display:flex;justify-content:space-between;align-items:center;gap:16px;pa
   .loop-bar{gap:8px;padding:8px}.loop-divider{display:none}.render-group{flex-wrap:wrap}.export-group{margin-left:0;width:100%;flex-wrap:wrap}.pick-progress{width:100%;padding:4px 4px 0}
   .popover{width:min(320px,calc(100vw - 48px))}
   .board-grid{grid-template-columns:1fr;gap:16px}.shot-hero{aspect-ratio:1.15}
-  dialog{width:96vw;padding:18px;border-radius:18px}.dialog-heading{margin:-18px -18px 4px;padding:18px 18px 12px}.dialog-heading h2{font-size:22px}.dialog-nav{gap:4px}.icon{width:34px;height:34px}
+  dialog{width:96vw;padding:18px;border-radius:18px}.dialog-heading{top:-18px;margin:-18px -18px 4px;padding:18px 18px 12px}.dialog-heading h2{font-size:22px}.dialog-nav{gap:4px}.icon{width:34px;height:34px}
   .compare-images{grid-template-columns:1fr}.take-zoom,.compare-take>.shot-hero{height:280px}.compare-controls label{max-width:100%}
   .shot-editor{display:block}.storyboard-controls{flex-direction:column;align-items:stretch}.storyboard-controls label{width:auto}
   footer{flex-wrap:wrap;padding:18px 16px}

@@ -22,7 +22,7 @@ const imageURL = (take) => `/api/boards/${board.id}/images/${take.image}`;
 // swaps in sized WebP copies (window.SB.sized); only the enlarged view and downloads use the original.
 const SIZES={cover:'(max-width:600px) 470px, (max-width:1100px) 50vw, 620px',cut:'(max-width:600px) 31vw, (max-width:1100px) 26vw, 260px',gallery:'(max-width:600px) 215px, 270px',card:'(max-width:600px) calc(100vw - 32px), (max-width:1100px) calc(50vw - 52px), 440px',thumb:'64px',compare:'(max-width:600px) calc(96vw - 36px), (max-width:1100px) calc(47vw - 38px), 640px'};
 // Contain-fit slots, as their narrowest shape across layouts: a tall or square still shows narrower than the slot.
-const SLOT={card:1.15,compare:1.2,cut:1};
+const SLOT={card:1.15,compare:0.8,cut:1};
 function img(url,alt,sizes,first=false,slot=0){
   const sized=window.SB?.sized?.(url), scale=slot&&sized?.width?Math.min(1,sized.width/sized.height/slot):1;
   if(scale<1)sizes=sizes.split(', ').map(part=>part.replace(/(calc\(.*\)|[^\s)]+)$/,length=>`calc(${length} * ${scale.toFixed(2)})`)).join(', ');
@@ -31,7 +31,7 @@ function img(url,alt,sizes,first=false,slot=0){
 // The toast is a manual popover so it shows in the top layer, above an open Compare or Storyboard dialog and its backdrop.
 // Inside a modal dialog it moves into that dialog, so it is not inert and its status is still announced.
 function toast(message) {
-  const el=$('toast'), layer=!!el.showPopover, host=document.querySelector?.('dialog[open]')||document.body;
+  const el=$('toast'), layer=!!el.showPopover, host=[...(document.querySelectorAll?.('dialog[open]')||[])].pop()||document.body;
   if(el.parentNode&&el.parentNode!==host){if(layer&&el.matches(':popover-open'))el.hidePopover();host.append(el);}
   el.textContent=message; el.hidden=false;
   if(layer){if(el.matches(':popover-open'))el.hidePopover();el.showPopover();}
@@ -77,7 +77,7 @@ function render() {
   $('queue-detail').textContent=running?`${running.phase} · ${Math.floor((Date.now()/1000)-running.started_at)}s elapsed`:'Waiting for the worker';
   $('queue-progress').max=takes.length||1;$('queue-progress').value=completed;
   $('recipe-label').textContent=heroRef?`Hero ${heroRef.shot_id.toUpperCase()} / ${heroRef.take_id.toUpperCase()} · ${heroRef.settings.label}`:'SDXL Base 1.0';
-  const reviewed=board.review?.some(r=>r.verdict!=='pending'), heroAt=board.shots.findIndex(s=>s.id===heroRef?.shot_id);
+  const reviewed=board.review?.some(r=>r.verdict!=='pending'), heroAt=continuity.enabled?board.shots.findIndex(s=>s.id===heroRef?.shot_id):-1;
   $('review-legend').hidden=!reviewed;
   $('review-legend').textContent=heroAt>=0?`Pass and Fail are continuity review results against the hero, ${String(heroAt+1).padStart(2,'0')} ${board.shots[heroAt].title}.`:"Pass and Fail are review results against each cut's prompt.";
   $('recipe-detail').textContent=heroRef?(heroRef.source?.type==='imported'?`${heroRef.settings.width} × ${heroRef.settings.height}`:`${heroRef.settings.steps} steps · seed ${heroRef.seed}`):'20 steps';
@@ -121,7 +121,7 @@ function openCompare(id){currentShot=id;renderCompare();const s=board.shots.find
 let ownBack=0;
 function showDialog(dialog){if(dialog.open)return;dialog.showModal();if(window.history?.pushState){history.pushState({dialog:dialog.id},'');dialog.dataset.history='1';}}
 function closedDialog(dialog){if(dialog.dataset.history!=='1')return;delete dialog.dataset.history;if(dialog.dataset.popped)delete dialog.dataset.popped;else{ownBack++;history.back();}}
-window.addEventListener('popstate',()=>{if(ownBack){ownBack--;return;}const open=[$('image-dialog'),$('compare-dialog')].find(d=>d.open&&d.dataset.history==='1');if(open){open.dataset.popped='1';open.close();}});
+window.addEventListener('popstate',()=>{if(ownBack){ownBack--;return;}const open=[$('image-dialog'),$('compare-dialog')].find(d=>d.open&&d.dataset.history==='1');if(open){open.dataset.popped='1';open.close();}else if(history.state?.dialog){ownBack++;history.back();}});
 $('compare-dialog').onclose=()=>closedDialog($('compare-dialog'));$('image-dialog').onclose=()=>closedDialog($('image-dialog'));
 // The original PNG opens full size; the sized copy already on screen stands in until it arrives.
 function openImage(shot,take){
@@ -129,11 +129,12 @@ function openImage(shot,take){
   $('image-title').textContent=`${shot.title} · ${take.id.toUpperCase()}`;
   full.alt=`${shot.title} ${take.id} original`;full.classList.remove('loaded','actual');full.removeAttribute('src');
   if(shown)preview.src=shown;else preview.removeAttribute('src');preview.hidden=!shown;
-  full.onload=()=>{full.classList.add('loaded');preview.hidden=true;};full.src=imageURL(take);
+  full.onload=()=>{full.classList.add('loaded');preview.hidden=true;};full.onerror=()=>{if(full.getAttribute('src'))toast('The original image could not be loaded.');};full.src=imageURL(take);
   showDialog($('image-dialog'));
 }
 $('close-image').onclick=()=>$('image-dialog').close();
 $('image-full').onclick=()=>$('image-full').classList.toggle('actual');
+$('image-full').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('image-full').classList.toggle('actual');}};
 if(window.history?.state?.dialog)history.replaceState(null,'');
 function showEditors(){
   $('shot-list').innerHTML=board.shots.map(s=>`<div class="shot-editor"><div><label>Cut title<input id="title-${s.id}" value="${escapeHTML(s.title)}"></label><label>SDXL width<input type="number" min="512" max="1536" step="64" id="width-${s.id}" value="${s.render_settings?.width||1024}"></label><label>SDXL height<input type="number" min="512" max="1536" step="64" id="height-${s.id}" value="${s.render_settings?.height||576}"></label><label>SDXL CFG<input type="number" min="1" max="12" step="0.1" id="cfg-${s.id}" value="${s.render_settings?.cfg||6}"></label><button data-save="${s.id}">Save cut</button></div><div><label>Prompt<textarea id="prompt-${s.id}">${escapeHTML(s.prompt)}</textarea></label><label>Negative prompt<input class="editor-negative" id="negative-${s.id}" value="${escapeHTML(s.negative)}"></label></div></div>`).join('');

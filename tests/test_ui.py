@@ -45,7 +45,7 @@ class PageTests(unittest.TestCase):
         css = (STATIC / 'style.css').read_text()
         heading = re.search(r'\n\.dialog-heading\{([^}]*)\}', css).group(1)
         self.assertIn('position:sticky', heading)
-        self.assertIn('top:0', heading)
+        self.assertIn('top:-28px', heading, 'Cancels the dialog padding so nothing shows above the heading')
         self.assertIn('background:var(--sheet)', heading)
         touch = css[css.index('@media(pointer:coarse)'):]
         touch = touch[:touch.index('\n}\n')]
