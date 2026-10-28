@@ -2,6 +2,13 @@
 
 Shot Board source is MIT. Each dependency keeps its own license.
 
+## Fonts
+
+The app serves two fonts from `shotboard/static`, both under the SIL Open Font License 1.1:
+
+- [Hanken Grotesk](https://github.com/marcologous/hanken-grotesk), copyright 2021 The Hanken Grotesk Project Authors. License: [OFL-hanken-grotesk.txt](shotboard/static/OFL-hanken-grotesk.txt).
+- [Courier Prime](https://github.com/quoteunquoteapps/CourierPrime), copyright 2015 The Courier Prime Project Authors. License: [OFL-courier-prime.txt](shotboard/static/OFL-courier-prime.txt).
+
 ## Generation models
 
 **SDXL Base 1.0**: Stability AI, [model card](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0), [CreativeML Open RAIL++-M license](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/LICENSE.md).
