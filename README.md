@@ -72,7 +72,7 @@ SHOTBOARD_ENGINE_MANIFEST=/path/to/engine-models.json \
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-Open **http://127.0.0.1:8790** and choose **New scene**. Type a scene or press **Use example**, then build the shot list and render SDXL takes. In **Compare & pick**, pick an SDXL take, or choose **Import reference** under **Hero** to add your own PNG, JPEG or WebP. Pick the imported still, choose **Use selected as hero**, then **Render reference edits**. Imported stills are labeled **Imported reference**, with the source image and dimensions recorded in the export. Compare the takes, save a verdict on each, and pick.
+Open **http://127.0.0.1:8790** and choose **New scene**. Type a scene or press **Use example**, then build the shot list and render SDXL takes. In **Compare & pick**, pick an SDXL take, or choose **Import reference** under **Hero** to add your own PNG, JPEG or WebP. Pick the imported still, choose **Use pick as hero**, then **Render reference edits**. Imported stills are labeled **Imported reference**, with the source image and dimensions recorded in the export. Compare the takes, save a verdict on each, and pick.
 
 ### Reuse a recipe outside the app
 

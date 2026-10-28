@@ -1,4 +1,4 @@
-const HERO_RULE = 'Select an SDXL take or imported reference to use as the hero.';
+const HERO_RULE = 'Pick an SDXL take or an imported reference, then use the pick as hero.';
 function isImported(take) { return take?.status==='succeeded' && take.source?.type==='imported' && take.settings?.preset_id==='imported-reference' && !take.reference && take.seed===null && take.models?.length===0 && Object.keys(take.workflow||{}).length===0; }
 const canBeHero = take => isSDXLOriginal(take) || isImported(take);
 function isSDXLOriginal(take) {
@@ -88,7 +88,7 @@ function scriptFields(){
 // The hero block draws one setup line from the hero cut to every cut a reference edit redraws.
 function heroLine(){
   const c=board.continuity||{}, h=c.hero;
-  if(!h)return '<p class="hero-meta">No hero yet. In Compare &amp; pick, pick an SDXL take or import a reference, then choose Use selected as hero.</p>';
+  if(!h)return '<p class="hero-meta">No hero yet. Pick an SDXL take or import a reference, then use the pick as hero.</p>';
   const at=shotIndex(h.shot_id), shot=board.shots[at], found=heroTake(), others=board.shots.map((s,i)=>i).filter(i=>i!==at);
   const kind=h.source?.type==='imported'?'Imported reference':`SDXL take · seed ${h.seed}`;
   return `<button class="hero-card" data-compare="${escapeHTML(h.shot_id)}" aria-label="Compare the hero, ${escapeHTML(shot?.title||'')}"><span class="hero-thumb">${found?img(imageURL(found.take),`${shot.title} hero`,SIZES.hero):''}</span><span class="hero-text"><span class="hero-name"><span class="setup-no">${at>=0?NN(at):''}</span>${escapeHTML(shot?.title||'')}</span><span>${escapeHTML(h.take_id.toUpperCase())} · ${kind}</span><span>${h.settings.width} × ${h.settings.height}</span></span></button>
@@ -216,13 +216,14 @@ function renderCompare(){
   const heroAllowed=canBeHero(picked), h=board.continuity?.hero;
   const isHero=!!h&&board.continuity.enabled&&h.shot_id===s.id&&h.take_id===s.picked;
   $('use-hero').disabled=busy()||!heroAllowed||isHero;
-  const reason=busy()?'Wait for the queue to finish.':isHero?'':!picked?'Pick a take first.':!heroAllowed?`${HERO_RULE} ${picked.id.toUpperCase()} is a reference edit.`:'';
+  // The hero is always the pick; when another take is on screen, say which take the button uses.
+  const reason=busy()?'Wait for the queue to finish.':isHero?'':!picked?'Pick a take first.':!heroAllowed?`${HERO_RULE} ${TAKE(picked)} is a reference edit.`:v&&v.id!==picked.id?`This uses the pick, ${TAKE(picked)}.`:'';
   $('hero-reason').hidden=!reason;$('hero-reason').textContent=reason;
   $('compare-hero-line').innerHTML=h?heroLine():'';
   document.querySelectorAll('#compare-hero-line [data-compare]').forEach(el=>el.onclick=()=>{openCompare(el.dataset.compare);$('compare-dialog').scrollTop=0;});
   $('hero-note').textContent=h&&h.shot_id===s.id&&h.take_id===s.picked?`The picked take ${s.picked.toUpperCase()} is the hero. Render reference edits redraws the other cuts from it.`
     :h?`Hero: ${NN(shotIndex(h.shot_id))} ${board.shots[shotIndex(h.shot_id)]?.title||''}, ${h.source?.type==='imported'?'imported reference':h.take_id.toUpperCase()}.${heroAllowed&&!busy()?' Use the picked take here to replace it.':''}`
-    :'No hero yet. Pick an SDXL take or an imported reference, then use it as the hero.';
+    :'No hero yet. Pick an SDXL take or import a reference, then use the pick as hero.';
   $('more-takes').disabled=busy()||(board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id);
 }
 function openCompare(id){

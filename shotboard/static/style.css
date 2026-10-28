@@ -8,6 +8,8 @@
   --desk:#dde1e5;--page:#ffffff;--page-tint:#f4f5f6;
   --ink:#1f2328;--ink-2:#474d55;--ink-3:#646b74;
   --rule:rgba(31,35,40,.12);--rule-strong:rgba(31,35,40,.26);--wash:rgba(31,35,40,.06);
+  /* Field edges need 3:1 against the page (WCAG 1.4.11); buttons are named by their labels and keep --rule-strong. */
+  --rule-field:#83888f;
   /* The pencil draws setup lines, marks the pick and frames the hero. Nothing else is blue. */
   --pencil:#233f8f;--pencil-wash:rgba(35,63,143,.08);
   /* Graphite for the one action that moves the work forward. */
@@ -18,7 +20,8 @@
   --r:2px;--ease:cubic-bezier(.23,1,.32,1);
   --ui:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
   --script:"Courier Prime","Courier New",monospace;
-  --line:1.5px;
+  /* 2px renders as 2px in every engine and pixel density, drawn as a border, outline or inset line; 1.5px snaps to 1 or 2. */
+  --line:2px;
 }
 html{background:var(--desk);-webkit-font-smoothing:antialiased;text-size-adjust:100%}
 body{margin:0;background:var(--desk);color:var(--ink);font:400 14px/1.45 var(--ui);min-height:100vh;display:flex;flex-direction:column}
@@ -56,8 +59,8 @@ button:disabled{cursor:not-allowed;color:var(--ink-3)}
 .back{margin-left:-10px;padding:0 10px 0 6px}
 
 /* Fields: inset, a shade darker than the page they sit on. */
-textarea,input,select{width:100%;background:var(--page-tint);color:var(--ink);border:1px solid var(--rule-strong);border-radius:var(--r);padding:8px 10px;min-height:36px;font-size:14px;transition:border-color .15s,box-shadow .15s}
-textarea:focus,input:focus,select:focus{outline:0;border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+textarea,input,select{width:100%;background:var(--page-tint);color:var(--ink);border:1px solid var(--rule-field);border-radius:var(--r);padding:8px 10px;min-height:36px;font-size:14px;transition:border-color .15s,box-shadow .15s}
+textarea:focus,input:focus,select:focus{outline:2px solid transparent;border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
 input[type=checkbox]{width:16px;height:16px;min-height:0;padding:0;margin:0;accent-color:var(--pencil)}
 ::placeholder{color:var(--ink-3)}
 select{appearance:none;-webkit-appearance:none;padding-right:30px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%231f2328' stroke-width='1.5'%3E%3Cpath d='m1 1 4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;cursor:pointer}
@@ -100,13 +103,13 @@ nav{display:flex;gap:8px;align-items:center}
 .lined-scene{margin-top:40px}
 .scene-line{margin:0;text-align:center;font:400 26px/1.3 var(--script);color:var(--ink);text-wrap:balance}
 .setups{position:relative;display:flex;gap:20px;padding-top:18px;margin-top:6px}
-.setups::before{content:"";position:absolute;left:50%;top:0;width:var(--line);height:18px;background:var(--pencil)}
+.setups::before{content:"";position:absolute;left:50%;top:0;margin-left:calc(var(--line) / -2);height:18px;border-left:var(--line) solid var(--pencil)}
 .setup{position:relative;flex:var(--ar,1.4) 1 0;min-width:0;min-height:0;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding:0;text-align:left;white-space:normal;font:inherit;color:inherit}
-.setup::before{content:"";position:absolute;top:0;left:-10px;right:-10px;height:var(--line);background:var(--pencil)}
-.setup:first-child::before{left:50%}
-.setup:last-child::before{right:50%}
+.setup::before{content:"";position:absolute;top:0;left:-10px;right:-10px;border-top:var(--line) solid var(--pencil)}
+.setup:first-child::before{left:calc(50% - var(--line) / 2)}
+.setup:last-child::before{right:calc(50% - var(--line) / 2)}
 .setups .setup-no{position:absolute;top:14px;left:calc(50% + 8px)}
-.setups .stem{align-self:center;width:var(--line);height:42px;background:var(--pencil)}
+.setups .stem{align-self:center;height:42px;border-left:var(--line) solid var(--pencil)}
 .setups .frame{display:block;position:relative;aspect-ratio:var(--ar,1.4);margin-top:4px;background:var(--page-tint);overflow:hidden;outline:1px solid transparent;outline-offset:3px;transition:outline-color .15s var(--ease)}
 .setups .frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .setup:hover .frame{outline-color:var(--rule-strong)}
@@ -292,7 +295,7 @@ dialog::backdrop{background:rgba(221,225,229,.9)}
 .take[aria-pressed="true"] .take-frame{outline:var(--line) solid var(--ink)}
 .take:focus-visible{outline-offset:5px}
 .tl{display:flex;align-items:center;gap:6px;padding-top:8px;font-size:12px}
-.take-id{font:700 13px/1 var(--script);padding:3px 4px;margin-left:-5.5px;border:var(--line) solid transparent}
+.take-id{font:700 13px/1 var(--script);padding:3px 4px;margin-left:calc(-4px - var(--line));border:var(--line) solid transparent}
 .take-id.picked{border-color:var(--pencil);color:var(--pencil)}
 .pk{font-weight:650;color:var(--pencil)}
 .tl .verdict{margin-left:auto}
@@ -493,12 +496,33 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
   .icon{border:6px solid transparent;background-clip:padding-box;outline-offset:-3px}
   .topbar nav>*{min-height:48px;border-width:8px 0}.chip{border-width:9px 0}
   /* Single-line fields paint at button height inside the same 48px rim; their edge is an inset line. */
-  input:not([type=checkbox]):not([type=radio]),select{border:solid transparent;border-width:6px 0;background-clip:padding-box;box-shadow:inset 0 0 0 1px var(--rule-strong)}
+  input:not([type=checkbox]):not([type=radio]),select{border:solid transparent;border-width:6px 0;background-clip:padding-box;box-shadow:inset 0 0 0 1px var(--rule-field)}
   input:not([type=checkbox]):not([type=radio]):focus,select:focus{border-color:transparent;box-shadow:inset 0 0 0 2px var(--ink)}
   /* Segments paint at button height; the touch band reaches 6px above and below the strip. */
   .seg>label,.seg>button{min-height:36px}.seg>label::after,.seg>button::after{content:"";position:absolute;inset:-6px 0}.seg{margin:6px 0}
   .back{margin-left:-14px}
   .brand{min-height:48px}.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-width:48px;min-height:48px}
   .toggle{min-height:48px;margin-top:8px}
+  /* The composer's main action keeps its 44px paint inside the rim, so it stays the largest button on the screen. */
+  .large{min-height:56px}
+}
+/* Windows High Contrast drops fills and box-shadows: draw edges and selected states with system colours instead.
+   Touch rims stay, coloured Canvas so they vanish, and the 36px paint gets an inset outline. */
+@media(forced-colors:active){
+  .primary,.quiet,.icon,.state,.chip,.seg,dialog{border-color:ButtonText;border-style:solid}
+  .primary,.quiet,.icon,.state,.chip,.seg,dialog{border-width:1px}
+  .seg>label:has(input:checked),.seg>button[aria-pressed="true"],.rail-cut[aria-current],.chip.active{outline:2px solid Highlight;outline-offset:-3px}
+  .seg-pass span::before,.verdict.pass::before{forced-color-adjust:none;background:CanvasText;border-color:CanvasText}
+  .setups .frame,.shot-hero,.take-frame{outline-style:none}
+  .shot-card.is-hero .shot-hero,.fig-hero .take-zoom,.take[aria-pressed="true"] .take-frame{outline:2px solid Highlight;outline-offset:3px}
+  .take-id{border-color:Canvas}.take-id.picked{border-color:Highlight}
+  :is(textarea,input,select):focus{outline:2px solid Highlight}
+  :focus-visible{outline:2px solid Highlight;outline-offset:2px}
+}
+@media(forced-colors:active) and (pointer:coarse){
+  .primary,.quiet,.plain,.state,.chip,.icon,input:not([type=checkbox]):not([type=radio]),select{border-color:Canvas}
+  .primary,.quiet,.state,.chip,.icon{border-width:6px 0;outline:1px solid ButtonText;outline-offset:-7px}
+  .icon{border-width:6px}.chip{border-width:9px 0;outline-offset:-10px}.topbar nav>*{border-width:8px 0;outline-offset:-9px}
+  :focus-visible{outline:2px solid Highlight;outline-offset:2px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-property:opacity,background-color,color,box-shadow,outline-color!important;scroll-behavior:auto!important}button:active:not(:disabled){transform:none}}
