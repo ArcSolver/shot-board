@@ -20,6 +20,9 @@ const imageURL = (take) => `/api/boards/${board.id}/images/${take.image}`;
 // Setup numbers: the script supervisor's 01, 02 … that tie a cut to its line of the scene.
 const NN = i => String(i+1).padStart(2,'0');
 const TAKE = t => t.id.toUpperCase();
+// Take IDs are slate marks, typed like the setup numbers.
+const TAKE_NO = t => `<span class="take-no">${TAKE(t)}</span>`;
+const WAIT = 'Wait for the queue to finish.';
 const phone = () => !!window.matchMedia?.('(max-width:600px)')?.matches;
 const icon = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 // Every board image goes through img(): lazy unless it is the first one on screen. The static viewer
@@ -33,6 +36,8 @@ function img(url,alt,sizes,first=false,slot=0){
   return `<img src="${sized?.src||url}"${sized?` srcset="${sized.srcset}" sizes="${sizes}"`:''} alt="${escapeHTML(alt)}" decoding="async"${first?' fetchpriority="high"':' loading="lazy"'}>`;
 }
 // Frames keep their true shape. Ratios are set after insertion: the static viewer's CSP drops inline style attributes.
+// A still that fails to load marks its frame, which then says so; inline handlers are not allowed by the Pages CSP.
+document.addEventListener('error',event=>{if(event.target?.tagName==='IMG')event.target.closest?.('.shot-hero,.frame,.mini-frame,.take-frame,.hero-thumb,.take-zoom')?.classList.add('img-missing');},true);
 function setRatios(selector,takes){document.querySelectorAll?.(selector).forEach((el,i)=>{const t=takes[i],w=t?.settings?.width,h=t?.settings?.height;if(w&&h)el.style.setProperty('--ar',(w/h).toFixed(4));});}
 // The toast is a manual popover so it shows in the top layer, above an open Compare or Storyboard dialog and its backdrop.
 // Inside a modal dialog it moves into that dialog, so it is not inert and its status is still announced.
@@ -91,7 +96,7 @@ function heroLine(){
   if(!h)return '<p class="hero-meta">No hero yet. Pick an SDXL take or import a reference, then use the pick as hero.</p>';
   const at=shotIndex(h.shot_id), shot=board.shots[at], found=heroTake(), others=board.shots.map((s,i)=>i).filter(i=>i!==at);
   const kind=h.source?.type==='imported'?'Imported reference':`SDXL take · seed ${h.seed}`;
-  return `<button class="hero-card" data-compare="${escapeHTML(h.shot_id)}" aria-label="Compare the hero, ${escapeHTML(shot?.title||'')}"><span class="hero-thumb">${found?img(imageURL(found.take),`${shot.title} hero`,SIZES.hero):''}</span><span class="hero-text"><span class="hero-name"><span class="setup-no">${at>=0?NN(at):''}</span>${escapeHTML(shot?.title||'')}</span><span>${escapeHTML(h.take_id.toUpperCase())} · ${kind}</span><span>${h.settings.width} × ${h.settings.height}</span></span></button>
+  return `<button class="hero-card" data-compare="${escapeHTML(h.shot_id)}" aria-label="Compare the hero, ${escapeHTML(shot?.title||'')}"><span class="hero-thumb">${found?img(imageURL(found.take),`${shot.title} hero`,SIZES.hero):''}</span><span class="hero-text"><span class="hero-name"><span class="setup-no">${at>=0?NN(at):''}</span>${escapeHTML(shot?.title||'')}</span><span><span class="take-no">${escapeHTML(h.take_id.toUpperCase())}</span> · ${kind}</span><span>${h.settings.width} × ${h.settings.height}</span></span></button>
     <div class="hero-branch"><span class="branch-stem" aria-hidden="true"></span><p><span class="branch-label">${c.enabled?'Reference edits for':'Reference edits off for'}</span> <span class="branch-nos">${setupRanges(others)}</span></p></div>`;
 }
 function render() {
@@ -101,11 +106,13 @@ function render() {
   const continuity=board.continuity||{}, heroRef=continuity.hero;
   $('keep-continuity').checked=!!continuity.enabled;
   $('keep-continuity').disabled=busy()||!heroRef;
-  $('hero-status').textContent=heroRef?(continuity.enabled?'On · other cuts render as Qwen reference edits':'Off'):'No hero yet';
+  // The script column already says when there is no hero; the status line then gives way to it.
+  $('hero-status').textContent=heroRef?(busy()?`${continuity.enabled?'On':'Off'} · ${WAIT}`:continuity.enabled?'On · other cuts render as Qwen reference edits':'Off'):'';
   const picked=board.shots.filter(s=>s.picked).length, takes=allTakes(), completed=takes.filter(t=>t.status==='succeeded').length;
   const allPicked=picked===board.shots.length, ready=s=>s.takes.some(t=>t.status==='succeeded');
   const needsRender=board.shots.some(s=>!ready(s))||(!!continuity.enabled&&board.shots.some(s=>s.id!==heroRef?.shot_id&&!s.takes.some(t=>t.reference&&t.status==='succeeded')));
   $('storyboard').disabled=!allPicked;
+  $('export-hint').textContent=allPicked?'':'Pick a take in every cut to export.';
   $('storyboard').className=allPicked?'primary':'quiet';
   $('generate').disabled=busy();$('cancel').hidden=!busy();
   $('generate').className=needsRender&&!allPicked?'primary':'quiet';
@@ -135,9 +142,9 @@ function render() {
       const active=s.takes.find(t=>t.status==='running');
       const verdict=hero?verdictMark(reviewFor(s,hero)):'';
       const isHero=heroRef?.shot_id===s.id&&continuity.enabled;
-      const label=hero?(s.picked?'':'Preview · '+TAKE(hero)):active?'Rendering':s.takes.some(t=>t.status==='queued')?'Queued':s.takes.some(t=>t.status==='failed')?'Failed':'', status=label?`<span class="frame-status">${label}</span>`:'';
+      const label=hero?(s.picked?'':'Preview · '+TAKE_NO(hero)):active?'Rendering':s.takes.some(t=>t.status==='queued')?'Queued':s.takes.some(t=>t.status==='failed')?'Failed':'', status=label?`<span class="frame-status">${label}</span>`:'';
       const inQueue=s.takes.some(t=>['queued','running'].includes(t.status));
-      const facts=hero?`<span>${inQueue?`${TAKE(hero)} · ${done.length} of ${s.takes.length} ready`:`${TAKE(hero)} of ${done.length}`}</span>`:`<span>${s.takes.length?`${done.length} of ${s.takes.length} ready`:'No takes yet'}</span>`;
+      const facts=hero?`<span>${inQueue?`${TAKE_NO(hero)} · ${done.length} of ${s.takes.length} ready`:`${TAKE_NO(hero)} of ${done.length}`}</span>`:`<span>${s.takes.length?`${done.length} of ${s.takes.length} ready`:'No takes yet'}</span>`;
       const lock=s.locked_seed!==null?`<span class="seed" title="Seed locked">${icon('lock')}<span class="visually-hidden">Seed locked </span>${s.locked_seed}</span>`:'';
       const src=sourceLabel(hero);
       return `<article class="shot-card${s.picked?' picked':''}${isHero?' is-hero':''}"><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?img(imageURL(hero),`${s.title} ${hero.id}`,SIZES.card,i===0,SLOT.card):`<span class="empty-frame">${NN(i)}</span>`}${status}</div><p class="cut-src">${isHero?`<b>Hero</b> · ${src}`:src}</p><div class="cut-text"><span class="setup-no">${NN(i)}</span><h3>${escapeHTML(s.title)}</h3><p class="cut-facts">${facts}${verdict}${lock}</p><button class="go" data-compare="${s.id}">Compare &amp; pick</button></div></article>`;
@@ -175,29 +182,29 @@ function renderCompare(){
   const s=board.shots.find(s=>s.id===currentShot);if(!s)return;
   const at=board.shots.indexOf(s), v=viewedTake(s), picked=s.takes.find(t=>t.id===s.picked), done=s.takes.filter(t=>t.status==='succeeded');
   $('compare-title').innerHTML=`<span class="setup-no">${NN(at)}</span>${escapeHTML(s.title)}`;
-  $('compare-index').textContent=`· ${at+1} of ${board.shots.length}`;
   $('cut-rail').innerHTML=board.shots.map((x,j)=>`<button class="rail-cut${x.picked?' picked':''}" data-rail="${x.id}"${x.id===s.id?' aria-current="true"':''} aria-label="${NN(j)} ${escapeHTML(x.title)}${x.picked?', picked':''}">${NN(j)}</button>`).join('');
   // The hero sits beside the take, so a reference edit is judged against what it was drawn from. Without a hero, the pick does.
-  const hero=heroTake(), other=hero&&hero.shot.id!==s.id?{role:'Hero',shot:hero.shot,take:hero.take,detail:`${NN(shotIndex(hero.shot.id))} ${escapeHTML(hero.shot.title)} · ${isImported(hero.take)?'Imported reference':TAKE(hero.take)}`}
-    :picked&&v&&picked.id!==v.id?{role:'Picked',shot:s,take:picked,detail:TAKE(picked)}:null;
+  const hero=heroTake(), other=hero&&hero.shot.id!==s.id?{role:'Hero',shot:hero.shot,take:hero.take,detail:`<span class="setup-no">${NN(shotIndex(hero.shot.id))}</span> ${escapeHTML(hero.shot.title)} · ${isImported(hero.take)?'Imported reference':TAKE_NO(hero.take)}`}
+    :picked&&v&&picked.id!==v.id?{role:'Picked',shot:s,take:picked,detail:TAKE_NO(picked)}:null;
   const takeDetail=t=>isImported(t)?`Imported reference · ${t.settings.width} × ${t.settings.height}`:t.seed!==null&&t.seed!==undefined?`seed ${t.seed}`:'';
   $('compare-switch').hidden=!other;
-  $('compare-switch').innerHTML=other?[['take',v?`Take ${TAKE(v)}`:'Take'],['other',other.role]].map(([key,text])=>`<button type="button" data-show="${key}" aria-pressed="${compareShow===key}">${text}</button>`).join(''):'';
+  $('compare-switch').innerHTML=other?[['take',v?`Take ${TAKE_NO(v)}`:'Take'],['other',other.role]].map(([key,text])=>`<button type="button" data-show="${key}" aria-pressed="${compareShow===key}">${text}</button>`).join(''):'';
   $('compare-images').dataset.show=other?compareShow:'take';
-  $('compare-images').innerHTML=v?(other?figure(other.role,other.detail,other.shot,other.take,false,'data-zoom-other="1"',SIZES.compare):'')+figure('Take',`${TAKE(v)}${takeDetail(v)?' · '+takeDetail(v):''}`,s,v,true,`data-zoom="${v.id}"`,other?SIZES.compare:SIZES.solo):'<p class="muted">No takes yet. Render the board to make the first takes.</p>';
+  $('compare-images').innerHTML=v?(other?figure(other.role,other.detail,other.shot,other.take,false,'data-zoom-other="1"',SIZES.compare):'')+figure('Take',`${TAKE_NO(v)}${takeDetail(v)?' · '+takeDetail(v):''}`,s,v,true,`data-zoom="${v.id}"`,other?SIZES.compare:SIZES.solo):'<p class="muted">No takes yet. Render the board to make the first takes.</p>';
   $('take-strip').innerHTML=s.takes.map(t=>{const isPick=s.picked===t.id, review=reviewFor(s,t);return `<button class="take${t.status!=='succeeded'?' unavailable':''}" data-view="${t.id}" aria-pressed="${t.id===v?.id}" aria-label="${TAKE(t)}${isPick?', picked':''}${review&&review.verdict!=='pending'?', '+review.verdict:''}${t.status!=='succeeded'?', '+t.status:''}"><span class="take-frame">${t.status==='succeeded'?img(imageURL(t),'',SIZES.thumb):`<span class="take-state">${takeState(t)}</span>`}</span><span class="tl"><span class="take-id${isPick?' picked':''}">${TAKE(t)}</span>${isPick?'<span class="pk">Picked</span>':''}${verdictMark(review)}</span></button>`;}).join('');
   const queued=s.takes.filter(t=>['queued','running'].includes(t.status)).length;
   $('takes-meta').textContent=`${done.length} rendered${queued?` · ${queued} in queue`:''}${v?.settings?.width?` · ${v.settings.width} × ${v.settings.height}`:''}`;
-  $('sheet-title').textContent=v?`Take ${TAKE(v).replace(/^T/,'')}`:'No takes yet';
-  $('sheet-cut').textContent=`${NN(at)} ${s.title}`;
+  $('sheet-title').innerHTML=v?`Take ${TAKE_NO(v)}`:'No takes yet';
+  $('sheet-cut').innerHTML=`<span class="setup-no">${NN(at)}</span> ${escapeHTML(s.title)} · ${at+1} of ${board.shots.length}`;
   const isPicked=!!v&&s.picked===v.id;
   $('pick-take').disabled=!v||v.status!=='succeeded';
   $('pick-take').className=isPicked?'state':'primary';
   $('pick-take').ariaPressed=String(isPicked);
-  $('pick-take').innerHTML=isPicked?`${icon('check')}Picked`:v?`Pick ${TAKE(v)}`:'Pick';
+  $('pick-take').innerHTML=isPicked?`${icon('check')}Picked`:v?`Pick ${TAKE_NO(v)}`:'Pick';
   $('next-cut-2').className=isPicked?'primary':'quiet';
   $('review-slot').innerHTML=v&&v.status==='succeeded'?reviewEditor(s,v):'';
   $('render-details').innerHTML=v?renderDetails(v,s):'';
+  $('render-box').hidden=!v;
   document.querySelectorAll('[data-view]').forEach(el=>el.onclick=()=>{viewing.set(viewKey(s),el.dataset.view);compareShow='take';renderCompare();document.querySelector?.(`[data-view="${el.dataset.view}"]`)?.focus();});
   document.querySelectorAll('[data-rail]').forEach(el=>el.onclick=()=>{openCompare(el.dataset.rail);$('compare-dialog').scrollTop=0;});
   document.querySelectorAll('[data-show]').forEach(el=>el.onclick=()=>{compareShow=el.dataset.show;renderCompare();});
@@ -211,30 +218,36 @@ function renderCompare(){
   $('import-reference').disabled=busy();
   // An imported still has no seed: say so instead of showing the board seed next to it.
   $('seed-row').hidden=imported&&s.locked_seed===null;
-  $('seed-note').hidden=!$('seed-row').hidden;
-  $('seed-note').textContent=`The picked take ${s.picked?.toUpperCase()||''} is an imported reference, so it has no seed. Pick an SDXL take to reuse its seed.`;
+  const seedNote=$('seed-row').hidden?`The picked take ${s.picked?.toUpperCase()||''} is an imported reference, so it has no seed. Pick an SDXL take to reuse its seed.`:busy()?WAIT:seedError;
+  $('seed-note').hidden=!seedNote;$('seed-note').textContent=seedNote;
+  $('reuse-seed').ariaInvalid=seedError&&!$('seed-row').hidden?'true':null;
   const heroAllowed=canBeHero(picked), h=board.continuity?.hero;
   const isHero=!!h&&board.continuity.enabled&&h.shot_id===s.id&&h.take_id===s.picked;
   $('use-hero').disabled=busy()||!heroAllowed||isHero;
   // The hero is always the pick; when another take is on screen, say which take the button uses.
-  const reason=busy()?'Wait for the queue to finish.':isHero?'':!picked?'Pick a take first.':!heroAllowed?`${HERO_RULE} ${TAKE(picked)} is a reference edit.`:v&&v.id!==picked.id?`This uses the pick, ${TAKE(picked)}.`:'';
+  const reason=busy()?WAIT:isHero?'':!picked?'Pick a take first.':!heroAllowed?`${HERO_RULE} ${TAKE(picked)} is a reference edit.`:v&&v.id!==picked.id?`This uses the pick, ${TAKE(picked)}.`:'';
   $('hero-reason').hidden=!reason;$('hero-reason').textContent=reason;
   $('compare-hero-line').innerHTML=h?heroLine():'';
   document.querySelectorAll('#compare-hero-line [data-compare]').forEach(el=>el.onclick=()=>{openCompare(el.dataset.compare);$('compare-dialog').scrollTop=0;});
   $('hero-note').textContent=h&&h.shot_id===s.id&&h.take_id===s.picked?`The picked take ${s.picked.toUpperCase()} is the hero. Render reference edits redraws the other cuts from it.`
     :h?`Hero: ${NN(shotIndex(h.shot_id))} ${board.shots[shotIndex(h.shot_id)]?.title||''}, ${h.source?.type==='imported'?'imported reference':h.take_id.toUpperCase()}.${heroAllowed&&!busy()?' Use the picked take here to replace it.':''}`
     :'No hero yet. Pick an SDXL take or import a reference, then use the pick as hero.';
-  $('more-takes').disabled=busy()||(board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id);
+  const heroCut=!!board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id;
+  $('more-takes').disabled=busy()||heroCut;
+  $('more-takes').textContent=s.takes.length?'Render more takes':'Render takes';
+  const takesReason=busy()?WAIT:heroCut?'The hero keeps its takes. Render reference edits redraws the other cuts.':'';
+  $('takes-reason').hidden=!takesReason;$('takes-reason').textContent=takesReason;
 }
+let seedError='';
 function openCompare(id){
-  currentShot=id;const s=board.shots.find(s=>s.id===id);viewing.delete(viewKey(s));compareShow='take';renderCompare();
+  currentShot=id;seedError='';const s=board.shots.find(s=>s.id===id);viewing.delete(viewKey(s));compareShow='take';renderCompare();
   const t=s.takes.find(t=>t.id===s.picked)||s.takes.find(t=>t.status==='succeeded');$('reuse-seed').value=s.locked_seed??t?.seed??board.config.seed;
   $('render-box').open=!phone();showDialog($('compare-dialog'));
   document.querySelector?.('#take-strip [aria-pressed="true"]')?.scrollIntoView?.({block:'nearest',inline:'center'});
 }
 $('pick-take').onclick=guarded(async()=>{
   const s=board.shots.find(x=>x.id===currentShot), v=s&&viewedTake(s);if(!v||v.status!=='succeeded'||s.picked===v.id)return;
-  await api(`/boards/${board.id}/shots/${s.id}/pick`,'POST',{take_id:v.id});await refresh();$('reuse-seed').value=board.shots.find(x=>x.id===s.id).takes.find(t=>t.id===v.id).seed;
+  await api(`/boards/${board.id}/shots/${s.id}/pick`,'POST',{take_id:v.id});await refresh();$('reuse-seed').value=board.shots.find(x=>x.id===s.id).takes.find(t=>t.id===v.id).seed;seedError='';renderCompare();
 });
 // Back closes Compare, the storyboard or the enlarged image instead of leaving the board: opening one adds a history entry with the same URL.
 let ownBack=0;
@@ -267,20 +280,27 @@ $('use-example').onclick=guarded(async()=>{
   coveragePreview();
   document.querySelector('.advanced').open=true;
 });
-$('scene-form').onsubmit=guarded(async event=>{event.preventDefault();const data=Object.fromEntries(new FormData(event.target));Object.assign(data,choices,{seed:Number(data.seed),count:Number(data.count)});const created=await api('/boards','POST',data);await openBoard(created.id);});
-$('generate').onclick=guarded(async()=>{const button=$('generate');button.disabled=true;try{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value)});await refresh();}finally{button.disabled=busy();}});
+$('scene-form').onsubmit=guarded(async event=>{event.preventDefault();if(!sceneValid())return;const data=Object.fromEntries(new FormData(event.target));Object.assign(data,choices,{seed:Number(data.seed),count:Number(data.count)});const created=await api('/boards','POST',data);await openBoard(created.id);});
+$('generate').onclick=guarded(async()=>{const button=$('generate');button.disabled=true;button.ariaBusy='true';try{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value)});await refresh();}finally{button.disabled=busy();button.ariaBusy=null;}});
 $('more-takes').onclick=guarded(async()=>{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value),shot_id:currentShot});await refresh();});
 $('cancel').onclick=guarded(async()=>{await api(`/boards/${board.id}/cancel`,'POST',{});await refresh();});
-$('seed-lock').onclick=guarded(async()=>{const s=board.shots.find(x=>x.id===currentShot);const input=$('reuse-seed').value.trim();if(s.locked_seed===null&&(input===''||isImported(s.takes.find(t=>t.id===s.picked))))throw new Error('Select a generated take and enter a seed.');const seed=s.locked_seed!==null?null:Number(input);if(seed!==null&&(!Number.isInteger(seed)||seed<0||seed>4294967295))throw new Error('Enter a whole seed from 0 to 4294967295.');await api(`/boards/${board.id}/shots/${s.id}/seed`,'POST',{seed});await refresh();});
-$('use-hero').onclick=guarded(async()=>{const s=board.shots.find(s=>s.id===currentShot);if(!canBeHero(s.takes.find(t=>t.id===s.picked)))throw new Error(HERO_RULE);await api(`/boards/${board.id}/continuity`,'POST',{enabled:true,shot_id:s.id,take_id:s.picked});await refresh();toast('Hero locked.');});
+// Seed problems are told beside the seed field, not in a toast across the screen.
+$('seed-lock').onclick=guarded(async()=>{const s=board.shots.find(x=>x.id===currentShot);const input=$('reuse-seed').value.trim();const seed=s.locked_seed!==null?null:Number(input);
+  seedError=s.locked_seed===null&&(input===''||isImported(s.takes.find(t=>t.id===s.picked)))?'Pick a generated take and enter its seed.':seed!==null&&(!Number.isInteger(seed)||seed<0||seed>4294967295)?'Enter a whole seed from 0 to 4294967295.':'';
+  if(seedError){renderCompare();return;}
+  await api(`/boards/${board.id}/shots/${s.id}/seed`,'POST',{seed});await refresh();});
+$('reuse-seed').oninput=()=>{if(seedError){seedError='';renderCompare();}};
+$('use-hero').onclick=guarded(async()=>{const s=board.shots.find(s=>s.id===currentShot);if(!canBeHero(s.takes.find(t=>t.id===s.picked)))throw new Error(HERO_RULE);await api(`/boards/${board.id}/continuity`,'POST',{enabled:true,shot_id:s.id,take_id:s.picked});await refresh();toast('Hero set.');});
 $('keep-continuity').onchange=guarded(async()=>{const hero=board.continuity?.hero;await api(`/boards/${board.id}/continuity`,'POST',{enabled:$('keep-continuity').checked,shot_id:hero?.shot_id,take_id:hero?.take_id});await refresh();});
 // A download link, not a navigation, so the board's polling request is not cancelled mid-flight.
 $('export').onclick=()=>{const link=document.createElement('a');link.href=`/api/boards/${board.id}/export`;link.download='shot-board.zip';document.body.append(link);link.click();link.remove();};
 $('close-compare').onclick=()=>$('compare-dialog').close();$('close-boards').onclick=()=>$('boards-dialog').close();
 $('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$('board-grid').hidden=editing;$('edit-toggle').textContent=editing?'Done':'Edit cuts';if(editing)showEditors();};
-$('new-board').onclick=$('home-new').onclick=()=>{$('scene-form').reset();document.querySelector('.advanced').open=false;board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;coveragePreview();$('scene').focus();};
-$('load-example').onclick=guarded(async()=>{const boards=await api('/boards');$('boards-list').innerHTML=boards.map(b=>`<button class="board-link" data-board="${b.id}">${escapeHTML(b.title)}</button>`).join('')||'<p class="muted">No boards yet.</p>';document.querySelectorAll('[data-board]').forEach(b=>b.onclick=guarded(async()=>{await openBoard(b.dataset.board);$('boards-dialog').close();}));$('boards-dialog').showModal();});
-async function health(){try{const h=await api('/health');const available=board?.continuity?.enabled?h.reference_components_present:h.checkpoint_present;$('connection').textContent=h.proxy_ready&&available?'Local engine ready':available?'Local engine offline':'Engine offline';$('connection').dataset.state=$('connection').textContent==='Local engine ready'?'ready':'offline';}catch{$('connection').textContent='Local server unavailable';$('connection').dataset.state='offline';}}
+$('new-board').onclick=$('home-new').onclick=()=>{$('scene-form').reset();$('scene-error').hidden=true;$('scene').ariaInvalid=null;document.querySelector('.advanced').open=false;board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;coveragePreview();$('scene').focus();};
+$('load-example').onclick=guarded(async()=>{const boards=await api('/boards');if(!examples.length)examples=await api('/examples');
+  $('boards-list').innerHTML=boards.map(b=>{const ex=examples.find(e=>e.board.id===b.id), meta=b.cuts?`${b.cuts} cuts · ${b.picked} of ${b.cuts} picked`:'';
+    return `<button class="board-link" data-board="${b.id}"><span class="board-link-name">${escapeHTML(ex?ex.label:'Your scene')}</span><span class="board-link-meta">${meta}</span><span class="board-link-scene">${escapeHTML(b.title)}</span></button>`;}).join('')||'<p class="muted">No boards yet.</p>';document.querySelectorAll('[data-board]').forEach(b=>b.onclick=guarded(async()=>{await openBoard(b.dataset.board);$('boards-dialog').close();}));$('boards-dialog').showModal();});
+async function health(){try{const h=await api('/health');const reference=!!board?.continuity?.enabled, available=reference?h.reference_components_present:h.checkpoint_present;const ready=h.proxy_ready&&available;$('connection').textContent=!h.proxy_ready?'ComfyUI not reachable':!available?(reference?'Qwen reference files missing':'SDXL checkpoint missing'):'Local engine ready';$('connection').dataset.state=ready?'ready':'offline';}catch{$('connection').textContent='Local server unavailable';$('connection').dataset.state='offline';}}
 guarded(async()=>{const appConfig=await api('/config');chips(appConfig);if(appConfig.coverage)coverage=appConfig.coverage;coveragePreview();await loadGallery();if(location.hash.length>1)await openBoard(location.hash.slice(1));await health();})();
 setInterval(async()=>{if(polling)return;polling=true;try{await refresh();}catch{}finally{polling=false;}},1600);setInterval(health,15000);
 
@@ -294,9 +314,13 @@ function pictogram(type){
     'Insert':'<circle cx="22" cy="15" r="9"/><path d="m22 9-4 10 9-5-5-5Zm-14 14 6-4m16 5 5 2"/>',
     'Low angle':'<path d="m12 25 4-13h10l5 13M8 23l-3 3m0 0v-7m0 7h7"/><circle cx="21" cy="7" r="4"/>',
     'Detail':'<circle cx="18" cy="14" r="8"/><path d="m24 20 8 7M14 14h8m-4-4v8"/>',
-    'Side angle':'<path d="M6 24h30M14 24V12h14v12"/><path d="M4 8l6 3"/><circle cx="4" cy="8" r="1.5"/>'
+    'Side angle':'<path d="M6 24h30M14 24V12h14v12"/><path d="M4 8l6 3"/><circle cx="4" cy="8" r="1.5"/>',
+    'Profile':'<path d="M18 5q7 0 7 7l2 3-2 1v3q0 2-3 2h-2v4"/><path d="M12 27q1-5 6-6"/>',
+    'Three-quarter':'<path d="M15 23V12h16v11zM15 12l5-5h16l-5 5M31 23l5-5V7"/>',
+    'High angle':'<circle cx="21" cy="20" r="3"/><path d="M16 27q5-5 10 0M4 4l8 6m26-6-8 6"/>',
+    'Closing':'<path d="M4 25h34M21 25l-6-14h12z"/><circle cx="21" cy="8" r="2"/>'
   };
-  return `<svg viewBox="0 0 42 30" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1" y="1" width="40" height="28" opacity=".4"/>${paths[type]||paths.Medium}</svg>`;
+  return `<svg viewBox="0 0 42 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="miter" aria-hidden="true"><rect x="1" y="1" width="40" height="28" opacity=".4"/>${paths[type]||paths.Medium}</svg>`;
 }
 function reviewState(key,saved){
   const draft=reviewDrafts.get(key), stored={verdict:saved?.verdict||'pending',note:saved?.note||''};
@@ -316,12 +340,12 @@ function bindReviewEditors(root){
     form.oninput=form.onchange=()=>{reviewDrafts.set(key,values());const state=form.querySelector('.review-state');if(state)state.textContent=reviewState(key,board.review?.find(r=>r.shot===form.dataset.shot&&r.take===form.dataset.take));};
     form.onsubmit=guarded(async event=>{
       event.preventDefault();
-      const data=values(), button=form.querySelector('button');button.disabled=true;
+      const data=values(), button=form.querySelector('button');button.disabled=true;button.ariaBusy='true';button.textContent='Saving…';
       try{
         await api(`/boards/${board.id}/shots/${form.dataset.shot}/takes/${form.dataset.take}/review`,'PUT',data);
         if(!reviewDrafts.has(key)||JSON.stringify(reviewDrafts.get(key))===JSON.stringify(data))reviewDrafts.delete(key);
-        await refresh();toast('Saved');
-      }finally{button.disabled=false;}
+        await refresh();toast('Review saved.');
+      }finally{button.disabled=false;button.ariaBusy=null;button.textContent='Save review';}
     });
   });
 }
@@ -332,7 +356,7 @@ async function loadGallery(){
   const url=(ex,s)=>`/api/examples/${ex.slug}/images/${picked(s).image}`;
   const picks=b.shots.map(picked), heroId=b.continuity?.enabled?b.continuity.hero?.shot_id:null, heroAt=b.shots.findIndex(s=>s.id===heroId);
   const redrawn=heroAt>=0&&b.shots.every((s,i)=>i===heroAt||picks[i]?.reference?.shot_id===heroId);
-  const note=heroAt>=0?`One line of scene, ${b.shots.length} setups. Cut ${NN(heroAt)} is the hero${isImported(picks[heroAt])?', an imported reference':''}${redrawn?`; the other ${b.shots.length-1} are reference edits drawn from it.`:'.'}`:`One line of scene, ${b.shots.length} setups.`;
+  const note=heroAt>=0?`One line of scene, ${b.shots.length} cuts. Cut ${NN(heroAt)} is the hero${isImported(picks[heroAt])?', an imported reference':''}${redrawn?`; the other ${b.shots.length-1} are reference edits drawn from it.`:'.'}`:`One line of scene, ${b.shots.length} cuts.`;
   $('featured-board').innerHTML=`<p class="scene-line">${escapeHTML(b.config.scene)}</p><div class="setups">${b.shots.map((s,i)=>`<button class="setup" data-example="${featured.slug}" data-cut="${s.id}" aria-label="Open ${NN(i)} ${escapeHTML(s.title)}"><span class="setup-no">${NN(i)}</span><span class="stem" aria-hidden="true"></span><span class="frame">${img(url(featured,s),`${s.title} selected render`,SIZES.lined,i===0)}</span><span class="cap"><b>${escapeHTML(s.title)}</b>${isImported(picks[i])?'<span class="src">Imported reference</span>':''}</span></button>`).join('')}</div><p class="lined-note">${note}</p>`;
   setRatios('#featured-board .setup',picks);
   // Phones set two frames a row; each pair shares the row by its true widths.
@@ -347,18 +371,21 @@ async function loadGallery(){
   document.querySelectorAll('[data-example]').forEach(el=>el.onclick=guarded(async()=>{const opened=await api(`/examples/${el.dataset.example}/open`,'POST');await openBoard(opened.id);window.scrollTo(0,0);if(el.dataset.cut)openCompare(el.dataset.cut);}));
   coveragePreview();
 }
-// The six-cut template drops the face close-up and over-shoulder when the scene has no person.
-let coverage={person:['Establishing','Medium','Close-up','Over shoulder','Insert','Low angle'],object:['Establishing','Medium','Detail','Side angle','Insert','Low angle'],person_words:[]};
+// The coverage template drops faces, hands and shoulders when the scene has no person.
+let coverage={person:['Establishing','Medium','Close-up','Over shoulder','Insert','Low angle','Profile','High angle','Closing'],object:['Establishing','Medium','Detail','Side angle','Insert','Low angle','Three-quarter','High angle','Closing'],person_words:[]};
 function sceneHasPerson(){
   if($('character').value.trim())return true;
   return coverage.person_words.length>0&&new RegExp(`\\b(?:${coverage.person_words.join('|')})s?\\b`,'i').test($('scene').value);
 }
-// Six setup lines drop from the scene field onto the coverage template, the same lines the board and home draw.
+// One setup line per cut drops from the scene field onto the coverage template, the same lines the board and home draw.
 function coveragePreview(){
-  const types=sceneHasPerson()||!$('scene').value.trim()?coverage.person:coverage.object;
+  const count=Number($('count').value)||6, types=(sceneHasPerson()||!$('scene').value.trim()?coverage.person:coverage.object).slice(0,count);
+  $('coverage-preview').ariaLabel=`Coverage for ${types.length} cuts: ${types.join(', ')}`;
   $('coverage-preview').innerHTML=`<div class="setups even">${types.map((type,i)=>`<div class="setup"><span class="setup-no">${NN(i)}</span><span class="stem" aria-hidden="true"></span><div class="composition-chip">${pictogram(type)}<span>${type}</span></div></div>`).join('')}</div>`;
 }
-$('scene').oninput=$('character').oninput=()=>coveragePreview();
+$('scene').oninput=()=>{coveragePreview();if($('scene').ariaInvalid==='true')sceneValid();};$('character').oninput=$('count').onchange=()=>coveragePreview();
+// The composer says what is missing under the scene field, instead of the browser's own bubble.
+function sceneValid(){const empty=!$('scene').value.trim();$('scene-error').hidden=!empty;$('scene-error').textContent=empty?'Describe the scene first: one moment, in a sentence or two.':'';$('scene').ariaInvalid=empty?'true':null;if(empty)$('scene').focus();return !empty;}
 // What the export ZIP holds for the current picks, named as export_board names them.
 function zipFiles(b){
   const names=[], refs=new Set();
@@ -432,6 +459,6 @@ $('reference-file').onchange=guarded(async event=>{
   try {
     const response=await fetch(`/api/boards/${board.id}/shots/${currentShot}/import`,{method:'POST',headers:{'Content-Type':file.type},body:file});
     const data=await response.json();if(!response.ok)throw new Error(data.detail);
-    await refresh();toast('Reference imported. Pick it and use it as the hero.');
+    await refresh();toast('Reference imported. Pick it, then use the pick as hero.');
   } finally { event.target.value=''; }
 });

@@ -50,31 +50,83 @@ class PageTests(unittest.TestCase):
         css = (STATIC / 'style.css').read_text()
         heading = re.search(r'\n\.dialog-heading\{([^}]*)\}', css).group(1)
         self.assertIn('position:sticky', heading)
-        self.assertIn('top:-28px', heading, 'Cancels the dialog padding so nothing shows above the heading')
+        self.assertIn('top:calc(var(--gutter) * -1)', heading, 'Cancels the dialog padding so nothing shows above the heading')
+        self.assertRegex(css, r'\ndialog\{[^}]*padding:var\(--gutter\)')
         self.assertIn('background:var(--page)', heading)
         touch = css[css.index('@media(pointer:coarse)'):]
         touch = touch[:touch.index('\n}\n')]
-        for rule in ('min-height:48px', '.icon{width:48px;height:48px}', '.rail-cut{min-height:48px}', '.seg>label::after,.seg>button::after{content:"";position:absolute;inset:-6px 0}'):
+        root = css[css.index(':root{'):css.index('\n}\n')]
+        for token in ('--h:36px', '--h-bar:32px', '--h-lg:44px', '--hit:48px', '--rim:calc((var(--hit) - var(--h)) / 2)', '--rim-bar:calc((var(--hit) - var(--h-bar)) / 2)'):
+            self.assertIn(token, root)
+        for rule in ('min-height:var(--hit)', '.icon{width:var(--hit);height:var(--hit)}', '.rail-cut{min-height:var(--hit)}', '.seg>label::after,.seg>button::after{content:"";position:absolute;inset:calc(var(--rim) * -1) 0}'):
             self.assertIn(rule, touch)
         self.assertGreater(css.index('@media(pointer:coarse)'), css.index('@media(max-width:600px)'),
                            'Touch sizes come after the phone layout so they win')
         self.assertIn('background-clip:padding-box', touch, 'Filled buttons paint inside the 48px target')
         # The rim is on the block axis only, so painted edges line up with the fields and segments beside them.
-        rim = re.search(r'([.\w,-]+)\{border:solid transparent;border-width:6px 0;[^}]*padding-top:0;padding-bottom:0', touch).group(1).split(',')
-        self.assertIn('.icon{border:6px solid transparent;background-clip:padding-box', touch)
-        self.assertRegex(touch, r'input:not\(\[type=checkbox\]\):not\(\[type=radio\]\),select\{border:solid transparent;border-width:6px 0;background-clip:padding-box',
+        rim = re.search(r'([.\w,-]+)\{border:solid transparent;border-width:var\(--rim\) 0;[^}]*padding-top:0;padding-bottom:0', touch).group(1).split(',')
+        self.assertIn('.icon{border:var(--rim) solid transparent;background-clip:padding-box', touch)
+        self.assertRegex(touch, r'input:not\(\[type=checkbox\]\):not\(\[type=radio\]\),select\{border:solid transparent;border-width:var\(--rim\) 0;background-clip:padding-box',
                          'Single-line fields paint at button height too')
         for kind in ('.primary', '.quiet', '.plain', '.state', '.chip'):
             self.assertIn(kind, rim, 'Every painted button keeps its desktop size inside the touch target')
         fine = css[css.index('@media(pointer:fine)'):]
-        self.assertIn('inset:-4px 0', fine[:fine.index('\n}\n')], 'A 36px button answers a 44px band under the mouse')
-        self.assertIn('.topbar nav>*{min-height:48px;border-width:8px', touch, 'Header buttons paint 32px inside a 48px target')
+        self.assertIn('inset:calc(var(--s1) * -1) 0', fine[:fine.index('\n}\n')], 'A 36px button answers a 44px band under the mouse')
+        self.assertIn('.topbar nav>*{min-height:var(--hit);border-width:var(--rim-bar) 0', touch, 'Header buttons paint 32px inside a 48px target')
+        self.assertIn('.large{min-height:calc(var(--h-lg) + 2 * var(--rim))}', touch, 'The composer action keeps its 44px paint on touch')
+        # Fields paint exactly at button height: border, padding and one 20px line add up to --h.
+        self.assertIn('padding:calc((var(--h) - var(--lh-field) - 2 * var(--hair)) / 2) var(--s3);min-height:var(--h)', css)
+        self.assertIn('min-height:calc(var(--h) - 2 * var(--hair))', css, 'Segments, border included, are 36px too')
 
     def test_header_buttons_are_slim(self):
         css = (STATIC / 'style.css').read_text()
-        self.assertIn('.topbar nav>*{min-height:32px;padding:0 14px}', css)
+        self.assertIn('.topbar nav>*{min-height:var(--h-bar);padding:0 var(--pad-x)}', css)
         phone = css[css.index('@media(max-width:600px)'):]
-        self.assertIn('.topbar nav>*{padding:0 12px;font-size:13px}', phone[:phone.index('\n}\n')])
+        self.assertIn('.topbar nav>*{padding:0 var(--s3);font-size:var(--t-sm)}', phone[:phone.index('\n}\n')])
+
+    def test_style_values_come_from_the_tokens(self):
+        css = (STATIC / 'style.css').read_text()
+        start = css.index(':root{')
+        end = css.index('\n}\n', start)
+        root, rules = css[start:end], re.sub(r'@font-face\{[^}]*\}', '', css[:start] + css[end:])
+        # Colours live in :root only; rules name them.
+        self.assertEqual(re.findall(r'#[0-9a-fA-F]{3,8}\b|rgba?\(', rules), [])
+        # One type scale, one set of line heights and weights: no raw values in the rules.
+        for prop in ('font-size', 'line-height', 'font-weight', 'letter-spacing', 'z-index'):
+            for value in re.findall(rf'(?<![-\w]){prop}:([^;}}]+)', rules):
+                with self.subTest(prop=prop, value=value):
+                    self.assertRegex(value.strip(), r'^(var\(--[\w-]+\)|inherit|\.8em|\d+px)$' if prop == 'line-height' else r'^(var\(--[\w-]+\)|inherit|\.8em)$')
+        for value in re.findall(r'(?<![-\w])font:([^;}]+)', rules):
+            with self.subTest(font=value):
+                self.assertRegex(value.strip(), r'^(inherit|var\(--w-[\w-]+\) var\(--t-[\w-]+\)/var\(--lh-[\w-]+\) var\(--(ui|script)\))$')
+        for value in re.findall(r'(?<![-\w])transition:([^;}]+)', rules):
+            for part in value.split(','):
+                with self.subTest(transition=part):
+                    self.assertRegex(part.strip(), r'^[\w-]+ var\(--dur[\w-]*\) var\(--ease\)$')
+        # Every stroke that draws a setup line is a border or outline of --line, never a box with a width.
+        self.assertIn('--line:2px', root)
+        self.assertNotRegex(rules, r'(::before|\.stem)\{[^}]*(width|height):var\(--line\)')
+
+    def test_high_contrast_and_reduced_motion(self):
+        css = (STATIC / 'style.css').read_text()
+        forced = css[css.index('@media(forced-colors:active){'):]
+        for rule in ('.rail-cut[aria-current]', '.seg>label:has(input:checked)', '.shot-card.is-hero .shot-hero,.fig-hero .take-zoom', '.take-id.picked{border-color:Highlight}', 'input[type=checkbox]{appearance:auto'):
+            self.assertIn(rule, forced)
+        coarse = css[css.index('@media(forced-colors:active) and (pointer:coarse){'):]
+        self.assertIn('border-color:Canvas', coarse[:coarse.index('\n}\n')], 'Touch rims vanish instead of drawing black bars')
+        reduced = css[css.index('@media(prefers-reduced-motion:reduce)'):]
+        self.assertIn('animation:none!important', reduced)
+        self.assertIn(':active{transform:none!important}', reduced)
+        self.assertNotIn('button:active:not(:disabled),.button:active{transform', css, 'Large surfaces do not press in')
+
+    def test_icons_share_one_stroke(self):
+        html = (STATIC / 'index.html').read_text()
+        strokes = re.findall(r'stroke-width="([\d.]+)"', html)
+        self.assertTrue(strokes)
+        self.assertEqual(set(strokes), {'1.5'})
+        self.assertEqual(html.count('vector-effect="non-scaling-stroke"'), len(strokes))
+        self.assertIn('stroke-width="1.5"', (STATIC / 'app.js').read_text())
+        self.assertNotIn('dialog-kicker', html, 'No eyebrow above the Compare heading')
 
     def test_review_note_spans_the_take_and_dialogs_focus_their_title(self):
         css = (STATIC / 'style.css').read_text()

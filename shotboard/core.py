@@ -205,7 +205,7 @@ def export_board(board, data_root):
         for shot in board["shots"]:
             take = next((t for t in shot["takes"] if t["id"] == shot["picked"] and t["status"] == "succeeded"), None)
             if take is None:
-                raise ValueError("Pick one completed take for every shot before exporting.")
+                raise ValueError("Pick one completed take for every cut before exporting.")
             image = Path(data_root) / board["id"] / take["image"]
             if sha256(image) != take["image_sha256"]:
                 raise ValueError("A picked image changed on disk; export stopped.")

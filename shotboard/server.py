@@ -299,15 +299,15 @@ def board_for(bid):
 def shot_for(board, sid):
     shot = next((s for s in board["shots"] if s["id"] == sid), None)
     if shot is None:
-        raise HTTPException(404, "Shot not found")
+        raise HTTPException(404, "Cut not found")
     return shot
 
 
 @app.get("/api/config")
 def config():
     return dict(lens=LENSES, angle=ANGLES, move=MOVES, lighting=LIGHTS, look=LOOKS, presets=PRESETS,
-                coverage=dict(person=[c[0] for c in COVERAGE[:6]],
-                              object=[OBJECT_COVERAGE.get(c[0], c)[0] for c in COVERAGE[:6]],
+                coverage=dict(person=[c[0] for c in COVERAGE],
+                              object=[OBJECT_COVERAGE.get(c[0], c)[0] for c in COVERAGE],
                               person_words=list(PERSON_WORDS)))
 
 
@@ -386,10 +386,19 @@ def open_example(slug: str):
         return dict(id=source["id"])
 
 
+def board_row(board):
+    """One My boards row: the title as typed, marked when it is cut short, and how far the picking got."""
+    title, scene = board["title"].strip(), board.get("config", {}).get("scene", "").strip()
+    if len(scene) > len(title) and not title.endswith(("…", ".", "!", "?")):
+        title += "…"
+    return dict(id=board["id"], title=title, cuts=len(board["shots"]),
+                picked=sum(1 for shot in board["shots"] if shot.get("picked")))
+
+
 @app.get("/api/boards")
 def list_boards():
     with store.lock:
-        return [dict(id=b["id"], title=b["title"]) for b in reversed(list(store.boards.values()))]
+        return [board_row(b) for b in reversed(list(store.boards.values()))]
 
 
 @app.post("/api/boards", status_code=201)
@@ -433,7 +442,7 @@ def generate(bid: str, request: Generate):
         reference = None
         if preset_id == "qwen-reference":
             if not continuity.get("enabled") or not continuity.get("hero"):
-                raise HTTPException(409, "Pick a hero and enable Keep continuity first.")
+                raise HTTPException(409, "Pick a hero and turn on Use hero reference first.")
             reference = deepcopy(continuity["hero"])
             if sha256(DATA / bid / reference["image"]) != reference["image_sha256"]:
                 raise HTTPException(409, "Hero reference changed on disk.")
@@ -445,7 +454,7 @@ def generate(bid: str, request: Generate):
         if any(t["status"] in ("queued", "running") for s in board["shots"] for t in s["takes"]):
             raise HTTPException(409, "This board already has work in the queue.")
         if any(len(s["takes"])+request.takes > 16 for s in shots):
-            raise HTTPException(409, "Maximum 16 takes per shot. Create a new board for more coverage.")
+            raise HTTPException(409, "Maximum 16 takes per cut. Create a new board for more coverage.")
         try:
             models = verify_models(preset_id)
         except ValueError as exc:
@@ -521,7 +530,7 @@ def set_continuity(bid: str, request: Continuity):
             shot = shot_for(board, request.shot_id)
             take = next((t for t in shot["takes"] if t["id"] == request.take_id and t["status"] == "succeeded"), None)
             if not take or shot["picked"] != request.take_id:
-                raise HTTPException(409, "Pick the hero take before enabling continuity.")
+                raise HTTPException(409, "Pick the hero take before turning on Use hero reference.")
             imported = (take.get('source', {}).get('type') == 'imported'
                         and take.get('settings', {}).get('preset_id') == 'imported-reference'
                         and not take.get('workflow') and not take.get('models') and not take.get('reference')
@@ -575,7 +584,7 @@ async def import_reference(bid: str, sid: str, request: Request):
         if any(t['status'] in ('queued', 'running') for s in board['shots'] for t in s['takes']):
             raise HTTPException(409, "Wait for the current queue before importing a reference.")
         if len(shot['takes']) >= 16:
-            raise HTTPException(409, "Maximum 16 takes per shot. Create a new board for more coverage.")
+            raise HTTPException(409, "Maximum 16 takes per cut. Create a new board for more coverage.")
         tid = f"t{max((int(t['id'][1:]) for t in shot['takes']), default=0)+1:02}"
         filename = f'{sid}-{tid}.png'
         path = DATA / bid / filename
@@ -613,7 +622,7 @@ def pick(bid: str, sid: str, request: Pick):
         continuity = board.get("continuity", {})
         hero = continuity.get("hero") or {}
         if continuity.get("enabled") and hero.get("shot_id") == sid and hero.get("take_id") != request.take_id:
-            raise HTTPException(409, "Turn off Keep continuity before changing the hero pick.")
+            raise HTTPException(409, "Turn off Use hero reference before changing the hero pick.")
         if not any(t["id"] == request.take_id and t["status"] == "succeeded" for t in shot["takes"]):
             raise HTTPException(409, "Pick a completed take")
         shot["picked"] = request.take_id

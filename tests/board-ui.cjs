@@ -104,7 +104,7 @@ window.SB = {sized: url => ({src:url.replace('.png','-800.webp'), srcset:`${url.
 vm.runInContext('currentShot="s04"; viewing.clear(); renderCompare();', context);
 delete window.SB;
 const s04 = element('compare-images').innerHTML;
-assert.match(s04, /fig-hero[\s\S]*<b>Hero<\/b><span>02 Medium · Imported reference<\/span>[\s\S]*fig-take/);
+assert.match(s04, /fig-hero[\s\S]*<b>Hero<\/b><span><span class="setup-no">02<\/span> Medium · Imported reference<\/span>[\s\S]*fig-take/);
 assert.match(s04, /data-zoom="t04" aria-label="Enlarge Over shoulder t04"><img[^>]*sizes="[^"]*480px"/);
 const strip = element('take-strip').innerHTML;
 assert.equal((strip.match(/<button class="take/g) || []).length, 6);
@@ -114,7 +114,7 @@ assert.match(element('render-details').innerHTML, /<dt>Seed<\/dt><dd>20261074 <s
 // Viewing another take keeps the pick and survives a rerender; the lock only shows on the locked seed.
 vm.runInContext('viewing.set(`${board.id}/s04`,"t01"); lastSignature=""; render(); renderCompare();', context);
 assert.match(element('take-strip').innerHTML, /data-view="t01" aria-pressed="true"/);
-assert.match(element('pick-take').innerHTML, /Pick T01/);
+assert.match(element('pick-take').innerHTML, /Pick <span class="take-no">T01<\/span>/);
 assert.doesNotMatch(element('render-details').innerHTML, /Locked/);
 vm.runInContext('viewing.clear();', context);
 // Board labels come from each take: one imported hero, five reference edits drawn from it.
@@ -129,6 +129,35 @@ context.fixture = hangar;
 vm.runInContext('board=fixture; lastSignature=""; render();', context);
 assert.doesNotMatch(element('board-grid').innerHTML, /Redrawn|Imported|is-hero/, 'A board without a hero claims no reference edits');
 assert.match(element('hero-line').innerHTML, /No hero yet/);
+context.fixture = continuity;
+vm.runInContext('board=fixture; lastSignature=""; render();', context);
+// Disabled controls say why: export waits for every pick; the hero cut keeps its takes; no hero means no status line.
+assert.equal(element('export-hint').textContent, '');
+const firstPick = continuity.shots[0].picked;
+continuity.shots[0].picked = null;
+vm.runInContext('lastSignature=""; render();', context);
+assert.equal(element('storyboard').disabled, true);
+assert.equal(element('export-hint').textContent, 'Pick a take in every cut to export.');
+continuity.shots[0].picked = firstPick;
+vm.runInContext('lastSignature=""; render(); currentShot="s02"; renderCompare();', context);
+assert.equal(element('more-takes').disabled, true);
+assert.equal(element('takes-reason').hidden, false);
+assert.match(element('takes-reason').textContent, /^The hero keeps its takes\./);
+assert.match(element('sheet-cut').innerHTML, /02<\/span> Medium · 2 of 6$/, 'The position moved from the eyebrow to the sheet');
+vm.runInContext('currentShot="s04"; renderCompare();', context);
+assert.equal(element('takes-reason').hidden, true);
+assert.equal(element('more-takes').textContent, 'Render more takes');
+const s04takes = continuity.shots[3].takes; continuity.shots[3].takes = [];
+vm.runInContext('renderCompare();', context);
+assert.equal(element('more-takes').textContent, 'Render takes', 'No "more" before the first take');
+assert.equal(element('render-box').hidden, true, 'No empty Render details');
+continuity.shots[3].takes = s04takes;
+vm.runInContext('renderCompare();', context);
+assert.equal(element('render-box').hidden, false);
+assert.match(element('hero-status').textContent, /^On · /);
+context.fixture = hangar;
+vm.runInContext('board=fixture; lastSignature=""; render();', context);
+assert.equal(element('hero-status').textContent, '', 'The script column already says there is no hero');
 context.fixture = continuity;
 vm.runInContext('board=fixture; lastSignature=""; render();', context);
 // Export lists the picks and what the ZIP holds.

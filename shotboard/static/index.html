@@ -6,7 +6,7 @@
 <link rel="icon" type="image/svg+xml" href="/static/favicon.svg"><link rel="alternate icon" href="/static/favicon.ico"><link rel="preload" href="/static/hanken-grotesk.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/static/courier-prime-400.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/static/style.css"><script src="/static/app.js" defer></script>
 </head>
 <body>
-<svg class="icons" aria-hidden="true"><symbol id="i-back" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol><symbol id="i-next" viewBox="0 0 16 16"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol><symbol id="i-lock" viewBox="0 0 16 16"><path d="M4.5 7.5h7v6h-7zM6 7.5V5.5a2 2 0 0 1 4 0v2" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol><symbol id="i-check" viewBox="0 0 16 16"><path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol></svg>
+<svg class="icons" aria-hidden="true"><symbol id="i-back" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="miter" vector-effect="non-scaling-stroke"/></symbol><symbol id="i-next" viewBox="0 0 16 16"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="miter" vector-effect="non-scaling-stroke"/></symbol><symbol id="i-lock" viewBox="0 0 16 16"><path d="M4.5 7.5h7v6h-7zM6 7.5V5.5a2 2 0 0 1 4 0v2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="miter" vector-effect="non-scaling-stroke"/></symbol><symbol id="i-check" viewBox="0 0 16 16"><path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="butt" stroke-linejoin="miter" vector-effect="non-scaling-stroke"/></symbol></svg>
 <header class="topbar"><a class="brand" href="/" aria-label="Shot Board home"><img class="brand-logo" src="/static/logo.svg" width="129" height="32" alt="Shot Board"></a><nav><button id="load-example" class="plain">My boards</button><button id="new-board" class="quiet">New scene</button></nav></header>
 <main>
 <section id="home">
@@ -28,13 +28,13 @@
   <div id="example-gallery" class="example-gallery"></div>
 </section>
 <section id="composer" hidden>
-  <form id="scene-form" class="page composer-page">
+  <form id="scene-form" class="page composer-page" novalidate>
     <h1>New scene</h1>
     <div class="field-head"><label for="scene">Scene</label><button id="use-example" type="button" class="link">Use example</button></div>
-    <textarea id="scene" name="scene" rows="3" required maxlength="600" placeholder="Describe one moment."></textarea>
-    <div class="coverage-preview" id="coverage-preview" aria-label="Six-cut coverage"></div>
+    <textarea id="scene" name="scene" rows="3" required maxlength="600" placeholder="Describe one moment." aria-describedby="scene-error"></textarea><p id="scene-error" class="field-error" role="alert" hidden></p>
+    <div class="coverage-preview" id="coverage-preview" role="img" aria-label="Coverage for 6 cuts"></div>
     <details class="advanced"><summary>Options</summary>
-      <div class="bible-fields"><label>Character<input id="character" name="character" maxlength="400"></label><label>Key prop<input id="prop" name="prop" maxlength="160"></label><label>Set<input id="setting" name="setting" maxlength="400"></label></div>
+      <div class="bible-fields"><label>Character<input id="character" name="character" maxlength="400"></label><label>Prop<input id="prop" name="prop" maxlength="160"></label><label>Setting<input id="setting" name="setting" maxlength="400"></label></div>
       <div class="section-label">Camera</div><div id="camera-chips"></div><div class="section-label">Look</div><div id="look-chips"></div>
       <div class="form-bottom"><label>Cuts<select id="count" name="count"><option value="6">6 cuts</option><option value="7">7 cuts</option><option value="8">8 cuts</option><option value="9">9 cuts</option></select></label><label>Seed<input type="number" id="seed" name="seed" min="0" max="4294967295" value="20261020"></label></div>
     </details>
@@ -44,23 +44,23 @@
 <section id="workspace" hidden>
   <div class="page board-page">
     <div class="loop-bar">
-      <div class="board-head"><h2 id="board-name" class="board-name"></h2><div class="pick-progress" id="pick-progress" aria-live="polite"><span id="pick-count"></span><span id="pick-meter" class="pick-meter" aria-hidden="true"></span><span id="board-meta" class="board-meta"></span></div></div>
+      <div class="board-head"><h1 id="board-name" class="board-name"></h1><div class="pick-progress" id="pick-progress" aria-live="polite"><span id="pick-count"></span><span id="pick-meter" class="pick-meter" aria-hidden="true"></span><span id="board-meta" class="board-meta"></span><span id="export-hint" class="board-meta"></span></div></div>
       <div class="loop-actions">
         <button id="edit-toggle" class="plain">Edit cuts</button>
         <div class="render-group"><label class="takes-select"><span class="visually-hidden">Takes per cut</span><select id="takes-count"><option value="2">2 takes</option><option value="1">1 take</option><option value="3">3 takes</option><option value="4">4 takes</option></select></label><button id="generate" class="primary">Render board</button><button id="cancel" class="quiet" hidden>Stop</button></div>
-        <button id="storyboard" class="quiet" disabled>Export storyboard</button>
+        <button id="storyboard" class="quiet" disabled aria-describedby="export-hint">Export storyboard</button>
       </div>
     </div>
     <div id="queue-panel" class="queue-panel" hidden><div><strong id="queue-status"></strong><span id="queue-detail"></span></div><progress id="queue-progress" value="0" max="12"></progress></div>
     <div class="lined-board">
       <aside class="script-col" aria-label="Scene">
         <p class="cue">Scene</p>
-        <h1 id="board-title" class="board-title"></h1>
+        <p id="board-title" class="board-title"></p>
         <details id="script-notes" class="script-notes"><summary>Scene notes</summary><div id="script-fields"></div></details>
         <section class="hero-block" aria-labelledby="hero-heading">
           <h2 id="hero-heading" class="cue">Hero</h2>
           <div id="hero-line" class="hero-line"></div>
-          <label class="toggle"><input type="checkbox" id="keep-continuity"> Use hero reference</label>
+          <label class="toggle"><input type="checkbox" id="keep-continuity" aria-describedby="hero-status"> Use hero reference</label>
           <p id="hero-status" class="hero-meta"></p>
           <div id="hero-recipe" class="recipe"><p id="recipe-label" class="recipe-label"></p><p id="recipe-detail" class="hero-meta"></p></div>
         </section>
@@ -74,11 +74,11 @@
 </section>
 </main>
 <footer><span class="engine"><span class="engine-dot" aria-hidden="true"></span><span id="connection">Checking engine</span></span><span>Open weights. Powered by ComfyUI.</span><nav class="footer-links" aria-label="Project"><a href="https://github.com/ArcSolver/shot-board">GitHub</a><a href="https://github.com/ArcSolver/shot-board/blob/main/LICENSE">License</a><a href="https://github.com/ArcSolver/shot-board/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a></nav></footer>
-<dialog id="compare-dialog" class="sheet-dialog" aria-labelledby="compare-title"><div class="dialog-heading"><button id="close-compare" class="plain back" aria-label="Close compare"><svg class="i" aria-hidden="true"><use href="#i-back"/></svg>Board</button><div class="heading-text"><p class="dialog-kicker">Compare &amp; pick <span id="compare-index"></span></p><h2 id="compare-title" tabindex="-1" autofocus></h2></div><nav id="cut-rail" class="cut-rail" aria-label="Cuts"></nav><div class="dialog-nav"><button id="previous-cut" class="icon" aria-label="Previous cut"><svg class="i" aria-hidden="true"><use href="#i-back"/></svg></button><button id="next-cut" class="icon" aria-label="Next cut"><svg class="i" aria-hidden="true"><use href="#i-next"/></svg></button></div></div>
+<dialog id="compare-dialog" class="sheet-dialog" aria-labelledby="compare-title"><div class="dialog-heading"><button id="close-compare" class="plain back" aria-label="Close compare"><svg class="i" aria-hidden="true"><use href="#i-back"/></svg>Board</button><div class="heading-text"><h2 id="compare-title" tabindex="-1" autofocus></h2></div><nav id="cut-rail" class="cut-rail" aria-label="Cuts"></nav><div class="dialog-nav"><button id="previous-cut" class="icon" aria-label="Previous cut"><svg class="i" aria-hidden="true"><use href="#i-back"/></svg></button><button id="next-cut" class="icon" aria-label="Next cut"><svg class="i" aria-hidden="true"><use href="#i-next"/></svg></button></div></div>
   <div class="compare-body">
     <div class="compare-main">
       <div class="compare-viewer"><div id="compare-switch" class="seg view-switch" role="group" aria-label="Show" hidden></div><div id="compare-images" class="compare-images"></div></div>
-      <div class="compare-takes"><div class="takes-head"><h3>Takes</h3><span id="takes-meta"></span><button id="more-takes" class="quiet">Render more takes</button></div><div id="take-strip" class="take-strip" role="group" aria-label="Takes"></div></div>
+      <div class="compare-takes"><div class="takes-head"><h3>Takes</h3><span id="takes-meta"></span><button id="more-takes" class="quiet" aria-describedby="takes-reason">Render more takes</button></div><p id="takes-reason" class="hero-meta takes-reason" hidden></p><div id="take-strip" class="take-strip" role="group" aria-label="Takes"></div></div>
       <section class="compare-hero" aria-labelledby="compare-hero-heading"><h3 id="compare-hero-heading" class="cue">Hero</h3><div class="compare-hero-body"><div id="compare-hero-line" class="hero-line"></div><div class="compare-hero-text"><p id="hero-note" class="hero-meta"></p><div class="recipe-actions hero-actions"><button id="use-hero" class="quiet">Use pick as hero</button><button id="import-reference" class="quiet">Import reference</button></div><p id="hero-reason" class="hero-meta hero-reason" hidden></p><input id="reference-file" type="file" accept="image/png,image/jpeg,image/webp" hidden></div></div></section>
     </div>
     <div class="take-side">
@@ -88,7 +88,7 @@
         <div id="review-slot"></div>
         <details class="render-details" id="render-box" open><summary>Render details</summary><dl id="render-details" class="details"></dl></details>
         <div class="compare-recipe">
-          <div class="recipe-group"><h4>Seed for new takes</h4><div id="seed-row" class="seed-row"><label><span class="visually-hidden">Seed for new takes</span><input id="reuse-seed" type="number" min="0" max="4294967295"></label><button id="seed-lock" class="quiet">Lock seed</button></div><p id="seed-note" class="hero-meta" hidden></p></div>
+          <div class="recipe-group"><h4>Seed for new takes</h4><div id="seed-row" class="seed-row"><label><span class="visually-hidden">Seed for new takes</span><input id="reuse-seed" type="number" min="0" max="4294967295"></label><button id="seed-lock" class="quiet" aria-describedby="seed-note">Lock seed</button></div><p id="seed-note" class="hero-meta" role="status" hidden></p></div>
         </div>
       </div>
     </div>

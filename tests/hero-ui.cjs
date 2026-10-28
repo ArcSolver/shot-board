@@ -41,6 +41,17 @@ assert.equal(element('use-hero').disabled, true);
   assert.equal(element('hero-reason').hidden, false);
   assert.match(element('hero-reason').textContent, /This uses the pick, SDXL-FIXTURE\./);
   vm.runInContext('viewing.delete(viewKey(board.shots[1])); renderCompare();', context);
+  // A seed the user typed wrong is answered beside the seed field, and nothing is sent.
+  board.shots[1].locked_seed=null; element('reuse-seed').value='-1'; requests.length=0;
+  vm.runInContext('renderCompare();', context);
+  await element('seed-lock').onclick();
+  assert.equal(requests.length, 0);
+  assert.equal(element('seed-note').hidden, false);
+  assert.equal(element('seed-note').textContent, 'Enter a whole seed from 0 to 4294967295.');
+  assert.equal(element('reuse-seed').ariaInvalid, 'true');
+  element('reuse-seed').value='7'; element('reuse-seed').oninput();
+  assert.equal(element('seed-note').hidden, true, 'Typing clears the message');
+  assert.equal(element('reuse-seed').ariaInvalid, null);
   const imported = {id:'t16',status:'succeeded',seed:null,image:'imported.png',source:{type:'imported'},settings:{preset_id:'imported-reference',label:'Imported reference',width:768,height:576},workflow:{},models:[]};
   board.shots[1].takes.push(imported); board.shots[1].picked=imported.id;
   vm.runInContext('renderCompare();', context);

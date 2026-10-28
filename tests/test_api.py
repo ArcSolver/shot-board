@@ -242,6 +242,21 @@ class APITests(unittest.TestCase):
         self.client.post(self.base+"/shots/s01/seed",json={"seed":None})
         self.assertIsNone(self.client.get(self.base).json()["shots"][0]["locked_seed"])
 
+    def test_board_list_rows_say_what_each_board_is(self):
+        rows = self.client.get("/api/boards").json()
+        self.assertEqual(rows, [dict(id=self.board["id"], title="A traveler finds a compass", cuts=6, picked=0)])
+        long = self.client.post("/api/boards", json={"scene": "A " * 39 + "x remains"}).json()
+        self.assertEqual(self.client.get("/api/boards").json()[0]["title"], long["title"], "Titles already cut short keep one ellipsis")
+        board = server.store.boards[self.board["id"]]
+        board["title"] = "A traveler"
+        self.assertEqual(server.board_row(board)["title"], "A traveler…", "A shortened title says so")
+
+    def test_config_lists_every_cut_the_composer_offers(self):
+        coverage = self.client.get("/api/config").json()["coverage"]
+        self.assertEqual(len(coverage["person"]), 9)
+        self.assertEqual(coverage["person"][6:], ["Profile", "High angle", "Closing"])
+        self.assertEqual(coverage["object"][6], "Three-quarter")
+
     def test_removed_route_and_config(self):
         self.assertEqual(self.client.post(self.base+"/shots/s01/reframe").status_code, 404)
         self.assertNotIn("reframe", self.client.get("/api/config").json())
