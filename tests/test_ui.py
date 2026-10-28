@@ -54,13 +54,17 @@ class PageTests(unittest.TestCase):
         self.assertIn('background:var(--page)', heading)
         touch = css[css.index('@media(pointer:coarse)'):]
         touch = touch[:touch.index('\n}\n')]
-        for rule in ('min-height:48px', '.icon{width:48px;height:48px}', '.rail-cut{min-height:48px}', '.seg>label,.seg>button{min-height:44px}'):
+        for rule in ('min-height:48px', '.icon{width:48px;height:48px}', '.rail-cut{min-height:48px}', '.seg>label::after,.seg>button::after{content:"";position:absolute;inset:-6px 0}'):
             self.assertIn(rule, touch)
         self.assertGreater(css.index('@media(pointer:coarse)'), css.index('@media(max-width:600px)'),
                            'Touch sizes come after the phone layout so they win')
         self.assertIn('background-clip:padding-box', touch, 'Filled buttons paint inside the 48px target')
-        rim = re.search(r'([.\w,-]+)\{border:6px solid transparent;[^}]*padding-top:0;padding-bottom:0', touch).group(1).split(',')
-        for kind in ('.primary', '.quiet', '.plain', '.state', '.icon'):
+        # The rim is on the block axis only, so painted edges line up with the fields and segments beside them.
+        rim = re.search(r'([.\w,-]+)\{border:solid transparent;border-width:6px 0;[^}]*padding-top:0;padding-bottom:0', touch).group(1).split(',')
+        self.assertIn('.icon{border:6px solid transparent;background-clip:padding-box', touch)
+        self.assertRegex(touch, r'input:not\(\[type=checkbox\]\):not\(\[type=radio\]\),select\{border:solid transparent;border-width:6px 0;background-clip:padding-box',
+                         'Single-line fields paint at button height too')
+        for kind in ('.primary', '.quiet', '.plain', '.state', '.chip'):
             self.assertIn(kind, rim, 'Every painted button keeps its desktop size inside the touch target')
         fine = css[css.index('@media(pointer:fine)'):]
         self.assertIn('inset:-4px 0', fine[:fine.index('\n}\n')], 'A 36px button answers a 44px band under the mouse')

@@ -63,6 +63,7 @@ input[type=checkbox]{width:16px;height:16px;min-height:0;padding:0;margin:0;acce
 select{appearance:none;-webkit-appearance:none;padding-right:30px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%231f2328' stroke-width='1.5'%3E%3Cpath d='m1 1 4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;cursor:pointer}
 textarea{resize:vertical;line-height:1.5}
 label{font-size:12px;font-weight:600;color:var(--ink-2)}
+label :is(textarea,input,select){font-weight:400}
 summary{cursor:pointer;font-size:13px;font-weight:650;color:var(--ink);list-style:none;display:flex;align-items:center;gap:8px;min-height:36px}
 summary::-webkit-details-marker{display:none}
 summary::before{content:"";width:6px;height:6px;border-right:1.5px solid var(--ink-3);border-bottom:1.5px solid var(--ink-3);transform:rotate(-45deg);transition:transform .15s var(--ease);flex-shrink:0}
@@ -160,7 +161,11 @@ nav{display:flex;gap:8px;align-items:center}
 #workspace{padding:8px 0 40px}
 .board-page{padding:0}
 .loop-bar{display:flex;align-items:center;gap:12px 20px;flex-wrap:wrap;padding:14px 32px;border-bottom:1px solid var(--rule)}
-.pick-progress{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.board-head{min-width:0}
+.board-name{font-size:18px;font-weight:700;letter-spacing:-.01em;line-height:1.25}
+.board-meta{color:var(--ink-3)}
+.board-meta:empty{display:none}
+.pick-progress{display:flex;align-items:center;flex-wrap:wrap;gap:2px 14px;margin-top:4px;font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 #pick-count{font-weight:650;color:var(--ink)}
 /* The pick meter is the setup numbers themselves: drawn solid once a cut has a pick. */
 .pick-meter{display:flex;gap:4px}
@@ -269,8 +274,8 @@ dialog::backdrop{background:rgba(221,225,229,.9)}
 .fig figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px;font:400 13px/1.3 var(--script);color:var(--ink-3)}
 .fig figcaption b{font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.02em}
 .fig figcaption span{text-align:right;overflow-wrap:anywhere}
-.take-zoom,.frame-empty{display:flex;align-items:center;justify-content:center;width:100%;height:400px;padding:0;border-radius:0;background:var(--page-tint);cursor:zoom-in}
-.compare-images:not(:has(.fig-hero)):not(:has(.fig-picked)) .take-zoom{height:440px}
+.take-zoom,.frame-empty{display:flex;align-items:center;justify-content:center;width:100%;height:340px;padding:0;border-radius:0;background:var(--page-tint);cursor:zoom-in}
+.compare-images:not(:has(.fig-hero)):not(:has(.fig-picked)) .take-zoom{height:400px}
 .take-zoom img{display:block;width:100%;height:100%;object-fit:contain}
 .take-zoom:focus-visible{outline-offset:3px}
 .frame-empty{cursor:default}
@@ -278,7 +283,7 @@ dialog::backdrop{background:rgba(221,225,229,.9)}
 .takes-head{display:flex;align-items:center;gap:12px;margin:24px 0 10px;font-size:13px;color:var(--ink-2)}
 .takes-head h3{font-size:13px;font-weight:650;color:var(--ink)}
 .takes-head button{margin-left:auto}
-.take-strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:14px 12px}
+.take-strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:16px 20px}
 .take{display:block;min-width:0;min-height:0;padding:0;text-align:left;white-space:normal;font:inherit;color:inherit}
 .take:active:not(:disabled){transform:none}
 .take-frame{display:flex;align-items:center;justify-content:center;position:relative;aspect-ratio:3/2;background:var(--page-tint);outline:1px solid transparent;outline-offset:3px;transition:outline-color .15s var(--ease)}
@@ -330,6 +335,13 @@ dialog::backdrop{background:rgba(221,225,229,.9)}
 .seed-row label{flex:1;min-width:0}
 .recipe-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .recipe-group .hero-meta{margin:0}
+/* The hero step in Compare: the same frame and setup line as on the board, with its two actions beside it. */
+.compare-hero{margin-top:28px;padding-top:16px;border-top:1px solid var(--rule)}
+.compare-hero-body{display:flex;flex-wrap:wrap;align-items:flex-start;gap:16px 40px}
+.compare-hero-body>.hero-line:not(:empty){flex:0 1 300px;min-width:240px}
+.compare-hero-text{flex:1 1 320px;min-width:0}
+.compare-hero-text>.hero-meta:first-child{margin-top:0}
+.hero-reason{margin-top:8px;color:var(--ink-2)}
 
 /* Storyboard export: the sheet that goes out, the picks on it, and what the ZIP holds. */
 .layout-switch{width:240px;flex:none}
@@ -394,10 +406,11 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
   main{padding:0}.topbar{height:56px;padding:0 12px 0 16px}.brand-logo{width:clamp(110px,30vw,129px);height:auto}nav{gap:4px}.topbar nav>*{padding:0 12px;font-size:13px}
   .page{box-shadow:none}
   .home-page{display:flex;flex-direction:column;padding:20px 16px 28px}
-  .intro{display:contents}
-  .home-title{font-size:30px}.home-lede{font-size:15px;margin-top:8px}
-  .intro-actions{order:2;margin-top:20px}.intro-actions button{flex:1}
-  .lined-scene{order:1;margin-top:18px}.facts{order:3}
+  /* Phones see the scene and all six cuts first; the explanation and the buttons follow. */
+  .intro,.intro-words{display:contents}
+  .home-title{font-size:30px}.home-lede{order:2;font-size:15px;margin-top:20px}
+  .intro-actions{order:3;margin-top:16px}.intro-actions button{flex:1}
+  .lined-scene{order:1;margin-top:14px}.facts{order:4}
   .scene-line{text-align:left;font-size:17px;line-height:1.4}
   .setups{flex-wrap:wrap;gap:10px;padding-top:0;margin-top:10px}
   .setups::before,.setup::before{display:none}
@@ -416,10 +429,11 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
   #workspace{padding:0 0 24px}
   .loop-bar{padding:8px 16px 12px;gap:8px}
   .loop-actions{display:contents}
-  .pick-progress{flex:1 1 auto;gap:10px}
-  #edit-toggle{order:1;margin-right:-10px}
-  .render-group{order:2;flex:1 1 100%}.render-group>button{flex:1}
-  .loop-actions>#storyboard{order:3;flex:1 1 100%}
+  .board-head{flex:1 1 auto}.board-name{font-size:16px}.pick-progress{gap:2px 10px}
+  .board-head{flex-basis:100%}
+  .render-group{order:1;flex:1 1 100%}.render-group>button{flex:1}
+  .loop-actions>#storyboard{order:2;flex:1 1 auto}
+  #edit-toggle{order:3}
   .queue-panel{padding:12px 16px 0}
   .lined-board{grid-template-columns:minmax(0,1fr);gap:20px;padding:16px 16px 28px}
   .script-col{position:static;max-height:none;overflow:visible;padding:0}
@@ -446,8 +460,9 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
   .compare-viewer{order:1;padding:16px 16px 0}
   .sheet-actions{order:2;margin:12px 16px 0}
   .compare-takes{order:3;padding:0 16px}
-  .sheet-head{order:4;margin-top:24px;padding:20px 16px 0;border-top:1px solid var(--rule)}
-  .take-sheet{order:5;padding:0 16px 32px}
+  .compare-hero{order:4;margin:24px 16px 0}
+  .sheet-head{order:5;margin-top:24px;padding:20px 16px 0;border-top:1px solid var(--rule)}
+  .take-sheet{order:6;padding:0 16px 32px}
   #compare-switch{display:grid;margin-bottom:12px}
   .compare-images,.compare-images:has(.fig-hero),.compare-images:has(.fig-picked){grid-template-columns:minmax(0,1fr)}
   .compare-images[data-show="take"] .fig-hero,.compare-images[data-show="take"] .fig-picked,.compare-images[data-show="other"] .fig-take{display:none}
@@ -474,9 +489,14 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
   .icon{width:48px;height:48px}.rail-cut{min-height:48px}.take-strip{gap:12px}
   /* The 48px target stays, but filled and outlined buttons paint inside a transparent rim: 36px for page buttons, 32px in the header,
      30px for chips. The focus ring keeps a 3px gap from the paint. */
-  .primary,.quiet,.plain,.state,.icon,.chip{border:6px solid transparent;background-clip:padding-box;outline-offset:-3px;padding-top:0;padding-bottom:0}
-  .topbar nav>*{min-height:48px;border-width:8px;outline-offset:-5px}.chip{border-width:9px;outline-offset:-6px}
-  .seg>label,.seg>button{min-height:44px}
+  .primary,.quiet,.plain,.state,.chip{border:solid transparent;border-width:6px 0;background-clip:padding-box;padding-top:0;padding-bottom:0}
+  .icon{border:6px solid transparent;background-clip:padding-box;outline-offset:-3px}
+  .topbar nav>*{min-height:48px;border-width:8px 0}.chip{border-width:9px 0}
+  /* Single-line fields paint at button height inside the same 48px rim; their edge is an inset line. */
+  input:not([type=checkbox]):not([type=radio]),select{border:solid transparent;border-width:6px 0;background-clip:padding-box;box-shadow:inset 0 0 0 1px var(--rule-strong)}
+  input:not([type=checkbox]):not([type=radio]):focus,select:focus{border-color:transparent;box-shadow:inset 0 0 0 2px var(--ink)}
+  /* Segments paint at button height; the touch band reaches 6px above and below the strip. */
+  .seg>label,.seg>button{min-height:36px}.seg>label::after,.seg>button::after{content:"";position:absolute;inset:-6px 0}.seg{margin:6px 0}
   .back{margin-left:-14px}
   .brand{min-height:48px}.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-width:48px;min-height:48px}
   .toggle{min-height:48px;margin-top:8px}
