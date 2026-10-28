@@ -16,6 +16,7 @@ const element = id => {
   }
   return elements.get(id);
 };
+const links = []; links.removed = 0;
 const queue = [], listeners = {}, states = [null], history = {backs:0,
   get entries(){return states.length;}, get state(){return states.at(-1);},
   pushState(state){states.push(state);},
@@ -26,7 +27,9 @@ const browserBack = () => { states.pop(); listeners.popstate(); flush(); };
 const browserForward = state => { states.push(state); listeners.popstate(); flush(); };
 const window = {addEventListener:(type, fn)=>{listeners[type]=fn;}, history};
 const context = vm.createContext({
-  document:{getElementById:element, querySelectorAll:()=>[], addEventListener:()=>{}},
+  document:{getElementById:element, querySelectorAll:()=>[], addEventListener:()=>{},
+    createElement:tag=>{const link={tag, clicked:0, click(){link.clicked++;}, remove(){links.removed++;}}; links.push(link); return link;},
+    body:{append:()=>{}}},
   window, history, location:{hash:''},
   setInterval:()=>{}, setTimeout:()=>{}, clearTimeout:()=>{},
   fetch:()=>new Promise(()=>{})
@@ -180,6 +183,11 @@ assert.equal(element('storyboard-dialog').open, false, 'Back closes the storyboa
 assert.equal(history.entries, 1);
 element('storyboard').onclick(); element('close-storyboard').onclick(); flush();
 assert.equal(history.entries, 1, 'Closing it removes its entry');
+// The ZIP downloads through a link, so the page does not navigate and its polling request is not cancelled.
+element('export').onclick();
+assert.deepEqual([links.at(-1).tag, links.at(-1).href, links.at(-1).download, links.at(-1).clicked, links.removed],
+                 ['a', `/api/boards/${continuity.id}/export`, 'shot-board.zip', 1, 1]);
+assert.equal(context.location.href, undefined, 'No navigation');
 element('image-full').onload();
 assert.equal(element('image-full').classList.contains('loaded'), true);
 assert.equal(element('image-preview').hidden, true);
