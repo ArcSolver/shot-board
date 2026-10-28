@@ -7,3 +7,5 @@
 .reset-actions{display:flex;justify-content:flex-end;gap:8px}
 /* The inline "run Shot Board locally" link keeps its line height but gets a 48px touch target. */
 @media(pointer:coarse){.static-note a{padding:16px 0}}
+/* Phones read "Run locally" so the header button stays short next to the logo. */
+@media(max-width:600px){.wide-label{display:none}}
