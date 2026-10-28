@@ -10,6 +10,8 @@ Target categories: **Best Overall** and **Open Weights Only**. Every reference-e
 
 ## Try it without a GPU
 
+Try the [live demo on GitHub Pages](https://arcsolver.github.io/shot-board/) in your browser.
+
 Browse, review and export the three boards that ship with the repo. You need Git and uv.
 
 ```sh
@@ -89,4 +91,3 @@ Explore the greenhouse and hangar boards, with saved takes, reviews and recipes.
 Shot Board source is [MIT](LICENSE).
 
 SDXL Base 1.0 is licensed under CreativeML Open RAIL++-M. The Qwen diffusion model, encoder, vision projector and VAE are Apache-2.0. ComfyUI is GPL-3.0. ComfyUI-GGUF is Apache-2.0. Comfy SDK and comfy-api-proxy are MIT. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [workflows/](workflows/).
-
