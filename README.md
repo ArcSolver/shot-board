@@ -4,6 +4,8 @@
 
 **A storyboard app for film coverage: one scene, six shots.**
 
+Target categories: **Best Overall** and **Open Weights Only**. Every reference-edited frame runs through open-weights Qwen-Image-Edit-2511 on local ComfyUI.
+
 ![Six-shot storyboard of a traveler finding a brass compass in a rainy greenhouse](examples/greenhouse-continuity/storyboard-landscape.png)
 
 ## Try it without a GPU
