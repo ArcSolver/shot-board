@@ -54,6 +54,8 @@ class PageTests(unittest.TestCase):
         self.assertGreater(css.index('@media(pointer:coarse)'), css.index('@media(max-width:600px)'),
                            'Touch sizes come after the phone layout so they win')
         self.assertIn('background-clip:padding-box', touch, 'Filled buttons paint inside the 48px target')
+        rim = re.search(r'([.\w,-]+)\{border:4px solid transparent', touch).group(1).split(',')
+        self.assertIn('.on-photo', rim, 'The button on the cover photo paints at the same size as the others')
 
     def test_review_note_spans_the_take_and_dialogs_focus_their_title(self):
         css = (STATIC / 'style.css').read_text()

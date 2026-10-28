@@ -267,9 +267,9 @@ footer{display:flex;justify-content:space-between;align-items:center;gap:16px;pa
 /* Touch: every control is at least 48px tall (iOS asks 44, Android 48), also on rotated phones. */
 @media(pointer:coarse){
   button,.button,nav button,.card-bottom>button,.link,.chip,.takes-select select,select,input:not([type=checkbox]),summary{min-height:48px}
-  .icon{width:48px;height:48px}.take-thumb{width:64px;height:48px}
+  .icon{width:48px;height:48px}.take-thumb{width:64px;height:48px}.take-strip{gap:8px}
   /* The 48px target stays, but filled buttons paint inside a transparent rim so they keep desktop proportions and visible gaps. */
-  .primary,.quiet,.tinted,.plain,.chip,.icon{border:4px solid transparent;background-clip:padding-box;outline-offset:-1px}.icon{border-width:6px}
+  .primary,.quiet,.tinted,.plain,.chip,.icon,.on-photo{border:4px solid transparent;background-clip:padding-box;outline-offset:-1px}.icon{border-width:6px}.on-photo{box-shadow:0 2px 8px -4px rgba(0,0,0,.24)}
   .brand{min-height:48px}.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-width:48px;min-height:48px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-property:opacity,background-color,color,box-shadow!important;scroll-behavior:auto!important}button:active:not(:disabled){transform:none}}
