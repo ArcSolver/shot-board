@@ -61,13 +61,22 @@ assert.equal(element('use-hero').disabled, true);
     {shot:'s01',take:'review-pass',verdict:'pass',note:'<b>Clear</b> "subject"'},
     {shot:'s01',take:'review-fail',verdict:'fail',note:'Too tight'}
   ];
-  const verdict = expr => /<option value="(\w+)" selected>/.exec(vm.runInContext(expr, context))[1];
+  const verdict = expr => /value="(\w+)" checked>/.exec(vm.runInContext(expr, context))[1];
   assert.equal(verdict('reviewEditor(board.shots[0],board.shots[0].takes.find(t=>t.id===referenceId))'), 'fail');
   vm.runInContext('board.shots[0].picked=null;', context);
   assert.equal(verdict('reviewEditor(board.shots[0],board.shots[0].takes[0])'), 'pass');
   const editor = vm.runInContext('reviewEditor(board.shots[0],board.shots[0].takes[0])', context);
   assert.match(editor, /&lt;b&gt;Clear&lt;\/b&gt; &quot;subject&quot;/);
   assert.doesNotMatch(editor, /<b>Clear<\/b>/);
+  assert.match(editor, /Saved<\/span>/);
+  vm.runInContext('reviewDrafts.set(`${board.id}/s01/review-pass`,{verdict:"fail",note:"x"});', context);
+  assert.match(vm.runInContext('reviewEditor(board.shots[0],board.shots[0].takes[0])', context), /value="fail" checked>[\s\S]*Unsaved changes/, 'A draft shows as unsaved');
+  // The take that already is the hero cannot be made the hero again.
+  const reloaded = JSON.parse(fs.readFileSync(path.join(root, 'examples/greenhouse-continuity/board.json'), 'utf8'));
+  context.fixture = reloaded;
+  vm.runInContext('board=fixture; currentShot="s02"; renderCompare();', context);
+  assert.equal(element('use-hero').disabled, true);
+  assert.match(element('hero-note').textContent, /is the hero/);
   console.log('Hero UI: Qwen disabled and blocked, SDXL enabled, empty pick disabled.');
   console.log('Review UI: verdict follows take, unpicked preview and note escaping passed.');
 })().catch(error=>{console.error(error); process.exitCode=1;});
