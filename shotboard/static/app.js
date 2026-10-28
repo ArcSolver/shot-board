@@ -18,6 +18,13 @@ const choices = {lens:'35', angle:'Eye level', move:'Static', lighting:'Window l
 const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const busy = () => board?.shots.some(s => s.takes.some(t => ['queued','running'].includes(t.status)));
 const imageURL = (take) => `/api/boards/${board.id}/images/${take.image}`;
+// Every board image goes through img(): lazy unless it is the first one on screen. The static viewer
+// swaps in sized WebP copies (window.SB.sized); only the enlarged view and downloads use the original.
+const SIZES={cover:'(max-width:600px) 470px, (max-width:1100px) 50vw, 620px',cut:'(max-width:600px) 31vw, (max-width:1100px) 26vw, 260px',gallery:'(max-width:600px) 215px, 270px',card:'(max-width:600px) calc(100vw - 32px), (max-width:1100px) calc(50vw - 52px), 440px',thumb:'64px',compare:'(max-width:600px) calc(96vw - 36px), (max-width:1100px) calc(47vw - 38px), 640px'};
+function img(url,alt,sizes,first=false){
+  const sized=window.SB?.sized?.(url);
+  return `<img src="${sized?.src||url}"${sized?` srcset="${sized.srcset}" sizes="${sizes}"`:''} alt="${escapeHTML(alt)}" decoding="async"${first?' fetchpriority="high"':' loading="lazy"'}>`;
+}
 // The toast is a manual popover so it shows in the top layer, above an open Compare or Storyboard dialog and its backdrop.
 // Inside a modal dialog it moves into that dialog, so it is not inert and its status is still announced.
 function toast(message) {
@@ -67,6 +74,9 @@ function render() {
   $('queue-detail').textContent=running?`${running.phase} · ${Math.floor((Date.now()/1000)-running.started_at)}s elapsed`:'Waiting for the worker';
   $('queue-progress').max=takes.length||1;$('queue-progress').value=completed;
   $('recipe-label').textContent=heroRef?`Hero ${heroRef.shot_id.toUpperCase()} / ${heroRef.take_id.toUpperCase()} · ${heroRef.settings.label}`:'SDXL Base 1.0';
+  const reviewed=board.review?.some(r=>r.verdict!=='pending'), heroAt=board.shots.findIndex(s=>s.id===heroRef?.shot_id);
+  $('review-legend').hidden=!reviewed;
+  $('review-legend').textContent=heroAt>=0?`Pass and Fail are continuity review results against the hero, ${String(heroAt+1).padStart(2,'0')} ${board.shots[heroAt].title}.`:"Pass and Fail are review results against each cut's prompt.";
   $('recipe-detail').textContent=heroRef?(heroRef.source?.type==='imported'?`${heroRef.settings.width} × ${heroRef.settings.height}`:`${heroRef.settings.steps} steps · seed ${heroRef.seed}`):'20 steps';
   const signature=JSON.stringify([board.continuity,board.review,board.shots.map(s=>[s.title,s.prompt,s.picked,s.locked_seed,s.takes.map(t=>[t.id,t.status,t.image,t.error])])]);
   if(signature!==lastSignature){
@@ -78,7 +88,7 @@ function render() {
       const badge=heroRef?.shot_id===s.id&&continuity.enabled?'<span class="badge hero">★ Hero</span>':'';
       const at=strip.findIndex(t=>t.id===s.picked), shown=strip.length<=5?strip:at<4?strip.slice(0,4):[...strip.slice(0,3),strip[at]];
       const label=hero?(s.picked?'':'Preview · '+hero.id.toUpperCase()):active?'Rendering':s.takes.some(t=>t.status==='queued')?'Queued':s.takes.some(t=>t.status==='failed')?'Failed':'', status=label?`<span class="frame-status">${label}</span>`:'';
-      return `<article class="shot-card ${s.picked?'picked':''}"><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?`<img src="${imageURL(hero)}" alt="${escapeHTML(s.title)} ${hero.id}">`:`<span class="empty-frame">${String(i+1).padStart(2,'0')}</span>`}${badge}${status}</div><div class="shot-label"><h3>${pictogram(s.shot_type||s.title)}<b>${String(i+1).padStart(2,'0')}</b><span>${escapeHTML(s.title)}</span></h3>${verdict}</div><div class="card-bottom"><div class="take-strip">${shown.map(t=>`<button class="take-thumb ${s.picked===t.id?'selected':''}" data-compare="${s.id}" aria-label="Compare ${escapeHTML(s.title)} ${t.id}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${t.id}">`:t.status==='running'?'…':t.status==='queued'?t.id:escapeHTML(t.status)}</button>`).join('')}${shown.length<strip.length?`<button class="take-thumb more" data-compare="${s.id}" aria-label="Compare all ${strip.length} takes of ${escapeHTML(s.title)}">+${strip.length-shown.length}</button>`:''}</div><button class="${s.picked||!ready.length?'quiet':'tinted'}" data-compare="${s.id}">Compare &amp; pick</button></div></article>`;
+      return `<article class="shot-card ${s.picked?'picked':''}"><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?img(imageURL(hero),`${s.title} ${hero.id}`,SIZES.card,i===0):`<span class="empty-frame">${String(i+1).padStart(2,'0')}</span>`}${badge}${status}</div><div class="shot-label"><h3>${pictogram(s.shot_type||s.title)}<b>${String(i+1).padStart(2,'0')}</b><span>${escapeHTML(s.title)}</span></h3>${verdict}</div><div class="card-bottom"><div class="take-strip">${shown.map(t=>`<button class="take-thumb ${s.picked===t.id?'selected':''}" data-compare="${s.id}" aria-label="Compare ${escapeHTML(s.title)} ${t.id}">${t.status==='succeeded'?img(imageURL(t),t.id,SIZES.thumb):t.status==='running'?'…':t.status==='queued'?t.id:escapeHTML(t.status)}</button>`).join('')}${shown.length<strip.length?`<button class="take-thumb more" data-compare="${s.id}" aria-label="Compare all ${strip.length} takes of ${escapeHTML(s.title)}">+${strip.length-shown.length}</button>`:''}</div><button class="${s.picked||!ready.length?'quiet':'tinted'}" data-compare="${s.id}">Compare &amp; pick</button></div></article>`;
     }).join('');
     document.querySelectorAll('[data-compare]').forEach(el=>{el.onclick=()=>openCompare(el.dataset.compare);el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openCompare(el.dataset.compare);}};});
     if($('compare-dialog').open)renderCompare();
@@ -90,8 +100,9 @@ function renderCompare(){
   const s=board.shots.find(s=>s.id===currentShot);if(!s)return;
   $('compare-title').textContent=s.title;
   $('compare-index').textContent=`· ${board.shots.indexOf(s)+1} of ${board.shots.length}`;
-  $('compare-images').innerHTML=s.takes.length?s.takes.map(t=>`<div class="compare-take ${s.picked===t.id?'chosen':''} ${t.status!=='succeeded'?'unavailable':''}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${escapeHTML(s.title)} ${t.id}">`:'<div class="shot-hero"><span class="empty-frame take-state">'+escapeHTML(t.status)+'</span></div>'}<div><div><strong>${t.id.toUpperCase()}</strong><small>${t.reference?'Qwen reference edit':t.settings?escapeHTML(t.settings.label):''}</small><details class="take-details"><summary>Render details</summary>${renderDetails(t)}${t.error?`<small>${escapeHTML(t.error)}</small>`:''}</details></div><button class="${s.picked===t.id?'primary':'tinted'}" data-pick="${t.id}" ${t.status!=='succeeded'?'disabled':''}>${s.picked===t.id?'✓ Picked':'Pick'}</button></div>${reviewEditor(s,t)}</div>`).join(''):'<p class="muted">No takes yet.</p>';
+  $('compare-images').innerHTML=s.takes.length?s.takes.map((t,i)=>`<div class="compare-take ${s.picked===t.id?'chosen':''} ${t.status!=='succeeded'?'unavailable':''}">${t.status==='succeeded'?`<button class="take-zoom" data-zoom="${t.id}" aria-label="Enlarge ${escapeHTML(s.title)} ${t.id}">${img(imageURL(t),`${s.title} ${t.id}`,SIZES.compare,i===0)}</button>`:'<div class="shot-hero"><span class="empty-frame take-state">'+escapeHTML(t.status)+'</span></div>'}<div><div><strong>${t.id.toUpperCase()}</strong><small>${t.reference?'Qwen reference edit':t.settings?escapeHTML(t.settings.label):''}</small><details class="take-details"><summary>Render details</summary>${renderDetails(t)}${t.error?`<small>${escapeHTML(t.error)}</small>`:''}</details></div><button class="${s.picked===t.id?'primary':'tinted'}" data-pick="${t.id}" ${t.status!=='succeeded'?'disabled':''}>${s.picked===t.id?'✓ Picked':'Pick'}</button></div>${reviewEditor(s,t)}</div>`).join(''):'<p class="muted">No takes yet.</p>';
   document.querySelectorAll('[data-pick]').forEach(el=>el.onclick=guarded(async()=>{await api(`/boards/${board.id}/shots/${s.id}/pick`,'POST',{take_id:el.dataset.pick});await refresh();$('reuse-seed').value=board.shots.find(x=>x.id===s.id).takes.find(t=>t.id===el.dataset.pick).seed;}));
+  document.querySelectorAll('[data-zoom]').forEach(el=>el.onclick=()=>openImage(s,s.takes.find(t=>t.id===el.dataset.zoom)));
   bindReviewEditors('#compare-images');
   $('seed-lock').textContent=s.locked_seed!==null?'Unlock seed':'Lock seed';
   const picked=s.takes.find(t=>t.id===s.picked), imported=isImported(picked);
@@ -102,7 +113,25 @@ function renderCompare(){
   $('use-hero').disabled=busy()||!heroAllowed;
   $('more-takes').disabled=busy()||(board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id);
 }
-function openCompare(id){currentShot=id;renderCompare();const s=board.shots.find(s=>s.id===id),t=s.takes.find(t=>t.id===s.picked)||s.takes.find(t=>t.status==='succeeded');$('reuse-seed').value=s.locked_seed??t?.seed??board.config.seed;if(!$('compare-dialog').open)$('compare-dialog').showModal();}
+function openCompare(id){currentShot=id;renderCompare();const s=board.shots.find(s=>s.id===id),t=s.takes.find(t=>t.id===s.picked)||s.takes.find(t=>t.status==='succeeded');$('reuse-seed').value=s.locked_seed??t?.seed??board.config.seed;showDialog($('compare-dialog'));}
+// Back closes Compare or the enlarged image instead of leaving the board: opening one adds a history entry with the same URL.
+let ownBack=0;
+function showDialog(dialog){if(dialog.open)return;dialog.showModal();if(window.history?.pushState){history.pushState({dialog:dialog.id},'');dialog.dataset.history='1';}}
+function closedDialog(dialog){if(dialog.dataset.history!=='1')return;delete dialog.dataset.history;if(dialog.dataset.popped)delete dialog.dataset.popped;else{ownBack++;history.back();}}
+window.addEventListener('popstate',()=>{if(ownBack){ownBack--;return;}const open=[$('image-dialog'),$('compare-dialog')].find(d=>d.open&&d.dataset.history==='1');if(open){open.dataset.popped='1';open.close();}});
+$('compare-dialog').onclose=()=>closedDialog($('compare-dialog'));$('image-dialog').onclose=()=>closedDialog($('image-dialog'));
+// The original PNG opens full size; the sized copy already on screen stands in until it arrives.
+function openImage(shot,take){
+  const full=$('image-full'),preview=$('image-preview'),shown=document.querySelector?.(`[data-zoom="${take.id}"] img`)?.currentSrc;
+  $('image-title').textContent=`${shot.title} · ${take.id.toUpperCase()}`;
+  full.alt=`${shot.title} ${take.id} original`;full.classList.remove('loaded','actual');full.removeAttribute('src');
+  if(shown)preview.src=shown;else preview.removeAttribute('src');preview.hidden=!shown;
+  full.onload=()=>{full.classList.add('loaded');preview.hidden=true;};full.src=imageURL(take);
+  showDialog($('image-dialog'));
+}
+$('close-image').onclick=()=>$('image-dialog').close();
+$('image-full').onclick=()=>$('image-full').classList.toggle('actual');
+if(window.history?.state?.dialog)history.replaceState(null,'');
 function showEditors(){
   $('shot-list').innerHTML=board.shots.map(s=>`<div class="shot-editor"><div><label>Cut title<input id="title-${s.id}" value="${escapeHTML(s.title)}"></label><label>SDXL width<input type="number" min="512" max="1536" step="64" id="width-${s.id}" value="${s.render_settings?.width||1024}"></label><label>SDXL height<input type="number" min="512" max="1536" step="64" id="height-${s.id}" value="${s.render_settings?.height||576}"></label><label>SDXL CFG<input type="number" min="1" max="12" step="0.1" id="cfg-${s.id}" value="${s.render_settings?.cfg||6}"></label><button data-save="${s.id}">Save cut</button></div><div><label>Prompt<textarea id="prompt-${s.id}">${escapeHTML(s.prompt)}</textarea></label><label>Negative prompt<input class="editor-negative" id="negative-${s.id}" value="${escapeHTML(s.negative)}"></label></div></div>`).join('');
   document.querySelectorAll('[data-save]').forEach(button=>button.onclick=guarded(async()=>{const s=button.dataset.save;await api(`/boards/${board.id}/shots/${s}`,'PATCH',{title:$('title-'+s).value,prompt:$('prompt-'+s).value,negative:$('negative-'+s).value,render_settings:{width:Number($('width-'+s).value),height:Number($('height-'+s).value),cfg:Number($('cfg-'+s).value)}});await refresh();toast('Cut saved.');}));
@@ -170,8 +199,8 @@ async function loadGallery(){
   const featured=examples[0], b=featured.board;
   const picked=s=>s.takes.find(t=>t.id===s.picked);
   const url=(ex,s)=>`/api/examples/${ex.slug}/images/${picked(s).image}`;
-  $('featured-board').innerHTML=`<div class="featured-content"><div class="feature-cover"><img src="${url(featured,b.shots[1])}" alt="Traveler in a mustard raincoat examining a brass compass"><div class="feature-caption"><h2>The greenhouse</h2><button class="on-photo" data-example="${featured.slug}">Explore the board</button></div></div><div class="feature-mosaic">${b.shots.map((s,i)=>`<button class="feature-cut" data-example="${featured.slug}" data-cut="${s.id}" aria-label="Open ${escapeHTML(s.title)}"><img src="${url(featured,s)}" alt="${escapeHTML(s.title)} selected render"><span>${String(i+1).padStart(2,'0')} ${escapeHTML(s.title)}</span></button>`).join('')}</div></div>`;
-  $('example-gallery').innerHTML=examples.map(ex=>`<button class="gallery-card" data-example="${ex.slug}"><div class="gallery-images">${[0,2,4].map(i=>`<img loading="lazy" src="${url(ex,ex.board.shots[i])}" alt="${escapeHTML(ex.board.shots[i].title)} render">`).join('')}</div><div class="gallery-caption"><span>${escapeHTML(ex.label)}</span><small>${ex.board.shots.length} cuts</small></div></button>`).join('');
+  $('featured-board').innerHTML=`<div class="featured-content"><div class="feature-cover">${img(url(featured,b.shots[1]),'Traveler in a mustard raincoat examining a brass compass',SIZES.cover,true)}<div class="feature-caption"><h2>The greenhouse</h2><button class="on-photo" data-example="${featured.slug}">Explore the board</button></div></div><div class="feature-mosaic">${b.shots.map((s,i)=>`<button class="feature-cut" data-example="${featured.slug}" data-cut="${s.id}" aria-label="Open ${escapeHTML(s.title)}">${img(url(featured,s),`${s.title} selected render`,SIZES.cut)}<span>${String(i+1).padStart(2,'0')} ${escapeHTML(s.title)}</span></button>`).join('')}</div></div>`;
+  $('example-gallery').innerHTML=examples.map(ex=>`<button class="gallery-card" data-example="${ex.slug}"><div class="gallery-images">${[0,2,4].map(i=>img(url(ex,ex.board.shots[i]),`${ex.board.shots[i].title} render`,SIZES.gallery)).join('')}</div><div class="gallery-caption"><span>${escapeHTML(ex.label)}</span><small>${ex.board.shots.length} cuts</small></div></button>`).join('');
   document.querySelectorAll('[data-example]').forEach(el=>el.onclick=guarded(async()=>{const opened=await api(`/examples/${el.dataset.example}/open`,'POST');await openBoard(opened.id);window.scrollTo(0,0);if(el.dataset.cut)openCompare(el.dataset.cut);}));
   coveragePreview();
 }
@@ -212,7 +241,7 @@ $('previous-cut').onclick=()=>navigateCut(-1);$('next-cut').onclick=()=>navigate
 document.addEventListener('keydown',event=>{
   if(['INPUT','TEXTAREA','SELECT','SUMMARY'].includes(event.target.tagName)||event.altKey||event.ctrlKey||event.metaKey)return;
   if(!board||!['ArrowLeft','ArrowRight'].includes(event.key))return;
-  if($('storyboard-dialog').open||$('boards-dialog').open)return;
+  if($('storyboard-dialog').open||$('boards-dialog').open||$('image-dialog').open)return;
   event.preventDefault();const delta=event.key==='ArrowRight'?1:-1;
   if($('compare-dialog').open)navigateCut(delta);
   else{const cards=[...document.querySelectorAll('.shot-hero[data-compare]')];const index=cards.indexOf(document.activeElement);cards[(index+delta+cards.length)%cards.length]?.focus();}
