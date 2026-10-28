@@ -111,6 +111,9 @@ function render() {
   $('generate').className=needsRender&&!allPicked?'primary':'quiet';
   $('generate').textContent=board.continuity?.enabled?'Render reference edits':takes.length?'Render more takes':'Render board';
   $('pick-count').textContent=`${picked} of ${board.shots.length} picked`;
+  const example=examples.find(ex=>ex.board.id===board.id), heroIndex=shotIndex(heroRef?.shot_id);
+  $('board-name').textContent=example?example.label:'Your scene';
+  $('board-meta').textContent=heroRef&&continuity.enabled&&heroIndex>=0?`Hero ${NN(heroIndex)} ${board.shots[heroIndex].title}${heroRef.source?.type==='imported'?', imported':''}`:'';
   $('pick-meter').innerHTML=board.shots.map((s,i)=>`<i class="${s.picked?'on':''}">${NN(i)}</i>`).join('');
   $('queue-panel').hidden=!busy();
   const running=takes.find(t=>t.status==='running'),queued=takes.filter(t=>t.status==='queued').length;
@@ -206,11 +209,19 @@ function renderCompare(){
   $('reuse-seed').disabled=imported;
   $('seed-lock').disabled=busy()||(s.locked_seed===null&&(imported||!s.takes.some(t=>t.status==='succeeded' && t.seed!==null)));
   $('import-reference').disabled=busy();
+  // An imported still has no seed: say so instead of showing the board seed next to it.
+  $('seed-row').hidden=imported&&s.locked_seed===null;
+  $('seed-note').hidden=!$('seed-row').hidden;
+  $('seed-note').textContent=`The picked take ${s.picked?.toUpperCase()||''} is an imported reference, so it has no seed. Pick an SDXL take to reuse its seed.`;
   const heroAllowed=canBeHero(picked), h=board.continuity?.hero;
   const isHero=!!h&&board.continuity.enabled&&h.shot_id===s.id&&h.take_id===s.picked;
   $('use-hero').disabled=busy()||!heroAllowed||isHero;
+  const reason=busy()?'Wait for the queue to finish.':isHero?'':!picked?'Pick a take first.':!heroAllowed?`${HERO_RULE} ${picked.id.toUpperCase()} is a reference edit.`:'';
+  $('hero-reason').hidden=!reason;$('hero-reason').textContent=reason;
+  $('compare-hero-line').innerHTML=h?heroLine():'';
+  document.querySelectorAll('#compare-hero-line [data-compare]').forEach(el=>el.onclick=()=>{openCompare(el.dataset.compare);$('compare-dialog').scrollTop=0;});
   $('hero-note').textContent=h&&h.shot_id===s.id&&h.take_id===s.picked?`The picked take ${s.picked.toUpperCase()} is the hero. Render reference edits redraws the other cuts from it.`
-    :h?`Hero: ${NN(shotIndex(h.shot_id))} ${board.shots[shotIndex(h.shot_id)]?.title||''}, ${h.source?.type==='imported'?'imported reference':h.take_id.toUpperCase()}. Pick an SDXL take or an imported reference here to replace it.`
+    :h?`Hero: ${NN(shotIndex(h.shot_id))} ${board.shots[shotIndex(h.shot_id)]?.title||''}, ${h.source?.type==='imported'?'imported reference':h.take_id.toUpperCase()}.${heroAllowed&&!busy()?' Use the picked take here to replace it.':''}`
     :'No hero yet. Pick an SDXL take or an imported reference, then use it as the hero.';
   $('more-takes').disabled=busy()||(board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id);
 }
@@ -343,8 +354,7 @@ function sceneHasPerson(){
 // Six setup lines drop from the scene field onto the coverage template, the same lines the board and home draw.
 function coveragePreview(){
   const types=sceneHasPerson()||!$('scene').value.trim()?coverage.person:coverage.object;
-  const label={'Establishing':'Wide','Over shoulder':'OTS','Side angle':'Side'};
-  $('coverage-preview').innerHTML=`<div class="setups even">${types.map((type,i)=>`<div class="setup"><span class="setup-no">${NN(i)}</span><span class="stem" aria-hidden="true"></span><div class="composition-chip">${pictogram(type)}<span>${label[type]||type}</span></div></div>`).join('')}</div>`;
+  $('coverage-preview').innerHTML=`<div class="setups even">${types.map((type,i)=>`<div class="setup"><span class="setup-no">${NN(i)}</span><span class="stem" aria-hidden="true"></span><div class="composition-chip">${pictogram(type)}<span>${type}</span></div></div>`).join('')}</div>`;
 }
 $('scene').oninput=$('character').oninput=()=>coveragePreview();
 // What the export ZIP holds for the current picks, named as export_board names them.

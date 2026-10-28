@@ -44,7 +44,7 @@
 <section id="workspace" hidden>
   <div class="page board-page">
     <div class="loop-bar">
-      <div class="pick-progress" id="pick-progress" aria-live="polite"><span id="pick-count"></span><span id="pick-meter" class="pick-meter" aria-hidden="true"></span></div>
+      <div class="board-head"><h2 id="board-name" class="board-name"></h2><div class="pick-progress" id="pick-progress" aria-live="polite"><span id="pick-count"></span><span id="pick-meter" class="pick-meter" aria-hidden="true"></span><span id="board-meta" class="board-meta"></span></div></div>
       <div class="loop-actions">
         <button id="edit-toggle" class="plain">Edit cuts</button>
         <div class="render-group"><label class="takes-select"><span class="visually-hidden">Takes per cut</span><select id="takes-count"><option value="2">2 takes</option><option value="1">1 take</option><option value="3">3 takes</option><option value="4">4 takes</option></select></label><button id="generate" class="primary">Render board</button><button id="cancel" class="quiet" hidden>Stop</button></div>
@@ -79,6 +79,7 @@
     <div class="compare-main">
       <div class="compare-viewer"><div id="compare-switch" class="seg view-switch" role="group" aria-label="Show" hidden></div><div id="compare-images" class="compare-images"></div></div>
       <div class="compare-takes"><div class="takes-head"><h3>Takes</h3><span id="takes-meta"></span><button id="more-takes" class="quiet">Render more takes</button></div><div id="take-strip" class="take-strip" role="group" aria-label="Takes"></div></div>
+      <section class="compare-hero" aria-labelledby="compare-hero-heading"><h3 id="compare-hero-heading" class="cue">Hero</h3><div class="compare-hero-body"><div id="compare-hero-line" class="hero-line"></div><div class="compare-hero-text"><p id="hero-note" class="hero-meta"></p><div class="recipe-actions hero-actions"><button id="use-hero" class="quiet">Use selected as hero</button><button id="import-reference" class="quiet">Import reference</button></div><p id="hero-reason" class="hero-meta hero-reason" hidden></p><input id="reference-file" type="file" accept="image/png,image/jpeg,image/webp" hidden></div></div></section>
     </div>
     <div class="take-side">
       <div class="sheet-head"><h3 id="sheet-title"></h3><span id="sheet-cut"></span></div>
@@ -87,8 +88,7 @@
         <div id="review-slot"></div>
         <details class="render-details" id="render-box" open><summary>Render details</summary><dl id="render-details" class="details"></dl></details>
         <div class="compare-recipe">
-          <div class="recipe-group"><h4>Seed</h4><div class="seed-row"><label><span class="visually-hidden">Seed</span><input id="reuse-seed" type="number" min="0" max="4294967295"></label><button id="seed-lock" class="quiet">Lock seed</button></div></div>
-          <div class="recipe-group"><h4>Hero</h4><p id="hero-note" class="hero-meta"></p><div class="recipe-actions"><button id="use-hero" class="quiet">Use selected as hero</button><button id="import-reference" class="quiet">Import reference</button></div><input id="reference-file" type="file" accept="image/png,image/jpeg,image/webp" hidden></div>
+          <div class="recipe-group"><h4>Seed for new takes</h4><div id="seed-row" class="seed-row"><label><span class="visually-hidden">Seed for new takes</span><input id="reuse-seed" type="number" min="0" max="4294967295"></label><button id="seed-lock" class="quiet">Lock seed</button></div><p id="seed-note" class="hero-meta" hidden></p></div>
         </div>
       </div>
     </div>
