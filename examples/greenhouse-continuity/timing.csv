@@ -1,24 +1,54 @@
 shot,title,take,method,seed,width,height,seconds,status,error,picked,image_sha256,device
 s01,Establishing,t01,sdxl-base,20261020,1216,704,3.588,succeeded,,False,735b4f78a8c1911237efbffc62a767329921b0672b3fbfc84058db4ba7153ed7,NVIDIA GeForce RTX 4090
 s01,Establishing,t02,qwen-reference,20261020,1216,704,100.425,succeeded,,False,66314530723b0988cd6aed462a25bbf5ab852ad40986f46c4a75f1f2eea35ff8,NVIDIA GeForce RTX 4090
-s01,Establishing,t03,qwen-reference,20261022,1216,704,96.814,succeeded,,True,768318907212442fbda8f1a636e89db72d8cc9a95c7eec229835292368621d10,NVIDIA GeForce RTX 4090
+s01,Establishing,t03,qwen-reference,20261022,1216,704,96.814,succeeded,,False,768318907212442fbda8f1a636e89db72d8cc9a95c7eec229835292368621d10,NVIDIA GeForce RTX 4090
+s01,Establishing,t04,qwen-reference,20261021,1216,704,86.328,succeeded,,False,14781e93cdbbc196e17295a2ec640c0773f8bfeb0edaf337ccef8d934c7c268b,NVIDIA GeForce RTX 4090
+s01,Establishing,t05,qwen-reference,20261022,1216,704,71.68,succeeded,,False,cd48f63b9b10a2017fb767f01e6396c81b797a9e18d5cbec14f49db22691276d,NVIDIA GeForce RTX 4090
+s01,Establishing,t06,qwen-reference,20261023,1216,704,85.967,succeeded,,True,5930f7744e7fcb78c883c28351a7d2deee6372ff0e1deec74095cb07af324328,NVIDIA GeForce RTX 4090
+s01,Establishing,t07,qwen-reference,20261024,1216,704,70.972,succeeded,,False,d4a02181101ba82e6d585e800b8f916bdcaee5d115095217591e9349173a46d0,NVIDIA GeForce RTX 4090
 s02,Medium,t01,sdxl-base,20261020,1024,768,3.722,succeeded,,False,734c978bcfa0bc6fef1b393a288edbbc31208e1fe1045c392e3c8befeada9dfb,NVIDIA GeForce RTX 4090
 s02,Medium,t02,sdxl-base,20365749,1024,768,3.649,succeeded,,False,2f443f57021bc72d0d24acedfc4910c69c05ea14df1471552c98a2eb467c62cf,NVIDIA GeForce RTX 4090
 s02,Medium,t03,sdxl-base,20470478,1024,768,2.638,succeeded,,False,f3d0b3df9f7f7c1a44319893e3f963816bda078738b59274217fca6116fbe2d8,NVIDIA GeForce RTX 4090
 s02,Medium,t04,sdxl-base,20575207,1024,768,2.662,succeeded,,False,4bf62fb4aa68d6fef72b9c8f7378053c3b7a8f75b8e195906bf0d1220450c0a2,NVIDIA GeForce RTX 4090
-s02,Medium,t05,sdxl-base,20679936,1024,768,3.667,succeeded,,True,100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b,NVIDIA GeForce RTX 4090
+s02,Medium,t05,sdxl-base,20679936,1024,768,3.667,succeeded,,False,100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b,NVIDIA GeForce RTX 4090
 s02,Medium,t06,sdxl-base,20784665,1024,768,3.709,succeeded,,False,bc922743cf798cb993564e35c7bc076db19c3863082ec135a012f3b490c1f8a4,NVIDIA GeForce RTX 4090
 s02,Medium,t07,sdxl-base,20889394,1024,768,2.671,succeeded,,False,d751b365939e226d279edb699a109f647d5d9d375347dba6942f808ad155a933,NVIDIA GeForce RTX 4090
 s02,Medium,t08,sdxl-base,20994123,1024,768,2.836,succeeded,,False,003ac50c1224c3ba04fce9cbad2bf688d9e0480060462d6817c0cfbe0f9170dc,NVIDIA GeForce RTX 4090
+s02,Medium,t09,imported-reference,,1448,1086,0,succeeded,,True,b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8,
 s03,Close-up,t01,sdxl-base,20261020,768,1024,3.697,succeeded,,False,2fce0fbfa3a0f1440d7b9e368be1f221b19d75240b8c6669cafbfda36e9f0505,NVIDIA GeForce RTX 4090
-s03,Close-up,t02,qwen-reference,20261020,768,1024,58.752,failed,ReadError: local generation stopped. Check the local engine and retry.,False,,RTX 4090 target; no SDK-downloaded output
-s03,Close-up,t03,qwen-reference,20261021,768,1024,80.0,succeeded,,True,9f9f47e82ae83e43de40dbd912e2157be8952d2ec5f4d830633d716fa89c663f,NVIDIA GeForce RTX 4090
+s03,Close-up,t02,qwen-reference,20261020,768,1024,58.752,failed,ReadError: local generation stopped. Check the local engine and retry.,False,,NVIDIA GeForce RTX 4090
+s03,Close-up,t03,qwen-reference,20261021,768,1024,80.0,succeeded,,False,9f9f47e82ae83e43de40dbd912e2157be8952d2ec5f4d830633d716fa89c663f,NVIDIA GeForce RTX 4090
+s03,Close-up,t04,qwen-reference,20261021,768,1024,84.796,succeeded,,False,b0a91b366ad148eeaee37fb1957e4e1bf45ea8a1e0ad9686e9080863fbfc9b55,NVIDIA GeForce RTX 4090
+s03,Close-up,t05,qwen-reference,20261022,768,1024,69.069,succeeded,,False,9f3fb308d3858b468d52ea56d332cac1dd41bb94b70d6a6a9551506d6de37c81,NVIDIA GeForce RTX 4090
+s03,Close-up,t06,qwen-reference,20261023,768,1024,69.566,succeeded,,False,e379b1007152b2ccb726e66c6e0b1ff95b16be3cd1e9229e56d9cbf64bd4bae1,NVIDIA GeForce RTX 4090
+s03,Close-up,t07,qwen-reference,20261024,768,1024,69.502,succeeded,,False,d4cefa3b10c0c5e32a5e89505861f183ce679c5a2b0b3e50680cb48cbadd1bfe,NVIDIA GeForce RTX 4090
+s03,Close-up,t08,qwen-reference,20261025,768,1024,83.917,succeeded,,True,0562f4a505ca46fb71c1937b7791d1fa986888b38f5cc1dd887b235b30d07bde,NVIDIA GeForce RTX 4090
+s03,Close-up,t09,qwen-reference,20261026,768,1024,69.632,succeeded,,False,3f243c32a74288e82dcada3212970ea243cf098c3528637136c3b173fd7a4c82,NVIDIA GeForce RTX 4090
 s04,Over shoulder,t01,sdxl-base,20261020,1152,768,3.762,succeeded,,False,9e57f44a904aa21b1c453c1239c52cec362263dc5c27b483dff9743cacb1cf25,NVIDIA GeForce RTX 4090
-s04,Over shoulder,t02,qwen-reference,20261020,1152,768,0.128,failed,ConnectError: local generation stopped. Check the local engine and retry.,False,,RTX 4090 target; no SDK-downloaded output
-s04,Over shoulder,t03,qwen-reference,20261021,1152,768,83.106,succeeded,,True,dc94f4423d212ae95daadfecaf09aa2b389e4ffc86038ee567345561030e461b,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t02,qwen-reference,20261020,1152,768,0.128,failed,ConnectError: local generation stopped. Check the local engine and retry.,False,,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t03,qwen-reference,20261021,1152,768,83.106,succeeded,,False,dc94f4423d212ae95daadfecaf09aa2b389e4ffc86038ee567345561030e461b,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t04,qwen-reference,20261021,1152,768,89.764,succeeded,,False,f12cac58175b177e687d1f95da4fcce62dba592d1dc981246578556073505b1e,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t05,qwen-reference,20261022,1152,768,74.091,succeeded,,False,2d7fcd3f8fc6f68ef2e5bf7efe7ff37d6456f26bab6d2e03fe485e3c34b78b89,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t06,qwen-reference,20261023,1152,768,74.175,succeeded,,False,f3c5811e0b0d5a3f78d1669897f7d4945ddcbd9f56692d287b8073449b671a8f,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t07,qwen-reference,20261024,1152,768,74.156,succeeded,,False,e251b2b9b3f2eecfc24cf0c33b71a4f0e1e983e60189346d102fb4005e1019d2,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t08,qwen-reference,20261025,1152,768,89.622,succeeded,,True,a2175eb2f45b2b6b0cbfd355eb840a4cc290e16b77dd9c01f9519513732ffbe8,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t09,qwen-reference,20261026,1152,768,74.236,succeeded,,False,fdf36bbd6dcebd99b0d11aee73756c829faf93785ef962141de7d8f90c51e0ec,NVIDIA GeForce RTX 4090
 s05,Insert,t01,sdxl-base,20261020,1024,1024,3.777,succeeded,,False,8647ae9f6a69d00d83332f1caa0125a0149bfc533bc189d2b3ffe4e63ca9f1fc,NVIDIA GeForce RTX 4090
-s05,Insert,t02,qwen-reference,20261020,1024,1024,0.018,failed,ConnectError: local generation stopped. Check the local engine and retry.,False,,RTX 4090 target; no SDK-downloaded output
-s05,Insert,t03,qwen-reference,20261021,1024,1024,90.421,succeeded,,True,5429e711191c804c1f49466a43d6e1553458d8a49b1386c1920f079973712478,NVIDIA GeForce RTX 4090
-s06,Low angle,t01,sdxl-base,20261020,768,1024,3.623,succeeded,,True,1e97ec4a9ba2de985b2035be25fea0a7c35a8eb1769813c988caf8a3ca267aeb,NVIDIA GeForce RTX 4090
-s06,Low angle,t02,qwen-reference,20261020,768,1024,0.024,failed,ConnectError: local generation stopped. Check the local engine and retry.,False,,RTX 4090 target; no SDK-downloaded output
-s06,Low angle,t03,qwen-reference,20261021,768,1024,71.517,failed,ReadError: local generation stopped. Check the local engine and retry.,False,,RTX 4090 target; no SDK-downloaded output
+s05,Insert,t02,qwen-reference,20261020,1024,1024,0.018,failed,ConnectError: local generation stopped. Check the local engine and retry.,False,,NVIDIA GeForce RTX 4090
+s05,Insert,t03,qwen-reference,20261021,1024,1024,90.421,succeeded,,False,5429e711191c804c1f49466a43d6e1553458d8a49b1386c1920f079973712478,NVIDIA GeForce RTX 4090
+s05,Insert,t04,qwen-reference,20261021,1024,1024,10.198,failed,ComfyError: local generation stopped. Check the local engine and retry.,False,,NVIDIA GeForce RTX 4090
+s05,Insert,t05,qwen-reference,20261021,1024,1024,139.579,succeeded,,False,43ae5238d10f190979130c83f891bf5e7791ff104c2abc07d041d910d4274666,NVIDIA GeForce RTX 4090
+s05,Insert,t06,qwen-reference,20261022,1024,1024,81.774,succeeded,,False,dada85cad51dc7d6b3d38de03ba280c16f47cb3c9a62ba401ae4a0ef48b8fd4e,NVIDIA GeForce RTX 4090
+s05,Insert,t07,qwen-reference,20261023,1024,1024,81.178,succeeded,,True,688d2d16c9cbbacfd76900624cba733fbc24167726e61ab6bfd513e58f0c5904,NVIDIA GeForce RTX 4090
+s05,Insert,t08,qwen-reference,20261024,1024,1024,82.187,succeeded,,False,17f9a78f335489fa9cc481a6ac1c85ad16967283653a73bdbfe0d9b334555ea9,NVIDIA GeForce RTX 4090
+s05,Insert,t09,qwen-reference,20261025,1024,1024,81.158,succeeded,,False,2d09e4b8eea79a8d1a491736159fc9de94da29ab206b000daeec6f9a4caa0e67,NVIDIA GeForce RTX 4090
+s05,Insert,t10,qwen-reference,20261026,1024,1024,81.336,succeeded,,False,87fb75ac03871d5dbfcb0d8be007e7aa4aaab3eb4ea9222afe2912588ea50a9d,NVIDIA GeForce RTX 4090
+s05,Insert,t11,qwen-reference,20261027,1024,1024,81.872,succeeded,,False,2ca91ee266e9ab0f19d2f76d900cc24b89c01dd63f225caa34600e1826d3192c,NVIDIA GeForce RTX 4090
+s05,Insert,t12,qwen-reference,20261028,1024,1024,82.508,succeeded,,False,5b2e5c383c672399e669f287b85b3fa4347e252ad19c4e0d6ec30b7c560f3ce2,NVIDIA GeForce RTX 4090
+s05,Insert,t13,qwen-reference,20261029,1024,1024,95.98,succeeded,,False,b242aaed74b5cf0e0b00496f68d6150d019cc61877c8316ce89036e18ff5dfee,NVIDIA GeForce RTX 4090
+s05,Insert,t14,qwen-reference,20261030,1024,1024,80.567,succeeded,,False,afc1f8a838489ea4edd2d326120f276e2a9298cc3b21e8aa341adde0ef611c78,NVIDIA GeForce RTX 4090
+s06,Low angle,t01,sdxl-base,20261020,768,1024,3.623,succeeded,,False,1e97ec4a9ba2de985b2035be25fea0a7c35a8eb1769813c988caf8a3ca267aeb,NVIDIA GeForce RTX 4090
+s06,Low angle,t02,qwen-reference,20261020,768,1024,0.024,failed,ConnectError: local generation stopped. Check the local engine and retry.,False,,NVIDIA GeForce RTX 4090
+s06,Low angle,t03,qwen-reference,20261021,768,1024,71.517,failed,ReadError: local generation stopped. Check the local engine and retry.,False,,NVIDIA GeForce RTX 4090
+s06,Low angle,t04,qwen-reference,20261021,768,1024,81.532,succeeded,,False,51942b854327af19c28e86c96cf094f28271197bc36f6d06f4b933ffb480f259,NVIDIA GeForce RTX 4090
+s06,Low angle,t05,qwen-reference,20261022,768,1024,69.443,succeeded,,True,7e4808b0a8e32fe49e9c600227d956bfcb8d70d8ac4a97c964256a83ce8c1920,NVIDIA GeForce RTX 4090

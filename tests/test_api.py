@@ -228,7 +228,13 @@ class APITests(unittest.TestCase):
             self.assertNotIn('private renderer detail', archive.read('manifest.json').decode())
             for shot in manifest['shots']:
                 self.assertIn(shot['image'], archive.namelist())
-                self.assertIn(shot['workflow'], archive.namelist())
+                if (shot.get('source') or {}).get('type') == 'imported':
+                    self.assertIsNone(shot['workflow'])
+                    self.assertIsNone(shot['seed'])
+                    self.assertEqual(shot['models'], [])
+                    self.assertNotIn('workflows/'+shot['id']+'.api.json', archive.namelist())
+                else:
+                    self.assertIn(shot['workflow'], archive.namelist())
 
     def test_seed_zero_and_unlock(self):
         self.client.post(self.base+"/shots/s01/seed",json={"seed":0})

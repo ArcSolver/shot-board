@@ -26,6 +26,8 @@ You write one scene and Shot Board lays out six editable cuts from a coverage te
 
 SDXL renders takes for each cut. Compare & pick shows every take of a cut side by side with its render details one click away, and you can lock a seed and reuse it. Pick an SDXL take or import your own image as the hero. Render reference edits sends every other cut to Qwen-Image-Edit-2511 with that image as the reference. You can save a pass, fail or pending verdict and a note on any take.
 
+![Imported hero details alongside close-up, over shoulder and insert reference edits](docs/hero-reference.png)
+
 When every cut has a pick, export a landscape or portrait storyboard, plus the stills, ComfyUI workflows and saved recipes.
 
 | Home | Board | Compare & pick | Storyboard |
@@ -50,7 +52,7 @@ All inference requests and reference uploads go through the Comfy SDK and a loop
 - **SDXL Base 1.0** renders the first takes. Pinned in [model-lock.json](workflows/model-lock.json); graph in [sdxl-base.api.json](workflows/sdxl-base.api.json).
 - **Qwen-Image-Edit-2511** handles reference edits through ComfyUI-GGUF. Pinned in [qwen-model-lock.json](workflows/qwen-model-lock.json) (Q8_0) and [qwen-model-lock-q4_k_m.json](workflows/qwen-model-lock-q4_k_m.json); graph in [qwen-reference.api.json](workflows/qwen-reference.api.json).
 
-On one RTX 4090 (24 GB) an SDXL take took about 4 s and a Q8_0 Qwen edit 80 to 100 s per cut. `SHOTBOARD_QWEN_QUANT=Q4_K_M` cuts the Qwen files from about 31 GB to 20 GB, and a take that loses the engine is retried once.
+On one RTX 4090 (24 GB) an SDXL take took about 4 s and a Q8_0 Qwen edit took about 80 s per cut. `SHOTBOARD_QWEN_QUANT=Q4_K_M` cuts the Qwen files from about 31 GB to 20 GB, and a take that loses the engine is retried once.
 
 ## Run it locally
 
@@ -66,7 +68,7 @@ SHOTBOARD_ENGINE_MANIFEST=/path/to/engine-models.json \
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-Open **http://127.0.0.1:8790** and choose **New scene**. Type a scene or press **Use example**, then build the shot list and render SDXL takes. In **Compare & pick**, open **Seed, hero & more takes**. Pick an SDXL take, or choose **Import reference** to add your own PNG, JPEG or WebP. Pick the imported still, choose **Use selected as hero**, then **Render reference edits**. Imported stills are labeled **Imported reference** and keep no invented seed, model or generation workflow. Compare the takes, save a verdict on each, and pick.
+Open **http://127.0.0.1:8790** and choose **New scene**. Type a scene or press **Use example**, then build the shot list and render SDXL takes. In **Compare & pick**, open **Seed, hero & more takes**. Pick an SDXL take, or choose **Import reference** to add your own PNG, JPEG or WebP. Pick the imported still, choose **Use selected as hero**, then **Render reference edits**. Imported stills are labeled **Imported reference**, with the source image and dimensions recorded in the export. Compare the takes, save a verdict on each, and pick.
 
 ### Reuse a recipe outside the app
 
@@ -76,7 +78,7 @@ Each generated frame's `workflows/sNN.api.json` in an export ZIP is a ComfyUI AP
 
 Explore the greenhouse and hangar boards, with saved takes, reviews and recipes.
 
-- [Greenhouse continuity](examples/greenhouse-continuity/README.md): "A traveler discovers a small brass compass in a rain-soaked greenhouse." An SDXL hero with Qwen reference edits, both storyboards, the export ZIP and a review of every take.
+- [Greenhouse continuity](examples/greenhouse-continuity/README.md): "A traveler discovers a small brass compass in a rain-soaked greenhouse." An imported hero with five Qwen reference edits, both storyboards, the export ZIP and saved reviews.
 - [Greenhouse study](examples/greenhouse/README.md): the same scene with the first SDXL-only recipe.
 - [Hangar](examples/hangar/README.md): "A gray utility robot with a square metal head, a single blue optical sensor and mechanical gripper arms repairs a small spaceship engine on a workbench in a quiet hangar at night."
 

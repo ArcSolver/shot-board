@@ -5,9 +5,9 @@
       "image": {
         "__type": "core/ASSET",
         "info": {
-          "id": "ebe3596c-c34c-4350-8b5c-7b0dc0ccc712",
-          "hash": "blake3:c5d24229495958ac622e744f6e01d06c42f5cc5dbb5f36b0e93e423b1ba512eb",
-          "file_path": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png"
+          "id": "adec2bd8-e276-4e21-a985-38b4e4e63a3a",
+          "hash": "blake3:d0b166ee1772823b481cad1de2268674dab75c78d1722576b009381d4c1d978f",
+          "file_path": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png"
         }
       }
     }
@@ -27,7 +27,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: macro insert detail shot of small brass compass held in fingers, object fills frame, only hands and object visible. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. MACRO INSERT: crop tightly onto only the same hands and the open brass compass. The compass fills most of the photograph. Preserve its white graduated dial, thin colored needle, gold rim and open hinged case from the reference. Only hands, compass and a blurred piece of the wooden bench are visible. No head, face or torso. Do not introduce a decorative compass rose or a second compass.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: Insert. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. MACRO INSERT: move the camera close to ONLY the same hands holding the exact compass in the reference: a deep cylindrical brass case with a slightly flared base, side wall height about 40 percent of dial diameter; plain brass lid with two interior rivets hinged at upper left; a completely plain unmarked cream dial with NO tick marks, NO lines, NO numerals and NO letters; four broad pointed grey-blue triangular arms making an X, with a SMALL smooth flat muted-pink circular pivot with NO engraving or rings; no ring or bail, no chain, no compass rose, only one compass. This is the very same physical compass, not a new version. The compass fills most of the photograph. Preserve the exact four broad grey-blue triangular arms forming the X, the small smooth flat muted pink pivot, thick cylindrical side wall at least 30 percent of dial diameter, slightly flared base and lid hinge orientation. The cream dial is entirely blank: no tick ring, no ticks, no lines or characters. The small flat pink pivot is smooth and has no concentric engraving. Only hands, compass, slivers of mustard cuff and blurred wood bench are visible. No head, face or torso. No second compass.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -45,7 +45,7 @@
         "14",
         0
       ],
-      "prompt": "face, head, portrait, torso, full body, wide shot, medium shot, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
+      "prompt": "anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, extra limbs, deformed hands, low quality, blurry, different person, dark curly hair, navy scarf, black scarf, thin flat pocket compass, ring bail, compass rose, coloured star needle, numerals on dial, duplicate compass, face, head, torso, full body, wide shot, medium shot, tick marks, dial ticks, numbers, engraved pink pivot, large central button, screw slot"
     }
   },
   "4": {
@@ -75,7 +75,7 @@
         "4",
         0
       ],
-      "seed": 20261021,
+      "seed": 20261023,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

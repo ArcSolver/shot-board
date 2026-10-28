@@ -101,7 +101,7 @@ cd /opt/shot-board
 unset HF_TOKEN HUGGING_FACE_HUB_TOKEN COMFY_API_KEY
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 NO_PROXY=127.0.0.1,localhost
 mkdir -p .runtime/input .runtime/output .runtime/user
-.runtime/engine-venv/bin/python .runtime/ComfyUI/main.py --listen 127.0.0.1 --port 8188 --input-directory "$PWD/.runtime/input" --output-directory "$PWD/.runtime/output" --user-directory "$PWD/.runtime/user" --offline --disable-partner-nodes --disable-auto-launch --preview-method none --cache-lru 8 --reserve-vram 1 --disable-dynamic-vram --disable-fast-disk
+.runtime/engine-venv/bin/python .runtime/ComfyUI/main.py --listen 127.0.0.1 --port 8188 --input-directory "$PWD/.runtime/input" --output-directory "$PWD/.runtime/output" --user-directory "$PWD/.runtime/user" --offline --disable-partner-nodes --disable-auto-launch --preview-method none --cache-lru 2 --reserve-vram 1 --disable-dynamic-vram --disable-fast-disk
 ```
 
 GPU worker: terminal 2, SDK proxy

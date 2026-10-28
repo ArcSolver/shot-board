@@ -22,264 +22,339 @@
     {
       "shot": "s01",
       "take": "t01",
-      "verdict": "pass",
-      "note": "Wide arched hall with the traveler small and seen from behind; yellow coat matches. Face and compass are too small to see."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s02",
       "take": "t01",
-      "verdict": "fail",
-      "note": "Holds a camera instead of the compass, and the waist is cropped."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s02",
       "take": "t02",
-      "verdict": "fail",
-      "note": "Holds a camera instead of the compass."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s02",
       "take": "t03",
-      "verdict": "fail",
-      "note": "Side-on medium with no compass in her hands."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s02",
       "take": "t04",
-      "verdict": "fail",
-      "note": "Waist-up, but no compass in her hands."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s02",
       "take": "t05",
-      "verdict": "pass",
-      "note": "Hero: waist-up, yellow coat and teal scarf, holding the open compass."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s02",
       "take": "t06",
-      "verdict": "fail",
-      "note": "The compass lies on the table instead of in her hands."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s02",
       "take": "t07",
-      "verdict": "fail",
-      "note": "Chest-up crop; fringe and patterned shirt differ."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s02",
       "take": "t08",
-      "verdict": "fail",
-      "note": "Two compasses on the bench."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s03",
       "take": "t01",
       "verdict": "fail",
-      "note": "A different man's face behind ferns."
+      "note": "A different man appears behind ferns; face, hair and framing differ from the imported hero."
     },
     {
       "shot": "s04",
       "take": "t01",
-      "verdict": "fail",
-      "note": "A different man in a tan jacket, on the right instead of the left."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s05",
       "take": "t01",
-      "verdict": "fail",
-      "note": "A different compass with a black dial."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s06",
       "take": "t01",
-      "verdict": "pass",
-      "note": "Steep low angle under a glass dome with the traveler on the stairs; the yellow coat matches. She has longer hair and a brown satchel that the hero frame does not show. The dome is not the hero's bay, and the compass is out of view."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s01",
       "take": "t02",
-      "verdict": "pass",
-      "note": "Wide glass hall with the traveler at the far table; the yellow coat matches. The compass is too small to compare."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s03",
       "take": "t02",
-      "verdict": "fail",
-      "note": "No image returned."
+      "verdict": "pending",
+      "note": "Render failed; no image to review."
     },
     {
       "shot": "s04",
       "take": "t02",
-      "verdict": "fail",
-      "note": "No image returned."
+      "verdict": "pending",
+      "note": "Render failed; no image to review."
     },
     {
       "shot": "s05",
       "take": "t02",
-      "verdict": "fail",
-      "note": "No image returned."
+      "verdict": "pending",
+      "note": "Render failed; no image to review."
     },
     {
       "shot": "s06",
       "take": "t02",
-      "verdict": "fail",
-      "note": "No image returned."
+      "verdict": "pending",
+      "note": "Render failed; no image to review."
     },
     {
       "shot": "s01",
       "take": "t03",
-      "verdict": "pass",
-      "note": "Long fern-lined aisle with the traveler at the far end; coat matches. She is larger than the edit asked for."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s03",
       "take": "t03",
-      "verdict": "pass",
-      "note": "Short bob parted on the same side as the hero's, teal scarf and yellow collar at the edge. Her hair is darker and straighter and her face looks older; the hero looks down, so the eyes can't be compared."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s04",
       "take": "t03",
-      "verdict": "fail",
-      "note": "Her left shoulder in the foreground and the open compass in her hands; the yellow coat matches. Her scarf is navy, not teal, her hair is curly, and her bracelet is a thin single band. The compass has a ring on top and its dial sits in the raised half of the case, the reverse of the hero's."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s05",
       "take": "t03",
-      "verdict": "fail",
-      "note": "Her hands and the open compass with a hinged lid, white dial and gold rim. The case is much shallower than the hero's, and the needle is a thin blue and red star instead of the hero's broad grey cross."
+      "verdict": "pending",
+      "note": "Earlier take; not reviewed against this imported hero."
     },
     {
       "shot": "s06",
       "take": "t03",
+      "verdict": "pending",
+      "note": "Render failed; no image to review."
+    },
+    {
+      "shot": "s01",
+      "take": "t04",
       "verdict": "fail",
-      "note": "No image returned."
+      "note": "The traveler fills most of the frame and her lower body is cropped. The compass dial appears in the raised lid rather than the base; this is not the requested distant establishing view."
+    },
+    {
+      "shot": "s01",
+      "take": "t05",
+      "verdict": "fail",
+      "note": "The traveler and open compass are clear among fern-lined benches, but she fills most of the frame; this is a medium view, not the requested distant establishing shot."
+    },
+    {
+      "shot": "s01",
+      "take": "t06",
+      "verdict": "pass",
+      "note": "A genuine wide greenhouse aisle with a small full-body traveler seen from behind. The mustard coat and short chestnut hair are visible; her face and compass are too small to compare."
+    },
+    {
+      "shot": "s01",
+      "take": "t07",
+      "verdict": "pass",
+      "note": "Full-body rear traveler in a broad greenhouse aisle. She is larger and closer than the requested tiny figure; her face and compass cannot be compared from this view."
+    },
+    {
+      "shot": "s02",
+      "take": "t09",
+      "verdict": "pass",
+      "note": "Imported hero reference."
+    },
+    {
+      "shot": "s03",
+      "take": "t04",
+      "verdict": "fail",
+      "note": "The lowered gaze and warm right-parted bob carry over. This is the cleanest close-up, but the lower curls tuck inward more neatly and the scarf's cable texture is flatter than the hero's."
+    },
+    {
+      "shot": "s03",
+      "take": "t05",
+      "verdict": "fail",
+      "note": "Downward gaze with a warm chestnut side-parted bob and teal scarf. The mouth is flatter and the bob's ends are more smoothly tucked in than the hero's."
+    },
+    {
+      "shot": "s03",
+      "take": "t06",
+      "verdict": "fail",
+      "note": "The lowered gaze is close to the hero's, but the bob is smoother and more tucked in; a compass-lid edge intrudes at the bottom of the close-up."
+    },
+    {
+      "shot": "s03",
+      "take": "t07",
+      "verdict": "fail",
+      "note": "A chest-up portrait rather than a tight face close-up. The chest pockets dominate the lower frame, and the bob is more compact and tucked in than the hero's."
+    },
+    {
+      "shot": "s03",
+      "take": "t08",
+      "verdict": "fail",
+      "note": "The lowered gaze, right part and warm chestnut color are close. Loose ends fan outward more than before, but the curl clusters are rearranged and the scarf's cable texture is flatter; exact face-and-hair continuity is not established."
+    },
+    {
+      "shot": "s03",
+      "take": "t09",
+      "verdict": "fail",
+      "note": "Warm chestnut bob and lowered gaze in a looser chest-up portrait. The curl clusters and lower ends are rearranged, and more chest than requested is visible; t08 is the stronger close-up."
+    },
+    {
+      "shot": "s04",
+      "take": "t04",
+      "verdict": "fail",
+      "note": "Left-shoulder view with a mustard coat and teal ribbed neckband; the compass is soft, and the hero's cable-knit pattern is not reproduced."
+    },
+    {
+      "shot": "s04",
+      "take": "t05",
+      "verdict": "fail",
+      "note": "Clear left-shoulder view with a mustard coat and teal ribbed neckband. The thick brass compass keeps the broad grey-blue X, but the hero's cable-knit scarf is not retained."
+    },
+    {
+      "shot": "s04",
+      "take": "t06",
+      "verdict": "fail",
+      "note": "Compass-focused shoulder view with a thick brass case and broad grey-blue X. The scarf is ribbed, and teal sleeve cuffs have been added."
+    },
+    {
+      "shot": "s04",
+      "take": "t07",
+      "verdict": "fail",
+      "note": "The teal scarf is more visible, but it hangs in a long flatter drape rather than the hero's compact cable-knit folds; the thumbnail also appears lavender."
+    },
+    {
+      "shot": "s04",
+      "take": "t08",
+      "verdict": "fail",
+      "note": "Chunky teal cable-knit now wraps the back of her neck above a mustard canvas coat. The braid layout and wrap differ from the hero's compact rolled folds; exact scarf-pattern continuity is not established."
+    },
+    {
+      "shot": "s04",
+      "take": "t09",
+      "verdict": "fail",
+      "note": "A second long mustard cable-knit scarf has been added over the teal ribbed collar and drapes down her back. This is a visible outfit change from the hero."
+    },
+    {
+      "shot": "s05",
+      "take": "t04",
+      "verdict": "fail",
+      "note": "Reference edit failed; no image to review."
+    },
+    {
+      "shot": "s05",
+      "take": "t05",
+      "verdict": "fail",
+      "note": "Deep brass case and blank cream dial carry over, but tiny dark marks appear on the pink pivot and the needle tips are rounder. The coat torso remains visible."
+    },
+    {
+      "shot": "s05",
+      "take": "t06",
+      "verdict": "fail",
+      "note": "The deep case, blank dial and grey-blue X remain, but the open lid is missing."
+    },
+    {
+      "shot": "s05",
+      "take": "t07",
+      "verdict": "fail",
+      "note": "Closest overall design: deep brass case, blank cream dial, broad grey-blue X and two visible lid rivets. The pink pivot is a smooth disc rather than the hero's concentric top detail; fine details are not exact."
+    },
+    {
+      "shot": "s05",
+      "take": "t08",
+      "verdict": "fail",
+      "note": "The lower-right needle tip is blunt, and the lid gains a protruding bracket with a different fastener layout."
+    },
+    {
+      "shot": "s05",
+      "take": "t09",
+      "verdict": "fail",
+      "note": "The main design carries over, but the pink pivot is a thicker smooth button and the side catch is more prominent. The lid rivets are rounder."
+    },
+    {
+      "shot": "s05",
+      "take": "t10",
+      "verdict": "fail",
+      "note": "The lid-to-case connection differs: a hinge-like fitting appears at the upper right while the lid sits left. The hero's upper-left hinge arrangement is not reproduced clearly."
+    },
+    {
+      "shot": "s05",
+      "take": "t11",
+      "verdict": "fail",
+      "note": "The needle changes from the hero's four-arm X to a three-arm Y."
+    },
+    {
+      "shot": "s05",
+      "take": "t12",
+      "verdict": "fail",
+      "note": "Two dark slots appear in the inner rim, and the pink pivot becomes a smooth disc. These details differ from the hero."
+    },
+    {
+      "shot": "s05",
+      "take": "t13",
+      "verdict": "fail",
+      "note": "The broad grey-blue X gains prominent faceted ridges on its arms. The pink pivot still reads as a smooth cap rather than the hero's small concentric top inset. The lid crop shows only one rivet."
+    },
+    {
+      "shot": "s05",
+      "take": "t14",
+      "verdict": "fail",
+      "note": "The needle arms become visibly faceted, and the pink pivot has a pronounced dark collar rather than the hero's small concentric top detail. The lid is nearly edge-on, so its two rivets cannot both be checked."
+    },
+    {
+      "shot": "s06",
+      "take": "t04",
+      "verdict": "fail",
+      "note": "Eye-level or slightly elevated view with the crown visible. Hanging ferns fill the roof area, but the camera does not look steeply upward from floor level."
+    },
+    {
+      "shot": "s06",
+      "take": "t05",
+      "verdict": "fail",
+      "note": "Upward view beneath the pitched glass roof, with the open brass compass held at her waist. The scarf is narrower and ribbed, and the bob is smoother than the hero's."
     }
   ],
   "hero": {
     "shot_id": "s02",
-    "take_id": "t05",
-    "image": "references/100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png",
-    "image_sha256": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b",
-    "seed": 20679936,
+    "take_id": "t09",
+    "image": "references/b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png",
+    "image_sha256": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8",
+    "seed": null,
     "settings": {
-      "label": "SDXL Base 1.0",
-      "enabled": true,
-      "checkpoint": "sd_xl_base_1.0.safetensors",
-      "license": "CreativeML Open RAIL++-M",
-      "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
-      "width": 1024,
-      "height": 768,
-      "steps": 20,
-      "cfg": 6.0,
-      "sampler_name": "euler",
-      "scheduler": "normal",
-      "denoise": 1.0,
-      "preset_id": "sdxl-base"
+      "preset_id": "imported-reference",
+      "label": "Imported reference",
+      "width": 1448,
+      "height": 1086
     },
-    "models": [
-      {
-        "filename": "sd_xl_base_1.0.safetensors",
-        "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
-        "bytes": 6938078334,
-        "license": "CreativeML Open RAIL++-M",
-        "repository": "stabilityai/stable-diffusion-xl-base-1.0",
-        "revision": "462165984030d82259a11f4367a4eed129e94a7b",
-        "components": [
-          "SDXL UNet",
-          "CLIP-L",
-          "OpenCLIP bigG",
-          "VAE (checkpoint embedded)"
-        ]
-      }
-    ],
-    "workflow": {
-      "1": {
-        "class_type": "CheckpointLoaderSimple",
-        "inputs": {
-          "ckpt_name": "sd_xl_base_1.0.safetensors"
-        }
-      },
-      "2": {
-        "class_type": "CLIPTextEncode",
-        "inputs": {
-          "clip": [
-            "1",
-            1
-          ],
-          "text": "cinematic photograph, (medium waist-up shot, entire head and torso visible down to hips:1.5), (woman holding a small round brass pocket compass at waist level:1.3), adult traveler, short dark bob hair, mustard yellow raincoat, brown leather satchel, standing beside a wooden potting table in a rainy glass greenhouse, ferns, natural window light, muted film colors, 35mm lens"
-        }
-      },
-      "3": {
-        "class_type": "CLIPTextEncode",
-        "inputs": {
-          "clip": [
-            "1",
-            1
-          ],
-          "text": "camera, photographic camera, camera strap, close-up, portrait, face filling frame, cropped head, cropped waist, full body, extreme close-up, distant figure, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
-        }
-      },
-      "4": {
-        "class_type": "EmptyLatentImage",
-        "inputs": {
-          "width": 1024,
-          "height": 768,
-          "batch_size": 1
-        }
-      },
-      "5": {
-        "class_type": "KSampler",
-        "inputs": {
-          "model": [
-            "1",
-            0
-          ],
-          "positive": [
-            "2",
-            0
-          ],
-          "negative": [
-            "3",
-            0
-          ],
-          "latent_image": [
-            "4",
-            0
-          ],
-          "seed": 20679936,
-          "steps": 20,
-          "cfg": 6.0,
-          "sampler_name": "euler",
-          "scheduler": "normal",
-          "denoise": 1.0
-        }
-      },
-      "6": {
-        "class_type": "VAEDecode",
-        "inputs": {
-          "samples": [
-            "5",
-            0
-          ],
-          "vae": [
-            "1",
-            2
-          ]
-        }
-      },
-      "7": {
-        "class_type": "SaveImage",
-        "inputs": {
-          "images": [
-            "6",
-            0
-          ],
-          "filename_prefix": "shotboard/take"
-        }
-      }
+    "models": [],
+    "workflow": {},
+    "source": {
+      "type": "imported",
+      "label": "Imported reference"
     }
   },
   "storyboards": [
@@ -287,33 +362,33 @@
       "file": "storyboard-landscape.png",
       "width": 1600,
       "height": 900,
-      "sha256": "53f7a24087e31f482d1aec4df8676d6eb4f0c60f3e145258f8c8dd899b1be37c",
+      "sha256": "263d2fe70b2c4acdf2bd4498ea7b85801c9b8decab6466c9f9161bddd1a79871",
       "layout_version": 1,
       "fit": "contain",
       "selections": [
         {
           "shot_id": "s01",
-          "take_id": "t03"
+          "take_id": "t06"
         },
         {
           "shot_id": "s02",
-          "take_id": "t05"
+          "take_id": "t09"
         },
         {
           "shot_id": "s03",
-          "take_id": "t03"
+          "take_id": "t08"
         },
         {
           "shot_id": "s04",
-          "take_id": "t03"
+          "take_id": "t08"
         },
         {
           "shot_id": "s05",
-          "take_id": "t03"
+          "take_id": "t07"
         },
         {
           "shot_id": "s06",
-          "take_id": "t01"
+          "take_id": "t05"
         }
       ]
     },
@@ -321,33 +396,33 @@
       "file": "storyboard-portrait.png",
       "width": 1080,
       "height": 1350,
-      "sha256": "c2e667595b50207a0646b0c1c70b3383e111b56ff8b2ab742b96de15a65f2fe1",
+      "sha256": "17b8e3a0f14fa17f81366eaebbbbe49e879530b172a8dca176b011aebf064c4c",
       "layout_version": 1,
       "fit": "contain",
       "selections": [
         {
           "shot_id": "s01",
-          "take_id": "t03"
+          "take_id": "t06"
         },
         {
           "shot_id": "s02",
-          "take_id": "t05"
+          "take_id": "t09"
         },
         {
           "shot_id": "s03",
-          "take_id": "t03"
+          "take_id": "t08"
         },
         {
           "shot_id": "s04",
-          "take_id": "t03"
+          "take_id": "t08"
         },
         {
           "shot_id": "s05",
-          "take_id": "t03"
+          "take_id": "t07"
         },
         {
           "shot_id": "s06",
-          "take_id": "t01"
+          "take_id": "t05"
         }
       ]
     }
@@ -357,14 +432,14 @@
     {
       "id": "s01",
       "title": "Establishing",
-      "take_id": "t03",
+      "take_id": "t06",
       "review": {
         "shot": "s01",
-        "take": "t03",
+        "take": "t06",
         "verdict": "pass",
-        "note": "Long fern-lined aisle with the traveler at the far end; coat matches. She is larger than the edit asked for."
+        "note": "A genuine wide greenhouse aisle with a small full-body traveler seen from behind. The mustard coat and short chestnut hair are visible; her face and compass are too small to compare."
       },
-      "seed": 20261022,
+      "seed": 20261023,
       "seed_locked": true,
       "settings": {
         "label": "Qwen continuity \u00b7 reference edit",
@@ -431,215 +506,91 @@
           "path": "split_files/vae/qwen_image_vae.safetensors"
         }
       ],
-      "prompt": "Requested framing: extreme wide establishing shot, distant full-body An adult traveler with short dark hair tiny in frame, expansive environment. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. EXTREME WIDE SHOT. Recompose the entire image as a long empty greenhouse aisle stretching into the distance, seen from its far end. The woman is a TINY full-body figure in the deep background, only about 60 pixels high in this 704-pixel-high photograph, less than one eighth of the image height. Empty floor dominates the foreground; show the whole glass roof and distant wooden benches with ferns. Do NOT enlarge her to show her face. This must be a distant establishing view, not a portrait or a medium shot.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
-      "negative": "large person, foreground person, medium shot, waist-up, three-quarter portrait, close-up, cropped body, close-up, portrait, cropped body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "prompt": "Requested framing: Establishing. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. Change ONLY camera distance and framing: EXTREME DISTANT ESTABLISHING photograph of the SAME rain-soaked greenhouse. Camera is 20 metres back down the central greenhouse aisle. The entire greenhouse architecture, roof grid, fern-lined benches, wide wet floor and long perspective fill almost all of this landscape photograph. The reference woman in the mustard coat and teal knit scarf is a TINY FULL-BODY figure far away beside the greenhouse bench, feet visible on the floor, her whole body height LESS THAN ONE EIGHTH of the image height. Keep her chestnut bob and outfit. She holds the brass compass, but its tiny details are naturally too small to resolve at this camera distance. Wide empty foreground path. No close foreground person, no enlarged portrait, no medium view, no cropped body. Photographic, same rainy diffuse daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
+      "negative": "anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, extra limbs, deformed hands, low quality, blurry, different person, dark curly hair, navy scarf, black scarf, thin flat pocket compass, ring bail, compass rose, coloured star needle, numerals on dial, duplicate compass, tick marks, dial ticks, numbers, engraved pink pivot, large central button, screw slot, large person, portrait, medium shot, cropped legs, cropped feet, close-up compass, person fills frame",
+      "source": null,
       "reference": {
         "shot_id": "s02",
-        "take_id": "t05",
-        "image": "references/100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png",
-        "image_sha256": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b",
-        "seed": 20679936,
+        "take_id": "t09",
+        "image": "references/b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png",
+        "image_sha256": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8",
+        "seed": null,
         "settings": {
-          "label": "SDXL Base 1.0",
-          "enabled": true,
-          "checkpoint": "sd_xl_base_1.0.safetensors",
-          "license": "CreativeML Open RAIL++-M",
-          "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
-          "width": 1024,
-          "height": 768,
-          "steps": 20,
-          "cfg": 6.0,
-          "sampler_name": "euler",
-          "scheduler": "normal",
-          "denoise": 1.0,
-          "preset_id": "sdxl-base"
+          "preset_id": "imported-reference",
+          "label": "Imported reference",
+          "width": 1448,
+          "height": 1086
         },
-        "models": [
-          {
-            "filename": "sd_xl_base_1.0.safetensors",
-            "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
-            "bytes": 6938078334,
-            "license": "CreativeML Open RAIL++-M",
-            "repository": "stabilityai/stable-diffusion-xl-base-1.0",
-            "revision": "462165984030d82259a11f4367a4eed129e94a7b",
-            "components": [
-              "SDXL UNet",
-              "CLIP-L",
-              "OpenCLIP bigG",
-              "VAE (checkpoint embedded)"
-            ]
-          }
-        ],
-        "workflow": {
-          "1": {
-            "class_type": "CheckpointLoaderSimple",
-            "inputs": {
-              "ckpt_name": "sd_xl_base_1.0.safetensors"
-            }
-          },
-          "2": {
-            "class_type": "CLIPTextEncode",
-            "inputs": {
-              "clip": [
-                "1",
-                1
-              ],
-              "text": "cinematic photograph, (medium waist-up shot, entire head and torso visible down to hips:1.5), (woman holding a small round brass pocket compass at waist level:1.3), adult traveler, short dark bob hair, mustard yellow raincoat, brown leather satchel, standing beside a wooden potting table in a rainy glass greenhouse, ferns, natural window light, muted film colors, 35mm lens"
-            }
-          },
-          "3": {
-            "class_type": "CLIPTextEncode",
-            "inputs": {
-              "clip": [
-                "1",
-                1
-              ],
-              "text": "camera, photographic camera, camera strap, close-up, portrait, face filling frame, cropped head, cropped waist, full body, extreme close-up, distant figure, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
-            }
-          },
-          "4": {
-            "class_type": "EmptyLatentImage",
-            "inputs": {
-              "width": 1024,
-              "height": 768,
-              "batch_size": 1
-            }
-          },
-          "5": {
-            "class_type": "KSampler",
-            "inputs": {
-              "model": [
-                "1",
-                0
-              ],
-              "positive": [
-                "2",
-                0
-              ],
-              "negative": [
-                "3",
-                0
-              ],
-              "latent_image": [
-                "4",
-                0
-              ],
-              "seed": 20679936,
-              "steps": 20,
-              "cfg": 6.0,
-              "sampler_name": "euler",
-              "scheduler": "normal",
-              "denoise": 1.0
-            }
-          },
-          "6": {
-            "class_type": "VAEDecode",
-            "inputs": {
-              "samples": [
-                "5",
-                0
-              ],
-              "vae": [
-                "1",
-                2
-              ]
-            }
-          },
-          "7": {
-            "class_type": "SaveImage",
-            "inputs": {
-              "images": [
-                "6",
-                0
-              ],
-              "filename_prefix": "shotboard/take"
-            }
-          }
+        "models": [],
+        "workflow": {},
+        "source": {
+          "type": "imported",
+          "label": "Imported reference"
         },
         "sdk_asset": {
           "__type": "core/ASSET",
           "info": {
-            "id": "ebe3596c-c34c-4350-8b5c-7b0dc0ccc712",
-            "hash": "blake3:c5d24229495958ac622e744f6e01d06c42f5cc5dbb5f36b0e93e423b1ba512eb",
-            "file_path": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png"
+            "id": "adec2bd8-e276-4e21-a985-38b4e4e63a3a",
+            "hash": "blake3:d0b166ee1772823b481cad1de2268674dab75c78d1722576b009381d4c1d978f",
+            "file_path": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png"
           }
         }
       },
       "submitted_workflow": "workflows/s01.submitted.api.json",
-      "submitted_workflow_sha256": "579d6beedfb5ce632ba38c2b5ced81f556f929bee0db6710025f3c5d9294b050",
-      "submission_fingerprint_sha256": "249816dc93c58796532ffa81c402b2c39131c01787e038259f109d99424fa978",
+      "submitted_workflow_sha256": "feabadfb2bb403272fb8e8643a3ba879a855bdd08beb481ab700c3f0eff210f2",
+      "submission_fingerprint_sha256": "e454fdbbe3aec80174d96afc86459cdb6721848856767db8759a15c67e8d4f5a",
       "image": "stills/s01.png",
-      "image_sha256": "768318907212442fbda8f1a636e89db72d8cc9a95c7eec229835292368621d10",
+      "image_sha256": "5930f7744e7fcb78c883c28351a7d2deee6372ff0e1deec74095cb07af324328",
       "workflow": "workflows/s01.api.json",
-      "workflow_sha256": "129b0fe4e467700008240f5150502a55ac0fd43b78bab6135462cece0cf75477",
-      "elapsed_seconds": 96.814
+      "workflow_sha256": "067d8515796c4b18cf3f37b19f589e8537ebe4074f72e10f8cb695f9e10b2ee3",
+      "elapsed_seconds": 85.967
     },
     {
       "id": "s02",
       "title": "Medium",
-      "take_id": "t05",
+      "take_id": "t09",
       "review": {
         "shot": "s02",
-        "take": "t05",
+        "take": "t09",
         "verdict": "pass",
-        "note": "Hero: waist-up, yellow coat and teal scarf, holding the open compass."
+        "note": "Imported hero reference."
       },
-      "seed": 20679936,
-      "seed_locked": true,
+      "seed": null,
+      "seed_locked": false,
       "settings": {
-        "label": "SDXL Base 1.0",
-        "enabled": true,
-        "checkpoint": "sd_xl_base_1.0.safetensors",
-        "license": "CreativeML Open RAIL++-M",
-        "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
-        "width": 1024,
-        "height": 768,
-        "steps": 20,
-        "cfg": 6.0,
-        "sampler_name": "euler",
-        "scheduler": "normal",
-        "denoise": 1.0,
-        "preset_id": "sdxl-base"
+        "preset_id": "imported-reference",
+        "label": "Imported reference",
+        "width": 1448,
+        "height": 1086
       },
-      "models": [
-        {
-          "filename": "sd_xl_base_1.0.safetensors",
-          "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
-          "bytes": 6938078334,
-          "license": "CreativeML Open RAIL++-M",
-          "repository": "stabilityai/stable-diffusion-xl-base-1.0",
-          "revision": "462165984030d82259a11f4367a4eed129e94a7b",
-          "components": [
-            "SDXL UNet",
-            "CLIP-L",
-            "OpenCLIP bigG",
-            "VAE (checkpoint embedded)"
-          ]
-        }
-      ],
-      "prompt": "cinematic photograph, (medium waist-up shot, entire head and torso visible down to hips:1.5), (woman holding a small round brass pocket compass at waist level:1.3), adult traveler, short dark bob hair, mustard yellow raincoat, brown leather satchel, standing beside a wooden potting table in a rainy glass greenhouse, ferns, natural window light, muted film colors, 35mm lens",
-      "negative": "camera, photographic camera, camera strap, close-up, portrait, face filling frame, cropped head, cropped waist, full body, extreme close-up, distant figure, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "models": [],
+      "prompt": null,
+      "negative": null,
+      "source": {
+        "type": "imported",
+        "label": "Imported reference"
+      },
       "reference": null,
       "submitted_workflow": null,
       "submitted_workflow_sha256": null,
       "submission_fingerprint_sha256": null,
       "image": "stills/s02.png",
-      "image_sha256": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b",
-      "workflow": "workflows/s02.api.json",
-      "workflow_sha256": "aa0338e2744ddef6e1328a649e8ebf7b9886d0aa1ea0c43188756902ee278d57",
-      "elapsed_seconds": 3.667
+      "image_sha256": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8",
+      "workflow": null,
+      "workflow_sha256": null,
+      "elapsed_seconds": 0
     },
     {
       "id": "s03",
       "title": "Close-up",
-      "take_id": "t03",
+      "take_id": "t08",
       "review": {
         "shot": "s03",
-        "take": "t03",
-        "verdict": "pass",
-        "note": "Short bob parted on the same side as the hero's, teal scarf and yellow collar at the edge. Her hair is darker and straighter and her face looks older; the hero looks down, so the eyes can't be compared."
+        "take": "t08",
+        "verdict": "fail",
+        "note": "The lowered gaze, right part and warm chestnut color are close. Loose ends fan outward more than before, but the curl clusters are rearranged and the scarf's cable texture is flatter; exact face-and-hair continuity is not established."
       },
-      "seed": 20261021,
+      "seed": 20261025,
       "seed_locked": true,
       "settings": {
         "label": "Qwen continuity \u00b7 reference edit",
@@ -706,160 +657,56 @@
           "path": "split_files/vae/qwen_image_vae.safetensors"
         }
       ],
-      "prompt": "Requested framing: tight face close-up portrait, face fills almost the entire frame, eyes in sharp focus, cropped at chin and forehead. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. TIGHT FACE CLOSE-UP of the same woman, her face filling almost the entire photograph, cropped at forehead and chin, eyes and nose sharp. Keep the same facial features and short side-parted brown hair. A small edge of the teal scarf may be visible. Crop out hands and compass. Do not repeat the medium composition.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
-      "negative": "wide shot, medium shot, waist, torso, full body, hands, object in foreground, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "prompt": "Requested framing: Close-up. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. TIGHT FACE CLOSE-UP: the reference woman with the exact same rounded face, lowered eyes, light chestnut chin-length bob with soft waves curling outward at the ends and right side part, mustard yellow canvas coat with metal buttons, shoulder tabs and flap chest pockets, rich teal cable-knit scarf. Her face fills the portrait frame, cropped just above the head and below the teal scarf. Keep her head tilted and eyes lowered exactly as in the reference, her facial proportions, skin texture and age unchanged. Keep hair colour, side part, soft waves and outward-curled ends unchanged. Show the teal knit scarf and mustard coat collar at the bottom edge. Keep the greenhouse window grid softly blurred. No hands or compass in frame, no eye contact, no added forehead or eye wrinkles. This is a camera push-in, NOT a restyling of her hair or face. Preserve every large wave clump and the loose outward-fanning curls at jaw level on BOTH sides, exactly as in the reference. Leave the whole bob outline visible, including the loose tips that curl OUTWARD away from the cheeks; do not tuck the lower ends inward against the ears or neck. Keep the original forehead, brow spacing, nose, closed relaxed lips and rounded face proportions without lengthening or slimming. Keep the same bulky rolled cable-knit loop with clearly twisted cables under her chin. Frame the whole head and just the upper scarf; no chest, hands, object, inset image or strip along bottom.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
+      "negative": "anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, extra limbs, deformed hands, low quality, blurry, different person, dark curly hair, navy scarf, black scarf, thin flat pocket compass, ring bail, compass rose, coloured star needle, numerals on dial, duplicate compass, wide shot, medium shot, waist, hands, object in foreground, looking at camera, tick marks, dial ticks, numbers, engraved pink pivot, large central button, screw slot, tucked inward bob ends, compact tucked bob, straight bob, restyled hair, long narrow face, picture inset, image strip at bottom",
+      "source": null,
       "reference": {
         "shot_id": "s02",
-        "take_id": "t05",
-        "image": "references/100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png",
-        "image_sha256": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b",
-        "seed": 20679936,
+        "take_id": "t09",
+        "image": "references/b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png",
+        "image_sha256": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8",
+        "seed": null,
         "settings": {
-          "label": "SDXL Base 1.0",
-          "enabled": true,
-          "checkpoint": "sd_xl_base_1.0.safetensors",
-          "license": "CreativeML Open RAIL++-M",
-          "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
-          "width": 1024,
-          "height": 768,
-          "steps": 20,
-          "cfg": 6.0,
-          "sampler_name": "euler",
-          "scheduler": "normal",
-          "denoise": 1.0,
-          "preset_id": "sdxl-base"
+          "preset_id": "imported-reference",
+          "label": "Imported reference",
+          "width": 1448,
+          "height": 1086
         },
-        "models": [
-          {
-            "filename": "sd_xl_base_1.0.safetensors",
-            "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
-            "bytes": 6938078334,
-            "license": "CreativeML Open RAIL++-M",
-            "repository": "stabilityai/stable-diffusion-xl-base-1.0",
-            "revision": "462165984030d82259a11f4367a4eed129e94a7b",
-            "components": [
-              "SDXL UNet",
-              "CLIP-L",
-              "OpenCLIP bigG",
-              "VAE (checkpoint embedded)"
-            ]
-          }
-        ],
-        "workflow": {
-          "1": {
-            "class_type": "CheckpointLoaderSimple",
-            "inputs": {
-              "ckpt_name": "sd_xl_base_1.0.safetensors"
-            }
-          },
-          "2": {
-            "class_type": "CLIPTextEncode",
-            "inputs": {
-              "clip": [
-                "1",
-                1
-              ],
-              "text": "cinematic photograph, (medium waist-up shot, entire head and torso visible down to hips:1.5), (woman holding a small round brass pocket compass at waist level:1.3), adult traveler, short dark bob hair, mustard yellow raincoat, brown leather satchel, standing beside a wooden potting table in a rainy glass greenhouse, ferns, natural window light, muted film colors, 35mm lens"
-            }
-          },
-          "3": {
-            "class_type": "CLIPTextEncode",
-            "inputs": {
-              "clip": [
-                "1",
-                1
-              ],
-              "text": "camera, photographic camera, camera strap, close-up, portrait, face filling frame, cropped head, cropped waist, full body, extreme close-up, distant figure, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
-            }
-          },
-          "4": {
-            "class_type": "EmptyLatentImage",
-            "inputs": {
-              "width": 1024,
-              "height": 768,
-              "batch_size": 1
-            }
-          },
-          "5": {
-            "class_type": "KSampler",
-            "inputs": {
-              "model": [
-                "1",
-                0
-              ],
-              "positive": [
-                "2",
-                0
-              ],
-              "negative": [
-                "3",
-                0
-              ],
-              "latent_image": [
-                "4",
-                0
-              ],
-              "seed": 20679936,
-              "steps": 20,
-              "cfg": 6.0,
-              "sampler_name": "euler",
-              "scheduler": "normal",
-              "denoise": 1.0
-            }
-          },
-          "6": {
-            "class_type": "VAEDecode",
-            "inputs": {
-              "samples": [
-                "5",
-                0
-              ],
-              "vae": [
-                "1",
-                2
-              ]
-            }
-          },
-          "7": {
-            "class_type": "SaveImage",
-            "inputs": {
-              "images": [
-                "6",
-                0
-              ],
-              "filename_prefix": "shotboard/take"
-            }
-          }
+        "models": [],
+        "workflow": {},
+        "source": {
+          "type": "imported",
+          "label": "Imported reference"
         },
         "sdk_asset": {
           "__type": "core/ASSET",
           "info": {
-            "id": "ebe3596c-c34c-4350-8b5c-7b0dc0ccc712",
-            "hash": "blake3:c5d24229495958ac622e744f6e01d06c42f5cc5dbb5f36b0e93e423b1ba512eb",
-            "file_path": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png"
+            "id": "adec2bd8-e276-4e21-a985-38b4e4e63a3a",
+            "hash": "blake3:d0b166ee1772823b481cad1de2268674dab75c78d1722576b009381d4c1d978f",
+            "file_path": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png"
           }
         }
       },
       "submitted_workflow": "workflows/s03.submitted.api.json",
-      "submitted_workflow_sha256": "8c34cea69d68cb9abcdda9137a284c5daecda07ee6f95ec7a65828539bef9338",
-      "submission_fingerprint_sha256": "e7159e318ee1209c50db1d312a9f1986f81021d236be68f70921224af4f9a8c7",
+      "submitted_workflow_sha256": "d2fce5d92fefadbf0221410a6e34098c98b90b2562a3bd55812def6eeec1102a",
+      "submission_fingerprint_sha256": "7afe82235505797b0d469ee50088902f80f627cdcb547fd244a9fc0bcb8ba528",
       "image": "stills/s03.png",
-      "image_sha256": "9f9f47e82ae83e43de40dbd912e2157be8952d2ec5f4d830633d716fa89c663f",
+      "image_sha256": "0562f4a505ca46fb71c1937b7791d1fa986888b38f5cc1dd887b235b30d07bde",
       "workflow": "workflows/s03.api.json",
-      "workflow_sha256": "e23893a34c41cbfb8b553f7dbf193a061adc394949874371a973a8a842748f86",
-      "elapsed_seconds": 80.0
+      "workflow_sha256": "23a774c333a747354c791f84ea48a7b82e3c2278c59bb42793d6b014577dc5f3",
+      "elapsed_seconds": 83.917
     },
     {
       "id": "s04",
       "title": "Over shoulder",
-      "take_id": "t03",
+      "take_id": "t08",
       "review": {
         "shot": "s04",
-        "take": "t03",
+        "take": "t08",
         "verdict": "fail",
-        "note": "Her left shoulder in the foreground and the open compass in her hands; the yellow coat matches. Her scarf is navy, not teal, her hair is curly, and her bracelet is a thin single band. The compass has a ring on top and its dial sits in the raised half of the case, the reverse of the hero's."
+        "note": "Chunky teal cable-knit now wraps the back of her neck above a mustard canvas coat. The braid layout and wrap differ from the hero's compact rolled folds; exact scarf-pattern continuity is not established."
       },
-      "seed": 20261021,
+      "seed": 20261025,
       "seed_locked": true,
       "settings": {
         "label": "Qwen continuity \u00b7 reference edit",
@@ -926,160 +773,56 @@
           "path": "split_files/vae/qwen_image_vae.safetensors"
         }
       ],
-      "prompt": "Requested framing: over-the-shoulder POV, back of An adult traveler with short dark hair's head and clothed shoulder clearly visible filling left third foreground, camera immediately behind the person looking past their shoulder toward small brass compass on table, rear three-quarter view. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. OVER-THE-SHOULDER photograph from immediately behind the same woman. The back of her head and yellow-coated LEFT SHOULDER occupy the LEFT THIRD of the foreground. Look past that shoulder toward her hands holding the same open brass compass above the wooden bench in the right middle ground. Keep the white dial, thin needle and hinged case. Show the same wet glass and ferns. Her face is hidden. Do not place her on the right side.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
-      "negative": "empty room, no person, unoccupied, front view, facing camera, portrait, eye contact, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "prompt": "Requested framing: Over shoulder. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. OVER THE LEFT SHOULDER: camera at a diagonal rear-left three-quarter angle, slightly above the reference woman with the exact same rounded face, lowered eyes, light chestnut chin-length bob with soft waves curling outward at the ends and right side part, mustard yellow canvas coat with metal buttons, shoulder tabs and flap chest pockets, rich teal cable-knit scarf, her left shoulder and side of head cropped at the LEFT EDGE occupying only the LEFT THIRD foreground, leaving the centre and right for her hands and compass. Look past her shoulder toward her two hands holding the exact compass in the reference: a deep cylindrical brass case with a slightly flared base, side wall height about 40 percent of dial diameter; plain brass lid with two interior rivets hinged at upper left; a completely plain unmarked cream dial with NO tick marks, NO lines, NO numerals and NO letters; four broad pointed grey-blue triangular arms making an X, with a SMALL smooth flat muted-pink circular pivot with NO engraving or rings; no ring or bail, no chain, no compass rose, only one compass over the same wooden bench. Camera is slightly above hands so the cream dial, X needle and thick case side wall are clearly visible. Keep the teal scarf visibly teal (not navy or black), same knit weave, same bob hair texture and warm chestnut colour. Keep the mustard coat canvas and seams, no additional bracelet, bag, object or person. The scarf must show raised twisted cable-knit all around the back and side of her neck, not a smooth band or straight simple ribbing. Offset camera to her left enough to show her left cheek in profile and the side of the cable-knit scarf. The most important continuity feature is the exact scarf from the reference: preserve the same bulky rolled neck loop with chunky raised intertwined twisted CABLES, the same compact gathered folds under the jaw and cable-knit front hanging vertically against the coat. Show the side and front of this cable-knit loop from the diagonal camera, not just a thin band behind her neck. Do not turn it into straight ribbing, a smooth band, or a flat long drape. Keep both cuffs as plain mustard canvas over the same dark patterned inner cuff; no teal cuff. Natural unpainted fingernails. No added scarf clasp or brooch.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
+      "negative": "anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, extra limbs, deformed hands, low quality, blurry, different person, dark curly hair, navy scarf, black scarf, thin flat pocket compass, ring bail, compass rose, coloured star needle, numerals on dial, duplicate compass, front view, facing camera, portrait, eye contact, empty room, tick marks, dial ticks, numbers, engraved pink pivot, large central button, screw slot, straight rib scarf, smooth scarf band, flat scarf drape, teal sleeve cuffs, brooch, scarf clasp, painted fingernails",
+      "source": null,
       "reference": {
         "shot_id": "s02",
-        "take_id": "t05",
-        "image": "references/100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png",
-        "image_sha256": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b",
-        "seed": 20679936,
+        "take_id": "t09",
+        "image": "references/b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png",
+        "image_sha256": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8",
+        "seed": null,
         "settings": {
-          "label": "SDXL Base 1.0",
-          "enabled": true,
-          "checkpoint": "sd_xl_base_1.0.safetensors",
-          "license": "CreativeML Open RAIL++-M",
-          "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
-          "width": 1024,
-          "height": 768,
-          "steps": 20,
-          "cfg": 6.0,
-          "sampler_name": "euler",
-          "scheduler": "normal",
-          "denoise": 1.0,
-          "preset_id": "sdxl-base"
+          "preset_id": "imported-reference",
+          "label": "Imported reference",
+          "width": 1448,
+          "height": 1086
         },
-        "models": [
-          {
-            "filename": "sd_xl_base_1.0.safetensors",
-            "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
-            "bytes": 6938078334,
-            "license": "CreativeML Open RAIL++-M",
-            "repository": "stabilityai/stable-diffusion-xl-base-1.0",
-            "revision": "462165984030d82259a11f4367a4eed129e94a7b",
-            "components": [
-              "SDXL UNet",
-              "CLIP-L",
-              "OpenCLIP bigG",
-              "VAE (checkpoint embedded)"
-            ]
-          }
-        ],
-        "workflow": {
-          "1": {
-            "class_type": "CheckpointLoaderSimple",
-            "inputs": {
-              "ckpt_name": "sd_xl_base_1.0.safetensors"
-            }
-          },
-          "2": {
-            "class_type": "CLIPTextEncode",
-            "inputs": {
-              "clip": [
-                "1",
-                1
-              ],
-              "text": "cinematic photograph, (medium waist-up shot, entire head and torso visible down to hips:1.5), (woman holding a small round brass pocket compass at waist level:1.3), adult traveler, short dark bob hair, mustard yellow raincoat, brown leather satchel, standing beside a wooden potting table in a rainy glass greenhouse, ferns, natural window light, muted film colors, 35mm lens"
-            }
-          },
-          "3": {
-            "class_type": "CLIPTextEncode",
-            "inputs": {
-              "clip": [
-                "1",
-                1
-              ],
-              "text": "camera, photographic camera, camera strap, close-up, portrait, face filling frame, cropped head, cropped waist, full body, extreme close-up, distant figure, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
-            }
-          },
-          "4": {
-            "class_type": "EmptyLatentImage",
-            "inputs": {
-              "width": 1024,
-              "height": 768,
-              "batch_size": 1
-            }
-          },
-          "5": {
-            "class_type": "KSampler",
-            "inputs": {
-              "model": [
-                "1",
-                0
-              ],
-              "positive": [
-                "2",
-                0
-              ],
-              "negative": [
-                "3",
-                0
-              ],
-              "latent_image": [
-                "4",
-                0
-              ],
-              "seed": 20679936,
-              "steps": 20,
-              "cfg": 6.0,
-              "sampler_name": "euler",
-              "scheduler": "normal",
-              "denoise": 1.0
-            }
-          },
-          "6": {
-            "class_type": "VAEDecode",
-            "inputs": {
-              "samples": [
-                "5",
-                0
-              ],
-              "vae": [
-                "1",
-                2
-              ]
-            }
-          },
-          "7": {
-            "class_type": "SaveImage",
-            "inputs": {
-              "images": [
-                "6",
-                0
-              ],
-              "filename_prefix": "shotboard/take"
-            }
-          }
+        "models": [],
+        "workflow": {},
+        "source": {
+          "type": "imported",
+          "label": "Imported reference"
         },
         "sdk_asset": {
           "__type": "core/ASSET",
           "info": {
-            "id": "ebe3596c-c34c-4350-8b5c-7b0dc0ccc712",
-            "hash": "blake3:c5d24229495958ac622e744f6e01d06c42f5cc5dbb5f36b0e93e423b1ba512eb",
-            "file_path": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png"
+            "id": "adec2bd8-e276-4e21-a985-38b4e4e63a3a",
+            "hash": "blake3:d0b166ee1772823b481cad1de2268674dab75c78d1722576b009381d4c1d978f",
+            "file_path": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png"
           }
         }
       },
       "submitted_workflow": "workflows/s04.submitted.api.json",
-      "submitted_workflow_sha256": "cd1e32057a0b6438f56552c2f52483f47e980f5ba9443cd388bd05fcebab2181",
-      "submission_fingerprint_sha256": "1fbf7a3dec5cd185dd7f5cbf5fce7e54cbca57785a680e5446fa232199c712be",
+      "submitted_workflow_sha256": "4ebc4e40bfd5e9453eb2319825aaf5e8df8464a92da241e222c5d19560b3bc54",
+      "submission_fingerprint_sha256": "01e45fc96641e22c2ce42a21b23390b26654233cdd71c63c96a21fe4ee606a2e",
       "image": "stills/s04.png",
-      "image_sha256": "dc94f4423d212ae95daadfecaf09aa2b389e4ffc86038ee567345561030e461b",
+      "image_sha256": "a2175eb2f45b2b6b0cbfd355eb840a4cc290e16b77dd9c01f9519513732ffbe8",
       "workflow": "workflows/s04.api.json",
-      "workflow_sha256": "36e8819a0d931b8e6fe7f4feafc1febfef3086b5f6b1838cbfcb7a2f3e2cca95",
-      "elapsed_seconds": 83.106
+      "workflow_sha256": "80ab8e29fcf7fb803dd1ea7fb56a6a486b288891f3f63ef03fae86b0612d7fd5",
+      "elapsed_seconds": 89.622
     },
     {
       "id": "s05",
       "title": "Insert",
-      "take_id": "t03",
+      "take_id": "t07",
       "review": {
         "shot": "s05",
-        "take": "t03",
+        "take": "t07",
         "verdict": "fail",
-        "note": "Her hands and the open compass with a hinged lid, white dial and gold rim. The case is much shallower than the hero's, and the needle is a thin blue and red star instead of the hero's broad grey cross."
+        "note": "Closest overall design: deep brass case, blank cream dial, broad grey-blue X and two visible lid rivets. The pink pivot is a smooth disc rather than the hero's concentric top detail; fine details are not exact."
       },
-      "seed": 20261021,
+      "seed": 20261023,
       "seed_locked": true,
       "settings": {
         "label": "Qwen continuity \u00b7 reference edit",
@@ -1146,203 +889,160 @@
           "path": "split_files/vae/qwen_image_vae.safetensors"
         }
       ],
-      "prompt": "Requested framing: macro insert detail shot of small brass compass held in fingers, object fills frame, only hands and object visible. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. MACRO INSERT: crop tightly onto only the same hands and the open brass compass. The compass fills most of the photograph. Preserve its white graduated dial, thin colored needle, gold rim and open hinged case from the reference. Only hands, compass and a blurred piece of the wooden bench are visible. No head, face or torso. Do not introduce a decorative compass rose or a second compass.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
-      "negative": "face, head, portrait, torso, full body, wide shot, medium shot, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
+      "prompt": "Requested framing: Insert. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. MACRO INSERT: move the camera close to ONLY the same hands holding the exact compass in the reference: a deep cylindrical brass case with a slightly flared base, side wall height about 40 percent of dial diameter; plain brass lid with two interior rivets hinged at upper left; a completely plain unmarked cream dial with NO tick marks, NO lines, NO numerals and NO letters; four broad pointed grey-blue triangular arms making an X, with a SMALL smooth flat muted-pink circular pivot with NO engraving or rings; no ring or bail, no chain, no compass rose, only one compass. This is the very same physical compass, not a new version. The compass fills most of the photograph. Preserve the exact four broad grey-blue triangular arms forming the X, the small smooth flat muted pink pivot, thick cylindrical side wall at least 30 percent of dial diameter, slightly flared base and lid hinge orientation. The cream dial is entirely blank: no tick ring, no ticks, no lines or characters. The small flat pink pivot is smooth and has no concentric engraving. Only hands, compass, slivers of mustard cuff and blurred wood bench are visible. No head, face or torso. No second compass.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
+      "negative": "anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, extra limbs, deformed hands, low quality, blurry, different person, dark curly hair, navy scarf, black scarf, thin flat pocket compass, ring bail, compass rose, coloured star needle, numerals on dial, duplicate compass, face, head, torso, full body, wide shot, medium shot, tick marks, dial ticks, numbers, engraved pink pivot, large central button, screw slot",
+      "source": null,
       "reference": {
         "shot_id": "s02",
-        "take_id": "t05",
-        "image": "references/100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png",
-        "image_sha256": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b",
-        "seed": 20679936,
+        "take_id": "t09",
+        "image": "references/b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png",
+        "image_sha256": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8",
+        "seed": null,
         "settings": {
-          "label": "SDXL Base 1.0",
-          "enabled": true,
-          "checkpoint": "sd_xl_base_1.0.safetensors",
-          "license": "CreativeML Open RAIL++-M",
-          "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
-          "width": 1024,
-          "height": 768,
-          "steps": 20,
-          "cfg": 6.0,
-          "sampler_name": "euler",
-          "scheduler": "normal",
-          "denoise": 1.0,
-          "preset_id": "sdxl-base"
+          "preset_id": "imported-reference",
+          "label": "Imported reference",
+          "width": 1448,
+          "height": 1086
         },
-        "models": [
-          {
-            "filename": "sd_xl_base_1.0.safetensors",
-            "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
-            "bytes": 6938078334,
-            "license": "CreativeML Open RAIL++-M",
-            "repository": "stabilityai/stable-diffusion-xl-base-1.0",
-            "revision": "462165984030d82259a11f4367a4eed129e94a7b",
-            "components": [
-              "SDXL UNet",
-              "CLIP-L",
-              "OpenCLIP bigG",
-              "VAE (checkpoint embedded)"
-            ]
-          }
-        ],
-        "workflow": {
-          "1": {
-            "class_type": "CheckpointLoaderSimple",
-            "inputs": {
-              "ckpt_name": "sd_xl_base_1.0.safetensors"
-            }
-          },
-          "2": {
-            "class_type": "CLIPTextEncode",
-            "inputs": {
-              "clip": [
-                "1",
-                1
-              ],
-              "text": "cinematic photograph, (medium waist-up shot, entire head and torso visible down to hips:1.5), (woman holding a small round brass pocket compass at waist level:1.3), adult traveler, short dark bob hair, mustard yellow raincoat, brown leather satchel, standing beside a wooden potting table in a rainy glass greenhouse, ferns, natural window light, muted film colors, 35mm lens"
-            }
-          },
-          "3": {
-            "class_type": "CLIPTextEncode",
-            "inputs": {
-              "clip": [
-                "1",
-                1
-              ],
-              "text": "camera, photographic camera, camera strap, close-up, portrait, face filling frame, cropped head, cropped waist, full body, extreme close-up, distant figure, full body, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
-            }
-          },
-          "4": {
-            "class_type": "EmptyLatentImage",
-            "inputs": {
-              "width": 1024,
-              "height": 768,
-              "batch_size": 1
-            }
-          },
-          "5": {
-            "class_type": "KSampler",
-            "inputs": {
-              "model": [
-                "1",
-                0
-              ],
-              "positive": [
-                "2",
-                0
-              ],
-              "negative": [
-                "3",
-                0
-              ],
-              "latent_image": [
-                "4",
-                0
-              ],
-              "seed": 20679936,
-              "steps": 20,
-              "cfg": 6.0,
-              "sampler_name": "euler",
-              "scheduler": "normal",
-              "denoise": 1.0
-            }
-          },
-          "6": {
-            "class_type": "VAEDecode",
-            "inputs": {
-              "samples": [
-                "5",
-                0
-              ],
-              "vae": [
-                "1",
-                2
-              ]
-            }
-          },
-          "7": {
-            "class_type": "SaveImage",
-            "inputs": {
-              "images": [
-                "6",
-                0
-              ],
-              "filename_prefix": "shotboard/take"
-            }
-          }
+        "models": [],
+        "workflow": {},
+        "source": {
+          "type": "imported",
+          "label": "Imported reference"
         },
         "sdk_asset": {
           "__type": "core/ASSET",
           "info": {
-            "id": "ebe3596c-c34c-4350-8b5c-7b0dc0ccc712",
-            "hash": "blake3:c5d24229495958ac622e744f6e01d06c42f5cc5dbb5f36b0e93e423b1ba512eb",
-            "file_path": "100fad3207bda66fc295926c19ce58800a51ebcffce465bd8b7749e3966c263b.png"
+            "id": "adec2bd8-e276-4e21-a985-38b4e4e63a3a",
+            "hash": "blake3:d0b166ee1772823b481cad1de2268674dab75c78d1722576b009381d4c1d978f",
+            "file_path": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png"
           }
         }
       },
       "submitted_workflow": "workflows/s05.submitted.api.json",
-      "submitted_workflow_sha256": "94457fd93a15163345a35295aa4386cbdce0856411546e1b80bf9909d072c05d",
-      "submission_fingerprint_sha256": "5753b996569fbee192e10d8b97d635e958e813dd510ba565ab5ba0b589aaeca8",
+      "submitted_workflow_sha256": "47d30dedabbd22f0e3a7c24c77126bba40d866b72db218f9820afa15b4e5246f",
+      "submission_fingerprint_sha256": "1839e4e09aa8c35d8d74f38fdd2d27a78773740401b5bee47487ee8dece0b778",
       "image": "stills/s05.png",
-      "image_sha256": "5429e711191c804c1f49466a43d6e1553458d8a49b1386c1920f079973712478",
+      "image_sha256": "688d2d16c9cbbacfd76900624cba733fbc24167726e61ab6bfd513e58f0c5904",
       "workflow": "workflows/s05.api.json",
-      "workflow_sha256": "1dbb6e5a901df8692be8851ddd7d91b59d8c7128d941c471ac97313e9f875b56",
-      "elapsed_seconds": 90.421
+      "workflow_sha256": "5f278b1de45bdf1c648861cd30e293a07da7962d3032850f348069cf29c0fe0a",
+      "elapsed_seconds": 81.178
     },
     {
       "id": "s06",
       "title": "Low angle",
-      "take_id": "t01",
+      "take_id": "t05",
       "review": {
         "shot": "s06",
-        "take": "t01",
-        "verdict": "pass",
-        "note": "Steep low angle under a glass dome with the traveler on the stairs; the yellow coat matches. She has longer hair and a brown satchel that the hero frame does not show. The dome is not the hero's bay, and the compass is out of view."
+        "take": "t05",
+        "verdict": "fail",
+        "note": "Upward view beneath the pitched glass roof, with the open brass compass held at her waist. The scarf is narrower and ribbed, and the bob is smoother than the hero's."
       },
-      "seed": 20261020,
+      "seed": 20261022,
       "seed_locked": true,
       "settings": {
-        "label": "SDXL Base 1.0",
+        "label": "Qwen continuity \u00b7 reference edit",
         "enabled": true,
-        "checkpoint": "sd_xl_base_1.0.safetensors",
-        "license": "CreativeML Open RAIL++-M",
-        "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+        "license": "Apache-2.0",
+        "capability": "reference-edit",
+        "unet": "qwen-image-edit-2511-Q8_0.gguf",
+        "encoder": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+        "vae": "qwen_image_vae.safetensors",
         "width": 768,
         "height": 1024,
-        "steps": 20,
-        "cfg": 7.5,
+        "steps": 24,
+        "cfg": 4.0,
         "sampler_name": "euler",
-        "scheduler": "normal",
+        "scheduler": "simple",
         "denoise": 1.0,
-        "preset_id": "sdxl-base"
+        "shift": 3.1,
+        "reference_megapixels": 1.0,
+        "preset_id": "qwen-reference"
       },
       "models": [
         {
-          "filename": "sd_xl_base_1.0.safetensors",
-          "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
-          "bytes": 6938078334,
-          "license": "CreativeML Open RAIL++-M",
-          "repository": "stabilityai/stable-diffusion-xl-base-1.0",
-          "revision": "462165984030d82259a11f4367a4eed129e94a7b",
-          "components": [
-            "SDXL UNet",
-            "CLIP-L",
-            "OpenCLIP bigG",
-            "VAE (checkpoint embedded)"
-          ]
+          "filename": "qwen-image-edit-2511-Q8_0.gguf",
+          "component": "diffusion",
+          "folder": "diffusion_models",
+          "sha256": "ab4f0622fb002fccaaa679a2ecce6fd1b3190d8ea28a5b7b2b17b8669bc24afa",
+          "bytes": 21761817184,
+          "repository": "unsloth/Qwen-Image-Edit-2511-GGUF",
+          "revision": "0d33d9692b4b26212297240d87b0d4719aa4fd06",
+          "license": "Apache-2.0",
+          "path": "qwen-image-edit-2511-Q8_0.gguf"
+        },
+        {
+          "filename": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+          "component": "text encoder",
+          "folder": "text_encoders",
+          "sha256": "ee770c700d7429cc6f0c74d6c7ab3c063bf521312fc36e80776d1d79bc9fa4ad",
+          "bytes": 8098524032,
+          "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+          "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+          "license": "Apache-2.0",
+          "path": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf"
+        },
+        {
+          "filename": "Qwen2.5-VL-7B-Instruct-mmproj-F16.gguf",
+          "component": "vision projector",
+          "folder": "text_encoders",
+          "sha256": "987dd0733033fb5dd9b124d1ca926ae865572e432384eee7618b2eec3e735e17",
+          "bytes": 1354163040,
+          "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+          "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+          "license": "Apache-2.0",
+          "path": "mmproj-F16.gguf"
+        },
+        {
+          "filename": "qwen_image_vae.safetensors",
+          "component": "VAE",
+          "folder": "vae",
+          "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+          "bytes": 253806246,
+          "repository": "Comfy-Org/Qwen-Image_ComfyUI",
+          "revision": "1f12b17be14c89b026c51a91d67c32f84bb047bc",
+          "license": "Apache-2.0",
+          "path": "split_files/vae/qwen_image_vae.safetensors"
         }
       ],
-      "prompt": "(dramatic worm's-eye view from floor level looking steeply upward at An adult traveler with short dark hair, towering figure, architecture overhead, strong foreshortening:1.45), live-action RAW photograph, A traveler discovers a small brass compass in a rain-soaked greenhouse.. Character: An adult traveler with short dark hair, mustard raincoat, brown satchel. Set: A quiet glass greenhouse, ferns, rain on windows, wooden potting table., 35mm lens, , soft directional window light, natural soft shadows, muted cinematic colors, gentle contrast, subtle 35mm film grain, cinematic still photograph, locked camera composition",
-      "negative": "eye level, high angle, overhead view, flat perspective, looking down, anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry",
-      "reference": null,
-      "submitted_workflow": null,
-      "submitted_workflow_sha256": null,
-      "submission_fingerprint_sha256": null,
+      "prompt": "Requested framing: Low angle. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. LOW ANGLE: camera near the wooden greenhouse bench looking steeply upward toward the reference woman with the exact same rounded face, lowered eyes, light chestnut chin-length bob with soft waves curling outward at the ends and right side part, mustard yellow canvas coat with metal buttons, shoulder tabs and flap chest pockets, rich teal cable-knit scarf, still standing at the SAME bench. Keep the same dark green greenhouse framing and ferns above and around her, no staircase or dome. Show her face, teal scarf and mustard coat, hands may be below frame. Do not add a bag or another person. Preserve hair, face and coat details.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
+      "negative": "anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, extra limbs, deformed hands, low quality, blurry, different person, dark curly hair, navy scarf, black scarf, thin flat pocket compass, ring bail, compass rose, coloured star needle, numerals on dial, duplicate compass, tick marks, dial ticks, numbers, engraved pink pivot, large central button, screw slot",
+      "source": null,
+      "reference": {
+        "shot_id": "s02",
+        "take_id": "t09",
+        "image": "references/b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png",
+        "image_sha256": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8",
+        "seed": null,
+        "settings": {
+          "preset_id": "imported-reference",
+          "label": "Imported reference",
+          "width": 1448,
+          "height": 1086
+        },
+        "models": [],
+        "workflow": {},
+        "source": {
+          "type": "imported",
+          "label": "Imported reference"
+        },
+        "sdk_asset": {
+          "__type": "core/ASSET",
+          "info": {
+            "id": "adec2bd8-e276-4e21-a985-38b4e4e63a3a",
+            "hash": "blake3:d0b166ee1772823b481cad1de2268674dab75c78d1722576b009381d4c1d978f",
+            "file_path": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png"
+          }
+        }
+      },
+      "submitted_workflow": "workflows/s06.submitted.api.json",
+      "submitted_workflow_sha256": "8e4b0813dad194d337c093ec3dcee730122d1b214ca9ce2a2a5048f07a529625",
+      "submission_fingerprint_sha256": "fe86716a7034077bb0abcc54fe0c6f89ef2955d84a414b25d6e92557bf78ffbc",
       "image": "stills/s06.png",
-      "image_sha256": "1e97ec4a9ba2de985b2035be25fea0a7c35a8eb1769813c988caf8a3ca267aeb",
+      "image_sha256": "7e4808b0a8e32fe49e9c600227d956bfcb8d70d8ac4a97c964256a83ce8c1920",
       "workflow": "workflows/s06.api.json",
-      "workflow_sha256": "8afc3e3b8a3d5cf528e3dfbcb54149d7d2d4a3d5e3c253dc222d5abc171367b7",
-      "elapsed_seconds": 3.623
+      "workflow_sha256": "8be154d83114e906d30a049ad08fbb50a434530977209951b1dad1753e8877fc",
+      "elapsed_seconds": 69.443
     }
   ]
 }

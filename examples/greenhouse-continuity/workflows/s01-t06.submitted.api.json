@@ -1,0 +1,180 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": {
+        "__type": "core/ASSET",
+        "info": {
+          "id": "adec2bd8-e276-4e21-a985-38b4e4e63a3a",
+          "hash": "blake3:d0b166ee1772823b481cad1de2268674dab75c78d1722576b009381d4c1d978f",
+          "file_path": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png"
+        }
+      }
+    }
+  },
+  "2": {
+    "class_type": "TextEncodeQwenImageEditPlus",
+    "inputs": {
+      "clip": [
+        "9",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ],
+      "image1": [
+        "14",
+        0
+      ],
+      "prompt": "Requested framing: Establishing. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. Change ONLY camera distance and framing: EXTREME DISTANT ESTABLISHING photograph of the SAME rain-soaked greenhouse. Camera is 20 metres back down the central greenhouse aisle. The entire greenhouse architecture, roof grid, fern-lined benches, wide wet floor and long perspective fill almost all of this landscape photograph. The reference woman in the mustard coat and teal knit scarf is a TINY FULL-BODY figure far away beside the greenhouse bench, feet visible on the floor, her whole body height LESS THAN ONE EIGHTH of the image height. Keep her chestnut bob and outfit. She holds the brass compass, but its tiny details are naturally too small to resolve at this camera distance. Wide empty foreground path. No close foreground person, no enlarged portrait, no medium view, no cropped body. Photographic, same rainy diffuse daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+    }
+  },
+  "3": {
+    "class_type": "TextEncodeQwenImageEditPlus",
+    "inputs": {
+      "clip": [
+        "9",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ],
+      "image1": [
+        "14",
+        0
+      ],
+      "prompt": "anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, extra limbs, deformed hands, low quality, blurry, different person, dark curly hair, navy scarf, black scarf, thin flat pocket compass, ring bail, compass rose, coloured star needle, numerals on dial, duplicate compass, tick marks, dial ticks, numbers, engraved pink pivot, large central button, screw slot, large person, portrait, medium shot, cropped legs, cropped feet, close-up compass, person fills frame"
+    }
+  },
+  "4": {
+    "class_type": "EmptySD3LatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 704,
+      "batch_size": 1
+    }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "13",
+        0
+      ],
+      "positive": [
+        "15",
+        0
+      ],
+      "negative": [
+        "16",
+        0
+      ],
+      "latent_image": [
+        "4",
+        0
+      ],
+      "seed": 20261023,
+      "steps": 24,
+      "cfg": 4.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "6": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "5",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ]
+    }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "6",
+        0
+      ],
+      "filename_prefix": "shotboard/reference-take"
+    }
+  },
+  "8": {
+    "class_type": "UnetLoaderGGUF",
+    "inputs": {
+      "unet_name": "qwen-image-edit-2511-Q8_0.gguf"
+    }
+  },
+  "9": {
+    "class_type": "CLIPLoaderGGUF",
+    "inputs": {
+      "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+      "type": "qwen_image"
+    }
+  },
+  "10": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    }
+  },
+  "12": {
+    "class_type": "ModelSamplingAuraFlow",
+    "inputs": {
+      "model": [
+        "8",
+        0
+      ],
+      "shift": 3.1
+    }
+  },
+  "13": {
+    "class_type": "CFGNorm",
+    "inputs": {
+      "model": [
+        "12",
+        0
+      ],
+      "strength": 1.0
+    }
+  },
+  "14": {
+    "class_type": "ImageScaleToTotalPixels",
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "megapixels": 1.0,
+      "resolution_steps": 1
+    }
+  },
+  "15": {
+    "class_type": "FluxKontextMultiReferenceLatentMethod",
+    "inputs": {
+      "conditioning": [
+        "2",
+        0
+      ],
+      "reference_latents_method": "index_timestep_zero"
+    }
+  },
+  "16": {
+    "class_type": "FluxKontextMultiReferenceLatentMethod",
+    "inputs": {
+      "conditioning": [
+        "3",
+        0
+      ],
+      "reference_latents_method": "index_timestep_zero"
+    }
+  }
+}
