@@ -48,6 +48,14 @@ window.SB = {sized: url => ({src:url.replace('.png','-800.webp'), srcset:`${url.
 tag = vm.runInContext(`img('/api/x.png','Cut',SIZES.thumb)`, context);
 assert.match(tag, /src="\/api\/x-800\.webp" srcset="\/api\/x-400\.webp 400w, \/api\/x-800\.webp 800w" sizes="64px"/);
 assert.doesNotMatch(tag, /x\.png/);
+// A portrait still in a contain-fit card shows narrower than the card, so it asks for less width.
+window.SB.sized = url => ({src:'p-400.webp', srcset:'p-400.webp 400w, p-768.webp 768w', width:768, height:1024});
+tag = vm.runInContext(`img('/api/p.png','Cut',SIZES.card,false,SLOT.card)`, context);
+assert.match(tag, /sizes="\(max-width:600px\) calc\(calc\(100vw - 32px\) \* 0\.65\), \(max-width:1100px\) calc\(calc\(50vw - 52px\) \* 0\.65\), calc\(440px \* 0\.65\)"/);
+tag = vm.runInContext(`img('/api/p.png','Cut',SIZES.thumb)`, context);
+assert.match(tag, /sizes="64px"/, 'Cover-fit slots keep their sizes');
+window.SB.sized = url => ({src:'w-800.webp', srcset:'w-800.webp 800w', width:1216, height:704});
+assert.match(vm.runInContext(`img('/api/w.png','Cut',SIZES.card,false,SLOT.card)`, context), /sizes="\(max-width:600px\) calc\(100vw - 32px\), /, 'Wide stills fill the width');
 delete window.SB;
 
 // Board: first card image is the priority, the rest lazy; the legend names the hero when there is one.
