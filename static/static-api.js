@@ -3,7 +3,7 @@
 // Picks and reviews stay in this browser (localStorage).
 (() => {
   'use strict';
-  const KEY = 'shotboard-static:v1:';
+  const KEY = 'shotboard-static:v7:';
   const GPU_ONLY = 'To render new takes, run Shot Board locally with your own ComfyUI.';
   const realFetch = window.fetch.bind(window);
   const files = new Map();
@@ -95,6 +95,7 @@
   window.fetch = (input, init = {}) => {
     const url = typeof input === 'string' ? input : input.url;
     if (!url.startsWith('/api/')) return realFetch(input, init);
+    if (/\/shots\/[^/]+\/import$/.test(url)) return Promise.resolve(json({detail: 'To import a reference, run Shot Board locally.'}, 409));
     let body;
     try { body = init.body ? JSON.parse(init.body) : undefined; } catch { return Promise.resolve(json({detail: 'Please check your inputs.'}, 422)); }
     return route((init.method || 'GET').toUpperCase(), url, body)

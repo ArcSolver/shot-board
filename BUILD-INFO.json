@@ -1,12 +1,12 @@
 {
-  "app_commit": "1d87683ec7169473f95f6b98ef684da6e1ad726b",
+  "app_commit": "327a2e5c905893dfc841cadc8142f246e54f489c",
   "app_worktree_dirty": false,
   "repo_url": "https://github.com/ArcSolver/shot-board",
   "examples": [
     {
       "slug": "greenhouse-continuity",
-      "board_id": "bb800358e0c54f688d4e6072dd2c98a1",
-      "images": 18
+      "board_id": "8ddc2833cfea4ee0bacde64ac5cb41b4",
+      "images": 21
     },
     {
       "slug": "greenhouse",
@@ -19,6 +19,6 @@
       "images": 12
     }
   ],
-  "files": 69,
-  "bytes": 78147573
+  "files": 72,
+  "bytes": 85891547
 }

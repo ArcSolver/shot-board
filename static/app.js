@@ -1,4 +1,10 @@
-const HERO_RULE = 'Select an SDXL take to use as the hero.';
+const HERO_RULE = 'Select an SDXL take or imported reference to use as the hero.';
+function isImported(take) { return take?.status==='succeeded' && take.source?.type==='imported' && take.settings?.preset_id==='imported-reference' && !take.reference && take.seed===null && take.models?.length===0 && Object.keys(take.workflow||{}).length===0; }
+const canBeHero = take => isSDXLOriginal(take) || isImported(take);
+function renderDetails(t) {
+  if(isImported(t))return `<small>Imported reference · ${t.settings.width} × ${t.settings.height}</small>`;
+  return `<small>SEED ${t.seed}</small>${t.settings?`<small>${escapeHTML(t.settings.label)} · ${t.settings.width} × ${t.settings.height} · CFG ${t.settings.cfg}</small><small>${t.settings.steps} steps · ${escapeHTML(t.settings.sampler_name)} / ${escapeHTML(t.settings.scheduler)}</small>`:''}`;
+}
 function isSDXLOriginal(take) {
   return !!take && take.status==='succeeded' && !take.reference &&
     take.settings?.checkpoint==='sd_xl_base_1.0.safetensors' &&
@@ -61,7 +67,7 @@ function render() {
   $('queue-detail').textContent=running?`${running.phase} · ${Math.floor((Date.now()/1000)-running.started_at)}s elapsed`:'Waiting for the worker';
   $('queue-progress').max=takes.length||1;$('queue-progress').value=completed;
   $('recipe-label').textContent=heroRef?`Hero ${heroRef.shot_id.toUpperCase()} / ${heroRef.take_id.toUpperCase()} · ${heroRef.settings.label}`:'SDXL Base 1.0';
-  $('recipe-detail').textContent=heroRef?`${heroRef.settings.steps} steps · seed ${heroRef.seed}`:'20 steps';
+  $('recipe-detail').textContent=heroRef?(heroRef.source?.type==='imported'?`${heroRef.settings.width} × ${heroRef.settings.height}`:`${heroRef.settings.steps} steps · seed ${heroRef.seed}`):'20 steps';
   const signature=JSON.stringify([board.continuity,board.review,board.shots.map(s=>[s.title,s.prompt,s.picked,s.locked_seed,s.takes.map(t=>[t.id,t.status,t.image,t.error])])]);
   if(signature!==lastSignature){
     lastSignature=signature;
@@ -84,12 +90,15 @@ function renderCompare(){
   const s=board.shots.find(s=>s.id===currentShot);if(!s)return;
   $('compare-title').textContent=s.title;
   $('compare-index').textContent=`· ${board.shots.indexOf(s)+1} of ${board.shots.length}`;
-  $('compare-images').innerHTML=s.takes.length?s.takes.map(t=>`<div class="compare-take ${s.picked===t.id?'chosen':''} ${t.status!=='succeeded'?'unavailable':''}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${escapeHTML(s.title)} ${t.id}">`:'<div class="shot-hero"><span class="empty-frame take-state">'+escapeHTML(t.status)+'</span></div>'}<div><div><strong>${t.id.toUpperCase()}</strong><small>${t.reference?'Qwen reference edit':t.settings?escapeHTML(t.settings.label):''}</small><details class="take-details"><summary>Render details</summary><small>SEED ${t.seed}</small>${t.settings?`<small>${escapeHTML(t.settings.label)} · ${t.settings.width} × ${t.settings.height} · CFG ${t.settings.cfg}</small><small>${t.settings.steps} steps · ${escapeHTML(t.settings.sampler_name)} / ${escapeHTML(t.settings.scheduler)}</small>`:''}${t.error?`<small>${escapeHTML(t.error)}</small>`:''}</details></div><button class="${s.picked===t.id?'primary':'tinted'}" data-pick="${t.id}" ${t.status!=='succeeded'?'disabled':''}>${s.picked===t.id?'✓ Picked':'Pick'}</button></div>${reviewEditor(s,t)}</div>`).join(''):'<p class="muted">No takes yet.</p>';
+  $('compare-images').innerHTML=s.takes.length?s.takes.map(t=>`<div class="compare-take ${s.picked===t.id?'chosen':''} ${t.status!=='succeeded'?'unavailable':''}">${t.status==='succeeded'?`<img src="${imageURL(t)}" alt="${escapeHTML(s.title)} ${t.id}">`:'<div class="shot-hero"><span class="empty-frame take-state">'+escapeHTML(t.status)+'</span></div>'}<div><div><strong>${t.id.toUpperCase()}</strong><small>${t.reference?'Qwen reference edit':t.settings?escapeHTML(t.settings.label):''}</small><details class="take-details"><summary>Render details</summary>${renderDetails(t)}${t.error?`<small>${escapeHTML(t.error)}</small>`:''}</details></div><button class="${s.picked===t.id?'primary':'tinted'}" data-pick="${t.id}" ${t.status!=='succeeded'?'disabled':''}>${s.picked===t.id?'✓ Picked':'Pick'}</button></div>${reviewEditor(s,t)}</div>`).join(''):'<p class="muted">No takes yet.</p>';
   document.querySelectorAll('[data-pick]').forEach(el=>el.onclick=guarded(async()=>{await api(`/boards/${board.id}/shots/${s.id}/pick`,'POST',{take_id:el.dataset.pick});await refresh();$('reuse-seed').value=board.shots.find(x=>x.id===s.id).takes.find(t=>t.id===el.dataset.pick).seed;}));
   bindReviewEditors('#compare-images');
   $('seed-lock').textContent=s.locked_seed!==null?'Unlock seed':'Lock seed';
-  $('seed-lock').disabled=!s.takes.some(t=>t.status==='succeeded');
-  const picked=s.takes.find(t=>t.id===s.picked), heroAllowed=isSDXLOriginal(picked);
+  const picked=s.takes.find(t=>t.id===s.picked), imported=isImported(picked);
+  $('reuse-seed').disabled=imported;
+  $('seed-lock').disabled=busy()||(s.locked_seed===null&&(imported||!s.takes.some(t=>t.status==='succeeded' && t.seed!==null)));
+  $('import-reference').disabled=busy();
+  const heroAllowed=canBeHero(picked);
   $('use-hero').disabled=busy()||!heroAllowed;
   $('more-takes').disabled=busy()||(board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id);
 }
@@ -109,15 +118,15 @@ $('scene-form').onsubmit=guarded(async event=>{event.preventDefault();const data
 $('generate').onclick=guarded(async()=>{const button=$('generate');button.disabled=true;try{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value)});await refresh();}finally{button.disabled=busy();}});
 $('more-takes').onclick=guarded(async()=>{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value),shot_id:currentShot});await refresh();});
 $('cancel').onclick=guarded(async()=>{await api(`/boards/${board.id}/cancel`,'POST',{});await refresh();});
-$('seed-lock').onclick=guarded(async()=>{const s=board.shots.find(x=>x.id===currentShot);const seed=s.locked_seed!==null?null:Number($('reuse-seed').value);await api(`/boards/${board.id}/shots/${s.id}/seed`,'POST',{seed});await refresh();});
-$('use-hero').onclick=guarded(async()=>{const s=board.shots.find(s=>s.id===currentShot);if(!isSDXLOriginal(s.takes.find(t=>t.id===s.picked)))throw new Error(HERO_RULE);await api(`/boards/${board.id}/continuity`,'POST',{enabled:true,shot_id:s.id,take_id:s.picked});await refresh();toast('Hero locked.');});
+$('seed-lock').onclick=guarded(async()=>{const s=board.shots.find(x=>x.id===currentShot);const input=$('reuse-seed').value.trim();if(s.locked_seed===null&&(input===''||isImported(s.takes.find(t=>t.id===s.picked))))throw new Error('Select a generated take and enter a seed.');const seed=s.locked_seed!==null?null:Number(input);if(seed!==null&&(!Number.isInteger(seed)||seed<0||seed>4294967295))throw new Error('Enter a whole seed from 0 to 4294967295.');await api(`/boards/${board.id}/shots/${s.id}/seed`,'POST',{seed});await refresh();});
+$('use-hero').onclick=guarded(async()=>{const s=board.shots.find(s=>s.id===currentShot);if(!canBeHero(s.takes.find(t=>t.id===s.picked)))throw new Error(HERO_RULE);await api(`/boards/${board.id}/continuity`,'POST',{enabled:true,shot_id:s.id,take_id:s.picked});await refresh();toast('Hero locked.');});
 $('keep-continuity').onchange=guarded(async()=>{const hero=board.continuity?.hero;await api(`/boards/${board.id}/continuity`,'POST',{enabled:$('keep-continuity').checked,shot_id:hero?.shot_id,take_id:hero?.take_id});await refresh();});
 $('export').onclick=guarded(()=>SB.exportBoard(board));
 $('close-compare').onclick=()=>$('compare-dialog').close();$('close-boards').onclick=()=>$('boards-dialog').close();
 $('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$('board-grid').hidden=editing;$('edit-toggle').textContent=editing?'Done':'Edit cuts';if(editing)showEditors();};
 $('new-board').onclick=()=>{$('scene-form').reset();document.querySelector('.advanced').open=false;board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;$('scene').focus();};
 $('load-example').onclick=guarded(async()=>{const boards=await api('/boards');$('boards-list').innerHTML=boards.map(b=>`<button class="board-link" data-board="${b.id}">${escapeHTML(b.title)}</button>`).join('')||'<p class="muted">No boards yet.</p>';document.querySelectorAll('[data-board]').forEach(b=>b.onclick=guarded(async()=>{await openBoard(b.dataset.board);$('boards-dialog').close();}));$('boards-dialog').showModal();});
-async function health(){SB.health();return;try{const h=await api('/health');$('connection').textContent=board?.continuity?.enabled&&!h.reference_components_present?'Engine offline':h.proxy_ready&&h.checkpoint_present?'Local engine ready':!h.checkpoint_present?'Engine offline':'Local engine offline';$('connection').dataset.state=$('connection').textContent==='Local engine ready'?'ready':'offline';}catch{$('connection').textContent='Local server unavailable';$('connection').dataset.state='offline';}}
+async function health(){SB.health();return;try{const h=await api('/health');const available=board?.continuity?.enabled?h.reference_components_present:h.checkpoint_present;$('connection').textContent=h.proxy_ready&&available?'Local engine ready':available?'Local engine offline':'Engine offline';$('connection').dataset.state=$('connection').textContent==='Local engine ready'?'ready':'offline';}catch{$('connection').textContent='Local server unavailable';$('connection').dataset.state='offline';}}
 guarded(async()=>{const appConfig=await api('/config');chips(appConfig);if(appConfig.coverage)coverage=appConfig.coverage;coveragePreview();await loadGallery();if(location.hash.length>1)await openBoard(location.hash.slice(1));await health();})();
 setInterval(async()=>{if(polling)return;polling=true;try{await refresh();}catch{}finally{polling=false;}},1600);setInterval(health,15000);
 
@@ -209,3 +218,13 @@ document.addEventListener('keydown',event=>{
   else{const cards=[...document.querySelectorAll('.shot-hero[data-compare]')];const index=cards.indexOf(document.activeElement);cards[(index+delta+cards.length)%cards.length]?.focus();}
 });
 window.addEventListener('hashchange',guarded(async()=>{const id=location.hash.slice(1);if(id&&id!==board?.id)await openBoard(id);else if(!id&&$('composer').hidden){board=null;$('workspace').hidden=true;$('home').hidden=false;}}));
+
+$('import-reference').onclick=()=>$('reference-file').click();
+$('reference-file').onchange=guarded(async event=>{
+  const file=event.target.files[0];if(!file)return;
+  try {
+    const response=await fetch(`/api/boards/${board.id}/shots/${currentShot}/import`,{method:'POST',headers:{'Content-Type':file.type},body:file});
+    const data=await response.json();if(!response.ok)throw new Error(data.detail);
+    await refresh();toast('Reference imported. Pick it and use it as the hero.');
+  } finally { event.target.value=''; }
+});
