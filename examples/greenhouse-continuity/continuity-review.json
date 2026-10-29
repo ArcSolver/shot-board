@@ -3,7 +3,7 @@
     "shot": "s05",
     "take": "t02",
     "verdict": "fail",
-    "note": "Recognizable compass. Flared base and small center pivot are redrawn; coat torso visible behind macro. Not certified identical."
+    "note": "Recognizable compass. Flared base and small center pivot are redrawn; coat torso visible behind macro."
   },
   {
     "shot": "s05",
@@ -15,25 +15,25 @@
     "shot": "s05",
     "take": "t04",
     "verdict": "fail",
-    "note": "Cardinal letters and red north half are readable. Pivot/letter/tick/case details differ from reference; strict identity not certified."
+    "note": "Cardinal letters and red north half are readable. Pivot, letters, ticks and case differ from the reference."
   },
   {
     "shot": "s05",
     "take": "t05",
     "verdict": "fail",
-    "note": "Recognizable compass face, but the needle becomes a three-part red/white shape with a flat red arm; north half is not the required classic straight needle. Added side knob, serif letters and changed lid. Reject."
+    "note": "Recognizable compass face, but the needle becomes a three-part red/white shape with a flat red arm instead of a straight needle. Added side knob, serif letters and changed lid."
   },
   {
     "shot": "s05",
     "take": "t06",
     "verdict": "fail",
-    "note": "Clear bold N/E/S/W, ticks and red/silver needle. Added lid-top clasp and redesigned brass pivot; strict carry-over fails."
+    "note": "Clear bold N/E/S/W, ticks and red/silver needle. Added lid-top clasp and redesigned brass pivot."
   },
   {
     "shot": "s05",
     "take": "t07",
     "verdict": "fail",
-    "note": "Clear N/E/S/W, degree ticks, red/silver needle and subtle glass. Cardinal font changes to serif, pivot and shallow case differ. Strict carry-over fails."
+    "note": "Clear N/E/S/W, degree ticks, red/silver needle and subtle glass. Cardinal font changes to serif, pivot and shallow case differ."
   },
   {
     "shot": "s03",
@@ -93,7 +93,7 @@
     "shot": "s04",
     "take": "t06",
     "verdict": "fail",
-    "note": "Added ring/bail above lid, changed pivot and narrow rib scarf; side-on framing rather than over shoulder. Reject strict identity."
+    "note": "Added ring/bail above lid, changed pivot and narrow rib scarf; side-on framing rather than over shoulder."
   },
   {
     "shot": "s01",
@@ -105,7 +105,7 @@
     "shot": "s01",
     "take": "t02",
     "verdict": "pass",
-    "note": "Wide greenhouse aisle and a small full-body figure. Framing pass; the compass dial is too small to inspect, so its details are not certified."
+    "note": "Wide greenhouse aisle and a small full-body figure. The compass dial is too small to check."
   },
   {
     "shot": "s06",
@@ -129,6 +129,6 @@
     "shot": "s05",
     "take": "t01",
     "verdict": "fail",
-    "note": "Cancelled before an image was returned. No image to review."
+    "note": "Cancelled before an image was returned."
   }
 ]
