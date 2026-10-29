@@ -58,7 +58,7 @@ class MemoryGuard:
         self.previous = (now, swap)
         self.checked_at = now
         if free < 25 or (previous and swap - previous[1] >= 256 and now - previous[0] <= 15):
-            raise MemorySafetyError('Memory safety stop: below 25% free or rapid swap growth. Queued renders cancelled.')
+            raise MemorySafetyError('Memory ran low. Queued renders were cancelled.')
 
     def check_running(self):
         if self.mode == 'local' and self.preset == 'qwen-reference' and sys.platform == 'darwin' and time.monotonic()-self.checked_at >= 5:

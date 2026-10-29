@@ -337,7 +337,7 @@ def health():
     return dict(proxy_ready=ready, reference_components_present=reference_components_present, checkpoint_present=checkpoint_present)
 
 
-EXAMPLES = {"greenhouse-continuity": "The greenhouse / continuity", "greenhouse": "The greenhouse / early study", "hangar": "The hangar"}
+EXAMPLES = {"greenhouse-continuity": "The greenhouse", "greenhouse": "The greenhouse, first takes", "hangar": "The hangar"}
 
 
 def example_board(slug):
@@ -454,7 +454,7 @@ def generate(bid: str, request: Generate):
         if any(t["status"] in ("queued", "running") for s in board["shots"] for t in s["takes"]):
             raise HTTPException(409, "This board already has work in the queue.")
         if any(len(s["takes"])+request.takes > 16 for s in shots):
-            raise HTTPException(409, "Maximum 16 takes per cut. Create a new board for more coverage.")
+            raise HTTPException(409, "This cut already has 16 takes, the most it can hold.")
         try:
             models = verify_models(preset_id)
         except ValueError as exc:
@@ -466,7 +466,7 @@ def generate(bid: str, request: Generate):
             for i in range(request.takes):
                 tid = f"t{offset+i+1:02}"
                 seed = seed_for(board["config"]["seed"], offset+i, shot["locked_seed"])
-                take = dict(id=tid, seed=seed, status="queued", phase="Queued locally", settings=preset,
+                take = dict(id=tid, seed=seed, status="queued", phase="Queued", settings=preset,
                             models=deepcopy(models), workflow=workflow_for(shot, seed, preset, reference),
                             reference=deepcopy(reference), elapsed_seconds=0)
                 shot["takes"].append(take)
@@ -508,7 +508,7 @@ def verify_models(preset_id):
         else:
             path = REFERENCE_MODEL_DIR / model["folder"] / model["filename"]
         if not path.is_file():
-            raise ValueError("Model component missing: " + model["filename"] + ". Follow README setup.")
+            raise ValueError("Model file missing: " + model["filename"] + ". See docs/SETUP.md.")
         if sha256(path) != model["sha256"]:
             raise ValueError("Model hash differs from the pinned component: " + model["filename"])
         if path.stat().st_size != model["bytes"]:
@@ -577,14 +577,14 @@ async def import_reference(bid: str, sid: str, request: Request):
             clean = Image.new('RGB', image.size)
             clean.paste(image)
     except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
-        raise HTTPException(422, "Choose a PNG, JPEG or WebP image, 512–4096 pixels per side.") from None
+        raise HTTPException(422, "Choose a PNG, JPEG or WebP image, 512 to 4096 pixels per side.") from None
     with store.lock:
         board = board_for(bid)
         shot = shot_for(board, sid)
         if any(t['status'] in ('queued', 'running') for s in board['shots'] for t in s['takes']):
             raise HTTPException(409, "Wait for the current queue before importing a reference.")
         if len(shot['takes']) >= 16:
-            raise HTTPException(409, "Maximum 16 takes per cut. Create a new board for more coverage.")
+            raise HTTPException(409, "This cut already has 16 takes, the most it can hold.")
         tid = f"t{max((int(t['id'][1:]) for t in shot['takes']), default=0)+1:02}"
         filename = f'{sid}-{tid}.png'
         path = DATA / bid / filename

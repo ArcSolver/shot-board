@@ -97,8 +97,6 @@ PRESETS = {
         "sampler_name": "euler", "scheduler": "simple", "denoise": 1.0,
         "shift": 3.1, "reference_megapixels": 1.0,
     },
-    "flux-klein-4b": {"label": "FLUX.2 klein 4B · planned", "enabled": False,
-                      "license": "Apache-2.0", "capability": "text-and-reference"},
 }
 NEGATIVE = "anime, cartoon, illustration, drawing, painting, 3d render, text, watermark, logo, celebrity, nudity, gore, duplicate subject, extra limbs, deformed hands, low quality, blurry"
 
