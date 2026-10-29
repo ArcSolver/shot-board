@@ -418,14 +418,15 @@ function renderExport(){
   const refs=names.filter(n=>n.startsWith('references/'));
   const short=n=>n.replace(/^(references\/)([0-9a-f]{6})[0-9a-f]+([0-9a-f]{4})(\.png)$/,'$1$2…$3$4');
   const groups=[
-    ['Storyboards',`2 PNG`,'storyboard-landscape.png, storyboard-portrait.png'],
+    ['Storyboards',`2 PNG`,['storyboard-landscape.png','storyboard-portrait.png']],
     ['Stills',`${count('stills/')} PNG`,`stills/${board.shots[0].id}.png … stills/${board.shots.at(-1).id}.png`],
     built.length&&['ComfyUI workflows',`${count('workflows/')} JSON`,`workflows/sNN.api.json for ${setupRanges(built)}${submitted?`, plus ${submitted} as submitted`:''}`],
     refs.length&&['Hero reference',`${refs.length} PNG`,refs.map(short).join(', ')],
     ['Manifest','1 JSON','manifest.json: scene, picks, seeds, verdicts, pinned models'],
   ].filter(Boolean);
   $('zip-summary').textContent=`${names.length} files`;
-  $('zip-files').innerHTML=groups.map(([name,n,path])=>`<li><b>${name}</b><span class="n">${n}</span><span class="p">${escapeHTML(path)}</span></li>`).join('');
+  // A list of file names breaks between names, never at a hyphen inside one.
+  $('zip-files').innerHTML=groups.map(([name,n,path])=>`<li><b>${name}</b><span class="n">${n}</span><span class="p">${Array.isArray(path)?path.map(f=>`<span class="f">${escapeHTML(f)}</span>`).join(', '):escapeHTML(path)}</span></li>`).join('');
   $('export-picks').innerHTML=board.shots.map((s,i)=>`<li><span class="setup-no">${NN(i)}</span><span class="pick-title">${escapeHTML(s.title)}</span><span class="pick-take">${TAKE(picks[i])}</span>${verdictMark(reviewFor(s,picks[i]))}<span class="pick-src">${sourceLabel(picks[i])}</span></li>`).join('');
 }
 let storyboardRequest=0;

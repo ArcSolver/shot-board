@@ -420,6 +420,7 @@ dialog::backdrop{background:var(--scrim)}
 .zip-files b{font-weight:var(--w-strong)}
 .zip-files .n{color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums}
 .zip-files .p{grid-column:1/-1;font:var(--w-body) var(--t-xs)/var(--lh-text) var(--script);color:var(--ink-2);overflow-wrap:anywhere}
+.zip-files .f{white-space:nowrap}
 
 /* My boards: what the board is, its scene as typed, and how far the picking got. */
 #boards-dialog{max-width:640px}
