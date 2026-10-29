@@ -245,8 +245,10 @@ class Store:
                                             if pending["status"] == "queued":
                                                 pending.update(status="cancelled", error=str(exc))
                                     self.save(pending_board)
-                            take.update(status="cancelled" if take.get("cancel_requested") or self.stop.is_set() else "failed",
-                                        error=str(exc) if isinstance(exc, MemorySafetyError) else f"{type(exc).__name__}: local generation stopped. Check the local engine and retry.",
+                            # A take the user stopped is only cancelled; the engine hint is for a take that failed.
+                            cancelled = bool(take.get("cancel_requested") or self.stop.is_set())
+                            take.update(status="cancelled" if cancelled else "failed",
+                                        error=str(exc) if isinstance(exc, MemorySafetyError) else None if cancelled else f"{type(exc).__name__}: local generation stopped. Check the local engine and retry.",
                                         elapsed_seconds=round(time.monotonic()-start, 3))
                         break
             finally:
@@ -453,8 +455,9 @@ def generate(bid: str, request: Generate):
             shots = [s for s in shots if s["id"] != reference["shot_id"]]
         if any(t["status"] in ("queued", "running") for s in board["shots"] for t in s["takes"]):
             raise HTTPException(409, "This board already has work in the queue.")
-        if any(len(s["takes"])+request.takes > 16 for s in shots):
-            raise HTTPException(409, "This cut already has 16 takes, the most it can hold.")
+        over = next((s for s in shots if len(s["takes"])+request.takes > 16), None)
+        if over:
+            raise HTTPException(409, f"A cut holds 16 takes. {board['shots'].index(over)+1:02} {over['title']} has {len(over['takes'])}.")
         try:
             models = verify_models(preset_id)
         except ValueError as exc:

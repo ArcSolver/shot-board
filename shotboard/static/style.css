@@ -16,7 +16,6 @@
   /* Graphite for the one action that moves the work forward. */
   --act:#1f2124;--act-hover:#000000;
   --pass:#2e6a3e;--fail:#9c3d2a;
-  /* The only shadow: a page lying on the desk. */
   --r:2px;
 
   /* Spacing: a 4px base. */
@@ -464,7 +463,6 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
 }
 @media(max-width:600px){
   main{padding:0}.topbar{height:56px;padding:0 var(--s3) 0 var(--gutter-phone)}.brand-logo{width:clamp(110px,30vw,129px);height:auto}nav{gap:var(--s1)}.topbar nav>*{padding:0 var(--s3);font-size:var(--t-sm)}
-  .page{box-shadow:none}
   /* Text fields at 16px so phones do not zoom in when one takes focus. */
   textarea,input:not([type=checkbox]):not([type=radio]){font-size:var(--t-lg)}
   .home-page{display:flex;flex-direction:column;padding:var(--s5) var(--gutter-phone) var(--s7)}
@@ -512,7 +510,7 @@ footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:sp
   /* The 14px title sits 2px higher on its line, so the number follows it. */
   .cut-text{--no-top:var(--s1)}.cut-text h3{font-size:var(--t-md)}.cut-facts{font-size:var(--t-xs);gap:var(--s0) var(--s3)}
   .shot-editor{display:block}.shot-editor .editor-settings{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--s3)}.shot-editor .editor-settings label:first-child{grid-column:1/-1}
-  dialog,#image-dialog,#image-dialog[open]{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;padding:var(--gutter-phone);box-shadow:none;animation:none}
+  dialog,#image-dialog,#image-dialog[open]{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;padding:var(--gutter-phone);animation:none}
   .dialog-heading{top:calc(var(--gutter-phone) * -1);margin:calc(var(--gutter-phone) * -1) calc(var(--gutter-phone) * -1) 0;padding:var(--s2) var(--gutter-phone) var(--s3);flex-wrap:wrap;gap:var(--s1) var(--s2)}
   .dialog-heading .heading-text{order:3;flex:1 1 100%}
   .dialog-heading h2{font-size:var(--t-xl)}

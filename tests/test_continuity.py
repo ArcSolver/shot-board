@@ -364,7 +364,7 @@ class EngineRetryTests(unittest.TestCase):
     setUp = ContinuityAPITests.setUp
     enable = ContinuityAPITests.enable
 
-    def run_take(self, failures, engine_up=True):
+    def run_take(self, failures, engine_up=True, cancel=False):
         """Queue one Qwen edit; `failures` lists what each submit raises before a success."""
         from types import SimpleNamespace
         import httpx
@@ -373,6 +373,7 @@ class EngineRetryTests(unittest.TestCase):
         with patch.object(server,'verify_models',return_value=[]):
             self.client.post(self.base+'/generate',json={'takes':1,'shot_id':'s03'})
         take=self.board['shots'][2]['takes'][0]
+        if cancel: take['cancel_requested']=True
         calls=[]
         class Output:
             def to_file(inner,path):
@@ -427,6 +428,11 @@ class EngineRetryTests(unittest.TestCase):
         self.assertEqual(len(calls), 1)
         self.assertEqual(take['status'], 'failed')
         self.assertTrue(take['error'].startswith('ConnectError'))
+
+    def test_a_stopped_take_is_cancelled_without_an_engine_hint(self):
+        take, calls, _ = self.run_take([RuntimeError('Generation cancelled')], cancel=True)
+        self.assertEqual(take['status'], 'cancelled')
+        self.assertIsNone(take['error'])
 
     def test_other_errors_are_not_retried(self):
         take, calls, probe = self.run_take([ValueError('bad graph')])
