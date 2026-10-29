@@ -6,7 +6,7 @@ Start the app as in [Run it locally](../README.md#run-it-locally).
 
 1. On the home page, choose **New scene**. Type the scene or press **Use greenhouse scene**, then **Build shot list**.
 2. Choose **Render board**. Takes arrive cut by cut.
-3. Open **Compare & pick** on 02 Medium. **Pick** an SDXL take, or **Import reference** under **Hero** and pick your image, then choose **Use pick as hero**.
+3. Open **Compare & pick** on 02 Medium. **Pick** an SDXL take, or choose **Import reference** under **Hero** and **Pick** the imported take. Then choose **Use pick as hero**.
 4. Back on the board, choose **Render reference edits**. Every other cut goes to Qwen-Image-Edit-2511 with the hero as the reference.
 5. Click **Export storyboard**, switch to Portrait and click **Download PNG**. Then click **Download ZIP**.
 

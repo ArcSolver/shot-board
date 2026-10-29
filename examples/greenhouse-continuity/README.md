@@ -2,7 +2,7 @@
 
 A traveler discovers a small brass compass in a rain-soaked greenhouse.
 
-02 Medium is an imported reference: a brass compass with N/E/S/W, degree ticks, a red north needle and a glass cover. Qwen-Image-Edit-2511 redrew the other five cuts from it with Render reference edits.
+02 Medium is an imported reference: the traveler holding a brass compass with N/E/S/W, degree ticks, a red north needle and a glass cover. Qwen-Image-Edit-2511 redrew the other five cuts from it with Render reference edits.
 
 | File | Data |
 |---|---|
