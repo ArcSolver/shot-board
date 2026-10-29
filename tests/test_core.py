@@ -239,6 +239,11 @@ class ExportTests(unittest.TestCase):
             item = json.loads(archive.read("manifest.json"))["shots"][0]
             self.assertEqual(item["prompt"], original)
             self.assertEqual(item["seed"], 41)
+            # A lock on another take's seed does not make the pick's seed locked.
+            self.assertFalse(item["seed_locked"])
+        shot["locked_seed"] = 41
+        with zipfile.ZipFile(io.BytesIO(export_board(self.board, self.data))) as archive:
+            self.assertTrue(json.loads(archive.read("manifest.json"))["shots"][0]["seed_locked"])
 
     def test_incomplete_board_cannot_export(self):
         self.board["shots"][-1]["picked"] = None

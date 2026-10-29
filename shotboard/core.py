@@ -267,7 +267,7 @@ def export_board(board, data_root):
                 review=deepcopy(next((r for r in board.get("review", [])
                                      if r["shot"] == shot["id"] and r["take"] == take["id"]),
                                     dict(shot=shot["id"], take=take["id"], verdict="pending", note=""))),
-                seed=take["seed"], seed_locked=shot["locked_seed"] is not None,
+                seed=take["seed"], seed_locked=shot["locked_seed"] is not None and shot["locked_seed"] == take["seed"],
                 settings=deepcopy(take["settings"]), models=deepcopy(take["models"]),
                 prompt=None if imported else take["workflow"]["2"]["inputs"].get("text", take["workflow"]["2"]["inputs"].get("prompt")),
                 negative=None if imported else take["workflow"]["3"]["inputs"].get("text", take["workflow"]["3"]["inputs"].get("prompt")),

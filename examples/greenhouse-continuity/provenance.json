@@ -180,6 +180,7 @@
     "Qwen-Image-2512 Q8_0",
     "Qwen-Image-Edit-2511 Q8_0",
     "Qwen2.5-VL-7B-Instruct Q8_0",
+    "Qwen2.5-VL-7B-Instruct vision projector F16",
     "Qwen image VAE"
   ],
   "run": "2026-10-29-qwen-image-hero",
