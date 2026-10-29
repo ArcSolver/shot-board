@@ -1,7 +1,5 @@
 # Demo walkthrough
 
-These steps follow the demo video, from one sentence to a storyboard.
-
 ## With a GPU worker
 
 Start the app as in [Run it locally](../README.md#run-it-locally).
