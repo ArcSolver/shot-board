@@ -85,7 +85,8 @@ function sourceLabel(take){
   if(!take)return '';
   if(isImported(take))return 'Imported reference';
   if(take.reference){const at=shotIndex(take.reference.shot_id);return `Redrawn from ${SLATE(at>=0?NN(at):escapeHTML(take.reference.shot_id.toUpperCase()))}`;}
-  return isSDXLOriginal(take)?'SDXL take':'';
+  // On a board of SDXL takes only, every cut would say the same thing.
+  return isSDXLOriginal(take)&&allTakes().some(t=>t.reference||isImported(t))?'SDXL take':'';
 }
 function heroTake(){
   const h=board.continuity?.hero;if(!h)return null;
@@ -418,14 +419,14 @@ function renderExport(){
   const groups=[
     ['Storyboards',`2 PNG`,['storyboard-landscape.png','storyboard-portrait.png']],
     ['Stills',`${count('stills/')} PNG`,`stills/${board.shots[0].id}.png … stills/${board.shots.at(-1).id}.png`],
-    built.length&&['ComfyUI workflows',`${count('workflows/')} JSON`,`workflows/sNN.api.json for ${setupRanges(built)}${submitted.length?`; sNN.submitted.api.json for ${setupRanges(submitted)}`:''}`],
+    built.length&&['ComfyUI workflows',`${count('workflows/')} JSON`,submitted.length===built.length?`workflows/sNN.api.json and sNN.submitted.api.json for ${setupRanges(built)}`:`workflows/sNN.api.json for ${setupRanges(built)}${submitted.length?`; sNN.submitted.api.json for ${setupRanges(submitted)}`:''}`],
     refs.length&&['Hero reference',`${refs.length} PNG`,refs.map(short).join(', ')],
     ['Manifest','1 JSON','manifest.json: scene, picks, seeds, verdicts, pinned models'],
   ].filter(Boolean);
   $('zip-summary').textContent=`${names.length} files`;
   // A list of file names breaks between names, never at a hyphen inside one.
   $('zip-files').innerHTML=groups.map(([name,n,path])=>`<li><b>${name}</b><span class="n">${n}</span><span class="p">${Array.isArray(path)?path.map(f=>`<span class="f">${escapeHTML(f)}</span>`).join(', '):escapeHTML(path)}</span></li>`).join('');
-  $('export-picks').innerHTML=board.shots.map((s,i)=>`<li><span class="setup-no">${NN(i)}</span><span class="pick-title">${escapeHTML(s.title)}</span><span class="pick-take">${TAKE(picks[i])}</span>${verdictMark(reviewFor(s,picks[i]))}<span class="pick-src">${sourceLabel(picks[i])}</span></li>`).join('');
+  $('export-picks').innerHTML=board.shots.map((s,i)=>`<li><span class="setup-no">${NN(i)}</span><span class="pick-title">${escapeHTML(s.title)}</span><span class="pick-take">${TAKE(picks[i])}</span>${verdictMark(reviewFor(s,picks[i]))}${sourceLabel(picks[i])?`<span class="pick-src">${sourceLabel(picks[i])}</span>`:''}</li>`).join('');
 }
 let storyboardRequest=0;
 const storyboardLayout=()=>document.querySelector?.('input[name="storyboard-layout"]:checked')?.value||'landscape';
