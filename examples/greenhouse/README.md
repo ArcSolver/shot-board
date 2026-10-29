@@ -7,7 +7,7 @@
 
 | File | Data |
 |---|---|
-| board.json | Every attempt, snapshot, pick and stored review |
+| board.json | Every take, pick and review |
 | takes/; workflows/ | Source PNGs and portable graphs |
 | selects.zip; export/ | Selected frames, graphs, manifest and two storyboards |
-| contact-sheet.png | All attempts |
+| contact-sheet.png | All takes |

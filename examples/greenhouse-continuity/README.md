@@ -6,9 +6,9 @@ A traveler discovers a small brass compass in a rain-soaked greenhouse.
 
 | File | Data |
 |---|---|
-| board.json | Every attempt, snapshot, pick and stored review |
+| board.json | Every take, pick and review |
 | takes/; workflows/ | Source PNGs and portable generation graphs |
-| selects.zip; export/ | Selected frames, reference, manifest and two storyboards |
-| contact-sheet.png | All completed attempts |
+| selects.zip; export/ | Selected frames, graphs, reference, manifest and two storyboards |
+| contact-sheet.png | All completed takes |
 | all-qwen-runs.png | Edits from the imported hero |
 | timing.csv | Recorded render times and source methods |
