@@ -170,6 +170,16 @@ class DirectionTests(unittest.TestCase):
         self.assertNotRegex(js, r'style="')
         self.assertNotRegex((STATIC / 'index.html').read_text(), r'style="')
 
+    def test_slate_spans_keep_their_line_and_busy_buttons_keep_focus(self):
+        css = (STATIC / 'style.css').read_text()
+        # Courier spans inside a Hanken line would make captions with a number taller than those without.
+        self.assertRegex(css, r'\.take-no,\.slate\{[^}]*line-height:var\(--lh-1\)[;}]')
+        # A busy button is marked aria-disabled, never disabled, so keyboard focus stays on it.
+        js = (STATIC / 'app.js').read_text()
+        self.assertNotIn('button.disabled=true', js)
+        self.assertEqual(js.count("button.ariaDisabled='true';button.ariaBusy='true';"), 3)
+        self.assertRegex(css, r'\.primary:is\(:disabled,\[aria-disabled="true"\]:not\(\[aria-busy="true"\]\)\)\{')
+
     def test_no_glyphs_the_fonts_do_not_carry(self):
         for path in (STATIC / 'app.js', STATIC / 'index.html'):
             for glyph in '←→✕★✓':

@@ -66,15 +66,16 @@ dialog:focus-visible{outline-offset:calc(var(--focus) * -1)}
 /* Buttons: square, 36px. Graphite for the next step, an outlined page for the rest, plain text for navigation. */
 button,.button{position:relative;cursor:pointer;border:0;border-radius:var(--r);background:transparent;color:var(--ink);padding:0 var(--pad-x);min-height:var(--h);font:var(--w-ui) var(--t-sm)/var(--lh-1) var(--ui);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);white-space:nowrap;transition:background-color var(--dur) var(--ease),color var(--dur) var(--ease),box-shadow var(--dur) var(--ease),transform var(--dur-press) var(--ease)}
 /* Only compact buttons press in; frames, cards and rows would jump. */
-:is(.primary,.quiet,.plain,.icon,.chip):active:not(:disabled){transform:scale(.97)}
-button:disabled{cursor:not-allowed;color:var(--ink-3)}
+:is(.primary,.quiet,.plain,.icon,.chip):active:not(:disabled,[aria-disabled="true"]){transform:scale(.97)}
+/* A busy button keeps its fill and its focus; an unavailable one that holds focus reads as disabled. */
+button:is(:disabled,[aria-disabled="true"]:not([aria-busy="true"])){cursor:not-allowed;color:var(--ink-3)}
 button[aria-busy="true"]{cursor:progress}
 .primary{background-color:var(--act);color:var(--on-ink)}
-.primary:hover:not(:disabled){background-color:var(--act-hover)}
-.primary:disabled{background-color:var(--page-tint);color:var(--ink-3);box-shadow:inset 0 0 0 var(--hair) var(--rule)}
+.primary:hover:not(:disabled,[aria-disabled="true"]){background-color:var(--act-hover)}
+.primary:is(:disabled,[aria-disabled="true"]:not([aria-busy="true"])){background-color:var(--page-tint);color:var(--ink-3);box-shadow:inset 0 0 0 var(--hair) var(--rule)}
 .quiet{background-color:var(--page);box-shadow:inset 0 0 0 var(--hair) var(--rule-strong)}
-.quiet:hover:not(:disabled){box-shadow:inset 0 0 0 var(--hair) var(--ink-3)}
-.quiet:disabled{box-shadow:inset 0 0 0 var(--hair) var(--rule)}
+.quiet:hover:not(:disabled,[aria-disabled="true"]){box-shadow:inset 0 0 0 var(--hair) var(--ink-3)}
+.quiet:is(:disabled,[aria-disabled="true"]:not([aria-busy="true"])){box-shadow:inset 0 0 0 var(--hair) var(--rule)}
 .plain{color:var(--ink-2)}
 @media(hover:hover){.plain:hover:not(:disabled){color:var(--ink);background-color:var(--wash)}}
 .state{color:var(--pencil);background-color:var(--pencil-wash);box-shadow:inset 0 0 0 var(--line) var(--pencil);cursor:default}
@@ -117,7 +118,8 @@ details[open]>summary::before{transform:none}
 .cue{margin:var(--s5) 0 var(--s1);font:var(--w-display) var(--t-sm)/var(--lh-tight) var(--script);letter-spacing:var(--track-caps);text-transform:uppercase;color:var(--ink)}
 .cue:first-child{margin-top:0}
 .setup-no{font:var(--w-display) var(--t-sm)/var(--lh-1) var(--script);color:var(--pencil);font-variant-numeric:tabular-nums}
-.take-no,.slate{font-family:var(--script);font-weight:var(--w-display);font-variant-numeric:tabular-nums}
+/* A tight line keeps the typed span inside its sentence's line, so a caption with a number is no taller than one without. */
+.take-no,.slate{font-family:var(--script);font-weight:var(--w-display);font-variant-numeric:tabular-nums;line-height:var(--lh-1)}
 .verdict{display:inline-flex;align-items:baseline;gap:var(--s1);font-size:var(--t-xs);font-weight:var(--w-strong)}
 .verdict::before{content:"";flex:none;width:8px;height:8px;border:var(--line) solid currentColor}
 .verdict.pass{color:var(--pass)}

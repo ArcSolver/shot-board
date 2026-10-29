@@ -27,6 +27,10 @@ const WAIT = 'Wait for the queue to finish.';
 const SLATE = text => `<span class="slate">${text}</span>`;
 // When a request never arrives, say so in words that fit the build: the local app has a server, the Pages viewer has files.
 const offline = () => window.SB?'The page could not load its board files. Check the connection, then reload the page.':'The local Shot Board server is not answering. Start it again, then reload the page.';
+// A server's error detail is shown only when it is a sentence; a list or an object gets the fallback.
+const detail = (error, fallback) => typeof error.detail==='string'?error.detail:fallback;
+// A control the keyboard is on stays focusable while the queue runs: marked unavailable and refusing presses, not disabled.
+const hold = (button, off) => {const keep=off&&document.activeElement===button;button.disabled=off&&!keep;button.ariaDisabled=keep?'true':null;};
 const phone = () => !!window.matchMedia?.('(max-width:600px)')?.matches;
 const icon = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 // Every board image goes through img(): lazy unless it is the first one on screen. The static viewer
@@ -118,7 +122,7 @@ function render() {
   $('storyboard').disabled=!allPicked;
   $('export-hint').textContent=allPicked?'':'Pick a take in every cut to export.';
   $('storyboard').className=allPicked?'primary':'quiet';
-  $('generate').disabled=busy();$('cancel').hidden=!busy();
+  hold($('generate'),busy());$('cancel').hidden=!busy();
   $('generate').className=needsRender&&!allPicked?'primary':'quiet';
   $('generate').textContent=board.continuity?.enabled?'Render reference edits':completed?'More takes for every cut':'Render board';
   $('pick-count').textContent=`${picked} of ${board.shots.length} picked`;
@@ -290,7 +294,7 @@ $('use-example').onclick=guarded(async()=>{
   document.querySelector('.advanced').open=true;
 });
 $('scene-form').onsubmit=guarded(async event=>{event.preventDefault();if(!sceneValid())return;const data=Object.fromEntries(new FormData(event.target));Object.assign(data,choices,{seed:Number(data.seed),count:Number(data.count)});const created=await api('/boards','POST',data);await openBoard(created.id);});
-$('generate').onclick=guarded(async()=>{const button=$('generate'), label=button.textContent;button.disabled=true;button.ariaBusy='true';button.textContent='Queuing…';try{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value)});await refresh();}finally{button.disabled=busy();button.ariaBusy=null;if(button.textContent==='Queuing…')button.textContent=label;}});
+$('generate').onclick=guarded(async()=>{const button=$('generate'), label=button.textContent;if(button.ariaDisabled==='true')return;button.ariaDisabled='true';button.ariaBusy='true';button.textContent='Queuing…';try{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value)});await refresh();}finally{button.ariaBusy=null;hold(button,busy());if(button.textContent==='Queuing…')button.textContent=label;}});
 $('more-takes').onclick=guarded(async()=>{await api(`/boards/${board.id}/generate`,'POST',{takes:Number($('takes-count').value),shot_id:currentShot});await refresh();});
 $('cancel').onclick=guarded(async()=>{await api(`/boards/${board.id}/cancel`,'POST',{});await refresh();});
 // Seed problems are told beside the seed field, not in a toast across the screen.
@@ -302,7 +306,7 @@ $('reuse-seed').oninput=()=>{if(seedError){seedError='';renderCompare();}};
 $('use-hero').onclick=guarded(async()=>{const s=board.shots.find(s=>s.id===currentShot);if(!canBeHero(s.takes.find(t=>t.id===s.picked)))throw new Error(HERO_RULE);await api(`/boards/${board.id}/continuity`,'POST',{enabled:true,shot_id:s.id,take_id:s.picked});await refresh();toast('Hero set.');});
 $('keep-continuity').onchange=guarded(async()=>{const hero=board.continuity?.hero;await api(`/boards/${board.id}/continuity`,'POST',{enabled:$('keep-continuity').checked,shot_id:hero?.shot_id,take_id:hero?.take_id});await refresh();});
 // Fetched, then saved through a link: no navigation, so the board's polling request is not cancelled, and a failure is reported.
-$('export').onclick=guarded(async()=>{const button=$('export'),label=button.textContent;button.disabled=true;button.ariaBusy='true';button.textContent='Preparing ZIP…';try{const response=await fetch(`/api/boards/${board.id}/export`).catch(()=>{throw new Error(offline());});if(!response.ok){const error=await response.json().catch(()=>({}));throw new Error(error.detail||'The ZIP could not be made. Try again.');}const href=URL.createObjectURL(await response.blob()),link=document.createElement('a');link.href=href;link.download='shot-board.zip';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(href),60000);toast('shot-board.zip is ready.');}finally{button.disabled=false;button.ariaBusy=null;button.textContent=label;}});
+$('export').onclick=guarded(async()=>{const button=$('export'),label=button.textContent;if(button.ariaBusy==='true')return;button.ariaDisabled='true';button.ariaBusy='true';button.textContent='Preparing ZIP…';try{const response=await fetch(`/api/boards/${board.id}/export`).catch(()=>{throw new Error(offline());});if(!response.ok){const error=await response.json().catch(()=>({}));throw new Error(detail(error,'The ZIP could not be made. Try again.'));}const href=URL.createObjectURL(await response.blob()),link=document.createElement('a');link.href=href;link.download='shot-board.zip';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(href),60000);toast('shot-board.zip is ready.');}finally{button.ariaDisabled=null;button.ariaBusy=null;button.textContent=label;}});
 $('close-compare').onclick=()=>$('compare-dialog').close();$('close-boards').onclick=()=>$('boards-dialog').close();
 $('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$('board-grid').hidden=editing;$('edit-toggle').textContent=editing?'Done':'Edit cuts';if(editing)showEditors();};
 $('new-board').onclick=()=>{$('scene-form').reset();$('scene-error').hidden=true;$('scene').ariaInvalid=null;document.querySelector('.advanced').open=false;board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;coveragePreview();$('scene').focus();};
@@ -349,12 +353,14 @@ function bindReviewEditors(root){
     form.oninput=form.onchange=()=>{reviewDrafts.set(key,values());const state=form.querySelector('.review-state');if(state)state.textContent=reviewState(key,board.review?.find(r=>r.shot===form.dataset.shot&&r.take===form.dataset.take));};
     form.onsubmit=guarded(async event=>{
       event.preventDefault();
-      const data=values(), button=form.querySelector('button');button.disabled=true;button.ariaBusy='true';button.textContent='Saving…';
+      const data=values(), button=form.querySelector('button'), focused=document.activeElement===button;if(button.ariaBusy==='true')return;button.ariaDisabled='true';button.ariaBusy='true';button.textContent='Saving…';
       try{
         await api(`/boards/${board.id}/shots/${form.dataset.shot}/takes/${form.dataset.take}/review`,'PUT',data);
         if(!reviewDrafts.has(key)||JSON.stringify(reviewDrafts.get(key))===JSON.stringify(data))reviewDrafts.delete(key);
         await refresh();toast('Review saved.');
-      }finally{button.disabled=false;button.ariaBusy=null;button.textContent='Save review';}
+        // The saved form is drawn again; a keyboard user stays on its Save button.
+        if(focused)document.querySelector(`${root} .review-editor[data-shot="${form.dataset.shot}"][data-take="${form.dataset.take}"] button`)?.focus();
+      }finally{button.ariaDisabled=null;button.ariaBusy=null;button.textContent='Save review';}
     });
   });
 }
@@ -435,7 +441,7 @@ async function previewStoryboard(){
   $('storyboard-preview').dataset.layout=layout;
   const path=`/api/boards/${board.id}/storyboard?layout=${layout}`;
   const response=await fetch(path).catch(()=>{throw new Error(offline());});
-  if(!response.ok){const error=await response.json().catch(()=>({}));throw new Error(error.detail||'The storyboard could not be drawn. Try again.');}
+  if(!response.ok){const error=await response.json().catch(()=>({}));throw new Error(detail(error,'The storyboard could not be drawn. Switch the layout or reopen Export storyboard to try again.'));}
   const blob=await response.blob();
   if(request!==storyboardRequest)return;
   const old=$('storyboard-preview').dataset.objectUrl;
@@ -467,7 +473,7 @@ $('reference-file').onchange=guarded(async event=>{
   const file=event.target.files[0];if(!file)return;
   try {
     const response=await fetch(`/api/boards/${board.id}/shots/${currentShot}/import`,{method:'POST',headers:{'Content-Type':file.type},body:file}).catch(()=>{throw new Error(offline());});
-    const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.detail||'The reference could not be imported. Try a PNG, JPEG or WebP.');
+    const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(detail(data,'The reference could not be imported. Try again.'));
     await refresh();toast('Reference imported. Pick it, then use the pick as hero.');
   } finally { event.target.value=''; }
 });
