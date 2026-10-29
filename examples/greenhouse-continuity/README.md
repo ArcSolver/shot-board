@@ -1,8 +1,8 @@
-# Greenhouse continuity
+# The greenhouse
 
 A traveler discovers a small brass compass in a rain-soaked greenhouse.
 
-The board starts from an imported reference in 02 Medium: a brass compass with N/E/S/W, degree ticks, a red north needle and a glass cover. Qwen-Image-Edit-2511 redraws the other five cuts through the app's Render reference edits path. Open a take to see its seed, reference, settings and saved review. Imported reference stills keep their source label.
+02 Medium is an imported reference: a brass compass with N/E/S/W, degree ticks, a red north needle and a glass cover. Qwen-Image-Edit-2511 redrew the other five cuts from it with Render reference edits.
 
 | File | Data |
 |---|---|

@@ -1,4 +1,4 @@
-# Greenhouse: early recipe
+# The greenhouse, first takes
 
 | Field | Value |
 |---|---|

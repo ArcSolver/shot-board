@@ -2,17 +2,15 @@
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="docs/logo-dark.svg"><img src="shotboard/static/logo.svg" width="258" height="64" alt="Shot Board: one scene, six shots"></picture>
 
-**A storyboard app for film coverage: one scene, six shots.**
+Shot Board turns one line of scene into a six-shot coverage storyboard. You choose one hero frame, and it redraws the other cuts from that frame.
 
-Target categories: **Best Overall** and **Open Weights Only**. Every reference-edited frame runs through open-weights Qwen-Image-Edit-2511 on local ComfyUI.
+Categories: Best Overall and Open Weights Only. Both models, SDXL Base 1.0 and Qwen-Image-Edit-2511, are open weights and run on your own ComfyUI.
 
 ![Six-shot storyboard of a traveler finding a brass compass in a rainy greenhouse](examples/greenhouse-continuity/storyboard-landscape.png)
 
 ## Try it without a GPU
 
-Try the [live demo on GitHub Pages](https://arcsolver.github.io/shot-board/) in your browser.
-
-Browse, review and export the three boards that ship with the repo. You need Git and uv.
+The [live demo](https://arcsolver.github.io/shot-board/) opens the three boards in the repo. To run them on your machine you need Git and uv:
 
 ```sh
 git clone --depth 1 https://github.com/ArcSolver/shot-board.git shot-board
@@ -22,17 +20,17 @@ uv pip install --python .venv/bin/python -r requirements.lock.txt --require-hash
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-Open **http://127.0.0.1:8790** and choose **Open this board**, or open another board from the home page. To render new takes, see [Run it locally](#run-it-locally).
+Open **http://127.0.0.1:8790** and choose **Open this board**.
 
 ## What it does
 
-You write one scene and Shot Board lays out six editable cuts from a coverage template: establishing, medium, face close-up, over shoulder, insert and low angle. When the scene has no person, the face close-up and over shoulder become a detail close-up and a side angle. You can add up to three more, give it character, prop and setting details, and edit each cut's prompt and negative prompt.
+You write one scene and Shot Board lays out six editable cuts: establishing, medium, face close-up, over shoulder, insert and low angle. A scene without a person gets a detail close-up and a side angle in place of the face and shoulder shots. You can add up to three more cuts, give the scene character, prop and setting details, and edit each cut's prompt.
 
-SDXL renders takes for each cut. Compare & pick shows the take you are looking at beside the hero, with every take of the cut in a strip under it and the render details at the side, and you can lock a seed and reuse it. Pick an SDXL take or import your own image as the hero. Render reference edits sends every other cut to Qwen-Image-Edit-2511 with that image as the reference. You can save a pass, fail or pending verdict and a note on any take.
+SDXL renders the first takes. In **Compare & pick** you see each take beside the hero, pick one per cut, lock a seed, and save a pass or fail verdict with a note. The hero is an SDXL take or an image you import. **Render reference edits** then sends every other cut to Qwen-Image-Edit-2511 with the hero as the reference.
 
 ![Imported hero details alongside close-up, over shoulder and insert reference edits](docs/hero-reference.png)
 
-When every cut has a pick, export a landscape or portrait storyboard, plus the stills, ComfyUI workflows and saved recipes.
+When every cut has a pick, export a landscape or portrait storyboard and a ZIP with the stills, ComfyUI workflows and manifest.
 
 | Home | Board | Compare & pick | Storyboard |
 |---|---|---|---|
@@ -40,27 +38,14 @@ When every cut has a pick, export a landscape or portrait storyboard, plus the s
 
 ## How it works
 
-```text
-Browser ──▶ Shot Board (FastAPI, CPU)
-              │  Comfy SDK
-              ▼
-            comfy-api-proxy
-              ▼
-            ComfyUI (GPU worker)
-              ├─ SDXL Base 1.0            → first takes
-              └─ Qwen-Image-Edit-2511     → reference edits from the hero
-```
+The app (FastAPI, on the CPU) sends every render request and reference upload through the Comfy SDK to comfy-api-proxy, which runs on loopback in front of your ComfyUI on the GPU worker.
 
-All inference requests and reference uploads go through the Comfy SDK and a loopback proxy to your own ComfyUI.
-
-- **SDXL Base 1.0** renders the first takes. Pinned in [model-lock.json](workflows/model-lock.json); graph in [sdxl-base.api.json](workflows/sdxl-base.api.json).
-- **Qwen-Image-Edit-2511** handles reference edits through ComfyUI-GGUF. Pinned in [qwen-model-lock.json](workflows/qwen-model-lock.json) (Q8_0) and [qwen-model-lock-q4_k_m.json](workflows/qwen-model-lock-q4_k_m.json); graph in [qwen-reference.api.json](workflows/qwen-reference.api.json).
-
-On one RTX 4090 (24 GB) an SDXL take took about 4 s and a Q8_0 Qwen edit took about 80 s per cut. `SHOTBOARD_QWEN_QUANT=Q4_K_M` cuts the Qwen files from about 31 GB to 20 GB, and a take that loses the engine is retried once.
+- SDXL Base 1.0 renders the first takes. Pinned in [model-lock.json](workflows/model-lock.json); graph in [sdxl-base.api.json](workflows/sdxl-base.api.json).
+- Qwen-Image-Edit-2511 makes the reference edits through ComfyUI-GGUF. Pinned in [qwen-model-lock.json](workflows/qwen-model-lock.json) (Q8_0) and [qwen-model-lock-q4_k_m.json](workflows/qwen-model-lock-q4_k_m.json); graph in [qwen-reference.api.json](workflows/qwen-reference.api.json).
 
 ## Run it locally
 
-See [docs/SETUP.md](docs/SETUP.md) for local setup.
+Set up the GPU worker with [docs/SETUP.md](docs/SETUP.md), then start the app:
 
 ```sh
 uv venv .venv --python 3.12
@@ -72,19 +57,17 @@ SHOTBOARD_ENGINE_MANIFEST=/path/to/engine-models.json \
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-Open **http://127.0.0.1:8790** and choose **New scene**. Type a scene or press **Use example**, then build the shot list and render SDXL takes. In **Compare & pick**, pick an SDXL take, or choose **Import reference** under **Hero** to add your own PNG, JPEG or WebP. Pick the imported still, choose **Use pick as hero**, then **Render reference edits**. Imported stills are labeled **Imported reference**, with the source image and dimensions recorded in the export. Compare the takes, save a verdict on each, and pick.
+Open **http://127.0.0.1:8790**, choose **New scene**, type a scene and choose **Build shot list**, then **Render board**. In **Compare & pick**, pick an SDXL take, or choose **Import reference** to add your own PNG, JPEG or WebP and pick that. Choose **Use pick as hero**, then **Render reference edits**. Imported stills carry the label **Imported reference**, and the export records their source image and size.
 
 ### Reuse a recipe outside the app
 
-Each generated frame's `workflows/sNN.api.json` in an export ZIP is a ComfyUI API-format graph with the cut's prompt, seed and settings filled in. Qwen graphs load the hero from `references/<sha256>.png`, so copy the ZIP's `references` folder into ComfyUI's input directory before you queue one. You need the same pinned model files and ComfyUI-GGUF.
+Each generated frame's `workflows/sNN.api.json` in the export ZIP is a ComfyUI API-format graph with the cut's prompt, seed and settings filled in. Qwen graphs load the hero from `references/<sha256>.png`, so copy the ZIP's `references` folder into ComfyUI's input directory before you queue one. They need the same pinned model files and ComfyUI-GGUF.
 
 ## Boards in the repo
 
-Explore the greenhouse and hangar boards, with saved takes, reviews and recipes.
-
-- [Greenhouse continuity](examples/greenhouse-continuity/README.md): "A traveler discovers a small brass compass in a rain-soaked greenhouse." An imported hero holding a brass compass with cardinal letters, degree ticks and a red north needle, plus five Qwen reference edits, both storyboards, the export ZIP and saved reviews.
-- [Greenhouse study](examples/greenhouse/README.md): the same scene with the first SDXL-only recipe.
-- [Hangar](examples/hangar/README.md): "A gray utility robot with a square metal head, a single blue optical sensor and mechanical gripper arms repairs a small spaceship engine on a workbench in a quiet hangar at night."
+- [The greenhouse](examples/greenhouse-continuity/README.md): "A traveler discovers a small brass compass in a rain-soaked greenhouse." An imported hero and five Qwen reference edits from it, with saved reviews.
+- [The greenhouse, first takes](examples/greenhouse/README.md): the same scene, SDXL only.
+- [The hangar](examples/hangar/README.md): "A gray utility robot with a square metal head, a single blue optical sensor and mechanical gripper arms repairs a small spaceship engine on a workbench in a quiet hangar at night." SDXL only.
 
 ## License and third-party notices
 

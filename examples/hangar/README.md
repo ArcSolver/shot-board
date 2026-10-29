@@ -1,4 +1,4 @@
-# Hangar
+# The hangar
 
 | Field | Value |
 |---|---|
