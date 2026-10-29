@@ -40,7 +40,7 @@ class PageTests(unittest.TestCase):
         html = (STATIC / 'index.html').read_text()
         page = Links()
         page.feed(html)
-        self.assertIn('<p class="home-lede">Shot Board turns one scene into six camera cuts.', html)
+        self.assertIn('<p class="home-lede">Pick a take for each cut, then export the storyboard.</p>', html)
         self.assertEqual(page.links, ['https://github.com/ArcSolver/shot-board',
                                       'https://github.com/ArcSolver/shot-board/blob/main/LICENSE',
                                       'https://github.com/ArcSolver/shot-board/blob/main/THIRD_PARTY_NOTICES.md'])

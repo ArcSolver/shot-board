@@ -1,4 +1,4 @@
-const HERO_RULE = 'Pick an SDXL take or an imported reference, then use the pick as hero.';
+const HERO_RULE = 'Only an SDXL take or an imported reference can be the hero.';
 function isImported(take) { return take?.status==='succeeded' && take.source?.type==='imported' && take.settings?.preset_id==='imported-reference' && !take.reference && take.seed===null && take.models?.length===0 && Object.keys(take.workflow||{}).length===0; }
 const canBeHero = take => isSDXLOriginal(take) || isImported(take);
 function isSDXLOriginal(take) {
@@ -101,10 +101,10 @@ function scriptFields(){
 // The hero block draws one setup line from the hero cut to every cut a reference edit redraws.
 function heroLine(){
   const c=board.continuity||{}, h=c.hero;
-  if(!h)return '<p class="hero-meta">No hero yet. Pick an SDXL take or import a reference, then use the pick as hero.</p>';
+  if(!h)return '<p class="hero-meta">No hero yet.</p>';
   const at=shotIndex(h.shot_id), shot=board.shots[at], found=heroTake(), others=board.shots.map((s,i)=>i).filter(i=>i!==at);
-  const kind=h.source?.type==='imported'?'Imported reference':`SDXL take · seed ${h.seed}`;
-  return `<button class="hero-card" data-compare="${escapeHTML(h.shot_id)}" aria-label="Compare the hero, ${escapeHTML(shot?.title||'')}"><span class="hero-thumb">${found?img(imageURL(found.take),`${shot.title} hero`,SIZES.hero):''}</span><span class="hero-text"><span class="hero-name"><span class="setup-no">${at>=0?NN(at):''}</span>${escapeHTML(shot?.title||'')}</span><span><span class="take-no">${escapeHTML(h.take_id.toUpperCase())}</span> · ${kind}</span><span>${h.settings.width} × ${h.settings.height}</span></span></button>
+  const kind=h.source?.type==='imported'?'Imported reference':'SDXL take';
+  return `<button class="hero-card" data-compare="${escapeHTML(h.shot_id)}" aria-label="Compare the hero, ${escapeHTML(shot?.title||'')}"><span class="hero-thumb">${found?img(imageURL(found.take),`${shot.title} hero`,SIZES.hero):''}</span><span class="hero-text"><span class="hero-name"><span class="setup-no">${at>=0?NN(at):''}</span>${escapeHTML(shot?.title||'')}</span><span><span class="take-no">${escapeHTML(h.take_id.toUpperCase())}</span> · ${kind}</span></span></button>
     <div class="hero-branch"><span class="branch-stem" aria-hidden="true"></span><p><span class="branch-label">${c.enabled?'Reference edits for':'Reference edits off for'}</span> <span class="branch-nos">${setupRanges(others)}</span></p></div>`;
 }
 function render() {
@@ -114,8 +114,8 @@ function render() {
   const continuity=board.continuity||{}, heroRef=continuity.hero;
   $('keep-continuity').checked=!!continuity.enabled;
   $('keep-continuity').disabled=busy()||!heroRef;
-  // The script column already says when there is no hero; the status line then gives way to it.
-  $('hero-status').textContent=heroRef?(busy()?`${continuity.enabled?'On':'Off'} · ${WAIT}`:continuity.enabled?'On · the other cuts are redrawn from the hero':'Off'):'';
+  // The switch is held while the queue runs; the status line says why.
+  $('hero-status').textContent=heroRef&&busy()?WAIT:'';
   const picked=board.shots.filter(s=>s.picked).length, takes=allTakes(), completed=takes.filter(t=>t.status==='succeeded').length;
   const allPicked=picked===board.shots.length, ready=s=>s.takes.some(t=>t.status==='succeeded');
   const needsRender=board.shots.some(s=>!ready(s))||(!!continuity.enabled&&board.shots.some(s=>s.id!==heroRef?.shot_id&&!s.takes.some(t=>t.reference&&t.status==='succeeded')));
@@ -126,20 +126,19 @@ function render() {
   $('generate').className=needsRender&&!allPicked?'primary':'quiet';
   $('generate').textContent=board.continuity?.enabled?'Render reference edits':completed?'More takes for every cut':'Render board';
   $('pick-count').textContent=`${picked} of ${board.shots.length} picked`;
-  const example=examples.find(ex=>ex.board.id===board.id), heroIndex=shotIndex(heroRef?.shot_id);
+  const example=examples.find(ex=>ex.board.id===board.id);
   $('board-name').textContent=example?example.label:'Your scene';
-  $('board-meta').innerHTML=heroRef&&continuity.enabled&&heroIndex>=0?`Hero ${SLATE(NN(heroIndex))} ${escapeHTML(board.shots[heroIndex].title)}${heroRef.source?.type==='imported'?', imported':''}`:'';
   $('pick-meter').innerHTML=board.shots.map((s,i)=>`<i class="${s.picked?'on':''}">${NN(i)}</i>`).join('');
   $('queue-panel').hidden=!busy();
   const running=takes.find(t=>t.status==='running'),queued=takes.filter(t=>t.status==='queued').length;
   $('queue-status').textContent=`${completed} / ${takes.length} takes ready · ${queued} queued`;
   $('queue-detail').textContent=running?`${running.phase} · ${Math.floor((Date.now()/1000)-running.started_at)}s elapsed`:'Waiting for the worker';
   $('queue-progress').max=takes.length||1;$('queue-progress').value=completed;
-  $('recipe-label').textContent=heroRef?`Hero ${heroRef.shot_id.toUpperCase()} / ${heroRef.take_id.toUpperCase()} · ${heroRef.settings.label}`:'First takes · SDXL Base 1.0';
-  $('recipe-detail').textContent=heroRef?(heroRef.source?.type==='imported'?`${heroRef.settings.width} × ${heroRef.settings.height}`:`${heroRef.settings.steps} steps · seed ${heroRef.seed}`):'20 steps';
+  $('recipe-label').textContent='First takes · SDXL Base 1.0';
   const reviewed=board.review?.some(r=>r.verdict!=='pending'), heroAt=continuity.enabled?shotIndex(heroRef?.shot_id):-1;
-  $('review-legend').hidden=!reviewed;
-  $('review-legend').innerHTML=heroAt>=0?`Pass and Fail are continuity review results against the hero, ${SLATE(NN(heroAt))} ${escapeHTML(board.shots[heroAt].title)}.`:"Pass and Fail are review results against each cut's prompt.";
+  // Without a hero a verdict is judged against the cut's own prompt, which needs no note.
+  $('review-legend').hidden=!reviewed||heroAt<0;
+  $('review-legend').innerHTML=heroAt>=0?`Checked against the hero, ${SLATE(NN(heroAt))} ${escapeHTML(board.shots[heroAt].title)}.`:'';
   const signature=JSON.stringify([board.continuity,board.review,board.config,board.shots.map(s=>[s.title,s.prompt,s.picked,s.locked_seed,s.takes.map(t=>[t.id,t.status,t.image,t.error])])]);
   if(signature!==lastSignature){
     lastSignature=signature;
@@ -153,7 +152,7 @@ function render() {
       const label=hero?(s.picked?'':'Preview · '+TAKE_NO(hero)):active?'Rendering':s.takes.some(t=>t.status==='queued')?'Queued':s.takes.some(t=>t.status==='failed')?'Failed':'', status=label?`<span class="frame-status">${label}</span>`:'';
       const inQueue=s.takes.some(t=>['queued','running'].includes(t.status));
       const facts=hero?`<span>${inQueue?`${TAKE_NO(hero)} · ${done.length} of ${s.takes.length} ready`:`${TAKE_NO(hero)} of ${done.length}`}</span>`:`<span>${s.takes.length?`${done.length} of ${s.takes.length} ready`:'No takes yet'}</span>`;
-      const lock=s.locked_seed!==null?`<span class="seed" title="Seed locked">${icon('lock')}<span class="visually-hidden">Seed locked </span>${s.locked_seed}</span>`:'';
+      const lock=s.locked_seed!==null?`<span class="seed" title="Seed locked">${icon('lock')}<span class="visually-hidden">Seed locked</span></span>`:'';
       const src=sourceLabel(hero);
       return `<article class="shot-card${s.picked?' picked':''}${isHero?' is-hero':''}"><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?img(imageURL(hero),`${s.title} ${hero.id}`,SIZES.card,i===0,SLOT.card):`<span class="empty-frame">${NN(i)}</span>`}${status}</div><p class="cut-src">${isHero?`<b>Hero</b> · ${src}`:src}</p><div class="cut-text"><span class="setup-no">${NN(i)}</span><h3>${escapeHTML(s.title)}</h3><p class="cut-facts">${facts}${verdict}${lock}</p><button class="go" data-compare="${s.id}">Compare &amp; pick</button></div></article>`;
     }).join('');
@@ -174,14 +173,14 @@ function modelName(st){
 }
 function renderDetails(t,s) {
   const row=(k,v)=>v===undefined||v===null||v===''?'':`<div><dt>${k}</dt><dd>${v}</dd></div>`, st=t.settings||{};
-  if(isImported(t))return row('Source','Imported reference')+row('Size',`${st.width} × ${st.height}`)+row('Seed','None, not generated');
+  if(isImported(t))return row('Source','Imported reference')+row('Size',`${st.width} × ${st.height}`);
   const ref=t.reference, at=ref?shotIndex(ref.shot_id):-1;
   return row('Model',escapeHTML(modelName(st)))+row('Text encoder',st.encoder?escapeHTML(st.encoder.replace(/\.gguf$/,'').replace(/-(Q\d_\w+)$/,' $1')):'')+row('License',escapeHTML(st.license))
     +row('Reference',ref?`${at>=0?SLATE(NN(at))+' '+escapeHTML(board.shots[at].title):escapeHTML(ref.shot_id)}, ${ref.source?.type==='imported'?'imported':`<span class="take-no">${escapeHTML(ref.take_id.toUpperCase())}</span>`}`:'')
     +row('Seed',t.seed!==null&&t.seed!==undefined?`${t.seed}${s.locked_seed!==null&&s.locked_seed===t.seed?` <span class="locked">${icon('lock')}Locked</span>`:''}`:'')
     +row('Size',st.width?`${st.width} × ${st.height}`:'')+row('Steps, CFG',st.steps?`${st.steps}, ${st.cfg}`:'')
     +row('Sampler',st.sampler_name?`${escapeHTML(st.sampler_name)} / ${escapeHTML(st.scheduler)}`:'')
-    +row('Elapsed',t.elapsed_seconds?`${Math.round(t.elapsed_seconds)} s`:'')+row('Error',t.error?escapeHTML(t.error):'');
+    +row('Error',t.error?escapeHTML(t.error):'');
 }
 function figure(role,detail,shot,take,first,zoom,sizes){
   return `<figure class="fig fig-${role.toLowerCase()}"><figcaption><b>${role}</b><span>${detail}</span></figcaption>${take.status==='succeeded'?`<button class="take-zoom" ${zoom} aria-label="Enlarge ${escapeHTML(shot.title)} ${take.id}">${img(imageURL(take),`${shot.title} ${take.id}`,sizes,first,SLOT.compare)}</button>`:`<div class="frame-empty"><span class="take-state">${takeState(take)}</span></div>`}</figure>`;
@@ -201,9 +200,8 @@ function renderCompare(){
   $('compare-images').innerHTML=v?(other?figure(other.role,other.detail,other.shot,other.take,false,'data-zoom-other="1"',SIZES.compare):'')+figure('Take',`${TAKE_NO(v)}${takeDetail(v)?' · '+takeDetail(v):''}`,s,v,true,`data-zoom="${v.id}"`,other?SIZES.compare:SIZES.solo):'<p class="muted">No takes yet. Render takes for this cut, or render the whole board.</p>';
   $('take-strip').innerHTML=s.takes.map(t=>{const isPick=s.picked===t.id, review=reviewFor(s,t);return `<button class="take${t.status!=='succeeded'?' unavailable':''}" data-view="${t.id}" aria-pressed="${t.id===v?.id}" aria-label="${TAKE(t)}${isPick?', picked':''}${review&&review.verdict!=='pending'?', '+review.verdict:''}${t.status!=='succeeded'?', '+t.status:''}"><span class="take-frame">${t.status==='succeeded'?img(imageURL(t),'',SIZES.thumb):`<span class="take-state">${takeState(t)}</span>`}</span><span class="tl"><span class="take-id${isPick?' picked':''}">${TAKE(t)}</span>${isPick?'<span class="pk">Picked</span>':''}${verdictMark(review)}</span></button>`;}).join('');
   const queued=s.takes.filter(t=>['queued','running'].includes(t.status)).length;
-  $('takes-meta').textContent=`${done.length} rendered${queued?` · ${queued} in queue`:''}${v?.settings?.width?` · ${v.settings.width} × ${v.settings.height}`:''}`;
+  $('takes-meta').textContent=queued?`${queued} in queue`:'';
   $('sheet-title').innerHTML=v?`Take ${TAKE_NO(v)}`:'No takes yet';
-  $('sheet-cut').innerHTML=`<span class="setup-no">${NN(at)}</span> ${escapeHTML(s.title)} · ${at+1} of ${board.shots.length}`;
   const isPicked=!!v&&s.picked===v.id;
   $('pick-take').disabled=!v||v.status!=='succeeded';
   $('pick-take').className=isPicked?'state':'primary';
@@ -231,23 +229,22 @@ function renderCompare(){
   $('import-reference').disabled=busy();
   // An imported still has no seed: say so instead of showing the board seed next to it.
   $('seed-row').hidden=imported&&s.locked_seed===null;
-  const seedNote=$('seed-row').hidden?`The picked take ${TAKE_NO(picked)} is an imported reference, so it has no seed. Pick an SDXL take to reuse its seed.`:busy()?WAIT:seedError;
+  const seedNote=$('seed-row').hidden?`${TAKE_NO(picked)} is an imported reference and has no seed.`:busy()?WAIT:seedError;
   $('seed-note').hidden=!seedNote;$('seed-note').innerHTML=seedNote;
   $('reuse-seed').ariaInvalid=seedError&&!$('seed-row').hidden?'true':null;
   const heroAllowed=canBeHero(picked), h=board.continuity?.hero;
   const isHero=!!h&&board.continuity.enabled&&h.shot_id===s.id&&h.take_id===s.picked;
   $('use-hero').disabled=busy()||!heroAllowed||isHero;
   // The hero is always the pick; when another take is on screen, say which take the button uses.
-  const reason=busy()?WAIT:isHero?'':!picked?'Pick a take first.':!heroAllowed?`${HERO_RULE} ${TAKE_NO(picked)} is a reference edit.`:v&&v.id!==picked.id?`This uses the pick, ${TAKE_NO(picked)}.`:'';
+  const reason=busy()?WAIT:isHero?'':!picked?'Pick a take first.':!heroAllowed?`${TAKE_NO(picked)} is a reference edit, so it can't be the hero.`:v&&v.id!==picked.id?`This uses the pick, ${TAKE_NO(picked)}.`:'';
   $('hero-reason').hidden=!reason;$('hero-reason').innerHTML=reason;
   $('compare-hero-line').innerHTML=h?heroLine():'';
   document.querySelectorAll('#compare-hero-line [data-compare]').forEach(el=>el.onclick=()=>{openCompare(el.dataset.compare);$('compare-dialog').scrollTop=0;});
-  $('hero-note').innerHTML=h&&h.shot_id===s.id&&h.take_id===s.picked?`The picked take ${TAKE_NO(picked)} is the hero. Render reference edits redraws the other cuts from it.`
-    :h?`Hero: ${SLATE(NN(shotIndex(h.shot_id)))} ${escapeHTML(board.shots[shotIndex(h.shot_id)]?.title||'')}, ${h.source?.type==='imported'?'imported reference':`<span class="take-no">${escapeHTML(h.take_id.toUpperCase())}</span>`}.${heroAllowed&&!busy()?' Use the picked take here to replace it.':''}`
-    :'No hero yet. Pick an SDXL take or import a reference, then use the pick as hero.';
+  // The hero card beside it already names the hero.
+  $('hero-note').hidden=!!h;$('hero-note').textContent=h?'':'No hero yet.';
   $('more-takes').disabled=busy()||heroCut;
   $('more-takes').textContent=s.takes.length?'Render more takes':'Render takes';
-  const takesReason=busy()?WAIT:heroCut?'The hero keeps its takes. Render reference edits redraws the other cuts.':'';
+  const takesReason=busy()?WAIT:heroCut?'The hero cut keeps its takes.':'';
   $('takes-reason').hidden=!takesReason;$('takes-reason').textContent=takesReason;
 }
 let seedError='';
@@ -311,7 +308,7 @@ $('close-compare').onclick=()=>$('compare-dialog').close();$('close-boards').onc
 $('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$('board-grid').hidden=editing;$('edit-toggle').textContent=editing?'Done':'Edit cuts';if(editing)showEditors();};
 $('new-board').onclick=()=>{$('scene-form').reset();$('scene-error').hidden=true;$('scene').ariaInvalid=null;document.querySelector('.advanced').open=false;board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;coveragePreview();$('scene').focus();};
 $('load-example').onclick=guarded(async()=>{const boards=await api('/boards');if(!examples.length)examples=await api('/examples');
-  $('boards-list').innerHTML=boards.map(b=>{const ex=examples.find(e=>e.board.id===b.id), meta=b.cuts?`${b.cuts} cuts · ${b.picked} of ${b.cuts} picked`:'';
+  $('boards-list').innerHTML=boards.map(b=>{const ex=examples.find(e=>e.board.id===b.id), meta=b.cuts?`${b.picked} of ${b.cuts} picked`:'';
     return `<button class="board-link" data-board="${b.id}"><span class="board-link-name">${escapeHTML(ex?ex.label:'Your scene')}</span><span class="board-link-meta">${meta}</span><span class="board-link-scene">${escapeHTML(b.title)}</span></button>`;}).join('')||'<p class="muted">No boards yet.</p>';document.querySelectorAll('[data-board]').forEach(b=>b.onclick=guarded(async()=>{await openBoard(b.dataset.board);$('boards-dialog').close();}));$('boards-dialog').showModal();});
 async function health(){try{const h=await api('/health');const reference=!!board?.continuity?.enabled, available=reference?h.reference_components_present:h.checkpoint_present;const ready=h.proxy_ready&&available;$('connection').textContent=!h.proxy_ready?'ComfyUI not reachable':!available?(reference?'Qwen reference files missing':'SDXL checkpoint missing'):'Local engine ready';$('connection').dataset.state=ready?'ready':'offline';}catch{$('connection').textContent='Local server unavailable';$('connection').dataset.state='offline';}}
 guarded(async()=>{const appConfig=await api('/config');chips(appConfig);if(appConfig.coverage)coverage=appConfig.coverage;coveragePreview();await loadGallery();if(location.hash.length>1)await openBoard(location.hash.slice(1));await health();})();
@@ -338,7 +335,7 @@ function pictogram(type){
 function reviewState(key,saved){
   const draft=reviewDrafts.get(key), stored={verdict:saved?.verdict||'pending',note:saved?.note||''};
   if(draft&&(draft.verdict!==stored.verdict||draft.note!==stored.note))return 'Unsaved changes';
-  return saved&&(saved.verdict!=='pending'||saved.note)?'Saved':'Not reviewed yet';
+  return saved&&(saved.verdict!=='pending'||saved.note)?'Saved':'Not reviewed';
 }
 // Verdict, then the note on its own full-width row, then the save row: the order you read it is the order you tab through it.
 function reviewEditor(shot,take){
@@ -371,15 +368,15 @@ async function loadGallery(){
   const url=(ex,s)=>`/api/examples/${ex.slug}/images/${picked(s).image}`;
   const picks=b.shots.map(picked), heroId=b.continuity?.enabled?b.continuity.hero?.shot_id:null, heroAt=b.shots.findIndex(s=>s.id===heroId);
   const redrawn=heroAt>=0&&b.shots.every((s,i)=>i===heroAt||picks[i]?.reference?.shot_id===heroId);
-  const note=heroAt>=0?`One line of scene, ${b.shots.length} cuts. Cut ${SLATE(NN(heroAt))} is the hero${isImported(picks[heroAt])?', an imported reference':''}${redrawn?`; the other ${b.shots.length-1} are reference edits drawn from it.`:'.'}`:`One line of scene, ${b.shots.length} cuts.`;
-  $('featured-board').innerHTML=`<p class="scene-line">${escapeHTML(b.config.scene)}</p><div class="setups">${b.shots.map((s,i)=>`<button class="setup" data-example="${featured.slug}" data-cut="${s.id}" aria-label="Open ${NN(i)} ${escapeHTML(s.title)}"><span class="setup-no">${NN(i)}</span><span class="stem" aria-hidden="true"></span><span class="frame">${img(url(featured,s),`${s.title} selected render`,SIZES.lined,i===0)}</span><span class="cap"><b>${escapeHTML(s.title)}</b>${isImported(picks[i])?'<span class="src">Imported reference</span>':''}</span></button>`).join('')}</div><p class="lined-note">${note}</p>`;
+  const note=redrawn?`<p class="lined-note">${SLATE(setupRanges(b.shots.map((s,i)=>i).filter(i=>i!==heroAt)))} are redrawn from ${SLATE(NN(heroAt))}.</p>`:'';
+  $('featured-board').innerHTML=`<p class="scene-line">${escapeHTML(b.config.scene)}</p><div class="setups">${b.shots.map((s,i)=>`<button class="setup" data-example="${featured.slug}" data-cut="${s.id}" aria-label="Open ${NN(i)} ${escapeHTML(s.title)}"><span class="setup-no">${NN(i)}</span><span class="stem" aria-hidden="true"></span><span class="frame">${img(url(featured,s),`${s.title} selected render`,SIZES.lined,i===0)}</span><span class="cap"><b>${escapeHTML(s.title)}</b>${isImported(picks[i])?'<span class="src">Imported reference</span>':''}</span></button>`).join('')}</div>${note}`;
   setRatios('#featured-board .setup',picks);
   // Phones set two frames a row; each pair shares the row by its true widths.
   document.querySelectorAll?.('#featured-board .setup').forEach((el,i)=>{const pair=picks.slice(i-i%2,i-i%2+2).map(t=>t.settings.width/t.settings.height),sum=pair.reduce((a,x)=>a+x,0);el.style.setProperty('--mw',((t=>t.settings.width/t.settings.height)(picks[i])/sum).toFixed(4));});
   $('home-open').dataset.example=featured.slug;
   $('example-gallery').innerHTML=examples.map(ex=>{
     const h=ex.board.continuity?.enabled?ex.board.continuity.hero:null, at=h?ex.board.shots.findIndex(s=>s.id===h.shot_id):-1;
-    const meta=`${ex.board.shots.length} cuts${at>=0?` · hero ${NN(at)}${h.source?.type==='imported'?', imported reference':''}`:' · SDXL takes'}`;
+    const meta=at>=0?`Redrawn from ${NN(at)}`:'SDXL takes';
     return `<button class="gallery-card" data-example="${ex.slug}"><span class="gallery-strip">${ex.board.shots.map((s,i)=>`<span class="mini"><span class="mini-no">${NN(i)}</span><span class="mini-frame">${img(url(ex,s),`${s.title} pick`,SIZES.mini)}</span></span>`).join('')}</span><span class="gallery-caption"><span>${escapeHTML(ex.label)}</span><small>${meta}</small></span><span class="gallery-scene">${escapeHTML(ex.board.config.scene)}</span></button>`;
   }).join('');
   examples.forEach(ex=>setRatios(`.gallery-card[data-example="${ex.slug}"] .mini`,ex.board.shots.map(picked)));
@@ -400,7 +397,7 @@ function coveragePreview(){
 }
 $('scene').oninput=()=>{coveragePreview();if($('scene').ariaInvalid==='true')sceneValid();};$('character').oninput=$('count').onchange=()=>coveragePreview();
 // The composer says what is missing under the scene field, instead of the browser's own bubble.
-function sceneValid(){const empty=!$('scene').value.trim();$('scene-error').hidden=!empty;$('scene-error').textContent=empty?'Describe the scene first: one moment, in a sentence or two.':'';$('scene').ariaInvalid=empty?'true':null;if(empty)$('scene').focus();return !empty;}
+function sceneValid(){const empty=!$('scene').value.trim();$('scene-error').hidden=!empty;$('scene-error').textContent=empty?'Describe the scene first.':'';$('scene').ariaInvalid=empty?'true':null;if(empty)$('scene').focus();return !empty;}
 // What the export ZIP holds for the current picks, named as export_board names them.
 function zipFiles(b){
   const names=[], refs=new Set();
@@ -421,23 +418,21 @@ function renderExport(){
   const refs=names.filter(n=>n.startsWith('references/'));
   const short=n=>n.replace(/^(references\/)([0-9a-f]{6})[0-9a-f]+([0-9a-f]{4})(\.png)$/,'$1$2…$3$4');
   const groups=[
-    ['Storyboards',`2 PNG`,'storyboard-landscape.png 1600 × 900, storyboard-portrait.png 1080 × 1350'],
+    ['Storyboards',`2 PNG`,'storyboard-landscape.png, storyboard-portrait.png'],
     ['Stills',`${count('stills/')} PNG`,`stills/${board.shots[0].id}.png … stills/${board.shots.at(-1).id}.png`],
     built.length&&['ComfyUI workflows',`${count('workflows/')} JSON`,`workflows/sNN.api.json for ${setupRanges(built)}${submitted?`, plus ${submitted} as submitted`:''}`],
     refs.length&&['Hero reference',`${refs.length} PNG`,refs.map(short).join(', ')],
     ['Manifest','1 JSON','manifest.json: scene, picks, seeds, verdicts, pinned models'],
   ].filter(Boolean);
-  $('zip-summary').textContent=`${names.length} files · all ${board.shots.length} cuts picked`;
+  $('zip-summary').textContent=`${names.length} files`;
   $('zip-files').innerHTML=groups.map(([name,n,path])=>`<li><b>${name}</b><span class="n">${n}</span><span class="p">${escapeHTML(path)}</span></li>`).join('');
   $('export-picks').innerHTML=board.shots.map((s,i)=>`<li><span class="setup-no">${NN(i)}</span><span class="pick-title">${escapeHTML(s.title)}</span><span class="pick-take">${TAKE(picks[i])}</span>${verdictMark(reviewFor(s,picks[i]))}<span class="pick-src">${sourceLabel(picks[i])}</span></li>`).join('');
-  const imported=board.shots.map((s,i)=>i).filter(i=>picks[i].source?.type==='imported');
-  $('zip-note').innerHTML=`${imported.length?`Cut ${SLATE(setupRanges(imported))} is an imported reference, so it has no workflow. `:''}Load a workflow in ComfyUI with the same pinned models to queue that frame again${refs.length?'; copy the references folder into ComfyUI\'s input folder first':''}.`;
 }
 let storyboardRequest=0;
 const storyboardLayout=()=>document.querySelector?.('input[name="storyboard-layout"]:checked')?.value||'landscape';
 async function previewStoryboard(){
   const request=++storyboardRequest, layout=storyboardLayout();
-  $('storyboard-preview').hidden=true;$('download-storyboard').hidden=true;$('storyboard-error').hidden=false;$('storyboard-error').textContent='Preparing your storyboard…';
+  $('storyboard-preview').hidden=true;$('download-storyboard').hidden=true;$('storyboard-error').hidden=false;$('storyboard-error').textContent='Preparing storyboard…';
   $('storyboard-preview').dataset.layout=layout;
   const path=`/api/boards/${board.id}/storyboard?layout=${layout}`;
   const response=await fetch(path).catch(()=>{throw new Error(offline());});
@@ -474,6 +469,6 @@ $('reference-file').onchange=guarded(async event=>{
   try {
     const response=await fetch(`/api/boards/${board.id}/shots/${currentShot}/import`,{method:'POST',headers:{'Content-Type':file.type},body:file}).catch(()=>{throw new Error(offline());});
     const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(detail(data,'The reference could not be imported. Try again.'));
-    await refresh();toast('Reference imported. Pick it, then use the pick as hero.');
+    await refresh();toast('Reference imported.');
   } finally { event.target.value=''; }
 });
