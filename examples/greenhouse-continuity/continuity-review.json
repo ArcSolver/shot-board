@@ -124,11 +124,5 @@
     "take": "t01",
     "verdict": "pass",
     "note": "N/E/S/W, degree ticks, red north/silver south needle, glass cover and brass case are visible."
-  },
-  {
-    "shot": "s05",
-    "take": "t01",
-    "verdict": "fail",
-    "note": "Cancelled before an image was returned."
   }
 ]
