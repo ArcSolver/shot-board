@@ -2,7 +2,7 @@
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="docs/logo-dark.svg"><img src="shotboard/static/logo.svg" width="258" height="64" alt="Shot Board: one scene, six shots"></picture>
 
-Shot Board turns one line of scene into a six-shot coverage storyboard. You choose one hero frame, and it redraws the other cuts from that frame.
+Shot Board turns a one-line scene into a six-shot coverage storyboard. You choose one hero frame, and it redraws the other cuts from that frame.
 
 Categories: Best Overall and Open Weights Only. Both models, SDXL Base 1.0 and Qwen-Image-Edit-2511, are open weights and run on your own ComfyUI.
 
@@ -57,7 +57,7 @@ SHOTBOARD_ENGINE_MANIFEST=/path/to/engine-models.json \
 .venv/bin/python -m uvicorn shotboard.server:app --host 127.0.0.1 --port 8790
 ```
 
-Open **http://127.0.0.1:8790**, choose **New scene**, type a scene and choose **Build shot list**, then **Render board**. In **Compare & pick**, pick an SDXL take, or choose **Import reference** to add your own PNG, JPEG or WebP and pick that. Choose **Use pick as hero**, then **Render reference edits**. Imported stills carry the label **Imported reference**, and the export records their source image and size.
+Open **http://127.0.0.1:8790** and follow [the demo steps](docs/DEMO.md#with-a-gpu-worker). Imported stills carry the label **Imported reference**, and the export records their source image and size.
 
 ### Reuse a recipe outside the app
 

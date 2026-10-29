@@ -1,6 +1,6 @@
 # Demo walkthrough
 
-The demo video follows one scene from a sentence to a storyboard. You can take the same path in the app.
+These steps follow the demo video, from one sentence to a storyboard.
 
 ## With a GPU worker
 
@@ -18,5 +18,5 @@ Start the app as in [Try it without a GPU](../README.md#try-it-without-a-gpu).
 
 1. On the home page, choose **Open this board**. The greenhouse board opens with its hero and reference edits in place.
 2. Open **Compare & pick** on 02 Medium to see the imported reference picked as the hero.
-3. Open **Compare & pick** on 01 Establishing to set its two Qwen reference edits beside the hero.
+3. Open **Compare & pick** on 01 Establishing to see its two Qwen reference edits beside the hero.
 4. Click **Export storyboard**, switch to Portrait and click **Download PNG**. Then click **Download ZIP** and open `manifest.json` to see the recipes and reviews.
