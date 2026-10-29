@@ -267,6 +267,19 @@ class APITests(unittest.TestCase):
         self.assertEqual(self.client.post("/api/boards", headers={"Origin":"https://example.org"},json={"scene":"Another scene"}).status_code, 403)
         self.assertEqual(self.client.get("/api/boards",headers={"Host":"example.org"}).status_code, 403)
 
+    def test_a_qwen_image_board_renders_first_takes_with_qwen_image(self):
+        board = self.client.post('/api/boards', json={'scene': 'A traveler finds a compass', 'preset': 'qwen-image'}).json()
+        self.assertEqual(board['config']['preset'], 'qwen-image')
+        server.store.stop.set()
+        with patch.object(server, 'verify_models', return_value=[]) as verify:
+            response = self.client.post(f"/api/boards/{board['id']}/generate", json={'takes': 1, 'shot_id': 's02'})
+        self.assertEqual(response.status_code, 202, response.text)
+        verify.assert_called_once_with('qwen-image')
+        take = server.store.boards[board['id']]['shots'][1]['takes'][0]
+        self.assertEqual(take['settings']['preset_id'], 'qwen-image')
+        self.assertEqual(take['workflow']['8']['inputs']['unet_name'], 'qwen-image-2512-Q8_0.gguf')
+        self.assertEqual(self.client.post('/api/boards', json={'scene': 'A compass', 'preset': 'qwen-reference'}).status_code, 422)
+
     def test_missing_model_and_invalid_generation_are_rejected(self):
         with patch.object(server, "MODEL_DIR", Path(self.temp.name)/"missing"):
             self.assertEqual(self.client.post(self.base+"/generate",json={"takes":2}).status_code,409)

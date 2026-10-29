@@ -37,6 +37,26 @@ class TemplateTests(unittest.TestCase):
         self.assertGreater(len({s['negative'] for s in self.shots}), 5)
         self.assertNotEqual(settings_for(self.shots[0], 'sdxl-base')['cfg'], settings_for(self.shots[5], 'sdxl-base')['cfg'])
 
+    def test_qwen_image_graph_reads_plain_text_and_keeps_its_cfg(self):
+        shot = self.shots[1]
+        settings = settings_for(shot, 'qwen-image')
+        graph = workflow_for(shot, 7, settings)
+        self.assertEqual((settings['width'], settings['height']), (shot['render_settings']['width'], shot['render_settings']['height']))
+        self.assertNotEqual(shot['render_settings']['cfg'], settings['cfg'])
+        self.assertEqual(graph['5']['inputs']['cfg'], 4.0)
+        self.assertEqual(graph['5']['inputs']['steps'], 40)
+        self.assertEqual(graph['5']['inputs']['seed'], 7)
+        self.assertEqual(graph['8']['inputs']['unet_name'], 'qwen-image-2512-Q8_0.gguf')
+        self.assertEqual(graph['9']['inputs'], {'clip_name': 'Qwen2.5-VL-7B-Instruct-Q8_0.gguf', 'type': 'qwen_image'})
+        self.assertEqual(graph['10']['inputs']['vae_name'], 'qwen_image_vae.safetensors')
+        self.assertEqual(graph['12']['inputs']['shift'], 3.1)
+        self.assertEqual(graph['4']['inputs']['width'], shot['render_settings']['width'])
+        self.assertNotIn(':1.45', graph['2']['inputs']['text'])
+        self.assertTrue(graph['2']['inputs']['text'].startswith(shot['direction']))
+        self.assertEqual(graph['3']['inputs']['text'], shot['negative'])
+        self.assertNotIn('1', graph)
+        self.assertEqual(graph['7']['class_type'], 'SaveImage')
+
     def test_explicit_coverage_overrides_conflicting_angle(self):
         shots=expand_shots(server.Scene(scene="A traveler finds a compass", angle='High angle').model_dump())
         self.assertIn('high angle', shots[1]['prompt'])
@@ -253,11 +273,34 @@ class ContinuityAPITests(unittest.TestCase):
                 else: self.take['workflow']['1']['class_type'] = 'LoadImage'
                 response = self.enable()
                 self.assertEqual(response.status_code, 409)
-                self.assertIn('Only an SDXL take', response.json()['detail'])
+                self.assertIn('Only a first take', response.json()['detail'])
                 self.assertFalse((self.data/self.bid/'references').exists())
                 self.assertFalse(self.board['continuity']['enabled'])
         self.take.clear(); self.take.update(original)
         self.assertEqual(self.enable().status_code, 200)
+
+    def test_qwen_image_take_can_be_hero_but_not_a_forged_one(self):
+        settings = settings_for(self.shot, 'qwen-image')
+        self.take.update(settings=settings, workflow=workflow_for(self.shot, 0, settings))
+        original = deepcopy(self.take)
+        for change in ('reference', 'loader', 'unet'):
+            with self.subTest(change=change):
+                self.take.clear(); self.take.update(deepcopy(original))
+                if change == 'reference': self.take['reference'] = {'image': 'old-hero.png'}
+                elif change == 'loader': self.take['workflow']['8']['class_type'] = 'LoadImage'
+                else: self.take['workflow']['8']['inputs']['unet_name'] = 'other.gguf'
+                response = self.enable()
+                self.assertEqual(response.status_code, 409)
+                self.assertIn('Only a first take', response.json()['detail'])
+        self.take.clear(); self.take.update(original)
+        response = self.enable()
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()['hero']['settings']['preset_id'], 'qwen-image')
+        with patch.object(server, 'verify_models', return_value=[]):
+            self.assertEqual(self.client.post(self.base+'/generate', json={'takes': 1}).status_code, 202)
+        edits = [t for s in self.board['shots'] if s['id'] != 's02' for t in s['takes']]
+        self.assertEqual({t['settings']['preset_id'] for t in edits}, {'qwen-reference'})
+        self.assertEqual({t['reference']['image_sha256'] for t in edits}, {self.take['image_sha256']})
 
     def test_frozen_hero_and_take_settings_survive_edits_and_disable(self):
         self.enable()

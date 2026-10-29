@@ -1,0 +1,13 @@
+[
+  {
+    "filename": "qwen-image-2512-Q4_K_M.gguf",
+    "component": "diffusion",
+    "folder": "diffusion_models",
+    "sha256": "b2a5f6249eb58ee10c9e2ce8cb1114b89897db23de2fdf7dc49140800aa928fc",
+    "bytes": 13244758560,
+    "repository": "unsloth/Qwen-Image-2512-GGUF",
+    "revision": "1626d7531f84b4d2ea1cd6d2e69f41ec027dd354",
+    "license": "Apache-2.0",
+    "path": "qwen-image-2512-Q4_K_M.gguf"
+  }
+]

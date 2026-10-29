@@ -9,6 +9,9 @@ from urllib.parse import urlparse
 import httpx
 
 
+QWEN_PRESETS = ('qwen-image', 'qwen-reference')
+
+
 class MemorySafetyError(RuntimeError):
     pass
 
@@ -45,7 +48,7 @@ class MemoryGuard:
                 client.post(self.engine_url + '/free', json={
                     'unload_models': True, 'free_memory': True}).raise_for_status()
         self.preset = preset
-        if self.mode == 'local' and preset == 'qwen-reference' and sys.platform == 'darwin':
+        if self.mode == 'local' and preset in QWEN_PRESETS and sys.platform == 'darwin':
             self.sample()
 
     def sample(self):
@@ -61,5 +64,5 @@ class MemoryGuard:
             raise MemorySafetyError('Memory ran low. Queued renders were cancelled.')
 
     def check_running(self):
-        if self.mode == 'local' and self.preset == 'qwen-reference' and sys.platform == 'darwin' and time.monotonic()-self.checked_at >= 5:
+        if self.mode == 'local' and self.preset in QWEN_PRESETS and sys.platform == 'darwin' and time.monotonic()-self.checked_at >= 5:
             self.sample()

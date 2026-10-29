@@ -202,7 +202,7 @@ nav{display:flex;gap:var(--s2);align-items:center}
 .chip{min-height:var(--h-bar);padding:0 var(--s3);font-size:var(--t-sm);font-weight:var(--w-ui);background-color:var(--page);box-shadow:inset 0 0 0 var(--hair) var(--rule-strong);color:var(--ink-2)}
 .chip:hover{color:var(--ink);box-shadow:inset 0 0 0 var(--hair) var(--ink-3)}
 .chip.active{color:var(--pencil);background-color:var(--pencil-wash);box-shadow:inset 0 0 0 var(--line) var(--pencil)}
-.form-bottom{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);border-top:var(--hair) solid var(--rule);padding-top:var(--s4);margin-top:var(--s3)}
+.form-bottom{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:var(--s3);border-top:var(--hair) solid var(--rule);padding-top:var(--s4);margin-top:var(--s3)}
 .composer-page>.primary{margin-top:var(--s7);align-self:flex-end}
 
 /* Board */

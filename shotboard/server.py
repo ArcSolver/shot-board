@@ -26,6 +26,7 @@ from .storyboard import storyboard_png
 from .memory import MemoryGuard, MemorySafetyError
 
 from .core import (ROOT, PRESETS, LENSES, ANGLES, MOVES, LIGHTS, LOOKS, COVERAGE, OBJECT_COVERAGE, PERSON_WORDS, QWEN_LOCK,
+                   QWEN_IMAGE_LOCK,
                    expand_shots, seed_for, workflow_for, settings_for, export_board, sha256)
 
 DATA = Path(os.environ.get("SHOTBOARD_DATA_DIR", ROOT / ".runtime/boards"))
@@ -60,7 +61,7 @@ class Scene(BaseModel):
     look: Literal["Muted film", "Warm grain", "Cool chrome", "Monochrome"] = "Muted film"
     count: int = Field(default=6, ge=6, le=9)
     seed: int = Field(default=20261020, ge=0, le=2**32-1)
-    preset: Literal["sdxl-base"] = "sdxl-base"
+    preset: Literal["sdxl-base", "qwen-image"] = "sdxl-base"
 
     @field_validator('scene', 'character', 'setting', 'prop', mode='before')
     @classmethod
@@ -84,7 +85,7 @@ class ShotEdit(BaseModel):
 class Generate(BaseModel):
     takes: int = Field(default=2, ge=1, le=4)
     shot_id: str | None = None
-    preset: Literal["sdxl-base", "qwen-reference"] | None = None
+    preset: Literal["sdxl-base", "qwen-image", "qwen-reference"] | None = None
 
 
 class Continuity(BaseModel):
@@ -322,10 +323,11 @@ def health():
         ready = response.status_code == 200
     except httpx.HTTPError:
         ready = False
-    reference_components_present = all(
-        ((QWEN_MODEL_DIR / m["filename"]) if m["component"] == "diffusion" else
-         (REFERENCE_MODEL_DIR / m["folder"] / m["filename"])).is_file()
-        for m in json.loads(QWEN_LOCK.read_text()))
+    def present(models):
+        return all(((QWEN_MODEL_DIR / m["filename"]) if m["component"] == "diffusion" else
+                    (REFERENCE_MODEL_DIR / m["folder"] / m["filename"])).is_file() for m in models)
+    reference_components_present = present(json.loads(QWEN_LOCK.read_text()))
+    image_components_present = present(qwen_image_requirements())
     checkpoint_present = (MODEL_DIR / PRESETS["sdxl-base"]["checkpoint"]).is_file()
     if ENGINE_MANIFEST:
         def available(preset):
@@ -336,7 +338,9 @@ def health():
                 return False
         checkpoint_present = available("sdxl-base")
         reference_components_present = available("qwen-reference")
-    return dict(proxy_ready=ready, reference_components_present=reference_components_present, checkpoint_present=checkpoint_present)
+        image_components_present = available("qwen-image")
+    return dict(proxy_ready=ready, reference_components_present=reference_components_present,
+                checkpoint_present=checkpoint_present, image_components_present=image_components_present)
 
 
 EXAMPLES = {"greenhouse-continuity": "The greenhouse", "greenhouse": "The greenhouse, first takes", "hangar": "The hangar"}
@@ -440,7 +444,8 @@ def generate(bid: str, request: Generate):
     with store.lock:
         board = board_for(bid)
         continuity = board.get("continuity", {})
-        preset_id = request.preset or ("qwen-reference" if continuity.get("enabled") else "sdxl-base")
+        preset_id = request.preset or ("qwen-reference" if continuity.get("enabled")
+                                       else board["config"].get("preset", "sdxl-base"))
         reference = None
         if preset_id == "qwen-reference":
             if not continuity.get("enabled") or not continuity.get("hero"):
@@ -480,6 +485,12 @@ def generate(bid: str, request: Generate):
         return dict(queued=len(tasks))
 
 
+def qwen_image_requirements():
+    """Qwen-Image-2512 plus the text encoder and VAE it shares with the edit model."""
+    shared = [m for m in json.loads(QWEN_LOCK.read_text()) if m["component"] in ("text encoder", "VAE")]
+    return json.loads(QWEN_IMAGE_LOCK.read_text()) + shared
+
+
 def verify_models(preset_id):
     """Every external component is pinned, including GGUF's implicit vision projector."""
     if preset_id == "sdxl-base":
@@ -487,6 +498,8 @@ def verify_models(preset_id):
         requirements = [dict(filename=lock["filename"], sha256=lock["sha256"], bytes=lock["bytes"],
                              license=lock["license"], repository=lock["repository"], revision=lock["revision"],
                              components=["SDXL UNet", "CLIP-L", "OpenCLIP bigG", "VAE (checkpoint embedded)"])]
+    elif preset_id == "qwen-image":
+        requirements = qwen_image_requirements()
     else:
         requirements = json.loads(QWEN_LOCK.read_text())
     if ENGINE_MANIFEST:
@@ -519,6 +532,23 @@ def verify_models(preset_id):
     return requirements
 
 
+HERO_RULE = "Only a first take or an imported reference can be the hero."
+
+
+def first_take(take):
+    """An SDXL or Qwen-Image take drawn from the cut's text, not from another frame."""
+    settings, workflow = take.get('settings', {}), take.get('workflow', {})
+    if take.get('reference'):
+        return False
+    if settings.get('preset_id', 'sdxl-base') == 'sdxl-base':
+        return (settings.get('checkpoint') == PRESETS['sdxl-base']['checkpoint']
+                and workflow.get('1', {}).get('class_type') == 'CheckpointLoaderSimple')
+    return (settings.get('preset_id') == 'qwen-image' and settings.get('capability') == 'text-to-image'
+            and workflow.get('8', {}).get('class_type') == 'UnetLoaderGGUF'
+            and workflow.get('8', {}).get('inputs', {}).get('unet_name') == settings.get('unet')
+            and '1' not in workflow)
+
+
 @app.post("/api/boards/{bid}/continuity")
 def set_continuity(bid: str, request: Continuity):
     with store.lock:
@@ -538,10 +568,8 @@ def set_continuity(bid: str, request: Continuity):
                         and take.get('settings', {}).get('preset_id') == 'imported-reference'
                         and not take.get('workflow') and not take.get('models') and not take.get('reference')
                         and take.get('seed') is None)
-            if not imported and (take.get('reference') or take.get('settings', {}).get('checkpoint') != PRESETS['sdxl-base']['checkpoint']
-                    or take.get('settings', {}).get('preset_id', 'sdxl-base') != 'sdxl-base'
-                    or take.get('workflow', {}).get('1', {}).get('class_type') != 'CheckpointLoaderSimple'):
-                raise HTTPException(409, "Only an SDXL take or an imported reference can be the hero.")
+            if not imported and not first_take(take):
+                raise HTTPException(409, HERO_RULE)
             source = DATA / bid / take["image"]
             if sha256(source) != take["image_sha256"]:
                 raise HTTPException(409, "The picked hero changed on disk.")

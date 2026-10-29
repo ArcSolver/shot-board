@@ -29,6 +29,19 @@ class RemoteEngineTests(unittest.TestCase):
                 path.unlink()
                 with self.assertRaises(ValueError): server.verify_models('qwen-reference')
 
+    def test_qwen_image_report_needs_its_diffusion_file_and_the_shared_encoder_and_vae(self):
+        image=json.loads((ROOT/'workflows/qwen-image-model-lock.json').read_text())
+        edit=json.loads((ROOT/'workflows/qwen-model-lock.json').read_text())
+        shared=[m for m in edit if m['component'] in ('text encoder','VAE')]
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'models.json'
+            path.write_text(json.dumps(dict(schema_version=1,verified=True,models=[dict(m,verified=True) for m in image+shared])))
+            with patch.object(server,'ENGINE_MANIFEST',str(path)):
+                self.assertEqual(server.verify_models('qwen-image'),image+shared)
+                path.write_text(json.dumps(dict(schema_version=1,verified=True,models=[dict(m,verified=True) for m in edit])))
+                with self.assertRaises(ValueError): server.verify_models('qwen-image')
+        self.assertEqual([m['revision'] for m in image],['1626d7531f84b4d2ea1cd6d2e69f41ec027dd354'])
+
     def test_engine_control_uses_tunnel_and_rejects_external_hosts(self):
         with patch.dict('os.environ',{'COMFY_ENGINE_URL':'http://127.0.0.1:18188'}):
             guard=MemoryGuard()

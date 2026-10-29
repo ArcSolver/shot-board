@@ -74,11 +74,15 @@ def coverage_for(config):
 
 # Q8_0 is the measured default. Q4_K_M brings the four Qwen files from about 31 GB to about 20 GB.
 QWEN_LOCKS = {"Q8_0": "qwen-model-lock.json", "Q4_K_M": "qwen-model-lock-q4_k_m.json"}
+# Qwen-Image-2512 for first takes shares the edit model's text encoder and VAE.
+QWEN_IMAGE_LOCKS = {"Q8_0": "qwen-image-model-lock.json", "Q4_K_M": "qwen-image-model-lock-q4_k_m.json"}
 QWEN_QUANT = os.environ.get("SHOTBOARD_QWEN_QUANT", "Q8_0")
 if QWEN_QUANT not in QWEN_LOCKS:
     raise RuntimeError("SHOTBOARD_QWEN_QUANT must be one of: " + ", ".join(QWEN_LOCKS))
 QWEN_LOCK = ROOT / "workflows" / QWEN_LOCKS[QWEN_QUANT]
+QWEN_IMAGE_LOCK = ROOT / "workflows" / QWEN_IMAGE_LOCKS[QWEN_QUANT]
 _QWEN_FILES = {m["component"]: m["filename"] for m in json.loads(QWEN_LOCK.read_text())}
+_QWEN_IMAGE_FILE = json.loads(QWEN_IMAGE_LOCK.read_text())[0]["filename"]
 PRESETS = {
     "sdxl-base": {
         "label": "SDXL Base 1.0", "enabled": True,
@@ -87,6 +91,15 @@ PRESETS = {
         "repository": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
         "width": 1024, "height": 576, "steps": 20, "cfg": 6.0,
         "sampler_name": "euler", "scheduler": "normal", "denoise": 1.0,
+    },
+    "qwen-image": {
+        "label": "Qwen-Image-2512", "enabled": True,
+        "license": "Apache-2.0", "capability": "text-to-image",
+        "unet": _QWEN_IMAGE_FILE,
+        "encoder": _QWEN_FILES["text encoder"], "vae": _QWEN_FILES["VAE"],
+        "width": 1024, "height": 768, "steps": 40, "cfg": 4.0,
+        "sampler_name": "euler", "scheduler": "simple", "denoise": 1.0,
+        "shift": 3.1,
     },
     "qwen-reference": {
         "label": "Qwen continuity · reference edit", "enabled": True,
@@ -138,13 +151,22 @@ def expand_shots(config):
 def settings_for(shot, preset_id):
     preset = deepcopy(PRESETS[preset_id])
     preset["preset_id"] = preset_id
-    preset.update(shot.get("reference_size" if preset_id == "qwen-reference" else "render_settings", {}))
+    if preset_id == "qwen-image":
+        # The cut's CFG is tuned for SDXL; Qwen-Image keeps its own and takes only the frame size.
+        size = shot.get("render_settings", {})
+        preset.update({k: size[k] for k in ("width", "height") if k in size})
+    else:
+        preset.update(shot.get("reference_size" if preset_id == "qwen-reference" else "render_settings", {}))
     return preset
 
 
+def plain_prompt(prompt):
+    # Qwen reads plain sentences; SDXL attention syntax is not portable.
+    return re.sub(r"\(([^()]+):[0-9.]+\)", r"\1", prompt)
+
+
 def reference_prompt(shot):
-    # Qwen follows natural edit instructions; SDXL attention syntax is not portable.
-    framing = re.sub(r"\(([^()]+):[0-9.]+\)", r"\1", shot["prompt"])
+    framing = plain_prompt(shot["prompt"])
     return ("Requested framing: " + shot.get("shot_type", shot["title"]) + ". "
             "Edit the reference photograph into a new camera shot of the SAME scene. "
             "Preserve the exact same person and facial identity, hair, outfit, bag, object design, "
@@ -174,6 +196,18 @@ def workflow_for(shot, seed, preset, reference=None):
         graph["10"]["inputs"]["vae_name"] = preset["vae"]
         graph["12"]["inputs"]["shift"] = preset["shift"]
         graph["14"]["inputs"]["megapixels"] = preset["reference_megapixels"]
+        return graph
+    if preset.get("capability") == "text-to-image":
+        graph = json.loads((ROOT / "workflows/qwen-image.api.json").read_text())
+        graph["2"]["inputs"]["text"] = plain_prompt(shot["prompt"])
+        graph["3"]["inputs"]["text"] = shot["negative"]
+        graph["4"]["inputs"].update(width=preset["width"], height=preset["height"])
+        graph["5"]["inputs"].update(seed=seed, **{k: preset[k] for k in
+            ("steps", "cfg", "sampler_name", "scheduler", "denoise")})
+        graph["8"]["inputs"]["unet_name"] = preset["unet"]
+        graph["9"]["inputs"]["clip_name"] = preset["encoder"]
+        graph["10"]["inputs"]["vae_name"] = preset["vae"]
+        graph["12"]["inputs"]["shift"] = preset["shift"]
         return graph
     graph = json.loads((ROOT / "workflows/sdxl-base.api.json").read_text())
     graph["1"]["inputs"]["ckpt_name"] = preset["checkpoint"]

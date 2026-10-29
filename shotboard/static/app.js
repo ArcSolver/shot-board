@@ -1,6 +1,13 @@
-const HERO_RULE = 'Only an SDXL take or an imported reference can be the hero.';
+const HERO_RULE = 'Only a first take or an imported reference can be the hero.';
+const FIRST_TAKES = {'sdxl-base':'SDXL Base 1.0','qwen-image':'Qwen-Image-2512'};
 function isImported(take) { return take?.status==='succeeded' && take.source?.type==='imported' && take.settings?.preset_id==='imported-reference' && !take.reference && take.seed===null && take.models?.length===0 && Object.keys(take.workflow||{}).length===0; }
-const canBeHero = take => isSDXLOriginal(take) || isImported(take);
+const canBeHero = take => isSDXLOriginal(take) || isQwenImageOriginal(take) || isImported(take);
+// A Qwen-Image take is drawn from the cut's text, like an SDXL take, so it can be the hero too.
+function isQwenImageOriginal(take) {
+  return !!take && take.status==='succeeded' && !take.reference && take.settings?.preset_id==='qwen-image' &&
+    take.workflow?.['8']?.class_type==='UnetLoaderGGUF' && !take.workflow?.['1'];
+}
+const firstTakeKind = take => isQwenImageOriginal(take)?'Qwen-Image take':'SDXL take';
 function isSDXLOriginal(take) {
   return !!take && take.status==='succeeded' && !take.reference &&
     take.settings?.checkpoint==='sd_xl_base_1.0.safetensors' &&
@@ -85,8 +92,8 @@ function sourceLabel(take){
   if(!take)return '';
   if(isImported(take))return 'Imported reference';
   if(take.reference){const at=shotIndex(take.reference.shot_id);return `Redrawn from ${SLATE(at>=0?NN(at):escapeHTML(take.reference.shot_id.toUpperCase()))}`;}
-  // On a board of SDXL takes only, every cut would say the same thing.
-  return isSDXLOriginal(take)&&allTakes().some(t=>t.reference||isImported(t))?'SDXL take':'';
+  // On a board of first takes only, every cut would say the same thing.
+  return (isSDXLOriginal(take)||isQwenImageOriginal(take))&&allTakes().some(t=>t.reference||isImported(t))?firstTakeKind(take):'';
 }
 function heroTake(){
   const h=board.continuity?.hero;if(!h)return null;
@@ -104,7 +111,7 @@ function heroLine(){
   const c=board.continuity||{}, h=c.hero;
   if(!h)return '<p class="hero-meta">No hero yet.</p>';
   const at=shotIndex(h.shot_id), shot=board.shots[at], found=heroTake(), others=board.shots.map((s,i)=>i).filter(i=>i!==at);
-  const kind=h.source?.type==='imported'?'Imported reference':'SDXL take';
+  const kind=h.source?.type==='imported'?'Imported reference':h.settings?.preset_id==='qwen-image'?'Qwen-Image take':'SDXL take';
   return `<button class="hero-card" data-compare="${escapeHTML(h.shot_id)}" aria-label="Compare the hero, ${escapeHTML(shot?.title||'')}"><span class="hero-thumb">${found?img(imageURL(found.take),`${shot.title} hero`,SIZES.hero):''}</span><span class="hero-text"><span class="hero-name"><span class="setup-no">${at>=0?NN(at):''}</span>${escapeHTML(shot?.title||'')}</span><span><span class="take-no">${escapeHTML(h.take_id.toUpperCase())}</span> · ${kind}</span></span></button>
     <div class="hero-branch"><span class="branch-stem" aria-hidden="true"></span><p><span class="branch-label">${c.enabled?'Reference edits for':'Reference edits off for'}</span> <span class="branch-nos">${setupRanges(others)}</span></p></div>`;
 }
@@ -135,7 +142,7 @@ function render() {
   $('queue-status').textContent=`${completed} / ${takes.length} takes ready · ${queued} queued`;
   $('queue-detail').textContent=running?`${running.phase} · ${Math.floor((Date.now()/1000)-running.started_at)}s elapsed`:'Waiting for the worker';
   $('queue-progress').max=takes.length||1;$('queue-progress').value=completed;
-  $('recipe-label').textContent='First takes · SDXL Base 1.0';
+  $('recipe-label').textContent='First takes · '+(FIRST_TAKES[board.config?.preset]||FIRST_TAKES['sdxl-base']);
   const reviewed=board.review?.some(r=>r.verdict!=='pending'), heroAt=continuity.enabled?shotIndex(heroRef?.shot_id):-1;
   // Without a hero a verdict is judged against the cut's own prompt, which needs no note.
   $('review-legend').hidden=!reviewed||heroAt<0;
@@ -172,7 +179,9 @@ const viewKey = s => `${board.id}/${s.id}`;
 function viewedTake(s){const id=viewing.get(viewKey(s));return s.takes.find(t=>t.id===id)||s.takes.find(t=>t.id===s.picked)||s.takes.find(t=>t.status==='succeeded')||s.takes[0];}
 const takeState = t => ({queued:'Queued',running:'Rendering',failed:'Failed',cancelled:'Cancelled',interrupted:'Interrupted'}[t.status]||escapeHTML(t.status));
 function modelName(st){
-  if(st?.preset_id==='qwen-reference'){const quant=/-(Q\d_[A-Z0-9_]+|Q8_0)\.gguf$/i.exec(st.unet||'');return 'Qwen-Image-Edit-2511'+(quant?' '+quant[1]:'');}
+  const quant=/-(Q\d_[A-Z0-9_]+|Q8_0)\.gguf$/i.exec(st?.unet||'');
+  if(st?.preset_id==='qwen-reference')return 'Qwen-Image-Edit-2511'+(quant?' '+quant[1]:'');
+  if(st?.preset_id==='qwen-image')return 'Qwen-Image-2512'+(quant?' '+quant[1]:'');
   return st?.label;
 }
 function renderDetails(t,s) {
@@ -284,7 +293,7 @@ $('image-full').onclick=()=>$('image-full').classList.toggle('actual');
 $('image-full').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('image-full').classList.toggle('actual');}};
 if(window.history?.state?.dialog)history.replaceState(null,'');
 function showEditors(){
-  $('shot-list').innerHTML=board.shots.map((s,i)=>`<div class="shot-editor"><span class="setup-no">${NN(i)}</span><div class="editor-settings"><label>Cut title<input id="title-${s.id}" value="${escapeHTML(s.title)}"></label><label>SDXL width<input type="number" min="512" max="1536" step="64" id="width-${s.id}" value="${s.render_settings?.width||1024}"></label><label>SDXL height<input type="number" min="512" max="1536" step="64" id="height-${s.id}" value="${s.render_settings?.height||576}"></label><label>SDXL CFG<input type="number" min="1" max="12" step="0.1" id="cfg-${s.id}" value="${s.render_settings?.cfg||6}"></label></div><div class="editor-prompts"><label>Prompt<textarea id="prompt-${s.id}">${escapeHTML(s.prompt)}</textarea></label><label>Negative prompt<input class="editor-negative" id="negative-${s.id}" value="${escapeHTML(s.negative)}"></label><button class="quiet" data-save="${s.id}">Save cut</button></div></div>`).join('');
+  $('shot-list').innerHTML=board.shots.map((s,i)=>`<div class="shot-editor"><span class="setup-no">${NN(i)}</span><div class="editor-settings"><label>Cut title<input id="title-${s.id}" value="${escapeHTML(s.title)}"></label><label>Width<input type="number" min="512" max="1536" step="64" id="width-${s.id}" value="${s.render_settings?.width||1024}"></label><label>Height<input type="number" min="512" max="1536" step="64" id="height-${s.id}" value="${s.render_settings?.height||576}"></label><label>SDXL CFG<input type="number" min="1" max="12" step="0.1" id="cfg-${s.id}" value="${s.render_settings?.cfg||6}"></label></div><div class="editor-prompts"><label>Prompt<textarea id="prompt-${s.id}">${escapeHTML(s.prompt)}</textarea></label><label>Negative prompt<input class="editor-negative" id="negative-${s.id}" value="${escapeHTML(s.negative)}"></label><button class="quiet" data-save="${s.id}">Save cut</button></div></div>`).join('');
   document.querySelectorAll('[data-save]').forEach(button=>button.onclick=guarded(async()=>{const s=button.dataset.save;await api(`/boards/${board.id}/shots/${s}`,'PATCH',{title:$('title-'+s).value,prompt:$('prompt-'+s).value,negative:$('negative-'+s).value,render_settings:{width:Number($('width-'+s).value),height:Number($('height-'+s).value),cfg:Number($('cfg-'+s).value)}});await refresh();toast('Cut saved.');}));
 }
 $('use-example').onclick=guarded(async()=>{
@@ -314,7 +323,7 @@ $('new-board').onclick=()=>{$('scene-form').reset();$('scene-error').hidden=true
 $('load-example').onclick=guarded(async()=>{const boards=await api('/boards');if(!examples.length)examples=await api('/examples');
   $('boards-list').innerHTML=boards.map(b=>{const ex=examples.find(e=>e.board.id===b.id), meta=b.cuts?`${b.picked} of ${b.cuts} picked`:'';
     return `<button class="board-link" data-board="${b.id}"><span class="board-link-name">${escapeHTML(ex?ex.label:'Your scene')}</span><span class="board-link-meta">${meta}</span><span class="board-link-scene">${escapeHTML(b.title)}</span></button>`;}).join('')||'<p class="muted">No boards yet.</p>';document.querySelectorAll('[data-board]').forEach(b=>b.onclick=guarded(async()=>{await openBoard(b.dataset.board);$('boards-dialog').close();}));$('boards-dialog').showModal();});
-async function health(){try{const h=await api('/health');const reference=!!board?.continuity?.enabled, available=reference?h.reference_components_present:h.checkpoint_present;const ready=h.proxy_ready&&available;$('connection').textContent=!h.proxy_ready?'ComfyUI not reachable':!available?(reference?'Qwen reference files missing':'SDXL checkpoint missing'):'Local engine ready';$('connection').dataset.state=ready?'ready':'offline';}catch{$('connection').textContent='Local server unavailable';$('connection').dataset.state='offline';}}
+async function health(){try{const h=await api('/health');const reference=!!board?.continuity?.enabled, qwenImage=board?.config?.preset==='qwen-image', available=reference?h.reference_components_present:qwenImage?h.image_components_present:h.checkpoint_present;const ready=h.proxy_ready&&available;$('connection').textContent=!h.proxy_ready?'ComfyUI not reachable':!available?(reference?'Qwen reference files missing':qwenImage?'Qwen-Image files missing':'SDXL checkpoint missing'):'Local engine ready';$('connection').dataset.state=ready?'ready':'offline';}catch{$('connection').textContent='Local server unavailable';$('connection').dataset.state='offline';}}
 guarded(async()=>{const appConfig=await api('/config');chips(appConfig);if(appConfig.coverage)coverage=appConfig.coverage;coveragePreview();await loadGallery();if(location.hash.length>1)await openBoard(location.hash.slice(1));await health();})();
 setInterval(async()=>{if(polling)return;polling=true;try{await refresh();}catch{}finally{polling=false;}},1600);setInterval(health,15000);
 
@@ -378,7 +387,7 @@ async function loadGallery(){
   $('home-open').dataset.example=featured.slug;
   $('example-gallery').innerHTML=examples.map(ex=>{
     const h=ex.board.continuity?.enabled?ex.board.continuity.hero:null, at=h?ex.board.shots.findIndex(s=>s.id===h.shot_id):-1;
-    const meta=at>=0?`Redrawn from ${NN(at)}`:'SDXL takes';
+    const meta=at>=0?`Redrawn from ${NN(at)}`:ex.board.config.preset==='qwen-image'?'Qwen-Image takes':'SDXL takes';
     return `<button class="gallery-card" data-example="${ex.slug}"><span class="gallery-strip">${ex.board.shots.map((s,i)=>`<span class="mini"><span class="mini-no">${NN(i)}</span><span class="mini-frame">${img(url(ex,s),`${s.title} pick`,SIZES.mini)}</span></span>`).join('')}</span><span class="gallery-caption"><span>${escapeHTML(ex.label)}</span><small>${meta}</small></span><span class="gallery-scene">${escapeHTML(ex.board.config.scene)}</span></button>`;
   }).join('');
   examples.forEach(ex=>setRatios(`.gallery-card[data-example="${ex.slug}"] .mini`,ex.board.shots.map(picked)));

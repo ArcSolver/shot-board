@@ -94,6 +94,16 @@ class DownloadTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'size'):
                 setup_reference.setup(models, models / 'diffusion_models')
 
+    def test_first_takes_add_only_the_qwen_image_file(self):
+        image = json.loads((ROOT / 'workflows/qwen-image-model-lock.json').read_text())
+        (self.root / 'workflows/qwen-image-model-lock.json').write_text(json.dumps([dict(m, bytes=len(self.payload), sha256=hashlib.sha256(self.payload).hexdigest()) for m in image]))
+        models = self.root / 'models'
+        with patch.object(setup_reference, 'ROOT', self.root), patch('urllib.request.urlopen', side_effect=lambda *a, **k: io.BytesIO(self.payload)) as request:
+            setup_reference.setup(models, models / 'diffusion_models', download=True, first_takes=True)
+            self.assertEqual(request.call_count, 5)
+            self.assertEqual(request.call_args.args[0], f"https://huggingface.co/unsloth/Qwen-Image-2512-GGUF/resolve/{image[0]['revision']}/qwen-image-2512-Q8_0.gguf")
+        self.assertTrue((models / 'diffusion_models/qwen-image-2512-Q8_0.gguf').is_file())
+
     def test_worker_report_measures_all_five_files_and_rejects_mismatch(self):
         models = self.root / 'models'
         for item in [self.sdxl, *self.qwen]:
