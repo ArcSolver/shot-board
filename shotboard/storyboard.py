@@ -12,7 +12,7 @@ def selected_takes(board, data_root):
     for shot in board["shots"]:
         take = next((t for t in shot["takes"] if t["id"] == shot["picked"] and t["status"] == "succeeded"), None)
         if take is None:
-            raise ValueError("Pick one completed take for every shot before exporting.")
+            raise ValueError("Pick one completed take for every cut before exporting.")
         path = Path(data_root) / board["id"] / take["image"]
         if hashlib.sha256(path.read_bytes()).hexdigest() != take["image_sha256"]:
             raise ValueError("A picked image changed on disk; export stopped.")
@@ -40,7 +40,7 @@ def storyboard_png(board, data_root, layout="landscape"):
     draw = ImageDraw.Draw(canvas)
     font = lambda size: ImageFont.load_default(size=size)
     margin, gap = (42, 20) if layout == "landscape" else (34, 18)
-    draw.text((margin, 26), "SHOT BOARD", font=font(21), fill="#0066cc")
+    draw.text((margin, 26), "SHOT BOARD", font=font(21), fill="#233f8f")
     scene = ' '.join(board["config"]["scene"].split())
     # Bound the header so all 6–9 cuts retain image space, including old boards
     # saved before input normalization. All valid 600-character scenes fit.

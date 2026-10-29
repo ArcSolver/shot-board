@@ -100,11 +100,11 @@
     },
     {
       "file": "export/storyboard-landscape.png",
-      "sha256": "51baf4ac884bea14022e8533c008f23521d1110c710b6158ca265b400b740fa3"
+      "sha256": "2b29dc63c79829318d23cabaacf8ad09ec07fb72bf6803c26fb1d660221d4a2b"
     },
     {
       "file": "export/storyboard-portrait.png",
-      "sha256": "fa48f4f2eeb09fe44464b7d19627e25175b6b5f95f3fee481579f238ea368827"
+      "sha256": "8b221b60cb4804d4b11f1c539c77a0721514e8222ad73a4d4c5700d7e9cc1093"
     },
     {
       "file": "hero-contact-sheet.png",
@@ -120,11 +120,11 @@
     },
     {
       "file": "storyboard-landscape.png",
-      "sha256": "51baf4ac884bea14022e8533c008f23521d1110c710b6158ca265b400b740fa3"
+      "sha256": "2b29dc63c79829318d23cabaacf8ad09ec07fb72bf6803c26fb1d660221d4a2b"
     },
     {
       "file": "storyboard-portrait.png",
-      "sha256": "fa48f4f2eeb09fe44464b7d19627e25175b6b5f95f3fee481579f238ea368827"
+      "sha256": "8b221b60cb4804d4b11f1c539c77a0721514e8222ad73a4d4c5700d7e9cc1093"
     },
     {
       "file": "takes/s01-t01.png",
@@ -240,11 +240,11 @@
     },
     {
       "file": "selects.zip!storyboard-landscape.png",
-      "sha256": "51baf4ac884bea14022e8533c008f23521d1110c710b6158ca265b400b740fa3"
+      "sha256": "2b29dc63c79829318d23cabaacf8ad09ec07fb72bf6803c26fb1d660221d4a2b"
     },
     {
       "file": "selects.zip!storyboard-portrait.png",
-      "sha256": "fa48f4f2eeb09fe44464b7d19627e25175b6b5f95f3fee481579f238ea368827"
+      "sha256": "8b221b60cb4804d4b11f1c539c77a0721514e8222ad73a4d4c5700d7e9cc1093"
     }
   ]
 }
