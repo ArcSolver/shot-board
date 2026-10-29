@@ -166,7 +166,7 @@ async function refresh() {if(board){board=await api('/boards/'+board.id);render(
 async function openBoard(id){board=await api('/boards/'+id);location.hash=id;lastSignature='';editing=false;$('shot-list').hidden=true;$('board-grid').hidden=false;$('edit-toggle').textContent='Edit cuts';$('script-notes').open=!phone();render();}
 const viewKey = s => `${board.id}/${s.id}`;
 function viewedTake(s){const id=viewing.get(viewKey(s));return s.takes.find(t=>t.id===id)||s.takes.find(t=>t.id===s.picked)||s.takes.find(t=>t.status==='succeeded')||s.takes[0];}
-const takeState = t => ({queued:'Queued',running:'Rendering',failed:'Failed',cancelled:'Cancelled'}[t.status]||escapeHTML(t.status));
+const takeState = t => ({queued:'Queued',running:'Rendering',failed:'Failed',cancelled:'Cancelled',interrupted:'Interrupted'}[t.status]||escapeHTML(t.status));
 function modelName(st){
   if(st?.preset_id==='qwen-reference'){const quant=/-(Q\d_[A-Z0-9_]+|Q8_0)\.gguf$/i.exec(st.unet||'');return 'Qwen-Image-Edit-2511'+(quant?' '+quant[1]:'');}
   return st?.label;
@@ -193,11 +193,11 @@ function renderCompare(){
   // The hero sits beside the take, so a reference edit is judged against what it was drawn from. Without a hero, the pick does.
   const hero=heroTake(), other=hero&&hero.shot.id!==s.id?{role:'Hero',shot:hero.shot,take:hero.take,detail:`<span class="setup-no">${NN(shotIndex(hero.shot.id))}</span> ${escapeHTML(hero.shot.title)} · ${isImported(hero.take)?'Imported reference':TAKE_NO(hero.take)}`}
     :picked&&v&&picked.id!==v.id?{role:'Picked',shot:s,take:picked,detail:TAKE_NO(picked)}:null;
-  const takeDetail=t=>isImported(t)?`Imported reference · ${t.settings.width} × ${t.settings.height}`:t.seed!==null&&t.seed!==undefined?`seed ${t.seed}`:'';
+  const takeDetail=t=>isImported(t)?'Imported reference':'';
   $('compare-switch').hidden=!other;
   $('compare-switch').innerHTML=other?[['take',v?`Take ${TAKE_NO(v)}`:'Take'],['other',other.role]].map(([key,text])=>`<button type="button" data-show="${key}" aria-pressed="${compareShow===key}">${text}</button>`).join(''):'';
   $('compare-images').dataset.show=other?compareShow:'take';
-  $('compare-images').innerHTML=v?(other?figure(other.role,other.detail,other.shot,other.take,false,'data-zoom-other="1"',SIZES.compare):'')+figure('Take',`${TAKE_NO(v)}${takeDetail(v)?' · '+takeDetail(v):''}`,s,v,true,`data-zoom="${v.id}"`,other?SIZES.compare:SIZES.solo):'<p class="muted">No takes yet. Render takes for this cut, or render the whole board.</p>';
+  $('compare-images').innerHTML=v?(other?figure(other.role,other.detail,other.shot,other.take,false,'data-zoom-other="1"',SIZES.compare):'')+figure('Take',`${TAKE_NO(v)}${takeDetail(v)?' · '+takeDetail(v):''}`,s,v,true,`data-zoom="${v.id}"`,other?SIZES.compare:SIZES.solo):'<p class="muted">No takes yet.</p>';
   $('take-strip').innerHTML=s.takes.map(t=>{const isPick=s.picked===t.id, review=reviewFor(s,t);return `<button class="take${t.status!=='succeeded'?' unavailable':''}" data-view="${t.id}" aria-pressed="${t.id===v?.id}" aria-label="${TAKE(t)}${isPick?', picked':''}${review&&review.verdict!=='pending'?', '+review.verdict:''}${t.status!=='succeeded'?', '+t.status:''}"><span class="take-frame">${t.status==='succeeded'?img(imageURL(t),'',SIZES.thumb):`<span class="take-state">${takeState(t)}</span>`}</span><span class="tl"><span class="take-id${isPick?' picked':''}">${TAKE(t)}</span>${isPick?'<span class="pk">Picked</span>':''}${verdictMark(review)}</span></button>`;}).join('');
   const queued=s.takes.filter(t=>['queued','running'].includes(t.status)).length;
   $('takes-meta').textContent=queued?`${queued} in queue`:'';
@@ -366,10 +366,8 @@ async function loadGallery(){
   const featured=examples[0], b=featured.board;
   const picked=s=>s.takes.find(t=>t.id===s.picked);
   const url=(ex,s)=>`/api/examples/${ex.slug}/images/${picked(s).image}`;
-  const picks=b.shots.map(picked), heroId=b.continuity?.enabled?b.continuity.hero?.shot_id:null, heroAt=b.shots.findIndex(s=>s.id===heroId);
-  const redrawn=heroAt>=0&&b.shots.every((s,i)=>i===heroAt||picks[i]?.reference?.shot_id===heroId);
-  const note=redrawn?`<p class="lined-note">${SLATE(setupRanges(b.shots.map((s,i)=>i).filter(i=>i!==heroAt)))} are redrawn from ${SLATE(NN(heroAt))}.</p>`:'';
-  $('featured-board').innerHTML=`<p class="scene-line">${escapeHTML(b.config.scene)}</p><div class="setups">${b.shots.map((s,i)=>`<button class="setup" data-example="${featured.slug}" data-cut="${s.id}" aria-label="Open ${NN(i)} ${escapeHTML(s.title)}"><span class="setup-no">${NN(i)}</span><span class="stem" aria-hidden="true"></span><span class="frame">${img(url(featured,s),`${s.title} selected render`,SIZES.lined,i===0)}</span><span class="cap"><b>${escapeHTML(s.title)}</b>${isImported(picks[i])?'<span class="src">Imported reference</span>':''}</span></button>`).join('')}</div>${note}`;
+  const picks=b.shots.map(picked);
+  $('featured-board').innerHTML=`<p class="scene-line">${escapeHTML(b.config.scene)}</p><div class="setups">${b.shots.map((s,i)=>`<button class="setup" data-example="${featured.slug}" data-cut="${s.id}" aria-label="Open ${NN(i)} ${escapeHTML(s.title)}"><span class="setup-no">${NN(i)}</span><span class="stem" aria-hidden="true"></span><span class="frame">${img(url(featured,s),`${s.title} selected render`,SIZES.lined,i===0)}</span><span class="cap"><b>${escapeHTML(s.title)}</b>${isImported(picks[i])?'<span class="src">Imported reference</span>':''}</span></button>`).join('')}</div>`;
   setRatios('#featured-board .setup',picks);
   // Phones set two frames a row; each pair shares the row by its true widths.
   document.querySelectorAll?.('#featured-board .setup').forEach((el,i)=>{const pair=picks.slice(i-i%2,i-i%2+2).map(t=>t.settings.width/t.settings.height),sum=pair.reduce((a,x)=>a+x,0);el.style.setProperty('--mw',((t=>t.settings.width/t.settings.height)(picks[i])/sum).toFixed(4));});
@@ -414,13 +412,13 @@ function renderExport(){
   const names=zipFiles(board);if(!names)return;
   const picks=board.shots.map(s=>s.takes.find(t=>t.id===s.picked));
   const count=prefix=>names.filter(n=>n.startsWith(prefix)).length;
-  const built=board.shots.map((s,i)=>i).filter(i=>picks[i].source?.type!=='imported'), submitted=count('workflows/')-built.length;
+  const built=board.shots.map((s,i)=>i).filter(i=>picks[i].source?.type!=='imported'), submitted=built.filter(i=>picks[i].submitted_workflow);
   const refs=names.filter(n=>n.startsWith('references/'));
   const short=n=>n.replace(/^(references\/)([0-9a-f]{6})[0-9a-f]+([0-9a-f]{4})(\.png)$/,'$1$2…$3$4');
   const groups=[
     ['Storyboards',`2 PNG`,['storyboard-landscape.png','storyboard-portrait.png']],
     ['Stills',`${count('stills/')} PNG`,`stills/${board.shots[0].id}.png … stills/${board.shots.at(-1).id}.png`],
-    built.length&&['ComfyUI workflows',`${count('workflows/')} JSON`,`workflows/sNN.api.json for ${setupRanges(built)}${submitted?`, plus ${submitted} as submitted`:''}`],
+    built.length&&['ComfyUI workflows',`${count('workflows/')} JSON`,`workflows/sNN.api.json for ${setupRanges(built)}${submitted.length?`; sNN.submitted.api.json for ${setupRanges(submitted)}`:''}`],
     refs.length&&['Hero reference',`${refs.length} PNG`,refs.map(short).join(', ')],
     ['Manifest','1 JSON','manifest.json: scene, picks, seeds, verdicts, pinned models'],
   ].filter(Boolean);

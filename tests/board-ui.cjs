@@ -169,7 +169,7 @@ vm.runInContext('board=fixture; lastSignature=""; render();', context);
 // Export lists the picks and what the ZIP holds.
 vm.runInContext('renderExport();', context);
 assert.equal(element('zip-summary').textContent, '20 files');
-assert.match(element('zip-files').innerHTML, /ComfyUI workflows<\/b><span class="n">10 JSON<\/span><span class="p">workflows\/sNN\.api\.json for 01, 03–06, plus 5 as submitted/);
+assert.match(element('zip-files').innerHTML, /ComfyUI workflows<\/b><span class="n">10 JSON<\/span><span class="p">workflows\/sNN\.api\.json for 01, 03–06; sNN\.submitted\.api\.json for 01, 03–06</);
 assert.equal((element('export-picks').innerHTML.match(/<li>/g) || []).length, 6);
 
 // Back closes Compare without leaving the board; moving between cuts adds no history.

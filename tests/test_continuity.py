@@ -253,7 +253,7 @@ class ContinuityAPITests(unittest.TestCase):
                 else: self.take['workflow']['1']['class_type'] = 'LoadImage'
                 response = self.enable()
                 self.assertEqual(response.status_code, 409)
-                self.assertIn('Only an SDXL original', response.json()['detail'])
+                self.assertIn('Only an SDXL take', response.json()['detail'])
                 self.assertFalse((self.data/self.bid/'references').exists())
                 self.assertFalse(self.board['continuity']['enabled'])
         self.take.clear(); self.take.update(original)

@@ -130,7 +130,7 @@ class Store:
             for shot in board["shots"]:
                 for take in shot["takes"]:
                     if take["status"] in ("queued", "running"):
-                        take.update(status="interrupted", error="Server restarted. Review before generating again.")
+                        take.update(status="interrupted", error="Stopped when the server restarted.")
             self.boards[board["id"]] = board
             self.save(board)
         self.stop.clear()
@@ -342,7 +342,7 @@ EXAMPLES = {"greenhouse-continuity": "The greenhouse", "greenhouse": "The greenh
 
 def example_board(slug):
     if slug not in EXAMPLES:
-        raise HTTPException(404, "Example not found")
+        raise HTTPException(404, "Board not found")
     folder = ROOT / "examples" / slug
     board = json.loads((folder / "board.json").read_text())
     review = folder / "continuity-review.json"
@@ -538,7 +538,7 @@ def set_continuity(bid: str, request: Continuity):
             if not imported and (take.get('reference') or take.get('settings', {}).get('checkpoint') != PRESETS['sdxl-base']['checkpoint']
                     or take.get('settings', {}).get('preset_id', 'sdxl-base') != 'sdxl-base'
                     or take.get('workflow', {}).get('1', {}).get('class_type') != 'CheckpointLoaderSimple'):
-                raise HTTPException(409, "Only an SDXL original or imported reference can be the hero.")
+                raise HTTPException(409, "Only an SDXL take or an imported reference can be the hero.")
             source = DATA / bid / take["image"]
             if sha256(source) != take["image_sha256"]:
                 raise HTTPException(409, "The picked hero changed on disk.")
