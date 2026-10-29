@@ -88,14 +88,14 @@ hangar.review = hangar.review.map(r => ({...r, verdict:'pending'}));
 vm.runInContext('lastSignature=""; render();', context);
 assert.equal(element('review-legend').hidden, true, 'No legend without a verdict');
 
-// Compare: each finished take image is a button that enlarges it; Imported reference keeps its label.
+// Compare: each finished take image is a button that enlarges it; a Qwen-Image hero claims no import.
 context.fixture = continuity;
 window.SB = {sized: url => ({src:url.replace('.png','-800.webp'), srcset:`${url.replace('.png','-1200.webp')} 1200w`})};
 vm.runInContext('board=fixture; currentShot="s02"; renderCompare();', context);
 delete window.SB;
 const compare = element('compare-images').innerHTML;
-assert.match(compare, /<button class="take-zoom" data-zoom="t01" aria-label="Enlarge Medium t01"><img src="[^"]*s02-t01-800\.webp" srcset="[^"]*" sizes="[^"]*960px"/);
-assert.match(compare, /Imported reference/);
+assert.match(compare, /<button class="take-zoom" data-zoom="t06" aria-label="Enlarge Medium t06"><img src="[^"]*s02-t06-800\.webp" srcset="[^"]*" sizes="[^"]*960px"/);
+assert.doesNotMatch(compare, /Imported reference/);
 assert.doesNotMatch(compare, /fig-hero/, 'The hero cut is not compared with itself');
 assert.equal((compare.match(/fetchpriority/g) || []).length, 1);
 
@@ -104,23 +104,24 @@ window.SB = {sized: url => ({src:url.replace('.png','-800.webp'), srcset:`${url.
 vm.runInContext('currentShot="s04"; viewing.clear(); renderCompare();', context);
 delete window.SB;
 const s04 = element('compare-images').innerHTML;
-assert.match(s04, /fig-hero[\s\S]*<b>Hero<\/b><span><span class="setup-no">02<\/span> Medium · Imported reference<\/span>[\s\S]*fig-take/);
+assert.match(s04, /fig-hero[\s\S]*<b>Hero<\/b><span><span class="setup-no">02<\/span> Medium · <span class="take-no">T06<\/span><\/span>[\s\S]*fig-take/);
 assert.match(s04, /data-zoom="t04" aria-label="Enlarge Over shoulder t04"><img[^>]*sizes="[^"]*480px"/);
 const strip = element('take-strip').innerHTML;
-assert.equal((strip.match(/<button class="take/g) || []).length, 6);
-assert.match(strip, /data-view="t04" aria-pressed="true" aria-label="T04, picked, fail"/);
+assert.equal((strip.match(/<button class="take/g) || []).length, 4);
+assert.match(strip, /data-view="t04" aria-pressed="true" aria-label="T04, picked, pass"/);
 assert.equal((strip.match(/aria-pressed="true"/g) || []).length, 1);
-assert.match(element('render-details').innerHTML, /<dt>Seed<\/dt><dd>20261074 <span class="locked">/);
+assert.match(element('render-details').innerHTML, /<dt>Seed<\/dt><dd>20261044 <span class="locked">/);
 // Viewing another take keeps the pick and survives a rerender; the lock only shows on the locked seed.
 vm.runInContext('viewing.set(`${board.id}/s04`,"t01"); lastSignature=""; render(); renderCompare();', context);
 assert.match(element('take-strip').innerHTML, /data-view="t01" aria-pressed="true"/);
 assert.match(element('pick-take').innerHTML, /Pick <span class="take-no">T01<\/span>/);
 assert.doesNotMatch(element('render-details').innerHTML, /Locked/);
 vm.runInContext('viewing.clear();', context);
-// Board labels come from each take: one imported hero, five reference edits drawn from it.
+// Board labels come from each take: one Qwen-Image hero, five reference edits drawn from it.
 vm.runInContext('lastSignature=""; render();', context);
 const grid = element('board-grid').innerHTML;
-assert.equal((grid.match(/Imported reference/g) || []).length, 1);
+assert.equal((grid.match(/Qwen-Image take/g) || []).length, 1);
+assert.doesNotMatch(grid, /Imported reference/);
 assert.equal((grid.match(/Redrawn from <span class="slate">02<\/span>/g) || []).length, 5);
 assert.equal((grid.match(/class="shot-card picked is-hero"/g) || []).length, 1);
 assert.match(element('hero-line').innerHTML, /Reference edits for<\/span> <span class="branch-nos">01, 03–06<\/span>/);
@@ -180,8 +181,8 @@ context.fixture = continuity;
 vm.runInContext('board=fixture; lastSignature=""; render();', context);
 // Export lists the picks and what the ZIP holds.
 vm.runInContext('renderExport();', context);
-assert.equal(element('zip-summary').textContent, '20 files');
-assert.match(element('zip-files').innerHTML, /ComfyUI workflows<\/b><span class="n">10 JSON<\/span><span class="p">workflows\/sNN\.api\.json and sNN\.submitted\.api\.json for 01, 03–06</);
+assert.equal(element('zip-summary').textContent, '21 files');
+assert.match(element('zip-files').innerHTML, /ComfyUI workflows<\/b><span class="n">11 JSON<\/span><span class="p">workflows\/sNN\.api\.json for 01–06; sNN\.submitted\.api\.json for 01, 03–06</);
 assert.equal((element('export-picks').innerHTML.match(/<li>/g) || []).length, 6);
 
 // Back closes Compare without leaving the board; moving between cuts adds no history.

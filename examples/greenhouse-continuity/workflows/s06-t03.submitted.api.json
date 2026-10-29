@@ -1,0 +1,180 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": {
+        "__type": "core/ASSET",
+        "info": {
+          "id": "0fd72543-65ea-42dc-a916-a285e7bff64d",
+          "hash": "blake3:2c1c51b610efd726d3ee4232a19d916e1de8a1908245a21784d68d806d00f893",
+          "file_path": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png"
+        }
+      }
+    }
+  },
+  "2": {
+    "class_type": "TextEncodeQwenImageEditPlus",
+    "inputs": {
+      "clip": [
+        "9",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ],
+      "image1": [
+        "14",
+        0
+      ],
+      "prompt": "Requested framing: Low angle. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. WORM'S-EYE VIEW: the camera sits on the wet greenhouse floor at her feet and points steeply up at the same fictional adult woman from the reference, with the same light chestnut chin-length wavy bob, the same mustard canvas field coat with flap chest pockets and metal buttons, and the same chunky teal cable-knit scarf. Strong foreshortening: her coat hem and legs loom large at the bottom of the frame, her head is small near the top, and the greenhouse roof ridge and dark green glazing bars converge overhead. She holds the same open brass compass in both hands at chest height and looks down at it; its underside and the edge of the brass case face the camera. Same soft rainy daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+    }
+  },
+  "3": {
+    "class_type": "TextEncodeQwenImageEditPlus",
+    "inputs": {
+      "clip": [
+        "9",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ],
+      "image1": [
+        "14",
+        0
+      ],
+      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, compass rose, star on dial, extra needles, X needle, four-arm needle, numbers on dial, different compass, different person, different hair color, navy scarf, thin smooth scarf, eye-level camera, high angle, overhead view"
+    }
+  },
+  "4": {
+    "class_type": "EmptySD3LatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "13",
+        0
+      ],
+      "positive": [
+        "15",
+        0
+      ],
+      "negative": [
+        "16",
+        0
+      ],
+      "latent_image": [
+        "4",
+        0
+      ],
+      "seed": 20261043,
+      "steps": 24,
+      "cfg": 4.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "6": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "5",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ]
+    }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "6",
+        0
+      ],
+      "filename_prefix": "shotboard/reference-take"
+    }
+  },
+  "8": {
+    "class_type": "UnetLoaderGGUF",
+    "inputs": {
+      "unet_name": "qwen-image-edit-2511-Q8_0.gguf"
+    }
+  },
+  "9": {
+    "class_type": "CLIPLoaderGGUF",
+    "inputs": {
+      "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+      "type": "qwen_image"
+    }
+  },
+  "10": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    }
+  },
+  "12": {
+    "class_type": "ModelSamplingAuraFlow",
+    "inputs": {
+      "model": [
+        "8",
+        0
+      ],
+      "shift": 3.1
+    }
+  },
+  "13": {
+    "class_type": "CFGNorm",
+    "inputs": {
+      "model": [
+        "12",
+        0
+      ],
+      "strength": 1.0
+    }
+  },
+  "14": {
+    "class_type": "ImageScaleToTotalPixels",
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "megapixels": 1.0,
+      "resolution_steps": 1
+    }
+  },
+  "15": {
+    "class_type": "FluxKontextMultiReferenceLatentMethod",
+    "inputs": {
+      "conditioning": [
+        "2",
+        0
+      ],
+      "reference_latents_method": "index_timestep_zero"
+    }
+  },
+  "16": {
+    "class_type": "FluxKontextMultiReferenceLatentMethod",
+    "inputs": {
+      "conditioning": [
+        "3",
+        0
+      ],
+      "reference_latents_method": "index_timestep_zero"
+    }
+  }
+}

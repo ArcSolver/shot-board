@@ -40,6 +40,10 @@ The app serves two fonts from `shotboard/static`, both under the SIL Open Font L
 | PyYAML | MIT | [pyyaml](https://github.com/yaml/pyyaml) |
 | blake3 | CC0-1.0 or Apache-2.0 | [blake3-py](https://github.com/oconnor663/blake3-py) |
 
+## Qwen-Image-2512 first takes
+
+Qwen-Image-2512 Q8_0 and Q4_K_M GGUF (Unsloth conversion) are Apache-2.0. Pinned in [qwen-image-model-lock.json](workflows/qwen-image-model-lock.json) and [qwen-image-model-lock-q4_k_m.json](workflows/qwen-image-model-lock-q4_k_m.json). They use the text encoder and VAE listed below. Upstream model cards: [Qwen-Image-2512](https://huggingface.co/Qwen/Qwen-Image-2512), [diffusion GGUF](https://huggingface.co/unsloth/Qwen-Image-2512-GGUF).
+
 ## Continuity preset
 
 Qwen-Image-Edit-2511 Q8_0 and Q4_K_M GGUF (Unsloth conversion), Qwen2.5-VL-7B-Instruct Q8_0 and Q4_K_M GGUF and its F16 vision projector, and Qwen image VAE (Comfy-Org packaging) are Apache-2.0. Pinned in [qwen-model-lock.json](workflows/qwen-model-lock.json) and [qwen-model-lock-q4_k_m.json](workflows/qwen-model-lock-q4_k_m.json).

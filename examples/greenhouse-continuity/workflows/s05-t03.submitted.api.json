@@ -5,9 +5,9 @@
       "image": {
         "__type": "core/ASSET",
         "info": {
-          "id": "59b3eb13-0e94-4089-80ab-18b3828c96f5",
-          "hash": "blake3:007eef64a0eeed0f64d75f06585ed6d93db0c782f09b5190efa39899af950fb9",
-          "file_path": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
+          "id": "0fd72543-65ea-42dc-a916-a285e7bff64d",
+          "hash": "blake3:2c1c51b610efd726d3ee4232a19d916e1de8a1908245a21784d68d806d00f893",
+          "file_path": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png"
         }
       }
     }
@@ -27,7 +27,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: Insert. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. MACRO INSERT photograph, camera moved close to ONLY the existing two hands holding the exact same real magnetic compass as the reference: one deep cylindrical brass case with slightly flared base and upper-left hinged open plain brass lid with two interior rivets; clear glass cover; cream dial with printed black cardinal letters N at top, E at right, S at bottom, W at left, in that clockwise order; circular black degree tick ring with alternating long and short ticks; one classic STRAIGHT TWO-ENDED needle with a RED north half pointing toward N and SILVER-WHITE south half pointing toward S, small plain brass center pivot. Keep its case depth, lid, glass, precise letter layout, tick spacing, red/silver needle and small pivot from the reference. No X needle or star, no extra compass or ring/chain. The compass dominates the frame, dial fully visible and readable. Same hand grip and mustard cuffs, same wooden greenhouse bench softly blurred behind. Frame the complete open lid, thick brass sidewall and glass-covered dial, realistic perspective. No head, face, torso, inset or second compass. Change only camera position and crop; preserve compass design and colors exactly.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: Insert. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. MACRO INSERT photograph, camera moved close to ONLY her two cupped hands holding the exact same brass compass as the reference: the same deep round polished brass case with its plain round brass lid hinged open behind the dial, a clear glass cover, a plain cream dial with only four large black serif capital letters, N at the top, E on the right, S at the bottom and W on the left, a fine ring of degree ticks at the edge, and exactly one straight needle, red north half and silver south half, on a small brass pivot. No compass rose and no other printing. Keep the case depth, lid, glass, letter style and layout, tick ring and red/silver needle from the reference. The compass fills most of the frame and the whole dial is visible and readable. Same hands, mustard coat at the frame edge, same soft rainy greenhouse light, background softly blurred.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -45,7 +45,7 @@
         "14",
         0
       ],
-      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, face, head, torso, full body, wide shot, medium portrait"
+      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, compass rose, star on dial, extra needles, X needle, four-arm needle, numbers on dial, different compass, different person, different hair color, navy scarf, thin smooth scarf, face, head, torso, full body, wide shot, medium portrait"
     }
   },
   "4": {
@@ -75,7 +75,7 @@
         "4",
         0
       ],
-      "seed": 20261072,
+      "seed": 20261043,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

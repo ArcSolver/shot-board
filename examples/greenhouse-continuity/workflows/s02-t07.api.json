@@ -1,0 +1,109 @@
+{
+  "2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "9",
+        0
+      ],
+      "text": "Medium waist-up photograph at eye level, 35mm lens. A fictional adult woman in her thirties with a light chestnut chin-length softly waved bob looks down at a brass compass she holds out in front of her chest with both hands, the open dial facing the camera. She wears a mustard-yellow canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and a chunky teal cable-knit scarf. The compass is large in the frame, about as wide as her palm: a round polished brass case with its hinged brass lid open behind it and a clear glass cover. The dial is plain cream with a simple modern layout: only four large bold black sans-serif capital letters, N at the top, E on the right, S at the bottom and W on the left, and a thin black ring of evenly spaced degree tick marks around the edge. Nothing else is printed on the dial: no compass rose, no star, no numbers, no other words. Exactly ONE thin straight needle crosses the center on the north-south line, its north half painted red and pointing at N, its south half silver and pointing at S, with a small brass pivot. All four letters N, E, S, W and the red needle are sharp and clearly readable. She stands beside a weathered wooden potting bench in a rain-soaked Victorian greenhouse with a dark green painted window grid, rain droplets on the glass panes and potted ferns. Soft diffuse overcast daylight, muted film colors, gentle contrast, fine film grain, natural skin texture, realistic cinematic still photograph."
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "9",
+        0
+      ],
+      "text": "anime, cartoon, illustration, painting, 3d render, CGI, watermark, logo, brand name, celebrity, blurry, deformed hands, extra fingers, duplicate compass, blank dial, gibberish letters, compass rose, star pattern on dial, ornate engraving, numbers on the dial, NE, SW, extra needles, four-armed needle, X-shaped needle, looking at camera"
+    }
+  },
+  "4": {
+    "class_type": "EmptySD3LatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 896,
+      "batch_size": 1
+    }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "12",
+        0
+      ],
+      "positive": [
+        "2",
+        0
+      ],
+      "negative": [
+        "3",
+        0
+      ],
+      "latent_image": [
+        "4",
+        0
+      ],
+      "seed": 20261037,
+      "steps": 40,
+      "cfg": 4.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "6": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "5",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ]
+    }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "6",
+        0
+      ],
+      "filename_prefix": "shotboard/first-take"
+    }
+  },
+  "8": {
+    "class_type": "UnetLoaderGGUF",
+    "inputs": {
+      "unet_name": "qwen-image-2512-Q8_0.gguf"
+    }
+  },
+  "9": {
+    "class_type": "CLIPLoaderGGUF",
+    "inputs": {
+      "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+      "type": "qwen_image"
+    }
+  },
+  "10": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    }
+  },
+  "12": {
+    "class_type": "ModelSamplingAuraFlow",
+    "inputs": {
+      "model": [
+        "8",
+        0
+      ],
+      "shift": 3.1
+    }
+  }
+}

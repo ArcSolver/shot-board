@@ -1,0 +1,109 @@
+{
+  "2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "9",
+        0
+      ],
+      "text": "Medium waist-up photograph at eye level, 35mm lens. A fictional adult woman in her thirties with a light chestnut chin-length softly waved bob and a side part looks down at a small brass pocket compass she holds in both hands at chest height. She wears a mustard-yellow canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and a chunky teal cable-knit scarf wrapped around her neck. The compass is a real magnetic compass: a polished round brass case with its hinged brass lid open, a clear glass cover, a cream dial printed with four large bold black letters, N at the top, E on the right, S at the bottom and W on the left, a thin black degree tick ring around the edge, and one straight two-ended needle, red north half pointing to N and silver south half. The dial is tilted toward the camera so all four letters and the red needle are clearly readable. She stands beside a weathered wooden potting bench inside a rain-soaked Victorian greenhouse with a dark green painted window grid, rain droplets running down the glass panes, and potted ferns. Soft diffuse overcast daylight from the windows, muted film colors, gentle contrast, fine 35mm film grain, natural skin texture, realistic cinematic still photograph."
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "9",
+        0
+      ],
+      "text": "anime, cartoon, illustration, painting, 3d render, CGI, watermark, logo, brand name, celebrity, blurry, deformed hands, extra fingers, duplicate compass, blank dial, gibberish letters, numbers on the dial, X-shaped needle, compass rose star, looking at camera"
+    }
+  },
+  "4": {
+    "class_type": "EmptySD3LatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 896,
+      "batch_size": 1
+    }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "12",
+        0
+      ],
+      "positive": [
+        "2",
+        0
+      ],
+      "negative": [
+        "3",
+        0
+      ],
+      "latent_image": [
+        "4",
+        0
+      ],
+      "seed": 20261031,
+      "steps": 40,
+      "cfg": 4.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "6": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "5",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ]
+    }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "6",
+        0
+      ],
+      "filename_prefix": "shotboard/first-take"
+    }
+  },
+  "8": {
+    "class_type": "UnetLoaderGGUF",
+    "inputs": {
+      "unet_name": "qwen-image-2512-Q8_0.gguf"
+    }
+  },
+  "9": {
+    "class_type": "CLIPLoaderGGUF",
+    "inputs": {
+      "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+      "type": "qwen_image"
+    }
+  },
+  "10": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    }
+  },
+  "12": {
+    "class_type": "ModelSamplingAuraFlow",
+    "inputs": {
+      "model": [
+        "8",
+        0
+      ],
+      "shift": 3.1
+    }
+  }
+}

@@ -2,7 +2,7 @@
   "1": {
     "class_type": "LoadImage",
     "inputs": {
-      "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
+      "image": "references/a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png"
     }
   },
   "2": {
@@ -20,7 +20,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: Establishing. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. EXTREME DISTANT ESTABLISHING photograph of the SAME rain-soaked greenhouse. Camera 20metres back down the central aisle. Roof window grid, fern-lined benches, wet floor and long perspective fill almost all of the landscape. the same fictional adult woman from the reference, exact lowered gaze, rounded face, right side part, light chestnut chin-length bob with loose waves and outward-fanning ends, mustard canvas coat with metal buttons and flap chest pockets, shoulder tabs and chunky rich teal cable-knit scarf with dense compact twisted cables and rolled neck loop is a TINY FULL-BODY rear three-quarter figure at the SAME bench, feet visible, whole body less than one eighth of frame height. She holds the brass compass low, with dial naturally too small to resolve. Wide empty foreground path, no close foreground person or enlarged portrait. Same rainy diffuse daylight. Do not enlarge or invent compass markings at this distance.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: Establishing. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. EXTREME WIDE ESTABLISHING photograph of the SAME rain-soaked greenhouse, camera far back down the central aisle. The roof window grid, dark green frames, fern-filled wooden planters, wet floor and long perspective fill almost the whole frame. the same fictional adult woman from the reference, with the same light chestnut chin-length wavy bob, the same mustard canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and the same chunky teal cable-knit scarf wrapped as a snug cowl is a TINY full-body figure standing between the planters, holding the compass low, feet visible, whole body less than one fifth of the frame height. Same rainy diffuse daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -38,7 +38,7 @@
         "14",
         0
       ],
-      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, large person, medium shot, close-up, cropped feet, cropped legs, foreground compass"
+      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, compass rose, star on dial, extra needles, X needle, four-arm needle, numbers on dial, different compass, different person, different hair color, navy scarf, thin smooth scarf, large person, medium shot, close-up, cropped feet, foreground compass"
     }
   },
   "4": {
@@ -68,7 +68,7 @@
         "4",
         0
       ],
-      "seed": 20261072,
+      "seed": 20261042,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

@@ -4,7 +4,7 @@
 
 Shot Board turns a one-line scene into a six-shot coverage storyboard. You choose one hero frame, and it redraws the other cuts from that frame.
 
-Categories: Best Overall and Open Weights Only. Both models, SDXL Base 1.0 and Qwen-Image-Edit-2511, are open weights and run on your own ComfyUI.
+Categories: Best Overall and Open Weights Only. All three models, SDXL Base 1.0, Qwen-Image-2512 and Qwen-Image-Edit-2511, are open weights and run on your own ComfyUI.
 
 ![Six-shot storyboard of a traveler finding a brass compass in a rainy greenhouse](examples/greenhouse-continuity/storyboard-landscape.png)
 
@@ -26,9 +26,9 @@ Open **http://127.0.0.1:8790** and choose **Open this board**.
 
 You write one scene and Shot Board lays out six editable cuts: establishing, medium, face close-up, over shoulder, insert and low angle. A scene without a person gets a detail close-up and a side angle in place of the face and shoulder shots. You can add up to three more cuts, give the scene character, prop and setting details, and edit each cut's prompt.
 
-SDXL renders the first takes. In **Compare & pick** you see each take beside the hero, pick one per cut, lock a seed, and save a pass or fail verdict with a note. The hero is an SDXL take or an image you import. **Render reference edits** then sends every other cut to Qwen-Image-Edit-2511 with the hero as the reference.
+SDXL Base 1.0 or Qwen-Image-2512 renders the first takes; you choose the model when you build the board. In **Compare & pick** you see each take beside the hero, pick one per cut, lock a seed, and save a pass or fail verdict with a note. The hero is one of those takes or an image you import. **Render reference edits** then sends every other cut to Qwen-Image-Edit-2511 with the hero as the reference.
 
-![Imported hero details alongside close-up, over shoulder and insert reference edits](docs/hero-reference.png)
+![Qwen-Image-2512 hero details alongside close-up, over shoulder and insert reference edits](docs/hero-reference.png)
 
 When every cut has a pick, export a landscape or portrait storyboard and a ZIP with the stills, ComfyUI workflows and manifest.
 
@@ -40,7 +40,8 @@ When every cut has a pick, export a landscape or portrait storyboard and a ZIP w
 
 The app (FastAPI, on the CPU) sends every render request and reference upload through the Comfy SDK to comfy-api-proxy, which runs on loopback in front of your ComfyUI on the GPU worker.
 
-- SDXL Base 1.0 renders the first takes. Pinned in [model-lock.json](workflows/model-lock.json); graph in [sdxl-base.api.json](workflows/sdxl-base.api.json).
+- SDXL Base 1.0 renders first takes. Pinned in [model-lock.json](workflows/model-lock.json); graph in [sdxl-base.api.json](workflows/sdxl-base.api.json).
+- Qwen-Image-2512 renders first takes through ComfyUI-GGUF when a board picks it. Pinned in [qwen-image-model-lock.json](workflows/qwen-image-model-lock.json) (Q8_0) and [qwen-image-model-lock-q4_k_m.json](workflows/qwen-image-model-lock-q4_k_m.json); graph in [qwen-image.api.json](workflows/qwen-image.api.json).
 - Qwen-Image-Edit-2511 makes the reference edits through ComfyUI-GGUF. Pinned in [qwen-model-lock.json](workflows/qwen-model-lock.json) (Q8_0) and [qwen-model-lock-q4_k_m.json](workflows/qwen-model-lock-q4_k_m.json); graph in [qwen-reference.api.json](workflows/qwen-reference.api.json).
 
 ## Run it locally
@@ -65,7 +66,7 @@ Each generated frame's `workflows/sNN.api.json` in the export ZIP is a ComfyUI A
 
 ## Boards in the repo
 
-- [The greenhouse](examples/greenhouse-continuity/README.md): "A traveler discovers a small brass compass in a rain-soaked greenhouse." An imported hero and five Qwen reference edits from it, with saved reviews.
+- [The greenhouse](examples/greenhouse-continuity/README.md): "A traveler discovers a small brass compass in a rain-soaked greenhouse." A Qwen-Image-2512 hero on 02 Medium and five Qwen-Image-Edit-2511 reference edits from it, with saved reviews.
 - [The greenhouse, first takes](examples/greenhouse/README.md): the same scene, SDXL only.
 - [The hangar](examples/hangar/README.md): "A gray utility robot with a square metal head, a single blue optical sensor and mechanical gripper arms repairs a small spaceship engine on a workbench in a quiet hangar at night." SDXL only.
 
@@ -73,4 +74,4 @@ Each generated frame's `workflows/sNN.api.json` in the export ZIP is a ComfyUI A
 
 Shot Board source is [MIT](LICENSE).
 
-SDXL Base 1.0 is licensed under CreativeML Open RAIL++-M. The Qwen diffusion model, encoder, vision projector and VAE are Apache-2.0. ComfyUI is GPL-3.0. ComfyUI-GGUF is Apache-2.0. Comfy SDK and comfy-api-proxy are MIT. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [workflows/](workflows/).
+SDXL Base 1.0 is licensed under CreativeML Open RAIL++-M. The Qwen diffusion models, encoder, vision projector and VAE are Apache-2.0. ComfyUI is GPL-3.0. ComfyUI-GGUF is Apache-2.0. Comfy SDK and comfy-api-proxy are MIT. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [workflows/](workflows/).

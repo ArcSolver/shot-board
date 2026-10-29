@@ -1,128 +1,182 @@
 [
   {
-    "shot": "s05",
-    "take": "t02",
-    "verdict": "fail",
-    "note": "Recognizable compass. Flared base and small center pivot are redrawn; coat torso visible behind macro."
-  },
-  {
-    "shot": "s05",
-    "take": "t03",
-    "verdict": "fail",
-    "note": "Serif cardinal font and much denser tick ring replace the bold sans-serif reference. Needle and brass pivot are reshaped."
-  },
-  {
-    "shot": "s05",
-    "take": "t04",
-    "verdict": "fail",
-    "note": "Cardinal letters and red north half are readable. Pivot, letters, ticks and case differ from the reference."
-  },
-  {
-    "shot": "s05",
-    "take": "t05",
-    "verdict": "fail",
-    "note": "Recognizable compass face, but the needle becomes a three-part red/white shape with a flat red arm instead of a straight needle. Added side knob, serif letters and changed lid."
-  },
-  {
-    "shot": "s05",
-    "take": "t06",
-    "verdict": "fail",
-    "note": "Clear bold N/E/S/W, ticks and red/silver needle. Added lid-top clasp and redesigned brass pivot."
-  },
-  {
-    "shot": "s05",
-    "take": "t07",
-    "verdict": "fail",
-    "note": "Clear N/E/S/W, degree ticks, red/silver needle and subtle glass. Cardinal font changes to serif, pivot and shallow case differ."
-  },
-  {
-    "shot": "s03",
+    "shot": "s02",
     "take": "t01",
     "verdict": "fail",
-    "note": "No compass in face framing. New scarf buttons and changed wave shape."
-  },
-  {
-    "shot": "s03",
-    "take": "t02",
-    "verdict": "fail",
-    "note": "No compass in face framing. Closest face view, but inward bob ends and scarf knit differ."
-  },
-  {
-    "shot": "s03",
-    "take": "t03",
-    "verdict": "fail",
-    "note": "Tiny partial brass edge/lid only; no dial. Oversized braided scarf and tilted head differ."
-  },
-  {
-    "shot": "s03",
-    "take": "t04",
-    "verdict": "fail",
-    "note": "Tiny partial brass edge/lid only; no dial. Added large braided knot; bob ends differ."
-  },
-  {
-    "shot": "s04",
-    "take": "t01",
-    "verdict": "fail",
-    "note": "Rear shoulder framing, but scarf becomes ribbed and compass font/pivot/lid differ."
-  },
-  {
-    "shot": "s04",
-    "take": "t02",
-    "verdict": "fail",
-    "note": "More side-on than over shoulder; scarf weave and pivot differ."
-  },
-  {
-    "shot": "s04",
-    "take": "t03",
-    "verdict": "fail",
-    "note": "Lid hinges left across dial instead of upper-left upright; new large scarf braid."
-  },
-  {
-    "shot": "s04",
-    "take": "t04",
-    "verdict": "fail",
-    "note": "Best over-shoulder framing; scarf ribbed, lid moved to upper right and case shallower."
-  },
-  {
-    "shot": "s04",
-    "take": "t05",
-    "verdict": "fail",
-    "note": "Scarf becomes narrow ribbing; lid upper right and needle/pivot reshaped."
-  },
-  {
-    "shot": "s04",
-    "take": "t06",
-    "verdict": "fail",
-    "note": "Added ring/bail above lid, changed pivot and narrow rib scarf; side-on framing rather than over shoulder."
-  },
-  {
-    "shot": "s01",
-    "take": "t01",
-    "verdict": "fail",
-    "note": "Distant rear full-body view; only tiny pale object edge at hand. Compass identity cannot be checked. Bench changed."
-  },
-  {
-    "shot": "s01",
-    "take": "t02",
-    "verdict": "pass",
-    "note": "Wide greenhouse aisle and a small full-body figure. The compass dial is too small to check."
-  },
-  {
-    "shot": "s06",
-    "take": "t01",
-    "verdict": "fail",
-    "note": "Low angle, readable classic compass; long oversized braids replace compact scarf, pivot and case differ."
-  },
-  {
-    "shot": "s06",
-    "take": "t02",
-    "verdict": "fail",
-    "note": "Low angle, readable classic compass; broad braided scarf and inward bob ends differ, lid rivets/pivot reshaped."
+    "note": "Compass is small at her chest; the dial letters are not readable."
   },
   {
     "shot": "s02",
+    "take": "t02",
+    "verdict": "fail",
+    "note": "Compass is small; letters are blurred and out of place."
+  },
+  {
+    "shot": "s02",
+    "take": "t03",
+    "verdict": "fail",
+    "note": "N, E, S, W read, but the dial has an ornate rose, three silver needle arms and stray marks."
+  },
+  {
+    "shot": "s02",
+    "take": "t04",
+    "verdict": "fail",
+    "note": "Two crossed needles over a compass rose."
+  },
+  {
+    "shot": "s02",
+    "take": "t05",
+    "verdict": "fail",
+    "note": "One red and silver needle, but a star rose, a garbled S and stray marks between the letters."
+  },
+  {
+    "shot": "s02",
+    "take": "t06",
+    "verdict": "pass",
+    "note": "Plain cream dial with N, E, S, W, a fine tick ring at the rim, one red and silver needle, glass cover, open brass lid and deep brass case."
+  },
+  {
+    "shot": "s02",
+    "take": "t07",
+    "verdict": "fail",
+    "note": "N, E, S, W present, but stray text sits between them and the dial is washed out."
+  },
+  {
+    "shot": "s02",
+    "take": "t08",
+    "verdict": "fail",
+    "note": "The bottom letter is W, not S, and the left letter is M."
+  },
+  {
+    "shot": "s05",
     "take": "t01",
     "verdict": "pass",
-    "note": "N/E/S/W, degree ticks, red north/silver south needle, glass cover and brass case are visible."
+    "note": "Same serif N, E, S, W layout, red and silver needle on a brass pivot, glass, plain open lid and deep brass case. The S is slate gray and the tick band is plainer."
+  },
+  {
+    "shot": "s05",
+    "take": "t02",
+    "verdict": "fail",
+    "note": "Compass reads well, but another person's head appears in the background."
+  },
+  {
+    "shot": "s05",
+    "take": "t03",
+    "verdict": "fail",
+    "note": "The lid turns into a glass cover that mirrors the dial."
+  },
+  {
+    "shot": "s05",
+    "take": "t04",
+    "verdict": "pass",
+    "note": "Same serif N, E, S, W, red and silver needle, glass and plain lid. The dial is larger in frame and the tick ring is bolder."
+  },
+  {
+    "shot": "s05",
+    "take": "t05",
+    "verdict": "fail",
+    "note": "Her hand covers most of the S."
+  },
+  {
+    "shot": "s05",
+    "take": "t06",
+    "verdict": "fail",
+    "note": "A brass ring is added below the case; the hero compass has none."
+  },
+  {
+    "shot": "s04",
+    "take": "t01",
+    "verdict": "fail",
+    "note": "A ring is added below the compass; the hero compass has none."
+  },
+  {
+    "shot": "s04",
+    "take": "t02",
+    "verdict": "fail",
+    "note": "A ring and knob are added below the compass."
+  },
+  {
+    "shot": "s04",
+    "take": "t03",
+    "verdict": "pass",
+    "note": "Over the shoulder: same waves, teal cable scarf, mustard coat, and the compass with N, E, S, W and a red north half."
+  },
+  {
+    "shot": "s04",
+    "take": "t04",
+    "verdict": "pass",
+    "note": "Over the shoulder: same waves, teal cable scarf, mustard coat, and the compass with serif N, E, S, W and a red and silver needle. A small dark label on the shoulder tab is new."
+  },
+  {
+    "shot": "s03",
+    "take": "t01",
+    "verdict": "fail",
+    "note": "Framed from the chest up, not a face close-up."
+  },
+  {
+    "shot": "s03",
+    "take": "t02",
+    "verdict": "fail",
+    "note": "Framed from the chest up. Face reads longer and older than the hero."
+  },
+  {
+    "shot": "s03",
+    "take": "t03",
+    "verdict": "fail",
+    "note": "Framed from the chest up, not a face close-up."
+  },
+  {
+    "shot": "s03",
+    "take": "t04",
+    "verdict": "fail",
+    "note": "Framed from the chest up, not a face close-up."
+  },
+  {
+    "shot": "s03",
+    "take": "t05",
+    "verdict": "fail",
+    "note": "Face fills the frame with the same lowered gaze, center part, chestnut bob and teal scarf. The face reads broader and the waves looser than the hero."
+  },
+  {
+    "shot": "s03",
+    "take": "t06",
+    "verdict": "fail",
+    "note": "Close on the face, but the top of her head is cut off and the face reads longer than the hero."
+  },
+  {
+    "shot": "s01",
+    "take": "t01",
+    "verdict": "fail",
+    "note": "Seen from behind, walking away; the compass hangs at her side."
+  },
+  {
+    "shot": "s01",
+    "take": "t02",
+    "verdict": "pass",
+    "note": "Long greenhouse aisle with a small full-length figure in the mustard coat and teal scarf. Too small to check her face or the dial."
+  },
+  {
+    "shot": "s06",
+    "take": "t01",
+    "verdict": "fail",
+    "note": "Same coat, scarf, hair and readable compass, but the camera is barely below her eyes."
+  },
+  {
+    "shot": "s06",
+    "take": "t02",
+    "verdict": "fail",
+    "note": "Same coat, scarf, hair and compass with a red needle, and the roof shows overhead, but the camera is only a little below her eyes."
+  },
+  {
+    "shot": "s06",
+    "take": "t03",
+    "verdict": "fail",
+    "note": "Steep angle, but her boots fill the frame and her pose changes."
+  },
+  {
+    "shot": "s06",
+    "take": "t04",
+    "verdict": "fail",
+    "note": "Steep angle, but the coat now reaches the floor and the dial faces away."
   }
 ]

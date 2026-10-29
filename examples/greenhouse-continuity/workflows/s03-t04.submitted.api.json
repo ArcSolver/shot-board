@@ -5,9 +5,9 @@
       "image": {
         "__type": "core/ASSET",
         "info": {
-          "id": "59b3eb13-0e94-4089-80ab-18b3828c96f5",
-          "hash": "blake3:007eef64a0eeed0f64d75f06585ed6d93db0c782f09b5190efa39899af950fb9",
-          "file_path": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
+          "id": "0fd72543-65ea-42dc-a916-a285e7bff64d",
+          "hash": "blake3:2c1c51b610efd726d3ee4232a19d916e1de8a1908245a21784d68d806d00f893",
+          "file_path": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png"
         }
       }
     }
@@ -27,7 +27,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: Close-up. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. TIGHT FACE CLOSE-UP photograph of the same fictional adult woman from the reference, exact lowered gaze, rounded face, right side part, light chestnut chin-length bob with loose waves and outward-fanning ends, mustard canvas coat with metal buttons and flap chest pockets, shoulder tabs and chunky rich teal cable-knit scarf with dense compact twisted cables and rolled neck loop. This is a camera push-in, not a restyling. Whole head outline visible, including outward-curling jaw-level tips on both sides. Preserve wave clumps, original forehead, brow spacing, nose, relaxed closed lips and face proportions. Crop just above the head to the upper teal cable-knit loop, no chest, hands or compass. Rainy greenhouse window grid softly blurred. Keep same diffuse daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: Close-up. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. TIGHT FACE CLOSE-UP photograph of the same fictional adult woman from the reference, with the same light chestnut chin-length wavy bob, the same mustard canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and the same chunky teal cable-knit scarf wrapped as a snug cowl. This is a camera push-in, not a restyling: keep her face, lowered gaze, center-parted hair, hair color and wave pattern, face proportions and calm expression exactly as in the reference. Crop just above the head down to the teal cable-knit scarf, no hands or compass. Rainy greenhouse window grid softly blurred behind. Same soft diffuse daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -45,7 +45,7 @@
         "14",
         0
       ],
-      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, hands, compass in frame, chest-up, torso, cropped hair tips, looking at camera, tucked inward bob, long narrow face"
+      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, compass rose, star on dial, extra needles, X needle, four-arm needle, numbers on dial, different compass, different person, different hair color, navy scarf, thin smooth scarf, hands, compass in frame, torso, looking at camera, cropped head"
     }
   },
   "4": {
@@ -75,7 +75,7 @@
         "4",
         0
       ],
-      "seed": 20261074,
+      "seed": 20261044,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

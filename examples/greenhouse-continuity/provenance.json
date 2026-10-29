@@ -8,243 +8,399 @@
   "gpu_count": 1,
   "hero": {
     "shot_id": "s02",
-    "take_id": "t01",
-    "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png",
-    "image_sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6",
-    "seed": null,
+    "take_id": "t06",
+    "image": "references/a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png",
+    "image_sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b",
+    "seed": 20261036,
     "settings": {
-      "preset_id": "imported-reference",
-      "label": "Imported reference",
-      "width": 1448,
-      "height": 1086
+      "label": "Qwen-Image-2512",
+      "enabled": true,
+      "license": "Apache-2.0",
+      "capability": "text-to-image",
+      "unet": "qwen-image-2512-Q8_0.gguf",
+      "encoder": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+      "vae": "qwen_image_vae.safetensors",
+      "width": 1216,
+      "height": 896,
+      "steps": 40,
+      "cfg": 4.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "shift": 3.1,
+      "preset_id": "qwen-image"
     },
-    "models": [],
-    "workflow": {},
-    "source": {
-      "type": "imported",
-      "label": "Imported reference"
+    "models": [
+      {
+        "filename": "qwen-image-2512-Q8_0.gguf",
+        "component": "diffusion",
+        "folder": "diffusion_models",
+        "sha256": "e285a0692582acf09bb4086d9b120eb0e357c4386565d169a033cb968c6fa9a5",
+        "bytes": 21761817120,
+        "repository": "unsloth/Qwen-Image-2512-GGUF",
+        "revision": "1626d7531f84b4d2ea1cd6d2e69f41ec027dd354",
+        "license": "Apache-2.0",
+        "path": "qwen-image-2512-Q8_0.gguf"
+      },
+      {
+        "filename": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+        "component": "text encoder",
+        "folder": "text_encoders",
+        "sha256": "ee770c700d7429cc6f0c74d6c7ab3c063bf521312fc36e80776d1d79bc9fa4ad",
+        "bytes": 8098524032,
+        "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+        "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+        "license": "Apache-2.0",
+        "path": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf"
+      },
+      {
+        "filename": "qwen_image_vae.safetensors",
+        "component": "VAE",
+        "folder": "vae",
+        "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+        "bytes": 253806246,
+        "repository": "Comfy-Org/Qwen-Image_ComfyUI",
+        "revision": "1f12b17be14c89b026c51a91d67c32f84bb047bc",
+        "license": "Apache-2.0",
+        "path": "split_files/vae/qwen_image_vae.safetensors"
+      }
+    ],
+    "workflow": {
+      "2": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "clip": [
+            "9",
+            0
+          ],
+          "text": "Medium waist-up photograph at eye level, 35mm lens. A fictional adult woman in her thirties with a light chestnut chin-length softly waved bob looks down at a brass compass she holds out in front of her chest with both hands, the open dial facing the camera. She wears a mustard-yellow canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and a chunky teal cable-knit scarf. The compass is large in the frame, about as wide as her palm: a round polished brass case with its hinged brass lid open behind it and a clear glass cover. The dial is plain cream with a simple modern layout: only four large bold black sans-serif capital letters, N at the top, E on the right, S at the bottom and W on the left, and a thin black ring of evenly spaced degree tick marks around the edge. Nothing else is printed on the dial: no compass rose, no star, no numbers, no other words. Exactly ONE thin straight needle crosses the center on the north-south line, its north half painted red and pointing at N, its south half silver and pointing at S, with a small brass pivot. All four letters N, E, S, W and the red needle are sharp and clearly readable. She stands beside a weathered wooden potting bench in a rain-soaked Victorian greenhouse with a dark green painted window grid, rain droplets on the glass panes and potted ferns. Soft diffuse overcast daylight, muted film colors, gentle contrast, fine film grain, natural skin texture, realistic cinematic still photograph."
+        }
+      },
+      "3": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "clip": [
+            "9",
+            0
+          ],
+          "text": "anime, cartoon, illustration, painting, 3d render, CGI, watermark, logo, brand name, celebrity, blurry, deformed hands, extra fingers, duplicate compass, blank dial, gibberish letters, compass rose, star pattern on dial, ornate engraving, numbers on the dial, NE, SW, extra needles, four-armed needle, X-shaped needle, looking at camera"
+        }
+      },
+      "4": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 1216,
+          "height": 896,
+          "batch_size": 1
+        }
+      },
+      "5": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "12",
+            0
+          ],
+          "positive": [
+            "2",
+            0
+          ],
+          "negative": [
+            "3",
+            0
+          ],
+          "latent_image": [
+            "4",
+            0
+          ],
+          "seed": 20261036,
+          "steps": 40,
+          "cfg": 4.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0
+        }
+      },
+      "6": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "5",
+            0
+          ],
+          "vae": [
+            "10",
+            0
+          ]
+        }
+      },
+      "7": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "6",
+            0
+          ],
+          "filename_prefix": "shotboard/first-take"
+        }
+      },
+      "8": {
+        "class_type": "UnetLoaderGGUF",
+        "inputs": {
+          "unet_name": "qwen-image-2512-Q8_0.gguf"
+        }
+      },
+      "9": {
+        "class_type": "CLIPLoaderGGUF",
+        "inputs": {
+          "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+          "type": "qwen_image"
+        }
+      },
+      "10": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen_image_vae.safetensors"
+        }
+      },
+      "12": {
+        "class_type": "ModelSamplingAuraFlow",
+        "inputs": {
+          "model": [
+            "8",
+            0
+          ],
+          "shift": 3.1
+        }
+      }
     }
   },
-  "hero_source": "Imported reference",
-  "run": "2026-10-28-compass-reference-edits-v7",
-  "previous_run": {
-    "engine": "ComfyUI",
-    "engine_revision": "e3bee7ffcb7d6547ed0bcd15221792f3b8646b17",
-    "gguf_revision": "6ea2651e7df66d7585f6ffee804b20e92fb38b8a",
-    "sdk_version": "0.5.0",
-    "proxy_version": "0.1.6",
-    "gpu": "NVIDIA GeForce RTX 4090",
-    "gpu_count": 1,
-    "hero": {
-      "shot_id": "s02",
-      "take_id": "t09",
-      "image": "references/b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8.png",
-      "image_sha256": "b38d57749e9d895801d77b62df333079ca83cb950677cd62d74177ff583bf1f8",
-      "seed": null,
-      "settings": {
-        "preset_id": "imported-reference",
-        "label": "Imported reference",
-        "width": 1448,
-        "height": 1086
-      },
-      "models": [],
-      "workflow": {},
-      "source": {
-        "type": "imported",
-        "label": "Imported reference"
-      }
-    },
-    "hero_source": "Imported reference",
-    "run": "2026-10-28-reference-edits",
-    "takes": 53,
-    "timing": "SDK wall seconds including upload, loading, sampling, polling, download and metadata stripping."
-  },
-  "takes": 22,
+  "hero_source": "Qwen-Image-2512 take",
+  "models": [
+    "Qwen-Image-2512 Q8_0",
+    "Qwen-Image-Edit-2511 Q8_0",
+    "Qwen2.5-VL-7B-Instruct Q8_0",
+    "Qwen image VAE"
+  ],
+  "run": "2026-10-29-qwen-image-hero",
+  "takes": 30,
   "timing": "SDK wall seconds including upload, loading, sampling, polling, download and metadata stripping.",
   "images": [
     {
       "file": "all-qwen-runs.png",
-      "sha256": "4f98956416202ce1946b97592fd03d39f31b0cc09a2686fabeeaf2f12c26ff36"
+      "sha256": "ebe508bd6dc83a154029db22b5da7df4c0456307f6859bfcc06aacbfd8b7bca4"
     },
     {
       "file": "contact-sheet.png",
-      "sha256": "9c25eefe1683b760f4efea8ab59dec417a42fd70be0a0299fd3ba89cb14a9f5b"
+      "sha256": "c3daf677784a79fcefeec6968a2dcd7a02b7f6e4945933791649fb436bb5e792"
     },
     {
-      "file": "export/references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png",
-      "sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6"
+      "file": "export/references/a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png",
+      "sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b"
     },
     {
       "file": "export/stills/s01.png",
-      "sha256": "e1f7cab4c2f972e62ce5fe10a3f93ca0bfd70bd26aa34a48753d78c65028173f"
+      "sha256": "cab6cdd8471db35f3e6eb9d8ba05733aa9ba31fb8242f2ab592cd206ebcd003b"
     },
     {
       "file": "export/stills/s02.png",
-      "sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6"
+      "sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b"
     },
     {
       "file": "export/stills/s03.png",
-      "sha256": "05136f77b6366205331fedaabbc271aec66d15359e28d277761737e7ea446815"
+      "sha256": "609b29d6d2c33a0571961246fc8db82ece13eb55e88bd622c27d0ead42578d36"
     },
     {
       "file": "export/stills/s04.png",
-      "sha256": "88bbcd0e43a51d748264c785c8874308dbc7fc05215e489b21d1b18773b3545b"
+      "sha256": "df3cb825aa3b320397397f48a5cf39c8d51868455d57ac4325046f167d062ab8"
     },
     {
       "file": "export/stills/s05.png",
-      "sha256": "f8d4da4a12c48cd5e88f23a7c5035372fc0949e2669abc5564db12875175793b"
+      "sha256": "a0408847bf4de0681830ae453a2f0c6920bf34666867a03a59563d6f8ac44c22"
     },
     {
       "file": "export/stills/s06.png",
-      "sha256": "76009e4bd6542a340edccc5e13f541d0102fd995e413951187d7e5e6b03860d9"
+      "sha256": "931ab3cfeeb49ed7171c93a602f87976b8386766f3e02d18973ad0ad9221ee80"
     },
     {
       "file": "export/storyboard-landscape.png",
-      "sha256": "2b29dc63c79829318d23cabaacf8ad09ec07fb72bf6803c26fb1d660221d4a2b"
+      "sha256": "7956d0933a9462e30ddc30d508c1511a6e358c1e636b8ad869a79201854395b0"
     },
     {
       "file": "export/storyboard-portrait.png",
-      "sha256": "8b221b60cb4804d4b11f1c539c77a0721514e8222ad73a4d4c5700d7e9cc1093"
+      "sha256": "2c8be46d0675f520fac3ae9de90a97d939e19849fe895712cf964b90b9cd6dfa"
     },
     {
       "file": "hero-contact-sheet.png",
-      "sha256": "0a2155400a7198931e0f31a8450058ed923ec95c41ed8b3bdf0bf41d756f290d"
+      "sha256": "a98d7a4a678af232331636f5a4e213bb89250a15c86a115d8f956f2c38306ae4"
     },
     {
-      "file": "qwen-attempts.png",
-      "sha256": "4f98956416202ce1946b97592fd03d39f31b0cc09a2686fabeeaf2f12c26ff36"
-    },
-    {
-      "file": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png",
-      "sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6"
+      "file": "references/a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png",
+      "sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b"
     },
     {
       "file": "storyboard-landscape.png",
-      "sha256": "2b29dc63c79829318d23cabaacf8ad09ec07fb72bf6803c26fb1d660221d4a2b"
+      "sha256": "7956d0933a9462e30ddc30d508c1511a6e358c1e636b8ad869a79201854395b0"
     },
     {
       "file": "storyboard-portrait.png",
-      "sha256": "8b221b60cb4804d4b11f1c539c77a0721514e8222ad73a4d4c5700d7e9cc1093"
+      "sha256": "2c8be46d0675f520fac3ae9de90a97d939e19849fe895712cf964b90b9cd6dfa"
     },
     {
       "file": "takes/s01-t01.png",
-      "sha256": "a70ef7e59ec5f773fc949934e7ea6b0c0f808cb26deba5296d3a6bc5bf47f993"
+      "sha256": "e187cfa36548eaf0b2a3ae3334603523e15ff354c0f9a5f9e255c903cd2fded4"
     },
     {
       "file": "takes/s01-t02.png",
-      "sha256": "e1f7cab4c2f972e62ce5fe10a3f93ca0bfd70bd26aa34a48753d78c65028173f"
+      "sha256": "cab6cdd8471db35f3e6eb9d8ba05733aa9ba31fb8242f2ab592cd206ebcd003b"
     },
     {
       "file": "takes/s02-t01.png",
-      "sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6"
+      "sha256": "82105114d5d7c31f8b76766a4d360ade24ec55b691d84d35ec6759f46ac911b2"
+    },
+    {
+      "file": "takes/s02-t02.png",
+      "sha256": "62e80671ac990b0c7bea93184a250e3464cc51544b4817ce4b9c34d914a099ce"
+    },
+    {
+      "file": "takes/s02-t03.png",
+      "sha256": "0375b5ee4a377982fcd40c143f7438666547d070aa667df037f70eeaa9cd486b"
+    },
+    {
+      "file": "takes/s02-t04.png",
+      "sha256": "0830766804f54611f376a5e7b94caa2b1231d88856029d5922fd4d4177d13368"
+    },
+    {
+      "file": "takes/s02-t05.png",
+      "sha256": "8734f4fef1f5c962345a5dbd4145b6494d09120929d91cc9c57a4bcc6aff796d"
+    },
+    {
+      "file": "takes/s02-t06.png",
+      "sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b"
+    },
+    {
+      "file": "takes/s02-t07.png",
+      "sha256": "9d4869e11c9ca4eeca2a36bfd836b79d4f9c2eef2078c456117313af3feb3734"
+    },
+    {
+      "file": "takes/s02-t08.png",
+      "sha256": "6c9b1d16b49a17ad68c606cbc37f60bd8299acf22269c4a3f8d48d65585fa778"
     },
     {
       "file": "takes/s03-t01.png",
-      "sha256": "fe1bb8e78b675f52bb6eff52f860405e5a328379f3865d8fabf0ad302de764c2"
+      "sha256": "42c999d837b9d528e287aeb5facef58e777bd7dd96ac6677b8f90bc9599da6a8"
     },
     {
       "file": "takes/s03-t02.png",
-      "sha256": "05136f77b6366205331fedaabbc271aec66d15359e28d277761737e7ea446815"
+      "sha256": "3102d2b431ba646d91d05d4865a669fe789d7b9bae5b574f3bbcd7ee7e8d754e"
     },
     {
       "file": "takes/s03-t03.png",
-      "sha256": "69f61111e7f293c76660da91f14230712f2d694e713306927567eea603199192"
+      "sha256": "a2e2901ca47f9be75a1dbe14782f08e9daf8a4fb7f63a6e1b8404ad32a69780b"
     },
     {
       "file": "takes/s03-t04.png",
-      "sha256": "49e853d69670a21fc1d763b32bb44d2a64149e0fea78d914c70a18530e922d94"
+      "sha256": "19362fa31ec6260567e439ede6441758f6f98d0c01df9e68ecdfe194bb9978f6"
+    },
+    {
+      "file": "takes/s03-t05.png",
+      "sha256": "609b29d6d2c33a0571961246fc8db82ece13eb55e88bd622c27d0ead42578d36"
+    },
+    {
+      "file": "takes/s03-t06.png",
+      "sha256": "db27ad95a737c100ff25e138a87ef41873249d165dd20a6ec9ad5abed0955974"
     },
     {
       "file": "takes/s04-t01.png",
-      "sha256": "82a503ac55efc0c4cdc2443f79f65ad6c8478c90cfb42e62a3250ec32a3a983d"
+      "sha256": "63e5cfd775f694e8b918ce775f741692bbaf6b62ee96bcb5f533b0cef458d9ac"
     },
     {
       "file": "takes/s04-t02.png",
-      "sha256": "b7c92317c71075ea19523b5d7d03debc8cc23c3e7a477eb727e2f4291c448edd"
+      "sha256": "e3c42ad459d1eb449959dc6e9be674fa9572fba314908ca7bf68a4e892cbed00"
     },
     {
       "file": "takes/s04-t03.png",
-      "sha256": "9d498dbd29113f48982165ec3ad922201ad73466653dd66e6db98cba1ccb5d0c"
+      "sha256": "02702a1ac7778856650e59c4356314cce0d429f9d4d9762f64d2b2c237589e60"
     },
     {
       "file": "takes/s04-t04.png",
-      "sha256": "88bbcd0e43a51d748264c785c8874308dbc7fc05215e489b21d1b18773b3545b"
+      "sha256": "df3cb825aa3b320397397f48a5cf39c8d51868455d57ac4325046f167d062ab8"
     },
     {
-      "file": "takes/s04-t05.png",
-      "sha256": "d02b6b1735824d856469c901fd40e3716a14fc37a9198c84406b2916c6ab5883"
-    },
-    {
-      "file": "takes/s04-t06.png",
-      "sha256": "48d82a124da4f60ee1c7f99ebdeafb36128508f08642d38775aad91b8937e5ed"
+      "file": "takes/s05-t01.png",
+      "sha256": "a0408847bf4de0681830ae453a2f0c6920bf34666867a03a59563d6f8ac44c22"
     },
     {
       "file": "takes/s05-t02.png",
-      "sha256": "f8d4da4a12c48cd5e88f23a7c5035372fc0949e2669abc5564db12875175793b"
+      "sha256": "a3fd566f79b8dcb94492f584b7ef60ef40579b75829d591cb5b704ace77788ed"
     },
     {
       "file": "takes/s05-t03.png",
-      "sha256": "3b3d9a4c35efc797cc6f78c49d3f447d9b6bb4febc7f94834b78a551bd8b9c5c"
+      "sha256": "d8b4c2909f70750fa19cc0b14f9952ad856896bff0a7493a8d3bcd5847cd0479"
     },
     {
       "file": "takes/s05-t04.png",
-      "sha256": "b80d3b3ddac09ad40e389f48c7636c14653faff97d35aa2df9f19846c552d2c4"
+      "sha256": "a5273d75588610846bb0865b135d8418f96b4ebc3e92179682d50f1d3efbdd28"
     },
     {
       "file": "takes/s05-t05.png",
-      "sha256": "02b04e2d6607e5f85cfe91057f675b38bee8c757144be8a77d90761620884f71"
+      "sha256": "6895cb3c542bf717624e41dc8c99045e659ead7d76e5a639e75a727842cf7235"
     },
     {
       "file": "takes/s05-t06.png",
-      "sha256": "f913f6cf93b4c25624ea2f54b208a75179762a1958b52f67f4a99f669e3094ea"
-    },
-    {
-      "file": "takes/s05-t07.png",
-      "sha256": "46ea0e278a1a7303ed2e0edd349e514265936a1230e3301639d976c208d542b4"
+      "sha256": "1d4ef79d4a2101b6b2f36e142dd1f742b5667f702e69b3ba76a585236a42e247"
     },
     {
       "file": "takes/s06-t01.png",
-      "sha256": "b4a33710bcc44df5ba723adef751241e738fc5433bf1d20a699871d26221a6cf"
+      "sha256": "31e909907ebc0e3b9d6eeece9d59f8905a48708a7ac22fa56aca2392952bb3fc"
     },
     {
       "file": "takes/s06-t02.png",
-      "sha256": "76009e4bd6542a340edccc5e13f541d0102fd995e413951187d7e5e6b03860d9"
+      "sha256": "931ab3cfeeb49ed7171c93a602f87976b8386766f3e02d18973ad0ad9221ee80"
+    },
+    {
+      "file": "takes/s06-t03.png",
+      "sha256": "9eb3c9a84ffedc343d8bb03208c5a323e6977d6f4b0317aa8f908ebf723754e0"
+    },
+    {
+      "file": "takes/s06-t04.png",
+      "sha256": "3987b2c84d8fe3cf3ba9ecaedb578aeca68cf74e2bcbb3db800dfe1507097969"
     },
     {
       "file": "selects.zip!stills/s01.png",
-      "sha256": "e1f7cab4c2f972e62ce5fe10a3f93ca0bfd70bd26aa34a48753d78c65028173f"
+      "sha256": "cab6cdd8471db35f3e6eb9d8ba05733aa9ba31fb8242f2ab592cd206ebcd003b"
     },
     {
-      "file": "selects.zip!references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png",
-      "sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6"
+      "file": "selects.zip!references/a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png",
+      "sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b"
     },
     {
       "file": "selects.zip!stills/s02.png",
-      "sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6"
+      "sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b"
     },
     {
       "file": "selects.zip!stills/s03.png",
-      "sha256": "05136f77b6366205331fedaabbc271aec66d15359e28d277761737e7ea446815"
+      "sha256": "609b29d6d2c33a0571961246fc8db82ece13eb55e88bd622c27d0ead42578d36"
     },
     {
       "file": "selects.zip!stills/s04.png",
-      "sha256": "88bbcd0e43a51d748264c785c8874308dbc7fc05215e489b21d1b18773b3545b"
+      "sha256": "df3cb825aa3b320397397f48a5cf39c8d51868455d57ac4325046f167d062ab8"
     },
     {
       "file": "selects.zip!stills/s05.png",
-      "sha256": "f8d4da4a12c48cd5e88f23a7c5035372fc0949e2669abc5564db12875175793b"
+      "sha256": "a0408847bf4de0681830ae453a2f0c6920bf34666867a03a59563d6f8ac44c22"
     },
     {
       "file": "selects.zip!stills/s06.png",
-      "sha256": "76009e4bd6542a340edccc5e13f541d0102fd995e413951187d7e5e6b03860d9"
+      "sha256": "931ab3cfeeb49ed7171c93a602f87976b8386766f3e02d18973ad0ad9221ee80"
     },
     {
       "file": "selects.zip!storyboard-landscape.png",
-      "sha256": "2b29dc63c79829318d23cabaacf8ad09ec07fb72bf6803c26fb1d660221d4a2b"
+      "sha256": "7956d0933a9462e30ddc30d508c1511a6e358c1e636b8ad869a79201854395b0"
     },
     {
       "file": "selects.zip!storyboard-portrait.png",
-      "sha256": "8b221b60cb4804d4b11f1c539c77a0721514e8222ad73a4d4c5700d7e9cc1093"
+      "sha256": "2c8be46d0675f520fac3ae9de90a97d939e19849fe895712cf964b90b9cd6dfa"
     }
   ]
 }

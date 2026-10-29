@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "app": "Shot Board",
-  "board_id": "8ddc2833cfea4ee0bacde64ac5cb41b4",
+  "board_id": "a55681cf154f460190a8c5efb9788afd",
   "title": "A traveler discovers a small brass compass in a rain-soaked greenhouse.",
   "scene": {
     "scene": "A traveler discovers a small brass compass in a rain-soaked greenhouse.",
@@ -14,155 +14,359 @@
     "lighting": "Window light",
     "look": "Muted film",
     "count": 6,
-    "seed": 20261028,
-    "preset": "sdxl-base"
+    "seed": 20261029,
+    "preset": "qwen-image"
   },
   "generation_path": "Comfy SDK \u2192 local API proxy \u2192 ComfyUI",
   "review": [
     {
-      "shot": "s05",
-      "take": "t02",
-      "verdict": "fail",
-      "note": "Recognizable compass. Flared base and small center pivot are redrawn; coat torso visible behind macro."
-    },
-    {
-      "shot": "s05",
-      "take": "t03",
-      "verdict": "fail",
-      "note": "Serif cardinal font and much denser tick ring replace the bold sans-serif reference. Needle and brass pivot are reshaped."
-    },
-    {
-      "shot": "s05",
-      "take": "t04",
-      "verdict": "fail",
-      "note": "Cardinal letters and red north half are readable. Pivot, letters, ticks and case differ from the reference."
-    },
-    {
-      "shot": "s05",
-      "take": "t05",
-      "verdict": "fail",
-      "note": "Recognizable compass face, but the needle becomes a three-part red/white shape with a flat red arm instead of a straight needle. Added side knob, serif letters and changed lid."
-    },
-    {
-      "shot": "s05",
-      "take": "t06",
-      "verdict": "fail",
-      "note": "Clear bold N/E/S/W, ticks and red/silver needle. Added lid-top clasp and redesigned brass pivot."
-    },
-    {
-      "shot": "s05",
-      "take": "t07",
-      "verdict": "fail",
-      "note": "Clear N/E/S/W, degree ticks, red/silver needle and subtle glass. Cardinal font changes to serif, pivot and shallow case differ."
-    },
-    {
-      "shot": "s03",
+      "shot": "s02",
       "take": "t01",
       "verdict": "fail",
-      "note": "No compass in face framing. New scarf buttons and changed wave shape."
-    },
-    {
-      "shot": "s03",
-      "take": "t02",
-      "verdict": "fail",
-      "note": "No compass in face framing. Closest face view, but inward bob ends and scarf knit differ."
-    },
-    {
-      "shot": "s03",
-      "take": "t03",
-      "verdict": "fail",
-      "note": "Tiny partial brass edge/lid only; no dial. Oversized braided scarf and tilted head differ."
-    },
-    {
-      "shot": "s03",
-      "take": "t04",
-      "verdict": "fail",
-      "note": "Tiny partial brass edge/lid only; no dial. Added large braided knot; bob ends differ."
-    },
-    {
-      "shot": "s04",
-      "take": "t01",
-      "verdict": "fail",
-      "note": "Rear shoulder framing, but scarf becomes ribbed and compass font/pivot/lid differ."
-    },
-    {
-      "shot": "s04",
-      "take": "t02",
-      "verdict": "fail",
-      "note": "More side-on than over shoulder; scarf weave and pivot differ."
-    },
-    {
-      "shot": "s04",
-      "take": "t03",
-      "verdict": "fail",
-      "note": "Lid hinges left across dial instead of upper-left upright; new large scarf braid."
-    },
-    {
-      "shot": "s04",
-      "take": "t04",
-      "verdict": "fail",
-      "note": "Best over-shoulder framing; scarf ribbed, lid moved to upper right and case shallower."
-    },
-    {
-      "shot": "s04",
-      "take": "t05",
-      "verdict": "fail",
-      "note": "Scarf becomes narrow ribbing; lid upper right and needle/pivot reshaped."
-    },
-    {
-      "shot": "s04",
-      "take": "t06",
-      "verdict": "fail",
-      "note": "Added ring/bail above lid, changed pivot and narrow rib scarf; side-on framing rather than over shoulder."
-    },
-    {
-      "shot": "s01",
-      "take": "t01",
-      "verdict": "fail",
-      "note": "Distant rear full-body view; only tiny pale object edge at hand. Compass identity cannot be checked. Bench changed."
-    },
-    {
-      "shot": "s01",
-      "take": "t02",
-      "verdict": "pass",
-      "note": "Wide greenhouse aisle and a small full-body figure. The compass dial is too small to check."
-    },
-    {
-      "shot": "s06",
-      "take": "t01",
-      "verdict": "fail",
-      "note": "Low angle, readable classic compass; long oversized braids replace compact scarf, pivot and case differ."
-    },
-    {
-      "shot": "s06",
-      "take": "t02",
-      "verdict": "fail",
-      "note": "Low angle, readable classic compass; broad braided scarf and inward bob ends differ, lid rivets/pivot reshaped."
+      "note": "Compass is small at her chest; the dial letters are not readable."
     },
     {
       "shot": "s02",
+      "take": "t02",
+      "verdict": "fail",
+      "note": "Compass is small; letters are blurred and out of place."
+    },
+    {
+      "shot": "s02",
+      "take": "t03",
+      "verdict": "fail",
+      "note": "N, E, S, W read, but the dial has an ornate rose, three silver needle arms and stray marks."
+    },
+    {
+      "shot": "s02",
+      "take": "t04",
+      "verdict": "fail",
+      "note": "Two crossed needles over a compass rose."
+    },
+    {
+      "shot": "s02",
+      "take": "t05",
+      "verdict": "fail",
+      "note": "One red and silver needle, but a star rose, a garbled S and stray marks between the letters."
+    },
+    {
+      "shot": "s02",
+      "take": "t06",
+      "verdict": "pass",
+      "note": "Plain cream dial with N, E, S, W, a fine tick ring at the rim, one red and silver needle, glass cover, open brass lid and deep brass case."
+    },
+    {
+      "shot": "s02",
+      "take": "t07",
+      "verdict": "fail",
+      "note": "N, E, S, W present, but stray text sits between them and the dial is washed out."
+    },
+    {
+      "shot": "s02",
+      "take": "t08",
+      "verdict": "fail",
+      "note": "The bottom letter is W, not S, and the left letter is M."
+    },
+    {
+      "shot": "s05",
       "take": "t01",
       "verdict": "pass",
-      "note": "N/E/S/W, degree ticks, red north/silver south needle, glass cover and brass case are visible."
+      "note": "Same serif N, E, S, W layout, red and silver needle on a brass pivot, glass, plain open lid and deep brass case. The S is slate gray and the tick band is plainer."
+    },
+    {
+      "shot": "s05",
+      "take": "t02",
+      "verdict": "fail",
+      "note": "Compass reads well, but another person's head appears in the background."
+    },
+    {
+      "shot": "s05",
+      "take": "t03",
+      "verdict": "fail",
+      "note": "The lid turns into a glass cover that mirrors the dial."
+    },
+    {
+      "shot": "s05",
+      "take": "t04",
+      "verdict": "pass",
+      "note": "Same serif N, E, S, W, red and silver needle, glass and plain lid. The dial is larger in frame and the tick ring is bolder."
+    },
+    {
+      "shot": "s05",
+      "take": "t05",
+      "verdict": "fail",
+      "note": "Her hand covers most of the S."
+    },
+    {
+      "shot": "s05",
+      "take": "t06",
+      "verdict": "fail",
+      "note": "A brass ring is added below the case; the hero compass has none."
+    },
+    {
+      "shot": "s04",
+      "take": "t01",
+      "verdict": "fail",
+      "note": "A ring is added below the compass; the hero compass has none."
+    },
+    {
+      "shot": "s04",
+      "take": "t02",
+      "verdict": "fail",
+      "note": "A ring and knob are added below the compass."
+    },
+    {
+      "shot": "s04",
+      "take": "t03",
+      "verdict": "pass",
+      "note": "Over the shoulder: same waves, teal cable scarf, mustard coat, and the compass with N, E, S, W and a red north half."
+    },
+    {
+      "shot": "s04",
+      "take": "t04",
+      "verdict": "pass",
+      "note": "Over the shoulder: same waves, teal cable scarf, mustard coat, and the compass with serif N, E, S, W and a red and silver needle. A small dark label on the shoulder tab is new."
+    },
+    {
+      "shot": "s03",
+      "take": "t01",
+      "verdict": "fail",
+      "note": "Framed from the chest up, not a face close-up."
+    },
+    {
+      "shot": "s03",
+      "take": "t02",
+      "verdict": "fail",
+      "note": "Framed from the chest up. Face reads longer and older than the hero."
+    },
+    {
+      "shot": "s03",
+      "take": "t03",
+      "verdict": "fail",
+      "note": "Framed from the chest up, not a face close-up."
+    },
+    {
+      "shot": "s03",
+      "take": "t04",
+      "verdict": "fail",
+      "note": "Framed from the chest up, not a face close-up."
+    },
+    {
+      "shot": "s03",
+      "take": "t05",
+      "verdict": "fail",
+      "note": "Face fills the frame with the same lowered gaze, center part, chestnut bob and teal scarf. The face reads broader and the waves looser than the hero."
+    },
+    {
+      "shot": "s03",
+      "take": "t06",
+      "verdict": "fail",
+      "note": "Close on the face, but the top of her head is cut off and the face reads longer than the hero."
+    },
+    {
+      "shot": "s01",
+      "take": "t01",
+      "verdict": "fail",
+      "note": "Seen from behind, walking away; the compass hangs at her side."
+    },
+    {
+      "shot": "s01",
+      "take": "t02",
+      "verdict": "pass",
+      "note": "Long greenhouse aisle with a small full-length figure in the mustard coat and teal scarf. Too small to check her face or the dial."
+    },
+    {
+      "shot": "s06",
+      "take": "t01",
+      "verdict": "fail",
+      "note": "Same coat, scarf, hair and readable compass, but the camera is barely below her eyes."
+    },
+    {
+      "shot": "s06",
+      "take": "t02",
+      "verdict": "fail",
+      "note": "Same coat, scarf, hair and compass with a red needle, and the roof shows overhead, but the camera is only a little below her eyes."
+    },
+    {
+      "shot": "s06",
+      "take": "t03",
+      "verdict": "fail",
+      "note": "Steep angle, but her boots fill the frame and her pose changes."
+    },
+    {
+      "shot": "s06",
+      "take": "t04",
+      "verdict": "fail",
+      "note": "Steep angle, but the coat now reaches the floor and the dial faces away."
     }
   ],
   "hero": {
     "shot_id": "s02",
-    "take_id": "t01",
-    "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png",
-    "image_sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6",
-    "seed": null,
+    "take_id": "t06",
+    "image": "references/a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png",
+    "image_sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b",
+    "seed": 20261036,
     "settings": {
-      "preset_id": "imported-reference",
-      "label": "Imported reference",
-      "width": 1448,
-      "height": 1086
+      "label": "Qwen-Image-2512",
+      "enabled": true,
+      "license": "Apache-2.0",
+      "capability": "text-to-image",
+      "unet": "qwen-image-2512-Q8_0.gguf",
+      "encoder": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+      "vae": "qwen_image_vae.safetensors",
+      "width": 1216,
+      "height": 896,
+      "steps": 40,
+      "cfg": 4.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "shift": 3.1,
+      "preset_id": "qwen-image"
     },
-    "models": [],
-    "workflow": {},
-    "source": {
-      "type": "imported",
-      "label": "Imported reference"
+    "models": [
+      {
+        "filename": "qwen-image-2512-Q8_0.gguf",
+        "component": "diffusion",
+        "folder": "diffusion_models",
+        "sha256": "e285a0692582acf09bb4086d9b120eb0e357c4386565d169a033cb968c6fa9a5",
+        "bytes": 21761817120,
+        "repository": "unsloth/Qwen-Image-2512-GGUF",
+        "revision": "1626d7531f84b4d2ea1cd6d2e69f41ec027dd354",
+        "license": "Apache-2.0",
+        "path": "qwen-image-2512-Q8_0.gguf"
+      },
+      {
+        "filename": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+        "component": "text encoder",
+        "folder": "text_encoders",
+        "sha256": "ee770c700d7429cc6f0c74d6c7ab3c063bf521312fc36e80776d1d79bc9fa4ad",
+        "bytes": 8098524032,
+        "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+        "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+        "license": "Apache-2.0",
+        "path": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf"
+      },
+      {
+        "filename": "qwen_image_vae.safetensors",
+        "component": "VAE",
+        "folder": "vae",
+        "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+        "bytes": 253806246,
+        "repository": "Comfy-Org/Qwen-Image_ComfyUI",
+        "revision": "1f12b17be14c89b026c51a91d67c32f84bb047bc",
+        "license": "Apache-2.0",
+        "path": "split_files/vae/qwen_image_vae.safetensors"
+      }
+    ],
+    "workflow": {
+      "2": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "clip": [
+            "9",
+            0
+          ],
+          "text": "Medium waist-up photograph at eye level, 35mm lens. A fictional adult woman in her thirties with a light chestnut chin-length softly waved bob looks down at a brass compass she holds out in front of her chest with both hands, the open dial facing the camera. She wears a mustard-yellow canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and a chunky teal cable-knit scarf. The compass is large in the frame, about as wide as her palm: a round polished brass case with its hinged brass lid open behind it and a clear glass cover. The dial is plain cream with a simple modern layout: only four large bold black sans-serif capital letters, N at the top, E on the right, S at the bottom and W on the left, and a thin black ring of evenly spaced degree tick marks around the edge. Nothing else is printed on the dial: no compass rose, no star, no numbers, no other words. Exactly ONE thin straight needle crosses the center on the north-south line, its north half painted red and pointing at N, its south half silver and pointing at S, with a small brass pivot. All four letters N, E, S, W and the red needle are sharp and clearly readable. She stands beside a weathered wooden potting bench in a rain-soaked Victorian greenhouse with a dark green painted window grid, rain droplets on the glass panes and potted ferns. Soft diffuse overcast daylight, muted film colors, gentle contrast, fine film grain, natural skin texture, realistic cinematic still photograph."
+        }
+      },
+      "3": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "clip": [
+            "9",
+            0
+          ],
+          "text": "anime, cartoon, illustration, painting, 3d render, CGI, watermark, logo, brand name, celebrity, blurry, deformed hands, extra fingers, duplicate compass, blank dial, gibberish letters, compass rose, star pattern on dial, ornate engraving, numbers on the dial, NE, SW, extra needles, four-armed needle, X-shaped needle, looking at camera"
+        }
+      },
+      "4": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 1216,
+          "height": 896,
+          "batch_size": 1
+        }
+      },
+      "5": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "12",
+            0
+          ],
+          "positive": [
+            "2",
+            0
+          ],
+          "negative": [
+            "3",
+            0
+          ],
+          "latent_image": [
+            "4",
+            0
+          ],
+          "seed": 20261036,
+          "steps": 40,
+          "cfg": 4.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0
+        }
+      },
+      "6": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "5",
+            0
+          ],
+          "vae": [
+            "10",
+            0
+          ]
+        }
+      },
+      "7": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "6",
+            0
+          ],
+          "filename_prefix": "shotboard/first-take"
+        }
+      },
+      "8": {
+        "class_type": "UnetLoaderGGUF",
+        "inputs": {
+          "unet_name": "qwen-image-2512-Q8_0.gguf"
+        }
+      },
+      "9": {
+        "class_type": "CLIPLoaderGGUF",
+        "inputs": {
+          "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+          "type": "qwen_image"
+        }
+      },
+      "10": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen_image_vae.safetensors"
+        }
+      },
+      "12": {
+        "class_type": "ModelSamplingAuraFlow",
+        "inputs": {
+          "model": [
+            "8",
+            0
+          ],
+          "shift": 3.1
+        }
+      }
     }
   },
   "storyboards": [
@@ -170,7 +374,7 @@
       "file": "storyboard-landscape.png",
       "width": 1600,
       "height": 900,
-      "sha256": "2b29dc63c79829318d23cabaacf8ad09ec07fb72bf6803c26fb1d660221d4a2b",
+      "sha256": "7956d0933a9462e30ddc30d508c1511a6e358c1e636b8ad869a79201854395b0",
       "layout_version": 1,
       "fit": "contain",
       "selections": [
@@ -180,11 +384,11 @@
         },
         {
           "shot_id": "s02",
-          "take_id": "t01"
+          "take_id": "t06"
         },
         {
           "shot_id": "s03",
-          "take_id": "t02"
+          "take_id": "t05"
         },
         {
           "shot_id": "s04",
@@ -192,7 +396,7 @@
         },
         {
           "shot_id": "s05",
-          "take_id": "t02"
+          "take_id": "t01"
         },
         {
           "shot_id": "s06",
@@ -204,7 +408,7 @@
       "file": "storyboard-portrait.png",
       "width": 1080,
       "height": 1350,
-      "sha256": "8b221b60cb4804d4b11f1c539c77a0721514e8222ad73a4d4c5700d7e9cc1093",
+      "sha256": "2c8be46d0675f520fac3ae9de90a97d939e19849fe895712cf964b90b9cd6dfa",
       "layout_version": 1,
       "fit": "contain",
       "selections": [
@@ -214,11 +418,11 @@
         },
         {
           "shot_id": "s02",
-          "take_id": "t01"
+          "take_id": "t06"
         },
         {
           "shot_id": "s03",
-          "take_id": "t02"
+          "take_id": "t05"
         },
         {
           "shot_id": "s04",
@@ -226,7 +430,7 @@
         },
         {
           "shot_id": "s05",
-          "take_id": "t02"
+          "take_id": "t01"
         },
         {
           "shot_id": "s06",
@@ -245,9 +449,9 @@
         "shot": "s01",
         "take": "t02",
         "verdict": "pass",
-        "note": "Wide greenhouse aisle and a small full-body figure. The compass dial is too small to check."
+        "note": "Long greenhouse aisle with a small full-length figure in the mustard coat and teal scarf. Too small to check her face or the dial."
       },
-      "seed": 20261072,
+      "seed": 20261042,
       "seed_locked": true,
       "settings": {
         "label": "Qwen continuity \u00b7 reference edit",
@@ -314,91 +518,284 @@
           "path": "split_files/vae/qwen_image_vae.safetensors"
         }
       ],
-      "prompt": "Requested framing: Establishing. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. EXTREME DISTANT ESTABLISHING photograph of the SAME rain-soaked greenhouse. Camera 20metres back down the central aisle. Roof window grid, fern-lined benches, wet floor and long perspective fill almost all of the landscape. the same fictional adult woman from the reference, exact lowered gaze, rounded face, right side part, light chestnut chin-length bob with loose waves and outward-fanning ends, mustard canvas coat with metal buttons and flap chest pockets, shoulder tabs and chunky rich teal cable-knit scarf with dense compact twisted cables and rolled neck loop is a TINY FULL-BODY rear three-quarter figure at the SAME bench, feet visible, whole body less than one eighth of frame height. She holds the brass compass low, with dial naturally too small to resolve. Wide empty foreground path, no close foreground person or enlarged portrait. Same rainy diffuse daylight. Do not enlarge or invent compass markings at this distance.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
-      "negative": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, large person, medium shot, close-up, cropped feet, cropped legs, foreground compass",
+      "prompt": "Requested framing: Establishing. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. EXTREME WIDE ESTABLISHING photograph of the SAME rain-soaked greenhouse, camera far back down the central aisle. The roof window grid, dark green frames, fern-filled wooden planters, wet floor and long perspective fill almost the whole frame. the same fictional adult woman from the reference, with the same light chestnut chin-length wavy bob, the same mustard canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and the same chunky teal cable-knit scarf wrapped as a snug cowl is a TINY full-body figure standing between the planters, holding the compass low, feet visible, whole body less than one fifth of the frame height. Same rainy diffuse daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
+      "negative": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, compass rose, star on dial, extra needles, X needle, four-arm needle, numbers on dial, different compass, different person, different hair color, navy scarf, thin smooth scarf, large person, medium shot, close-up, cropped feet, foreground compass",
       "source": null,
       "reference": {
         "shot_id": "s02",
-        "take_id": "t01",
-        "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png",
-        "image_sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6",
-        "seed": null,
+        "take_id": "t06",
+        "image": "references/a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png",
+        "image_sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b",
+        "seed": 20261036,
         "settings": {
-          "preset_id": "imported-reference",
-          "label": "Imported reference",
-          "width": 1448,
-          "height": 1086
+          "label": "Qwen-Image-2512",
+          "enabled": true,
+          "license": "Apache-2.0",
+          "capability": "text-to-image",
+          "unet": "qwen-image-2512-Q8_0.gguf",
+          "encoder": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+          "vae": "qwen_image_vae.safetensors",
+          "width": 1216,
+          "height": 896,
+          "steps": 40,
+          "cfg": 4.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0,
+          "shift": 3.1,
+          "preset_id": "qwen-image"
         },
-        "models": [],
-        "workflow": {},
-        "source": {
-          "type": "imported",
-          "label": "Imported reference"
+        "models": [
+          {
+            "filename": "qwen-image-2512-Q8_0.gguf",
+            "component": "diffusion",
+            "folder": "diffusion_models",
+            "sha256": "e285a0692582acf09bb4086d9b120eb0e357c4386565d169a033cb968c6fa9a5",
+            "bytes": 21761817120,
+            "repository": "unsloth/Qwen-Image-2512-GGUF",
+            "revision": "1626d7531f84b4d2ea1cd6d2e69f41ec027dd354",
+            "license": "Apache-2.0",
+            "path": "qwen-image-2512-Q8_0.gguf"
+          },
+          {
+            "filename": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+            "component": "text encoder",
+            "folder": "text_encoders",
+            "sha256": "ee770c700d7429cc6f0c74d6c7ab3c063bf521312fc36e80776d1d79bc9fa4ad",
+            "bytes": 8098524032,
+            "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+            "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+            "license": "Apache-2.0",
+            "path": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf"
+          },
+          {
+            "filename": "qwen_image_vae.safetensors",
+            "component": "VAE",
+            "folder": "vae",
+            "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+            "bytes": 253806246,
+            "repository": "Comfy-Org/Qwen-Image_ComfyUI",
+            "revision": "1f12b17be14c89b026c51a91d67c32f84bb047bc",
+            "license": "Apache-2.0",
+            "path": "split_files/vae/qwen_image_vae.safetensors"
+          }
+        ],
+        "workflow": {
+          "2": {
+            "class_type": "CLIPTextEncode",
+            "inputs": {
+              "clip": [
+                "9",
+                0
+              ],
+              "text": "Medium waist-up photograph at eye level, 35mm lens. A fictional adult woman in her thirties with a light chestnut chin-length softly waved bob looks down at a brass compass she holds out in front of her chest with both hands, the open dial facing the camera. She wears a mustard-yellow canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and a chunky teal cable-knit scarf. The compass is large in the frame, about as wide as her palm: a round polished brass case with its hinged brass lid open behind it and a clear glass cover. The dial is plain cream with a simple modern layout: only four large bold black sans-serif capital letters, N at the top, E on the right, S at the bottom and W on the left, and a thin black ring of evenly spaced degree tick marks around the edge. Nothing else is printed on the dial: no compass rose, no star, no numbers, no other words. Exactly ONE thin straight needle crosses the center on the north-south line, its north half painted red and pointing at N, its south half silver and pointing at S, with a small brass pivot. All four letters N, E, S, W and the red needle are sharp and clearly readable. She stands beside a weathered wooden potting bench in a rain-soaked Victorian greenhouse with a dark green painted window grid, rain droplets on the glass panes and potted ferns. Soft diffuse overcast daylight, muted film colors, gentle contrast, fine film grain, natural skin texture, realistic cinematic still photograph."
+            }
+          },
+          "3": {
+            "class_type": "CLIPTextEncode",
+            "inputs": {
+              "clip": [
+                "9",
+                0
+              ],
+              "text": "anime, cartoon, illustration, painting, 3d render, CGI, watermark, logo, brand name, celebrity, blurry, deformed hands, extra fingers, duplicate compass, blank dial, gibberish letters, compass rose, star pattern on dial, ornate engraving, numbers on the dial, NE, SW, extra needles, four-armed needle, X-shaped needle, looking at camera"
+            }
+          },
+          "4": {
+            "class_type": "EmptySD3LatentImage",
+            "inputs": {
+              "width": 1216,
+              "height": 896,
+              "batch_size": 1
+            }
+          },
+          "5": {
+            "class_type": "KSampler",
+            "inputs": {
+              "model": [
+                "12",
+                0
+              ],
+              "positive": [
+                "2",
+                0
+              ],
+              "negative": [
+                "3",
+                0
+              ],
+              "latent_image": [
+                "4",
+                0
+              ],
+              "seed": 20261036,
+              "steps": 40,
+              "cfg": 4.0,
+              "sampler_name": "euler",
+              "scheduler": "simple",
+              "denoise": 1.0
+            }
+          },
+          "6": {
+            "class_type": "VAEDecode",
+            "inputs": {
+              "samples": [
+                "5",
+                0
+              ],
+              "vae": [
+                "10",
+                0
+              ]
+            }
+          },
+          "7": {
+            "class_type": "SaveImage",
+            "inputs": {
+              "images": [
+                "6",
+                0
+              ],
+              "filename_prefix": "shotboard/first-take"
+            }
+          },
+          "8": {
+            "class_type": "UnetLoaderGGUF",
+            "inputs": {
+              "unet_name": "qwen-image-2512-Q8_0.gguf"
+            }
+          },
+          "9": {
+            "class_type": "CLIPLoaderGGUF",
+            "inputs": {
+              "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+              "type": "qwen_image"
+            }
+          },
+          "10": {
+            "class_type": "VAELoader",
+            "inputs": {
+              "vae_name": "qwen_image_vae.safetensors"
+            }
+          },
+          "12": {
+            "class_type": "ModelSamplingAuraFlow",
+            "inputs": {
+              "model": [
+                "8",
+                0
+              ],
+              "shift": 3.1
+            }
+          }
         },
         "sdk_asset": {
           "__type": "core/ASSET",
           "info": {
-            "id": "59b3eb13-0e94-4089-80ab-18b3828c96f5",
-            "hash": "blake3:007eef64a0eeed0f64d75f06585ed6d93db0c782f09b5190efa39899af950fb9",
-            "file_path": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
+            "id": "0fd72543-65ea-42dc-a916-a285e7bff64d",
+            "hash": "blake3:2c1c51b610efd726d3ee4232a19d916e1de8a1908245a21784d68d806d00f893",
+            "file_path": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png"
           }
         }
       },
       "submitted_workflow": "workflows/s01.submitted.api.json",
-      "submitted_workflow_sha256": "9e3ec99f45dd64dd4c2d82ace6783aded86f16e8540c6cf8a9ffc7c22ed58872",
-      "submission_fingerprint_sha256": "349868369e51c093d68f10dd5f0e05a68952dba06bdf669926b90a0b695cf0f7",
+      "submitted_workflow_sha256": "65ba0163ecfe1991187d0b1277074a1d5695e914ff258f6de1d0159ff5ef6202",
+      "submission_fingerprint_sha256": "968212694b70da1dbf39e1d08aab497bbc5a69a271b1d5df8e7221b256703eb1",
       "image": "stills/s01.png",
-      "image_sha256": "e1f7cab4c2f972e62ce5fe10a3f93ca0bfd70bd26aa34a48753d78c65028173f",
+      "image_sha256": "cab6cdd8471db35f3e6eb9d8ba05733aa9ba31fb8242f2ab592cd206ebcd003b",
       "workflow": "workflows/s01.api.json",
-      "workflow_sha256": "be292e034cc2bbe045bddca009ee3503a1d614618b5d850d67a1a37fd97481c0",
-      "elapsed_seconds": 71.016
+      "workflow_sha256": "b764e8f3128e487e59fb48a36299c850f3dad8b08a5051f0519948c97a8afb69",
+      "elapsed_seconds": 72.434
     },
     {
       "id": "s02",
       "title": "Medium",
-      "take_id": "t01",
+      "take_id": "t06",
       "review": {
         "shot": "s02",
-        "take": "t01",
+        "take": "t06",
         "verdict": "pass",
-        "note": "N/E/S/W, degree ticks, red north/silver south needle, glass cover and brass case are visible."
+        "note": "Plain cream dial with N, E, S, W, a fine tick ring at the rim, one red and silver needle, glass cover, open brass lid and deep brass case."
       },
-      "seed": null,
-      "seed_locked": false,
+      "seed": 20261036,
+      "seed_locked": true,
       "settings": {
-        "preset_id": "imported-reference",
-        "label": "Imported reference",
-        "width": 1448,
-        "height": 1086
+        "label": "Qwen-Image-2512",
+        "enabled": true,
+        "license": "Apache-2.0",
+        "capability": "text-to-image",
+        "unet": "qwen-image-2512-Q8_0.gguf",
+        "encoder": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+        "vae": "qwen_image_vae.safetensors",
+        "width": 1216,
+        "height": 896,
+        "steps": 40,
+        "cfg": 4.0,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "denoise": 1.0,
+        "shift": 3.1,
+        "preset_id": "qwen-image"
       },
-      "models": [],
-      "prompt": null,
-      "negative": null,
-      "source": {
-        "type": "imported",
-        "label": "Imported reference"
-      },
+      "models": [
+        {
+          "filename": "qwen-image-2512-Q8_0.gguf",
+          "component": "diffusion",
+          "folder": "diffusion_models",
+          "sha256": "e285a0692582acf09bb4086d9b120eb0e357c4386565d169a033cb968c6fa9a5",
+          "bytes": 21761817120,
+          "repository": "unsloth/Qwen-Image-2512-GGUF",
+          "revision": "1626d7531f84b4d2ea1cd6d2e69f41ec027dd354",
+          "license": "Apache-2.0",
+          "path": "qwen-image-2512-Q8_0.gguf"
+        },
+        {
+          "filename": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+          "component": "text encoder",
+          "folder": "text_encoders",
+          "sha256": "ee770c700d7429cc6f0c74d6c7ab3c063bf521312fc36e80776d1d79bc9fa4ad",
+          "bytes": 8098524032,
+          "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+          "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+          "license": "Apache-2.0",
+          "path": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf"
+        },
+        {
+          "filename": "qwen_image_vae.safetensors",
+          "component": "VAE",
+          "folder": "vae",
+          "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+          "bytes": 253806246,
+          "repository": "Comfy-Org/Qwen-Image_ComfyUI",
+          "revision": "1f12b17be14c89b026c51a91d67c32f84bb047bc",
+          "license": "Apache-2.0",
+          "path": "split_files/vae/qwen_image_vae.safetensors"
+        }
+      ],
+      "prompt": "Medium waist-up photograph at eye level, 35mm lens. A fictional adult woman in her thirties with a light chestnut chin-length softly waved bob looks down at a brass compass she holds out in front of her chest with both hands, the open dial facing the camera. She wears a mustard-yellow canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and a chunky teal cable-knit scarf. The compass is large in the frame, about as wide as her palm: a round polished brass case with its hinged brass lid open behind it and a clear glass cover. The dial is plain cream with a simple modern layout: only four large bold black sans-serif capital letters, N at the top, E on the right, S at the bottom and W on the left, and a thin black ring of evenly spaced degree tick marks around the edge. Nothing else is printed on the dial: no compass rose, no star, no numbers, no other words. Exactly ONE thin straight needle crosses the center on the north-south line, its north half painted red and pointing at N, its south half silver and pointing at S, with a small brass pivot. All four letters N, E, S, W and the red needle are sharp and clearly readable. She stands beside a weathered wooden potting bench in a rain-soaked Victorian greenhouse with a dark green painted window grid, rain droplets on the glass panes and potted ferns. Soft diffuse overcast daylight, muted film colors, gentle contrast, fine film grain, natural skin texture, realistic cinematic still photograph.",
+      "negative": "anime, cartoon, illustration, painting, 3d render, CGI, watermark, logo, brand name, celebrity, blurry, deformed hands, extra fingers, duplicate compass, blank dial, gibberish letters, compass rose, star pattern on dial, ornate engraving, numbers on the dial, NE, SW, extra needles, four-armed needle, X-shaped needle, looking at camera",
+      "source": null,
       "reference": null,
       "submitted_workflow": null,
       "submitted_workflow_sha256": null,
       "submission_fingerprint_sha256": null,
       "image": "stills/s02.png",
-      "image_sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6",
-      "workflow": null,
-      "workflow_sha256": null,
-      "elapsed_seconds": 0
+      "image_sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b",
+      "workflow": "workflows/s02.api.json",
+      "workflow_sha256": "d113dc6475eef7e7788e138e96c455ce14dc86547cf4156ee19c433b32e94c5a",
+      "elapsed_seconds": 66.145
     },
     {
       "id": "s03",
       "title": "Close-up",
-      "take_id": "t02",
+      "take_id": "t05",
       "review": {
         "shot": "s03",
-        "take": "t02",
+        "take": "t05",
         "verdict": "fail",
-        "note": "No compass in face framing. Closest face view, but inward bob ends and scarf knit differ."
+        "note": "Face fills the frame with the same lowered gaze, center part, chestnut bob and teal scarf. The face reads broader and the waves looser than the hero."
       },
-      "seed": 20261072,
+      "seed": 20261045,
       "seed_locked": true,
       "settings": {
         "label": "Qwen continuity \u00b7 reference edit",
@@ -465,44 +862,194 @@
           "path": "split_files/vae/qwen_image_vae.safetensors"
         }
       ],
-      "prompt": "Requested framing: Close-up. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. TIGHT FACE CLOSE-UP photograph of the same fictional adult woman from the reference, exact lowered gaze, rounded face, right side part, light chestnut chin-length bob with loose waves and outward-fanning ends, mustard canvas coat with metal buttons and flap chest pockets, shoulder tabs and chunky rich teal cable-knit scarf with dense compact twisted cables and rolled neck loop. This is a camera push-in, not a restyling. Whole head outline visible, including outward-curling jaw-level tips on both sides. Preserve wave clumps, original forehead, brow spacing, nose, relaxed closed lips and face proportions. Crop just above the head to the upper teal cable-knit loop, no chest, hands or compass. Rainy greenhouse window grid softly blurred. Keep same diffuse daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
-      "negative": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, hands, compass in frame, chest-up, torso, cropped hair tips, looking at camera, tucked inward bob, long narrow face",
+      "prompt": "Requested framing: Close-up. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. EXTREME CLOSE-UP of her FACE ONLY: the camera moves in until her face fills most of the vertical frame, from the top of her hair to just below her chin, with only the top edge of the teal cable-knit scarf at the bottom. No coat buttons, no pockets, no chest, no hands, no compass. Keep the same fictional woman from the reference exactly: same face shape and age, same lowered gaze, same center part, same light chestnut chin-length wavy bob, same calm expression and natural skin. Rainy greenhouse window grid softly blurred behind. Same soft diffuse daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
+      "negative": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, compass rose, star on dial, extra needles, X needle, four-arm needle, numbers on dial, different compass, different person, different hair color, navy scarf, thin smooth scarf, hands, compass in frame, torso, looking at camera, cropped head",
       "source": null,
       "reference": {
         "shot_id": "s02",
-        "take_id": "t01",
-        "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png",
-        "image_sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6",
-        "seed": null,
+        "take_id": "t06",
+        "image": "references/a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png",
+        "image_sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b",
+        "seed": 20261036,
         "settings": {
-          "preset_id": "imported-reference",
-          "label": "Imported reference",
-          "width": 1448,
-          "height": 1086
+          "label": "Qwen-Image-2512",
+          "enabled": true,
+          "license": "Apache-2.0",
+          "capability": "text-to-image",
+          "unet": "qwen-image-2512-Q8_0.gguf",
+          "encoder": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+          "vae": "qwen_image_vae.safetensors",
+          "width": 1216,
+          "height": 896,
+          "steps": 40,
+          "cfg": 4.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0,
+          "shift": 3.1,
+          "preset_id": "qwen-image"
         },
-        "models": [],
-        "workflow": {},
-        "source": {
-          "type": "imported",
-          "label": "Imported reference"
+        "models": [
+          {
+            "filename": "qwen-image-2512-Q8_0.gguf",
+            "component": "diffusion",
+            "folder": "diffusion_models",
+            "sha256": "e285a0692582acf09bb4086d9b120eb0e357c4386565d169a033cb968c6fa9a5",
+            "bytes": 21761817120,
+            "repository": "unsloth/Qwen-Image-2512-GGUF",
+            "revision": "1626d7531f84b4d2ea1cd6d2e69f41ec027dd354",
+            "license": "Apache-2.0",
+            "path": "qwen-image-2512-Q8_0.gguf"
+          },
+          {
+            "filename": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+            "component": "text encoder",
+            "folder": "text_encoders",
+            "sha256": "ee770c700d7429cc6f0c74d6c7ab3c063bf521312fc36e80776d1d79bc9fa4ad",
+            "bytes": 8098524032,
+            "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+            "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+            "license": "Apache-2.0",
+            "path": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf"
+          },
+          {
+            "filename": "qwen_image_vae.safetensors",
+            "component": "VAE",
+            "folder": "vae",
+            "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+            "bytes": 253806246,
+            "repository": "Comfy-Org/Qwen-Image_ComfyUI",
+            "revision": "1f12b17be14c89b026c51a91d67c32f84bb047bc",
+            "license": "Apache-2.0",
+            "path": "split_files/vae/qwen_image_vae.safetensors"
+          }
+        ],
+        "workflow": {
+          "2": {
+            "class_type": "CLIPTextEncode",
+            "inputs": {
+              "clip": [
+                "9",
+                0
+              ],
+              "text": "Medium waist-up photograph at eye level, 35mm lens. A fictional adult woman in her thirties with a light chestnut chin-length softly waved bob looks down at a brass compass she holds out in front of her chest with both hands, the open dial facing the camera. She wears a mustard-yellow canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and a chunky teal cable-knit scarf. The compass is large in the frame, about as wide as her palm: a round polished brass case with its hinged brass lid open behind it and a clear glass cover. The dial is plain cream with a simple modern layout: only four large bold black sans-serif capital letters, N at the top, E on the right, S at the bottom and W on the left, and a thin black ring of evenly spaced degree tick marks around the edge. Nothing else is printed on the dial: no compass rose, no star, no numbers, no other words. Exactly ONE thin straight needle crosses the center on the north-south line, its north half painted red and pointing at N, its south half silver and pointing at S, with a small brass pivot. All four letters N, E, S, W and the red needle are sharp and clearly readable. She stands beside a weathered wooden potting bench in a rain-soaked Victorian greenhouse with a dark green painted window grid, rain droplets on the glass panes and potted ferns. Soft diffuse overcast daylight, muted film colors, gentle contrast, fine film grain, natural skin texture, realistic cinematic still photograph."
+            }
+          },
+          "3": {
+            "class_type": "CLIPTextEncode",
+            "inputs": {
+              "clip": [
+                "9",
+                0
+              ],
+              "text": "anime, cartoon, illustration, painting, 3d render, CGI, watermark, logo, brand name, celebrity, blurry, deformed hands, extra fingers, duplicate compass, blank dial, gibberish letters, compass rose, star pattern on dial, ornate engraving, numbers on the dial, NE, SW, extra needles, four-armed needle, X-shaped needle, looking at camera"
+            }
+          },
+          "4": {
+            "class_type": "EmptySD3LatentImage",
+            "inputs": {
+              "width": 1216,
+              "height": 896,
+              "batch_size": 1
+            }
+          },
+          "5": {
+            "class_type": "KSampler",
+            "inputs": {
+              "model": [
+                "12",
+                0
+              ],
+              "positive": [
+                "2",
+                0
+              ],
+              "negative": [
+                "3",
+                0
+              ],
+              "latent_image": [
+                "4",
+                0
+              ],
+              "seed": 20261036,
+              "steps": 40,
+              "cfg": 4.0,
+              "sampler_name": "euler",
+              "scheduler": "simple",
+              "denoise": 1.0
+            }
+          },
+          "6": {
+            "class_type": "VAEDecode",
+            "inputs": {
+              "samples": [
+                "5",
+                0
+              ],
+              "vae": [
+                "10",
+                0
+              ]
+            }
+          },
+          "7": {
+            "class_type": "SaveImage",
+            "inputs": {
+              "images": [
+                "6",
+                0
+              ],
+              "filename_prefix": "shotboard/first-take"
+            }
+          },
+          "8": {
+            "class_type": "UnetLoaderGGUF",
+            "inputs": {
+              "unet_name": "qwen-image-2512-Q8_0.gguf"
+            }
+          },
+          "9": {
+            "class_type": "CLIPLoaderGGUF",
+            "inputs": {
+              "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+              "type": "qwen_image"
+            }
+          },
+          "10": {
+            "class_type": "VAELoader",
+            "inputs": {
+              "vae_name": "qwen_image_vae.safetensors"
+            }
+          },
+          "12": {
+            "class_type": "ModelSamplingAuraFlow",
+            "inputs": {
+              "model": [
+                "8",
+                0
+              ],
+              "shift": 3.1
+            }
+          }
         },
         "sdk_asset": {
           "__type": "core/ASSET",
           "info": {
-            "id": "59b3eb13-0e94-4089-80ab-18b3828c96f5",
-            "hash": "blake3:007eef64a0eeed0f64d75f06585ed6d93db0c782f09b5190efa39899af950fb9",
-            "file_path": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
+            "id": "0fd72543-65ea-42dc-a916-a285e7bff64d",
+            "hash": "blake3:2c1c51b610efd726d3ee4232a19d916e1de8a1908245a21784d68d806d00f893",
+            "file_path": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png"
           }
         }
       },
       "submitted_workflow": "workflows/s03.submitted.api.json",
-      "submitted_workflow_sha256": "0cc8500bb3b82f09292013b78b0c377e7ffc456f73699128b3e9c61d8ff1f3f6",
-      "submission_fingerprint_sha256": "e6e0176aa97664a66adf5d77dff507a6e8fa63c78fa1cecdba5e91e11ad216e8",
+      "submitted_workflow_sha256": "0598254ab0f7e38fd46c21dc4141ad722fbf44954cf9a666b316f6dec84bc72c",
+      "submission_fingerprint_sha256": "9dc35f7ffafc0704c91f3bf755361a6bb580fb19225c97e255091e0cc098f865",
       "image": "stills/s03.png",
-      "image_sha256": "05136f77b6366205331fedaabbc271aec66d15359e28d277761737e7ea446815",
+      "image_sha256": "609b29d6d2c33a0571961246fc8db82ece13eb55e88bd622c27d0ead42578d36",
       "workflow": "workflows/s03.api.json",
-      "workflow_sha256": "4d623f8712fe363330aba8e74998736a8b2aa9e5894d168783b7c0e38b5c64b7",
-      "elapsed_seconds": 68.324
+      "workflow_sha256": "620d4e5a7778e00b994e087054557cde0b75d3f8c9ae35762ef64eb6a7d2bc9d",
+      "elapsed_seconds": 81.355
     },
     {
       "id": "s04",
@@ -511,10 +1058,10 @@
       "review": {
         "shot": "s04",
         "take": "t04",
-        "verdict": "fail",
-        "note": "Best over-shoulder framing; scarf ribbed, lid moved to upper right and case shallower."
+        "verdict": "pass",
+        "note": "Over the shoulder: same waves, teal cable scarf, mustard coat, and the compass with serif N, E, S, W and a red and silver needle. A small dark label on the shoulder tab is new."
       },
-      "seed": 20261074,
+      "seed": 20261044,
       "seed_locked": true,
       "settings": {
         "label": "Qwen continuity \u00b7 reference edit",
@@ -581,56 +1128,206 @@
           "path": "split_files/vae/qwen_image_vae.safetensors"
         }
       ],
-      "prompt": "Requested framing: Over shoulder. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. OVER THE LEFT SHOULDER photograph: camera diagonally behind and slightly above the same fictional adult woman from the reference, exact lowered gaze, rounded face, right side part, light chestnut chin-length bob with loose waves and outward-fanning ends, mustard canvas coat with metal buttons and flap chest pockets, shoulder tabs and chunky rich teal cable-knit scarf with dense compact twisted cables and rolled neck loop. Her left shoulder and back of head occupy the LEFT THIRD foreground. Look past her shoulder at her two hands holding the exact same real magnetic compass as the reference: one deep cylindrical brass case with slightly flared base and upper-left hinged open plain brass lid with two interior rivets; clear glass cover; cream dial with printed black cardinal letters N at top, E at right, S at bottom, W at left, in that clockwise order; circular black degree tick ring with alternating long and short ticks; one classic STRAIGHT TWO-ENDED needle with a RED north half pointing toward N and SILVER-WHITE south half pointing toward S, small plain brass center pivot. Keep its case depth, lid, glass, precise letter layout, tick spacing, red/silver needle and small pivot from the reference. No X needle or star, no extra compass or ring/chain. over the SAME wooden greenhouse bench with potted ferns and dark green window grid. Offset enough to see side of left cheek and rich teal chunky cable-knit loop; keep its compact twisted cable texture and exact folds, no smooth ribbed replacement. Show the compass dial unobstructed enough to read its four letters, tick ring and red north needle; camera slightly above hands, not through glass glare. Keep same mustard canvas cuffs and dark patterned inner cuffs. Natural unpainted nails, no bracelet, brooch, bag or extra person.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
-      "negative": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, front-facing portrait, no compass, scarf clasp, teal cuffs, painted nails",
+      "prompt": "Requested framing: Over shoulder. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. OVER THE SHOULDER photograph: camera diagonally behind and slightly above the same fictional adult woman from the reference, with the same light chestnut chin-length wavy bob, the same mustard canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and the same chunky teal cable-knit scarf wrapped as a snug cowl. Her shoulder, scarf and the back of her head fill the LEFT THIRD of the foreground. Look past her shoulder down at her two hands holding the exact same brass compass as the reference: the same deep round polished brass case with its plain round brass lid hinged open behind the dial, a clear glass cover, a plain cream dial with only four large black serif capital letters, N at the top, E on the right, S at the bottom and W on the left, a fine ring of degree ticks at the edge, and exactly one straight needle, red north half and silver south half, on a small brass pivot. No compass rose and no other printing; the dial is readable. Same rainy greenhouse with dark green window grid, wooden planters and ferns, same soft daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
+      "negative": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, compass rose, star on dial, extra needles, X needle, four-arm needle, numbers on dial, different compass, different person, different hair color, navy scarf, thin smooth scarf, front-facing portrait, no compass, face toward camera",
       "source": null,
       "reference": {
         "shot_id": "s02",
-        "take_id": "t01",
-        "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png",
-        "image_sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6",
-        "seed": null,
+        "take_id": "t06",
+        "image": "references/a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png",
+        "image_sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b",
+        "seed": 20261036,
         "settings": {
-          "preset_id": "imported-reference",
-          "label": "Imported reference",
-          "width": 1448,
-          "height": 1086
+          "label": "Qwen-Image-2512",
+          "enabled": true,
+          "license": "Apache-2.0",
+          "capability": "text-to-image",
+          "unet": "qwen-image-2512-Q8_0.gguf",
+          "encoder": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+          "vae": "qwen_image_vae.safetensors",
+          "width": 1216,
+          "height": 896,
+          "steps": 40,
+          "cfg": 4.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0,
+          "shift": 3.1,
+          "preset_id": "qwen-image"
         },
-        "models": [],
-        "workflow": {},
-        "source": {
-          "type": "imported",
-          "label": "Imported reference"
+        "models": [
+          {
+            "filename": "qwen-image-2512-Q8_0.gguf",
+            "component": "diffusion",
+            "folder": "diffusion_models",
+            "sha256": "e285a0692582acf09bb4086d9b120eb0e357c4386565d169a033cb968c6fa9a5",
+            "bytes": 21761817120,
+            "repository": "unsloth/Qwen-Image-2512-GGUF",
+            "revision": "1626d7531f84b4d2ea1cd6d2e69f41ec027dd354",
+            "license": "Apache-2.0",
+            "path": "qwen-image-2512-Q8_0.gguf"
+          },
+          {
+            "filename": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+            "component": "text encoder",
+            "folder": "text_encoders",
+            "sha256": "ee770c700d7429cc6f0c74d6c7ab3c063bf521312fc36e80776d1d79bc9fa4ad",
+            "bytes": 8098524032,
+            "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+            "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+            "license": "Apache-2.0",
+            "path": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf"
+          },
+          {
+            "filename": "qwen_image_vae.safetensors",
+            "component": "VAE",
+            "folder": "vae",
+            "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+            "bytes": 253806246,
+            "repository": "Comfy-Org/Qwen-Image_ComfyUI",
+            "revision": "1f12b17be14c89b026c51a91d67c32f84bb047bc",
+            "license": "Apache-2.0",
+            "path": "split_files/vae/qwen_image_vae.safetensors"
+          }
+        ],
+        "workflow": {
+          "2": {
+            "class_type": "CLIPTextEncode",
+            "inputs": {
+              "clip": [
+                "9",
+                0
+              ],
+              "text": "Medium waist-up photograph at eye level, 35mm lens. A fictional adult woman in her thirties with a light chestnut chin-length softly waved bob looks down at a brass compass she holds out in front of her chest with both hands, the open dial facing the camera. She wears a mustard-yellow canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and a chunky teal cable-knit scarf. The compass is large in the frame, about as wide as her palm: a round polished brass case with its hinged brass lid open behind it and a clear glass cover. The dial is plain cream with a simple modern layout: only four large bold black sans-serif capital letters, N at the top, E on the right, S at the bottom and W on the left, and a thin black ring of evenly spaced degree tick marks around the edge. Nothing else is printed on the dial: no compass rose, no star, no numbers, no other words. Exactly ONE thin straight needle crosses the center on the north-south line, its north half painted red and pointing at N, its south half silver and pointing at S, with a small brass pivot. All four letters N, E, S, W and the red needle are sharp and clearly readable. She stands beside a weathered wooden potting bench in a rain-soaked Victorian greenhouse with a dark green painted window grid, rain droplets on the glass panes and potted ferns. Soft diffuse overcast daylight, muted film colors, gentle contrast, fine film grain, natural skin texture, realistic cinematic still photograph."
+            }
+          },
+          "3": {
+            "class_type": "CLIPTextEncode",
+            "inputs": {
+              "clip": [
+                "9",
+                0
+              ],
+              "text": "anime, cartoon, illustration, painting, 3d render, CGI, watermark, logo, brand name, celebrity, blurry, deformed hands, extra fingers, duplicate compass, blank dial, gibberish letters, compass rose, star pattern on dial, ornate engraving, numbers on the dial, NE, SW, extra needles, four-armed needle, X-shaped needle, looking at camera"
+            }
+          },
+          "4": {
+            "class_type": "EmptySD3LatentImage",
+            "inputs": {
+              "width": 1216,
+              "height": 896,
+              "batch_size": 1
+            }
+          },
+          "5": {
+            "class_type": "KSampler",
+            "inputs": {
+              "model": [
+                "12",
+                0
+              ],
+              "positive": [
+                "2",
+                0
+              ],
+              "negative": [
+                "3",
+                0
+              ],
+              "latent_image": [
+                "4",
+                0
+              ],
+              "seed": 20261036,
+              "steps": 40,
+              "cfg": 4.0,
+              "sampler_name": "euler",
+              "scheduler": "simple",
+              "denoise": 1.0
+            }
+          },
+          "6": {
+            "class_type": "VAEDecode",
+            "inputs": {
+              "samples": [
+                "5",
+                0
+              ],
+              "vae": [
+                "10",
+                0
+              ]
+            }
+          },
+          "7": {
+            "class_type": "SaveImage",
+            "inputs": {
+              "images": [
+                "6",
+                0
+              ],
+              "filename_prefix": "shotboard/first-take"
+            }
+          },
+          "8": {
+            "class_type": "UnetLoaderGGUF",
+            "inputs": {
+              "unet_name": "qwen-image-2512-Q8_0.gguf"
+            }
+          },
+          "9": {
+            "class_type": "CLIPLoaderGGUF",
+            "inputs": {
+              "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+              "type": "qwen_image"
+            }
+          },
+          "10": {
+            "class_type": "VAELoader",
+            "inputs": {
+              "vae_name": "qwen_image_vae.safetensors"
+            }
+          },
+          "12": {
+            "class_type": "ModelSamplingAuraFlow",
+            "inputs": {
+              "model": [
+                "8",
+                0
+              ],
+              "shift": 3.1
+            }
+          }
         },
         "sdk_asset": {
           "__type": "core/ASSET",
           "info": {
-            "id": "59b3eb13-0e94-4089-80ab-18b3828c96f5",
-            "hash": "blake3:007eef64a0eeed0f64d75f06585ed6d93db0c782f09b5190efa39899af950fb9",
-            "file_path": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
+            "id": "0fd72543-65ea-42dc-a916-a285e7bff64d",
+            "hash": "blake3:2c1c51b610efd726d3ee4232a19d916e1de8a1908245a21784d68d806d00f893",
+            "file_path": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png"
           }
         }
       },
       "submitted_workflow": "workflows/s04.submitted.api.json",
-      "submitted_workflow_sha256": "3b288434c8176e34c97072d212900b7e95a0e131bb5f87705c90ddcb7b5b693c",
-      "submission_fingerprint_sha256": "a5c5f376d9d2129c49f76bbbbe7762885ee49302972a443443cf13cf229ba826",
+      "submitted_workflow_sha256": "4c98e1ca5b0f64a22a48247b344dd1c6a703e97ceda2f9c489969f8331452841",
+      "submission_fingerprint_sha256": "62904c35d20b1f5d205b19780eb2a766c36d00814168478ca8157094a930866d",
       "image": "stills/s04.png",
-      "image_sha256": "88bbcd0e43a51d748264c785c8874308dbc7fc05215e489b21d1b18773b3545b",
+      "image_sha256": "df3cb825aa3b320397397f48a5cf39c8d51868455d57ac4325046f167d062ab8",
       "workflow": "workflows/s04.api.json",
-      "workflow_sha256": "6c356f92d69bdf71bbab94969bb7cb1a1a46700be0e7af2d6a657f6a0e746a53",
-      "elapsed_seconds": 73.062
+      "workflow_sha256": "2bc4f72f8e4af847be5f48688fa94d0de3bda01835b13be2b9def00c207d2d2d",
+      "elapsed_seconds": 74.968
     },
     {
       "id": "s05",
       "title": "Insert",
-      "take_id": "t02",
+      "take_id": "t01",
       "review": {
         "shot": "s05",
-        "take": "t02",
-        "verdict": "fail",
-        "note": "Recognizable compass. Flared base and small center pivot are redrawn; coat torso visible behind macro."
+        "take": "t01",
+        "verdict": "pass",
+        "note": "Same serif N, E, S, W layout, red and silver needle on a brass pivot, glass, plain open lid and deep brass case. The S is slate gray and the tick band is plainer."
       },
-      "seed": 20261071,
+      "seed": 20261041,
       "seed_locked": true,
       "settings": {
         "label": "Qwen continuity \u00b7 reference edit",
@@ -697,44 +1394,194 @@
           "path": "split_files/vae/qwen_image_vae.safetensors"
         }
       ],
-      "prompt": "Requested framing: Insert. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. MACRO INSERT photograph, camera moved close to ONLY the existing two hands holding the exact same real magnetic compass as the reference: one deep cylindrical brass case with slightly flared base and upper-left hinged open plain brass lid with two interior rivets; clear glass cover; cream dial with printed black cardinal letters N at top, E at right, S at bottom, W at left, in that clockwise order; circular black degree tick ring with alternating long and short ticks; one classic STRAIGHT TWO-ENDED needle with a RED north half pointing toward N and SILVER-WHITE south half pointing toward S, small plain brass center pivot. Keep its case depth, lid, glass, precise letter layout, tick spacing, red/silver needle and small pivot from the reference. No X needle or star, no extra compass or ring/chain. The compass dominates the frame, dial fully visible and readable. Same hand grip and mustard cuffs, same wooden greenhouse bench softly blurred behind. Frame the complete open lid, thick brass sidewall and glass-covered dial, realistic perspective. No head, face, torso, inset or second compass. Change only camera position and crop; preserve compass design and colors exactly.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
-      "negative": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, face, head, torso, full body, wide shot, medium portrait",
+      "prompt": "Requested framing: Insert. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. MACRO INSERT photograph, camera moved close to ONLY her two cupped hands holding the exact same brass compass as the reference: the same deep round polished brass case with its plain round brass lid hinged open behind the dial, a clear glass cover, a plain cream dial with only four large black serif capital letters, N at the top, E on the right, S at the bottom and W on the left, a fine ring of degree ticks at the edge, and exactly one straight needle, red north half and silver south half, on a small brass pivot. No compass rose and no other printing. Keep the case depth, lid, glass, letter style and layout, tick ring and red/silver needle from the reference. The compass fills most of the frame and the whole dial is visible and readable. Same hands, mustard coat at the frame edge, same soft rainy greenhouse light, background softly blurred.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
+      "negative": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, compass rose, star on dial, extra needles, X needle, four-arm needle, numbers on dial, different compass, different person, different hair color, navy scarf, thin smooth scarf, face, head, torso, full body, wide shot, medium portrait",
       "source": null,
       "reference": {
         "shot_id": "s02",
-        "take_id": "t01",
-        "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png",
-        "image_sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6",
-        "seed": null,
+        "take_id": "t06",
+        "image": "references/a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png",
+        "image_sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b",
+        "seed": 20261036,
         "settings": {
-          "preset_id": "imported-reference",
-          "label": "Imported reference",
-          "width": 1448,
-          "height": 1086
+          "label": "Qwen-Image-2512",
+          "enabled": true,
+          "license": "Apache-2.0",
+          "capability": "text-to-image",
+          "unet": "qwen-image-2512-Q8_0.gguf",
+          "encoder": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+          "vae": "qwen_image_vae.safetensors",
+          "width": 1216,
+          "height": 896,
+          "steps": 40,
+          "cfg": 4.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0,
+          "shift": 3.1,
+          "preset_id": "qwen-image"
         },
-        "models": [],
-        "workflow": {},
-        "source": {
-          "type": "imported",
-          "label": "Imported reference"
+        "models": [
+          {
+            "filename": "qwen-image-2512-Q8_0.gguf",
+            "component": "diffusion",
+            "folder": "diffusion_models",
+            "sha256": "e285a0692582acf09bb4086d9b120eb0e357c4386565d169a033cb968c6fa9a5",
+            "bytes": 21761817120,
+            "repository": "unsloth/Qwen-Image-2512-GGUF",
+            "revision": "1626d7531f84b4d2ea1cd6d2e69f41ec027dd354",
+            "license": "Apache-2.0",
+            "path": "qwen-image-2512-Q8_0.gguf"
+          },
+          {
+            "filename": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+            "component": "text encoder",
+            "folder": "text_encoders",
+            "sha256": "ee770c700d7429cc6f0c74d6c7ab3c063bf521312fc36e80776d1d79bc9fa4ad",
+            "bytes": 8098524032,
+            "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+            "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+            "license": "Apache-2.0",
+            "path": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf"
+          },
+          {
+            "filename": "qwen_image_vae.safetensors",
+            "component": "VAE",
+            "folder": "vae",
+            "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+            "bytes": 253806246,
+            "repository": "Comfy-Org/Qwen-Image_ComfyUI",
+            "revision": "1f12b17be14c89b026c51a91d67c32f84bb047bc",
+            "license": "Apache-2.0",
+            "path": "split_files/vae/qwen_image_vae.safetensors"
+          }
+        ],
+        "workflow": {
+          "2": {
+            "class_type": "CLIPTextEncode",
+            "inputs": {
+              "clip": [
+                "9",
+                0
+              ],
+              "text": "Medium waist-up photograph at eye level, 35mm lens. A fictional adult woman in her thirties with a light chestnut chin-length softly waved bob looks down at a brass compass she holds out in front of her chest with both hands, the open dial facing the camera. She wears a mustard-yellow canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and a chunky teal cable-knit scarf. The compass is large in the frame, about as wide as her palm: a round polished brass case with its hinged brass lid open behind it and a clear glass cover. The dial is plain cream with a simple modern layout: only four large bold black sans-serif capital letters, N at the top, E on the right, S at the bottom and W on the left, and a thin black ring of evenly spaced degree tick marks around the edge. Nothing else is printed on the dial: no compass rose, no star, no numbers, no other words. Exactly ONE thin straight needle crosses the center on the north-south line, its north half painted red and pointing at N, its south half silver and pointing at S, with a small brass pivot. All four letters N, E, S, W and the red needle are sharp and clearly readable. She stands beside a weathered wooden potting bench in a rain-soaked Victorian greenhouse with a dark green painted window grid, rain droplets on the glass panes and potted ferns. Soft diffuse overcast daylight, muted film colors, gentle contrast, fine film grain, natural skin texture, realistic cinematic still photograph."
+            }
+          },
+          "3": {
+            "class_type": "CLIPTextEncode",
+            "inputs": {
+              "clip": [
+                "9",
+                0
+              ],
+              "text": "anime, cartoon, illustration, painting, 3d render, CGI, watermark, logo, brand name, celebrity, blurry, deformed hands, extra fingers, duplicate compass, blank dial, gibberish letters, compass rose, star pattern on dial, ornate engraving, numbers on the dial, NE, SW, extra needles, four-armed needle, X-shaped needle, looking at camera"
+            }
+          },
+          "4": {
+            "class_type": "EmptySD3LatentImage",
+            "inputs": {
+              "width": 1216,
+              "height": 896,
+              "batch_size": 1
+            }
+          },
+          "5": {
+            "class_type": "KSampler",
+            "inputs": {
+              "model": [
+                "12",
+                0
+              ],
+              "positive": [
+                "2",
+                0
+              ],
+              "negative": [
+                "3",
+                0
+              ],
+              "latent_image": [
+                "4",
+                0
+              ],
+              "seed": 20261036,
+              "steps": 40,
+              "cfg": 4.0,
+              "sampler_name": "euler",
+              "scheduler": "simple",
+              "denoise": 1.0
+            }
+          },
+          "6": {
+            "class_type": "VAEDecode",
+            "inputs": {
+              "samples": [
+                "5",
+                0
+              ],
+              "vae": [
+                "10",
+                0
+              ]
+            }
+          },
+          "7": {
+            "class_type": "SaveImage",
+            "inputs": {
+              "images": [
+                "6",
+                0
+              ],
+              "filename_prefix": "shotboard/first-take"
+            }
+          },
+          "8": {
+            "class_type": "UnetLoaderGGUF",
+            "inputs": {
+              "unet_name": "qwen-image-2512-Q8_0.gguf"
+            }
+          },
+          "9": {
+            "class_type": "CLIPLoaderGGUF",
+            "inputs": {
+              "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+              "type": "qwen_image"
+            }
+          },
+          "10": {
+            "class_type": "VAELoader",
+            "inputs": {
+              "vae_name": "qwen_image_vae.safetensors"
+            }
+          },
+          "12": {
+            "class_type": "ModelSamplingAuraFlow",
+            "inputs": {
+              "model": [
+                "8",
+                0
+              ],
+              "shift": 3.1
+            }
+          }
         },
         "sdk_asset": {
           "__type": "core/ASSET",
           "info": {
-            "id": "59b3eb13-0e94-4089-80ab-18b3828c96f5",
-            "hash": "blake3:007eef64a0eeed0f64d75f06585ed6d93db0c782f09b5190efa39899af950fb9",
-            "file_path": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
+            "id": "0fd72543-65ea-42dc-a916-a285e7bff64d",
+            "hash": "blake3:2c1c51b610efd726d3ee4232a19d916e1de8a1908245a21784d68d806d00f893",
+            "file_path": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png"
           }
         }
       },
       "submitted_workflow": "workflows/s05.submitted.api.json",
-      "submitted_workflow_sha256": "f2bfd217221b1310fad3b2bb4ab2c49483a11b6f0aab32600e4146d7aa93ce1d",
-      "submission_fingerprint_sha256": "893f9cba49b1cc11eaf0470375636a1071e8bc03075098d0525808f5f1467e7b",
+      "submitted_workflow_sha256": "ca9bf10770a77b89c29e26c579461ee9c114eb4515cf8716b4481763289cc232",
+      "submission_fingerprint_sha256": "7c7d4b3bf0e0a8fc510f151a7f69d57bcb4687ba3623308dd1325f7a5e0130cd",
       "image": "stills/s05.png",
-      "image_sha256": "f8d4da4a12c48cd5e88f23a7c5035372fc0949e2669abc5564db12875175793b",
+      "image_sha256": "a0408847bf4de0681830ae453a2f0c6920bf34666867a03a59563d6f8ac44c22",
       "workflow": "workflows/s05.api.json",
-      "workflow_sha256": "e7ddfd0dc0798b4d3e0689e75d6ae815b37af977545f49582b61723e87396176",
-      "elapsed_seconds": 104.547
+      "workflow_sha256": "c0532f36281ba94658cd967287903585fcf108719ffb25f5247b176f7a55cc3b",
+      "elapsed_seconds": 116.578
     },
     {
       "id": "s06",
@@ -744,9 +1591,9 @@
         "shot": "s06",
         "take": "t02",
         "verdict": "fail",
-        "note": "Low angle, readable classic compass; broad braided scarf and inward bob ends differ, lid rivets/pivot reshaped."
+        "note": "Same coat, scarf, hair and compass with a red needle, and the roof shows overhead, but the camera is only a little below her eyes."
       },
-      "seed": 20261072,
+      "seed": 20261042,
       "seed_locked": true,
       "settings": {
         "label": "Qwen continuity \u00b7 reference edit",
@@ -813,44 +1660,194 @@
           "path": "split_files/vae/qwen_image_vae.safetensors"
         }
       ],
-      "prompt": "Requested framing: Low angle. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. LOW ANGLE photograph from near the wooden greenhouse bench looking steeply upward at the same fictional adult woman from the reference, exact lowered gaze, rounded face, right side part, light chestnut chin-length bob with loose waves and outward-fanning ends, mustard canvas coat with metal buttons and flap chest pockets, shoulder tabs and chunky rich teal cable-knit scarf with dense compact twisted cables and rolled neck loop. She stands at the SAME bench and holds the exact same real magnetic compass as the reference: one deep cylindrical brass case with slightly flared base and upper-left hinged open plain brass lid with two interior rivets; clear glass cover; cream dial with printed black cardinal letters N at top, E at right, S at bottom, W at left, in that clockwise order; circular black degree tick ring with alternating long and short ticks; one classic STRAIGHT TWO-ENDED needle with a RED north half pointing toward N and SILVER-WHITE south half pointing toward S, small plain brass center pivot. Keep its case depth, lid, glass, precise letter layout, tick spacing, red/silver needle and small pivot from the reference. No X needle or star, no extra compass or ring/chain. tilted enough toward the low camera that red needle and printed letters remain visible. Keep face and knit unchanged. Dark green pitched greenhouse roof grid above, ferns around her, no staircase or dome. Maintain realistic hands, no bag or another person.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
-      "negative": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, eye-level camera, high angle, stairs, dome",
+      "prompt": "Requested framing: Low angle. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. LOW ANGLE photograph from near the floor beside the wooden planter, looking steeply upward at the same fictional adult woman from the reference, with the same light chestnut chin-length wavy bob, the same mustard canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and the same chunky teal cable-knit scarf wrapped as a snug cowl. She holds the exact same brass compass as the reference: the same deep round polished brass case with its plain round brass lid hinged open behind the dial, a clear glass cover, a plain cream dial with only four large black serif capital letters, N at the top, E on the right, S at the bottom and W on the left, a fine ring of degree ticks at the edge, and exactly one straight needle, red north half and silver south half, on a small brass pivot. No compass rose and no other printing in both hands in front of her chest and looks down at it. Greenhouse roof window grid and rain-streaked glass overhead, strong upward perspective. Same soft daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view.",
+      "negative": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, compass rose, star on dial, extra needles, X needle, four-arm needle, numbers on dial, different compass, different person, different hair color, navy scarf, thin smooth scarf, eye-level camera, high angle, overhead view",
       "source": null,
       "reference": {
         "shot_id": "s02",
-        "take_id": "t01",
-        "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png",
-        "image_sha256": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6",
-        "seed": null,
+        "take_id": "t06",
+        "image": "references/a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png",
+        "image_sha256": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b",
+        "seed": 20261036,
         "settings": {
-          "preset_id": "imported-reference",
-          "label": "Imported reference",
-          "width": 1448,
-          "height": 1086
+          "label": "Qwen-Image-2512",
+          "enabled": true,
+          "license": "Apache-2.0",
+          "capability": "text-to-image",
+          "unet": "qwen-image-2512-Q8_0.gguf",
+          "encoder": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+          "vae": "qwen_image_vae.safetensors",
+          "width": 1216,
+          "height": 896,
+          "steps": 40,
+          "cfg": 4.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0,
+          "shift": 3.1,
+          "preset_id": "qwen-image"
         },
-        "models": [],
-        "workflow": {},
-        "source": {
-          "type": "imported",
-          "label": "Imported reference"
+        "models": [
+          {
+            "filename": "qwen-image-2512-Q8_0.gguf",
+            "component": "diffusion",
+            "folder": "diffusion_models",
+            "sha256": "e285a0692582acf09bb4086d9b120eb0e357c4386565d169a033cb968c6fa9a5",
+            "bytes": 21761817120,
+            "repository": "unsloth/Qwen-Image-2512-GGUF",
+            "revision": "1626d7531f84b4d2ea1cd6d2e69f41ec027dd354",
+            "license": "Apache-2.0",
+            "path": "qwen-image-2512-Q8_0.gguf"
+          },
+          {
+            "filename": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+            "component": "text encoder",
+            "folder": "text_encoders",
+            "sha256": "ee770c700d7429cc6f0c74d6c7ab3c063bf521312fc36e80776d1d79bc9fa4ad",
+            "bytes": 8098524032,
+            "repository": "unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+            "revision": "68bb8bc4b7df5289c143aaec0ab477a7d4051aab",
+            "license": "Apache-2.0",
+            "path": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf"
+          },
+          {
+            "filename": "qwen_image_vae.safetensors",
+            "component": "VAE",
+            "folder": "vae",
+            "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+            "bytes": 253806246,
+            "repository": "Comfy-Org/Qwen-Image_ComfyUI",
+            "revision": "1f12b17be14c89b026c51a91d67c32f84bb047bc",
+            "license": "Apache-2.0",
+            "path": "split_files/vae/qwen_image_vae.safetensors"
+          }
+        ],
+        "workflow": {
+          "2": {
+            "class_type": "CLIPTextEncode",
+            "inputs": {
+              "clip": [
+                "9",
+                0
+              ],
+              "text": "Medium waist-up photograph at eye level, 35mm lens. A fictional adult woman in her thirties with a light chestnut chin-length softly waved bob looks down at a brass compass she holds out in front of her chest with both hands, the open dial facing the camera. She wears a mustard-yellow canvas field coat with flap chest pockets, metal buttons and shoulder tabs, and a chunky teal cable-knit scarf. The compass is large in the frame, about as wide as her palm: a round polished brass case with its hinged brass lid open behind it and a clear glass cover. The dial is plain cream with a simple modern layout: only four large bold black sans-serif capital letters, N at the top, E on the right, S at the bottom and W on the left, and a thin black ring of evenly spaced degree tick marks around the edge. Nothing else is printed on the dial: no compass rose, no star, no numbers, no other words. Exactly ONE thin straight needle crosses the center on the north-south line, its north half painted red and pointing at N, its south half silver and pointing at S, with a small brass pivot. All four letters N, E, S, W and the red needle are sharp and clearly readable. She stands beside a weathered wooden potting bench in a rain-soaked Victorian greenhouse with a dark green painted window grid, rain droplets on the glass panes and potted ferns. Soft diffuse overcast daylight, muted film colors, gentle contrast, fine film grain, natural skin texture, realistic cinematic still photograph."
+            }
+          },
+          "3": {
+            "class_type": "CLIPTextEncode",
+            "inputs": {
+              "clip": [
+                "9",
+                0
+              ],
+              "text": "anime, cartoon, illustration, painting, 3d render, CGI, watermark, logo, brand name, celebrity, blurry, deformed hands, extra fingers, duplicate compass, blank dial, gibberish letters, compass rose, star pattern on dial, ornate engraving, numbers on the dial, NE, SW, extra needles, four-armed needle, X-shaped needle, looking at camera"
+            }
+          },
+          "4": {
+            "class_type": "EmptySD3LatentImage",
+            "inputs": {
+              "width": 1216,
+              "height": 896,
+              "batch_size": 1
+            }
+          },
+          "5": {
+            "class_type": "KSampler",
+            "inputs": {
+              "model": [
+                "12",
+                0
+              ],
+              "positive": [
+                "2",
+                0
+              ],
+              "negative": [
+                "3",
+                0
+              ],
+              "latent_image": [
+                "4",
+                0
+              ],
+              "seed": 20261036,
+              "steps": 40,
+              "cfg": 4.0,
+              "sampler_name": "euler",
+              "scheduler": "simple",
+              "denoise": 1.0
+            }
+          },
+          "6": {
+            "class_type": "VAEDecode",
+            "inputs": {
+              "samples": [
+                "5",
+                0
+              ],
+              "vae": [
+                "10",
+                0
+              ]
+            }
+          },
+          "7": {
+            "class_type": "SaveImage",
+            "inputs": {
+              "images": [
+                "6",
+                0
+              ],
+              "filename_prefix": "shotboard/first-take"
+            }
+          },
+          "8": {
+            "class_type": "UnetLoaderGGUF",
+            "inputs": {
+              "unet_name": "qwen-image-2512-Q8_0.gguf"
+            }
+          },
+          "9": {
+            "class_type": "CLIPLoaderGGUF",
+            "inputs": {
+              "clip_name": "Qwen2.5-VL-7B-Instruct-Q8_0.gguf",
+              "type": "qwen_image"
+            }
+          },
+          "10": {
+            "class_type": "VAELoader",
+            "inputs": {
+              "vae_name": "qwen_image_vae.safetensors"
+            }
+          },
+          "12": {
+            "class_type": "ModelSamplingAuraFlow",
+            "inputs": {
+              "model": [
+                "8",
+                0
+              ],
+              "shift": 3.1
+            }
+          }
         },
         "sdk_asset": {
           "__type": "core/ASSET",
           "info": {
-            "id": "59b3eb13-0e94-4089-80ab-18b3828c96f5",
-            "hash": "blake3:007eef64a0eeed0f64d75f06585ed6d93db0c782f09b5190efa39899af950fb9",
-            "file_path": "dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
+            "id": "0fd72543-65ea-42dc-a916-a285e7bff64d",
+            "hash": "blake3:2c1c51b610efd726d3ee4232a19d916e1de8a1908245a21784d68d806d00f893",
+            "file_path": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png"
           }
         }
       },
       "submitted_workflow": "workflows/s06.submitted.api.json",
-      "submitted_workflow_sha256": "e99891456923602e9a5d81a114c3d9931e369f31a2a4709624016726ecc9fcbb",
-      "submission_fingerprint_sha256": "4db6c87d620b6367bb9f4363ec704a07ab787398448213321a8362d0aa441dfb",
+      "submitted_workflow_sha256": "0603166fe7342f962667116c037a95a4e2437e6d9bf288c835a438358103083d",
+      "submission_fingerprint_sha256": "87adb5d9934a0c2b83958f20fdd26d5ad667390ba6689eb8fb1569f3ae3fa82a",
       "image": "stills/s06.png",
-      "image_sha256": "76009e4bd6542a340edccc5e13f541d0102fd995e413951187d7e5e6b03860d9",
+      "image_sha256": "931ab3cfeeb49ed7171c93a602f87976b8386766f3e02d18973ad0ad9221ee80",
       "workflow": "workflows/s06.api.json",
-      "workflow_sha256": "66a3135202eff8a441bc1c4ff29c0c39f2e61204ed7bd047871aa0e95b8e920e",
-      "elapsed_seconds": 69.197
+      "workflow_sha256": "29eb1b9d58c904b5e2f1ce23d8f3d407ad3ecc3c150534017f4044c7367f3004",
+      "elapsed_seconds": 70.074
     }
   ]
 }

@@ -1,23 +1,31 @@
 shot,title,take,method,seed,width,height,seconds,status,error,picked,image_sha256,device
-s01,Establishing,t01,qwen-reference,20261071,1216,704,83.378,succeeded,,False,a70ef7e59ec5f773fc949934e7ea6b0c0f808cb26deba5296d3a6bc5bf47f993,NVIDIA GeForce RTX 4090
-s01,Establishing,t02,qwen-reference,20261072,1216,704,71.016,succeeded,,True,e1f7cab4c2f972e62ce5fe10a3f93ca0bfd70bd26aa34a48753d78c65028173f,NVIDIA GeForce RTX 4090
-s02,Medium,t01,imported-reference,,1448,1086,0,succeeded,,True,dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6,
-s03,Close-up,t01,qwen-reference,20261071,768,1024,81.174,succeeded,,False,fe1bb8e78b675f52bb6eff52f860405e5a328379f3865d8fabf0ad302de764c2,NVIDIA GeForce RTX 4090
-s03,Close-up,t02,qwen-reference,20261072,768,1024,68.324,succeeded,,True,05136f77b6366205331fedaabbc271aec66d15359e28d277761737e7ea446815,NVIDIA GeForce RTX 4090
-s03,Close-up,t03,qwen-reference,20261073,768,1024,68.775,succeeded,,False,69f61111e7f293c76660da91f14230712f2d694e713306927567eea603199192,NVIDIA GeForce RTX 4090
-s03,Close-up,t04,qwen-reference,20261074,768,1024,68.784,succeeded,,False,49e853d69670a21fc1d763b32bb44d2a64149e0fea78d914c70a18530e922d94,NVIDIA GeForce RTX 4090
-s04,Over shoulder,t01,qwen-reference,20261071,1152,768,85.569,succeeded,,False,82a503ac55efc0c4cdc2443f79f65ad6c8478c90cfb42e62a3250ec32a3a983d,NVIDIA GeForce RTX 4090
-s04,Over shoulder,t02,qwen-reference,20261072,1152,768,73.383,succeeded,,False,b7c92317c71075ea19523b5d7d03debc8cc23c3e7a477eb727e2f4291c448edd,NVIDIA GeForce RTX 4090
-s04,Over shoulder,t03,qwen-reference,20261073,1152,768,73.215,succeeded,,False,9d498dbd29113f48982165ec3ad922201ad73466653dd66e6db98cba1ccb5d0c,NVIDIA GeForce RTX 4090
-s04,Over shoulder,t04,qwen-reference,20261074,1152,768,73.062,succeeded,,True,88bbcd0e43a51d748264c785c8874308dbc7fc05215e489b21d1b18773b3545b,NVIDIA GeForce RTX 4090
-s04,Over shoulder,t05,qwen-reference,20261075,1152,768,73.321,succeeded,,False,d02b6b1735824d856469c901fd40e3716a14fc37a9198c84406b2916c6ab5883,NVIDIA GeForce RTX 4090
-s04,Over shoulder,t06,qwen-reference,20261076,1152,768,73.993,succeeded,,False,48d82a124da4f60ee1c7f99ebdeafb36128508f08642d38775aad91b8937e5ed,NVIDIA GeForce RTX 4090
-s05,Insert,t01,qwen-reference,20261071,1024,1024,99.674,cancelled,ConnectError: local generation stopped. Check the local engine and retry.,False,,NVIDIA GeForce RTX 4090
-s05,Insert,t02,qwen-reference,20261071,1024,1024,104.547,succeeded,,True,f8d4da4a12c48cd5e88f23a7c5035372fc0949e2669abc5564db12875175793b,NVIDIA GeForce RTX 4090
-s05,Insert,t03,qwen-reference,20261072,1024,1024,80.72,succeeded,,False,3b3d9a4c35efc797cc6f78c49d3f447d9b6bb4febc7f94834b78a551bd8b9c5c,NVIDIA GeForce RTX 4090
-s05,Insert,t04,qwen-reference,20261073,1024,1024,80.802,succeeded,,False,b80d3b3ddac09ad40e389f48c7636c14653faff97d35aa2df9f19846c552d2c4,NVIDIA GeForce RTX 4090
-s05,Insert,t05,qwen-reference,20261074,1024,1024,80.27,succeeded,,False,02b04e2d6607e5f85cfe91057f675b38bee8c757144be8a77d90761620884f71,NVIDIA GeForce RTX 4090
-s05,Insert,t06,qwen-reference,20261075,1024,1024,79.885,succeeded,,False,f913f6cf93b4c25624ea2f54b208a75179762a1958b52f67f4a99f669e3094ea,NVIDIA GeForce RTX 4090
-s05,Insert,t07,qwen-reference,20261076,1024,1024,80.95,succeeded,,False,46ea0e278a1a7303ed2e0edd349e514265936a1230e3301639d976c208d542b4,NVIDIA GeForce RTX 4090
-s06,Low angle,t01,qwen-reference,20261071,768,1024,80.849,succeeded,,False,b4a33710bcc44df5ba723adef751241e738fc5433bf1d20a699871d26221a6cf,NVIDIA GeForce RTX 4090
-s06,Low angle,t02,qwen-reference,20261072,768,1024,69.197,succeeded,,True,76009e4bd6542a340edccc5e13f541d0102fd995e413951187d7e5e6b03860d9,NVIDIA GeForce RTX 4090
+s01,Establishing,t01,qwen-reference,20261041,1216,704,83.387,succeeded,,False,e187cfa36548eaf0b2a3ae3334603523e15ff354c0f9a5f9e255c903cd2fded4,NVIDIA GeForce RTX 4090
+s01,Establishing,t02,qwen-reference,20261042,1216,704,72.434,succeeded,,True,cab6cdd8471db35f3e6eb9d8ba05733aa9ba31fb8242f2ab592cd206ebcd003b,NVIDIA GeForce RTX 4090
+s02,Medium,t01,qwen-image,20261031,1216,896,93.642,succeeded,,False,82105114d5d7c31f8b76766a4d360ade24ec55b691d84d35ec6759f46ac911b2,NVIDIA GeForce RTX 4090
+s02,Medium,t02,qwen-image,20261032,1216,896,66.78,succeeded,,False,62e80671ac990b0c7bea93184a250e3464cc51544b4817ce4b9c34d914a099ce,NVIDIA GeForce RTX 4090
+s02,Medium,t03,qwen-image,20261033,1216,896,75.524,succeeded,,False,0375b5ee4a377982fcd40c143f7438666547d070aa667df037f70eeaa9cd486b,NVIDIA GeForce RTX 4090
+s02,Medium,t04,qwen-image,20261034,1216,896,66.058,succeeded,,False,0830766804f54611f376a5e7b94caa2b1231d88856029d5922fd4d4177d13368,NVIDIA GeForce RTX 4090
+s02,Medium,t05,qwen-image,20261035,1216,896,75.715,succeeded,,False,8734f4fef1f5c962345a5dbd4145b6494d09120929d91cc9c57a4bcc6aff796d,NVIDIA GeForce RTX 4090
+s02,Medium,t06,qwen-image,20261036,1216,896,66.145,succeeded,,True,a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b,NVIDIA GeForce RTX 4090
+s02,Medium,t07,qwen-image,20261037,1216,896,66.241,succeeded,,False,9d4869e11c9ca4eeca2a36bfd836b79d4f9c2eef2078c456117313af3feb3734,NVIDIA GeForce RTX 4090
+s02,Medium,t08,qwen-image,20261038,1216,896,66.771,succeeded,,False,6c9b1d16b49a17ad68c606cbc37f60bd8299acf22269c4a3f8d48d65585fa778,NVIDIA GeForce RTX 4090
+s03,Close-up,t01,qwen-reference,20261041,768,1024,81.385,succeeded,,False,42c999d837b9d528e287aeb5facef58e777bd7dd96ac6677b8f90bc9599da6a8,NVIDIA GeForce RTX 4090
+s03,Close-up,t02,qwen-reference,20261042,768,1024,70.63,succeeded,,False,3102d2b431ba646d91d05d4865a669fe789d7b9bae5b574f3bbcd7ee7e8d754e,NVIDIA GeForce RTX 4090
+s03,Close-up,t03,qwen-reference,20261043,768,1024,70.302,succeeded,,False,a2e2901ca47f9be75a1dbe14782f08e9daf8a4fb7f63a6e1b8404ad32a69780b,NVIDIA GeForce RTX 4090
+s03,Close-up,t04,qwen-reference,20261044,768,1024,70.682,succeeded,,False,19362fa31ec6260567e439ede6441758f6f98d0c01df9e68ecdfe194bb9978f6,NVIDIA GeForce RTX 4090
+s03,Close-up,t05,qwen-reference,20261045,768,1024,81.355,succeeded,,True,609b29d6d2c33a0571961246fc8db82ece13eb55e88bd622c27d0ead42578d36,NVIDIA GeForce RTX 4090
+s03,Close-up,t06,qwen-reference,20261046,768,1024,69.791,succeeded,,False,db27ad95a737c100ff25e138a87ef41873249d165dd20a6ec9ad5abed0955974,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t01,qwen-reference,20261041,1152,768,84.588,succeeded,,False,63e5cfd775f694e8b918ce775f741692bbaf6b62ee96bcb5f533b0cef458d9ac,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t02,qwen-reference,20261042,1152,768,74.569,succeeded,,False,e3c42ad459d1eb449959dc6e9be674fa9572fba314908ca7bf68a4e892cbed00,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t03,qwen-reference,20261043,1152,768,74.881,succeeded,,False,02702a1ac7778856650e59c4356314cce0d429f9d4d9762f64d2b2c237589e60,NVIDIA GeForce RTX 4090
+s04,Over shoulder,t04,qwen-reference,20261044,1152,768,74.968,succeeded,,True,df3cb825aa3b320397397f48a5cf39c8d51868455d57ac4325046f167d062ab8,NVIDIA GeForce RTX 4090
+s05,Insert,t01,qwen-reference,20261041,1024,1024,116.578,succeeded,,True,a0408847bf4de0681830ae453a2f0c6920bf34666867a03a59563d6f8ac44c22,NVIDIA GeForce RTX 4090
+s05,Insert,t02,qwen-reference,20261042,1024,1024,81.083,succeeded,,False,a3fd566f79b8dcb94492f584b7ef60ef40579b75829d591cb5b704ace77788ed,NVIDIA GeForce RTX 4090
+s05,Insert,t03,qwen-reference,20261043,1024,1024,80.748,succeeded,,False,d8b4c2909f70750fa19cc0b14f9952ad856896bff0a7493a8d3bcd5847cd0479,NVIDIA GeForce RTX 4090
+s05,Insert,t04,qwen-reference,20261044,1024,1024,80.853,succeeded,,False,a5273d75588610846bb0865b135d8418f96b4ebc3e92179682d50f1d3efbdd28,NVIDIA GeForce RTX 4090
+s05,Insert,t05,qwen-reference,20261045,1024,1024,81.045,succeeded,,False,6895cb3c542bf717624e41dc8c99045e659ead7d76e5a639e75a727842cf7235,NVIDIA GeForce RTX 4090
+s05,Insert,t06,qwen-reference,20261046,1024,1024,80.356,succeeded,,False,1d4ef79d4a2101b6b2f36e142dd1f742b5667f702e69b3ba76a585236a42e247,NVIDIA GeForce RTX 4090
+s06,Low angle,t01,qwen-reference,20261041,768,1024,81.443,succeeded,,False,31e909907ebc0e3b9d6eeece9d59f8905a48708a7ac22fa56aca2392952bb3fc,NVIDIA GeForce RTX 4090
+s06,Low angle,t02,qwen-reference,20261042,768,1024,70.074,succeeded,,True,931ab3cfeeb49ed7171c93a602f87976b8386766f3e02d18973ad0ad9221ee80,NVIDIA GeForce RTX 4090
+s06,Low angle,t03,qwen-reference,20261043,768,1024,81.012,succeeded,,False,9eb3c9a84ffedc343d8bb03208c5a323e6977d6f4b0317aa8f908ebf723754e0,NVIDIA GeForce RTX 4090
+s06,Low angle,t04,qwen-reference,20261044,768,1024,70.596,succeeded,,False,3987b2c84d8fe3cf3ba9ecaedb578aeca68cf74e2bcbb3db800dfe1507097969,NVIDIA GeForce RTX 4090

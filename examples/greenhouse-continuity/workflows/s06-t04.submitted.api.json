@@ -2,7 +2,14 @@
   "1": {
     "class_type": "LoadImage",
     "inputs": {
-      "image": "references/dc907133f1c5619dbb8f10afbc482393ecf732269ef9dae0b334fb67bdc85ee6.png"
+      "image": {
+        "__type": "core/ASSET",
+        "info": {
+          "id": "0fd72543-65ea-42dc-a916-a285e7bff64d",
+          "hash": "blake3:2c1c51b610efd726d3ee4232a19d916e1de8a1908245a21784d68d806d00f893",
+          "file_path": "a3b36f0797e2425365c6dc4734cb6cb28790b75165fdbc53fe5a7b22936bac9b.png"
+        }
+      }
     }
   },
   "2": {
@@ -20,7 +27,7 @@
         "14",
         0
       ],
-      "prompt": "Requested framing: Insert. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. MACRO INSERT photograph, camera moved close to ONLY the existing two hands holding the exact same real magnetic compass as the reference: one deep cylindrical brass case with slightly flared base and upper-left hinged open plain brass lid with two interior rivets; clear glass cover; cream dial with printed black cardinal letters N at top, E at right, S at bottom, W at left, in that clockwise order; circular black degree tick ring with alternating long and short ticks; one classic STRAIGHT TWO-ENDED needle with a RED north half pointing toward N and SILVER-WHITE south half pointing toward S, small plain brass center pivot. Keep its case depth, lid, glass, precise letter layout, tick spacing, red/silver needle and small pivot from the reference. No X needle or star, no extra compass or ring/chain. The compass dominates the frame, dial fully visible and readable. Same hand grip and mustard cuffs, same wooden greenhouse bench softly blurred behind. Frame the complete open lid, thick brass sidewall and glass-covered dial, realistic perspective. No head, face, torso, inset or second compass. Change only camera position and crop; preserve compass design and colors exactly.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
+      "prompt": "Requested framing: Low angle. Edit the reference photograph into a new camera shot of the SAME scene. Preserve the exact same person and facial identity, hair, outfit, bag, object design, materials, lighting and set architecture from the reference. Change camera position and framing as requested; do not simply repeat the reference composition. WORM'S-EYE VIEW: the camera sits on the wet greenhouse floor at her feet and points steeply up at the same fictional adult woman from the reference, with the same light chestnut chin-length wavy bob, the same mustard canvas field coat with flap chest pockets and metal buttons, and the same chunky teal cable-knit scarf. Strong foreshortening: her coat hem and legs loom large at the bottom of the frame, her head is small near the top, and the greenhouse roof ridge and dark green glazing bars converge overhead. She holds the same open brass compass in both hands at chest height and looks down at it; its underside and the edge of the brass case face the camera. Same soft rainy daylight.. Keep only elements visible in this framing; do not force a face into a detail or rear view."
     }
   },
   "3": {
@@ -38,13 +45,13 @@
         "14",
         0
       ],
-      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, X needle, four-arm needle, compass star, grey needle without red north half, different compass, different person, dark curly hair, navy scarf, thin smooth scarf band, flat rib knit scarf, face, head, torso, full body, wide shot, medium portrait"
+      "prompt": "anime, illustration, painting, CGI, watermark, logo, brand name, malformed hands, extra fingers, duplicate object, blank dial, missing cardinal letters, gibberish letters, repeated letters, reversed cardinal order, compass rose, star on dial, extra needles, X needle, four-arm needle, numbers on dial, different compass, different person, different hair color, navy scarf, thin smooth scarf, eye-level camera, high angle, overhead view"
     }
   },
   "4": {
     "class_type": "EmptySD3LatentImage",
     "inputs": {
-      "width": 1024,
+      "width": 768,
       "height": 1024,
       "batch_size": 1
     }
@@ -68,7 +75,7 @@
         "4",
         0
       ],
-      "seed": 20261076,
+      "seed": 20261044,
       "steps": 24,
       "cfg": 4.0,
       "sampler_name": "euler",

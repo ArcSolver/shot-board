@@ -1,6 +1,8 @@
 # Technical setup
 
-Requires an NVIDIA GPU with 24 GB VRAM. The four Q8_0 Qwen files add up to about 31 GB, so ComfyUI offloads part of them. To use the Q4_K_M files (about 20 GB), download them with `--quant Q4_K_M` and start the app with `SHOTBOARD_QWEN_QUANT=Q4_K_M`.
+Requires an NVIDIA GPU with 24 GB VRAM. The four Q8_0 Qwen edit files add up to about 31 GB, so ComfyUI offloads part of them. To use the Q4_K_M files (about 20 GB), download them with `--quant Q4_K_M` and start the app with `SHOTBOARD_QWEN_QUANT=Q4_K_M`.
+
+Boards that render first takes with Qwen-Image-2512 need one more file, about 22 GB at Q8_0 or 13 GB at Q4_K_M. It shares the text encoder and VAE with the edit model. Add `--first-takes` to `setup_reference.py` and `model_report.py` to get and measure it.
 
 If ComfyUI stops answering during a take, the app waits up to three minutes for it to come back and retries that take once.
 
@@ -48,7 +50,8 @@ GPU worker: model downloads
 cd /opt/shot-board
 unset HF_TOKEN HUGGING_FACE_HUB_TOKEN COMFY_API_KEY
 .runtime/engine-venv/bin/python scripts/download_model.py --model-dir .runtime/ComfyUI/models/checkpoints
-.runtime/engine-venv/bin/python scripts/setup_reference.py --download --reference-model-dir .runtime/ComfyUI/models --qwen-model-dir .runtime/ComfyUI/models/diffusion_models
+.runtime/engine-venv/bin/python scripts/setup_reference.py --download --first-takes --reference-model-dir .runtime/ComfyUI/models --qwen-model-dir .runtime/ComfyUI/models/diffusion_models
+# Leave out --first-takes if you only render first takes with SDXL
 # Q4_K_M instead of Q8_0: add --quant Q4_K_M here and to model_report.py
 ```
 
@@ -64,6 +67,13 @@ diffusion
 ```sh
 # URL: https://huggingface.co/unsloth/Qwen-Image-Edit-2511-GGUF/resolve/0d33d9692b4b26212297240d87b0d4719aa4fd06/qwen-image-edit-2511-Q8_0.gguf
 # Placement: .runtime/ComfyUI/models/diffusion_models/qwen-image-edit-2511-Q8_0.gguf
+```
+
+Qwen-Image-2512 for first takes
+
+```sh
+# URL: https://huggingface.co/unsloth/Qwen-Image-2512-GGUF/resolve/1626d7531f84b4d2ea1cd6d2e69f41ec027dd354/qwen-image-2512-Q8_0.gguf
+# Placement: .runtime/ComfyUI/models/diffusion_models/qwen-image-2512-Q8_0.gguf
 ```
 
 text encoder
@@ -91,7 +101,7 @@ GPU worker: model report
 
 ```sh
 cd /opt/shot-board
-.runtime/engine-venv/bin/python scripts/model_report.py --models-dir .runtime/ComfyUI/models > .runtime/engine-models.json.tmp && mv .runtime/engine-models.json.tmp .runtime/engine-models.json
+.runtime/engine-venv/bin/python scripts/model_report.py --first-takes --models-dir .runtime/ComfyUI/models > .runtime/engine-models.json.tmp && mv .runtime/engine-models.json.tmp .runtime/engine-models.json
 ```
 
 GPU worker: terminal 1, engine
