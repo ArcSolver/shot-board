@@ -145,6 +145,10 @@ function render() {
     lastSignature=signature;
     $('script-fields').innerHTML=scriptFields();
     $('hero-line').innerHTML=heroLine();
+    // The line above each cut's title names the hero and where the still came from; a board with nothing to name drops the row.
+    const shown=s=>{const done=s.takes.filter(t=>t.status==='succeeded');return done.find(t=>t.id===s.picked)||done[0];};
+    const srcLine=s=>{const src=sourceLabel(shown(s));return heroRef?.shot_id===s.id&&continuity.enabled?`<b>Hero</b>${src?` · ${src}`:''}`:src;};
+    const named=board.shots.some(s=>srcLine(s));
     $('board-grid').innerHTML=board.shots.map((s,i)=>{
       const done=s.takes.filter(t=>t.status==='succeeded'),hero=done.find(t=>t.id===s.picked)||done[0];
       const active=s.takes.find(t=>t.status==='running');
@@ -154,8 +158,7 @@ function render() {
       const inQueue=s.takes.some(t=>['queued','running'].includes(t.status));
       const facts=hero?`<span>${inQueue?`${TAKE_NO(hero)} · ${done.length} of ${s.takes.length} ready`:`${TAKE_NO(hero)} of ${done.length}`}</span>`:`<span>${s.takes.length?`${done.length} of ${s.takes.length} ready`:'No takes yet'}</span>`;
       const lock=s.locked_seed!==null?`<span class="seed" title="Seed locked">${icon('lock')}<span class="visually-hidden">Seed locked</span></span>`:'';
-      const src=sourceLabel(hero);
-      return `<article class="shot-card${s.picked?' picked':''}${isHero?' is-hero':''}"><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?img(imageURL(hero),`${s.title} ${hero.id}`,SIZES.card,i===0,SLOT.card):`<span class="empty-frame">${NN(i)}</span>`}${status}</div><p class="cut-src">${isHero?`<b>Hero</b> · ${src}`:src}</p><div class="cut-text"><span class="setup-no">${NN(i)}</span><h3>${escapeHTML(s.title)}</h3><p class="cut-facts">${facts}${verdict}${lock}</p><button class="go" data-compare="${s.id}">Compare &amp; pick</button></div></article>`;
+      return `<article class="shot-card${s.picked?' picked':''}${isHero?' is-hero':''}"><div class="shot-hero" tabindex="0" role="button" aria-label="Compare ${escapeHTML(s.title)}" data-compare="${s.id}">${hero?img(imageURL(hero),`${s.title} ${hero.id}`,SIZES.card,i===0,SLOT.card):`<span class="empty-frame">${NN(i)}</span>`}${status}</div>${named?`<p class="cut-src">${srcLine(s)}</p>`:''}<div class="cut-text"><span class="setup-no">${NN(i)}</span><h3>${escapeHTML(s.title)}</h3><p class="cut-facts">${facts}${verdict}${lock}</p><button class="go" data-compare="${s.id}">Compare &amp; pick</button></div></article>`;
     }).join('');
     document.querySelectorAll('[data-compare]').forEach(el=>{el.onclick=()=>openCompare(el.dataset.compare);el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openCompare(el.dataset.compare);}};});
     $('hero-recipe').hidden=!!heroRef;

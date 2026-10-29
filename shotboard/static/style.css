@@ -414,6 +414,7 @@ dialog::backdrop{background:var(--scrim)}
 .pick-take{font:var(--w-display) var(--t-xs)/var(--lh-1) var(--script);color:var(--ink-2)}
 .export-picks .verdict{margin-left:auto}
 .pick-src{flex-basis:100%;font-size:var(--t-xs);color:var(--ink-3)}
+.export-picks li:not(:has(.pick-src))::before{content:none}
 .zip-files{list-style:none;margin:0;padding:0;border-top:var(--hair) solid var(--rule-strong)}
 .zip-files li{display:grid;grid-template-columns:1fr auto;gap:var(--s0) var(--s4);padding:var(--s2) 0;border-bottom:var(--hair) solid var(--rule);font-size:var(--t-sm)}
 .zip-files b{font-weight:var(--w-strong)}

@@ -128,6 +128,13 @@ assert.equal(vm.runInContext('setupRanges([0,1,3,5,6,7])', context), '01, 02, 04
 context.fixture = hangar;
 vm.runInContext('board=fixture; lastSignature=""; render();', context);
 assert.doesNotMatch(element('board-grid').innerHTML, /Redrawn|Imported|is-hero/, 'A board without a hero claims no reference edits');
+assert.doesNotMatch(element('board-grid').innerHTML, /cut-src/, 'A board of SDXL takes keeps no empty source rows');
+hangar.continuity = {enabled:true, hero:{shot_id:'s01', take_id:hangar.shots[0].picked, seed:1, settings:{}}};
+vm.runInContext('lastSignature=""; render();', context);
+assert.equal((element('board-grid').innerHTML.match(/<p class="cut-src"><b>Hero<\/b><\/p>/g) || []).length, 1, 'An SDXL hero before any reference edit is named Hero alone');
+assert.equal((element('board-grid').innerHTML.match(/<p class="cut-src"><\/p>/g) || []).length, 5, 'The other cards keep the row so the titles line up');
+hangar.continuity = {enabled:false};
+vm.runInContext('lastSignature=""; render();', context);
 assert.match(element('hero-line').innerHTML, /No hero yet/);
 context.fixture = continuity;
 vm.runInContext('board=fixture; lastSignature=""; render();', context);
