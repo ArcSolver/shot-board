@@ -1,11 +1,8 @@
 /* Static board viewer: hide controls that need the GPU worker or a server. */
-#new-board,#edit-toggle,.loop-divider,.takes-select,#generate,#cancel,#queue-panel,.compare-recipe,.render-settings .toggle{display:none!important}
-.static-note{margin:20px 0 0;color:var(--ink-3);font-size:13px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
-.static-note a{color:var(--marker-ink)}
+#new-board,#edit-toggle,.takes-select,#generate,#cancel,#queue-panel,#more-takes,#takes-reason,.compare-recipe,.hero-block .toggle,.hero-actions,#hero-reason,#hero-status{display:none!important}
+.boards-foot{margin:var(--s4) 0 0}
 #reset-dialog{max-width:520px}
-.reset-text{margin:0 0 24px;font-size:15px;color:var(--ink-2)}
-.reset-actions{display:flex;justify-content:flex-end;gap:8px}
-/* The inline "run Shot Board locally" link keeps its line height but gets a 48px touch target. */
-@media(pointer:coarse){.static-note a{padding:16px 0}}
-/* Phones read "Run locally" so the header button stays short next to the logo. */
+.reset-text{margin:var(--s5) 0 var(--s6);font-size:var(--t-md);color:var(--ink-2)}
+.reset-actions{display:flex;justify-content:flex-end;gap:var(--s2)}
+/* Phones read "Run locally" in the header. */
 @media(max-width:600px){.wide-label{display:none}}

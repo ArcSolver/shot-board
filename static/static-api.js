@@ -9,6 +9,9 @@
   const KEY = 'shotboard-static:v7:';
   const GPU_ONLY = 'To render new takes, run Shot Board locally with your own ComfyUI.';
   const realFetch = window.fetch.bind(window);
+  // A file that never arrives is said in the viewer's one offline sentence, the same as the page's own.
+  const NO_FILES = 'The page could not load its board files. Check the connection, then reload the page.';
+  const fetchFile = (input, init) => realFetch(input, init).catch(() => { throw new Error(NO_FILES); });
   const files = new Map();
   const boards = new Map();
   let sizedImages = {};
@@ -20,7 +23,7 @@
 
   async function load(path) {
     if (!files.has(path)) {
-      files.set(path, realFetch(path).then(r => { if (!r.ok) throw new HttpError(404, 'Not found'); return r.json(); }));
+      files.set(path, fetchFile(path).then(r => { if (!r.ok) throw new HttpError(404, 'Not found'); return r.json(); }));
     }
     try { return structuredClone(await files.get(path)); } catch (error) { files.delete(path); throw error; }
   }
@@ -45,9 +48,16 @@
     if ((await examples()).some(ex => ex.board.id === id)) { const board = await shipped(id); save(board); return board; }
     throw new HttpError(404, 'Board not found');
   }
+  // One My boards row, as the app's /api/boards returns it.
+  function boardRow(b) {
+    const scene = (b.config?.scene || '').trim();
+    let title = b.title.trim();
+    if (scene.length > title.length && !/[….!?]$/.test(title)) title += '…';
+    return {id: b.id, title, cuts: b.shots.length, picked: b.shots.filter(s => s.picked).length};
+  }
   function shotFor(board, sid) {
     const shot = board.shots.find(s => s.id === sid);
-    if (!shot) throw new HttpError(404, 'Shot not found');
+    if (!shot) throw new HttpError(404, 'Cut not found');
     return shot;
   }
   const picks = (board) => JSON.stringify(board.shots.map(s => s.picked));
@@ -63,7 +73,7 @@
     return hex(await crypto.subtle.digest('SHA-256', data));
   }
   async function original(url, sha) {
-    if (!originals.has(url)) originals.set(url, realFetch(url).then(r => { if (!r.ok) throw new Error('A picked image could not be loaded.'); return r.arrayBuffer(); }));
+    if (!originals.has(url)) originals.set(url, fetchFile(url).then(r => { if (!r.ok) throw new Error('A picked image could not be loaded.'); return r.arrayBuffer(); }));
     try {
       const data = await originals.get(url);
       if (await sha256(data) !== sha) throw new Error('A picked image changed; export stopped.');
@@ -73,7 +83,7 @@
   function selected(board) {
     return board.shots.map(shot => {
       const take = shot.takes.find(t => t.id === shot.picked && t.status === 'succeeded');
-      if (!take) throw new Error('Pick one completed take for every shot before exporting.');
+      if (!take) throw new Error('Pick one completed take for every cut before exporting.');
       return {shot, take};
     });
   }
@@ -102,7 +112,7 @@
     ctx.textBaseline = 'top'; ctx.imageSmoothingQuality = 'high';
     ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, width, height);
     const [margin, gap] = layout === 'landscape' ? [42, 20] : [34, 18];
-    font(21); ctx.fillStyle = '#0066cc'; ctx.fillText('SHOT BOARD', margin, 26);
+    font(21); ctx.fillStyle = '#233f8f'; ctx.fillText('SHOT BOARD', margin, 26);
     const scene = board.config.scene.split(/\s+/).filter(Boolean).join(' ');
     let size = font(24), lines = wrap(ctx, scene, width - 2 * margin);
     while (lines.length * (size + 6) > 180 && size > 6) { size = font(size - 1); lines = wrap(ctx, scene, width - 2 * margin); }
@@ -187,7 +197,7 @@
     const storyboards = [], savedPicks = await samePicks(board);
     for (const [layout, [width, height]] of Object.entries(LAYOUTS)) {
       const file = `storyboard-${layout}.png`;
-      const blob = savedPicks ? await realFetch(`${boardPath(board.id)}/${file}`).then(r => { if (!r.ok) throw new Error('The storyboard could not be loaded.'); return r.blob(); }) : await storyboardPng(board, layout);
+      const blob = savedPicks ? await fetchFile(`${boardPath(board.id)}/${file}`).then(r => { if (!r.ok) throw new Error('The storyboard could not be loaded.'); return r.blob(); }) : await storyboardPng(board, layout);
       const data = new Uint8Array(await blob.arrayBuffer());
       entries.push({name: file, data});
       storyboards.push({file, width, height, sha256: await sha256(data), layout_version: 1, fit: 'contain',
@@ -216,11 +226,12 @@
     if (is('GET', 'examples')) return json(await examples());
     if (is('POST', 'examples', '*', 'open')) {
       const example = (await examples()).find(ex => ex.slug === p[1]);
-      if (!example) throw new HttpError(404, 'Example not found');
+      if (!example) throw new HttpError(404, 'Board not found');
       await boardFor(example.board.id);
       return json({id: example.board.id});
     }
-    if (is('GET', 'boards')) return json([...boards.values()].reverse().map(b => ({id: b.id, title: b.title})));
+    // My boards lists the shipped boards from the first visit, in their home-page order.
+    if (is('GET', 'boards')) { const rows = []; for (const ex of await examples()) rows.push(boardRow(await boardFor(ex.board.id))); return json(rows); }
     if (is('POST', 'boards')) throw new HttpError(409, GPU_ONLY);
     if (p[0] !== 'boards' || !p[1]) throw new HttpError(404, 'Not found');
     const board = await boardFor(p[1]);
@@ -228,7 +239,7 @@
     if (is('POST', 'boards', '*', 'cancel')) return json({ok: true});
     if (is('POST', 'boards', '*', 'shots', '*', 'pick')) {
       const shot = shotFor(board, p[3]), continuity = board.continuity || {}, hero = continuity.hero || {};
-      if (continuity.enabled && hero.shot_id === shot.id && hero.take_id !== body?.take_id) throw new HttpError(409, 'Turn off Keep continuity before changing the hero pick.');
+      if (continuity.enabled && hero.shot_id === shot.id && hero.take_id !== body?.take_id) throw new HttpError(409, 'Turn off Use hero reference before changing the hero pick.');
       if (!shot.takes.some(t => t.id === body?.take_id && t.status === 'succeeded')) throw new HttpError(409, 'Pick a completed take');
       shot.picked = body.take_id; save(board);
       return json({ok: true});
@@ -248,7 +259,7 @@
       if (!LAYOUTS[layout]) throw new HttpError(422, 'Choose landscape or portrait.');
       // Saved picks: show a WebP copy of the server's storyboard and download the PNG itself.
       if (await samePicks(board)) {
-        const response = await realFetch(`${boardPath(board.id)}/storyboard-${layout}.webp`);
+        const response = await fetchFile(`${boardPath(board.id)}/storyboard-${layout}.webp`);
         response.download = `${boardPath(board.id)}/storyboard-${layout}.png`;
         return response;
       }
@@ -265,7 +276,7 @@
     let body;
     try { body = init.body ? JSON.parse(init.body) : undefined; } catch { return Promise.resolve(json({detail: 'Please check your inputs.'}, 422)); }
     return route((init.method || 'GET').toUpperCase(), url, body)
-      .catch(error => json({detail: error instanceof HttpError ? error.message : 'Request failed'}, error.status || 500));
+      .catch(error => json({detail: error instanceof HttpError || error.message === NO_FILES ? error.message : "That didn't work. Reload the page and try again."}, error.status || 500));
   };
 
   let exporting = false;
@@ -281,15 +292,20 @@
       el.closest('.engine').hidden = true;
     },
     zipBlob,
+    // Resolves true once the ZIP is handed to the browser, so the page can say it is ready; a failure throws a sentence.
     async exportBoard(board) {
-      if (exporting) return;
-      if (await saved(board)) return download(`${boardPath(board.id)}/shot-board.zip`, 'shot-board.zip');
+      if (exporting) return false;
       const button = document.getElementById('export'), label = button.textContent;
       exporting = true; button.textContent = 'Preparing ZIP…'; button.setAttribute('aria-busy', 'true');
       try {
-        const href = URL.createObjectURL(await zipBlob(board));
+        // With the saved picks the build's own ZIP is fetched; otherwise one is made here from the picks.
+        const blob = await saved(board)
+          ? await fetchFile(`${boardPath(board.id)}/shot-board.zip`).then(r => { if (!r.ok) throw new Error('The ZIP could not be loaded. Reload the page and try again.'); return r.blob(); })
+          : await zipBlob(board);
+        const href = URL.createObjectURL(blob);
         download(href, 'shot-board.zip');
         setTimeout(() => URL.revokeObjectURL(href), 60000);
+        return true;
       } finally { exporting = false; button.textContent = label; button.removeAttribute('aria-busy'); }
     },
     reset() {
@@ -303,6 +319,7 @@
     const dialog = document.getElementById('reset-dialog');
     document.getElementById('static-reset').onclick = () => dialog.showModal();
     document.getElementById('reset-cancel').onclick = () => dialog.close();
+    document.getElementById('reset-close').onclick = () => dialog.close();
     document.getElementById('reset-confirm').onclick = () => window.SB.reset();
   });
 })();

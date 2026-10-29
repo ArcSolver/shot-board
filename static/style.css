@@ -1,281 +1,594 @@
+@font-face{font-family:"Hanken Grotesk";src:url(hanken-grotesk.woff2) format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url(courier-prime-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url(courier-prime-700.woff2) format("woff2");font-weight:700;font-display:swap}
 *{box-sizing:border-box}
 :root{
   color-scheme:light;
-  /* Light table: the canvas the frames sit on, the sheets they are printed on, the mat behind each frame. */
-  --table:#f5f5f7;--sheet:#ffffff;--mat:#ebebef;--well:#f5f5f7;
-  --ink:#1d1d1f;--ink-2:#424245;--ink-3:#6e6e73;--ink-faint:#aeaeb2;
-  --rule:rgba(0,0,0,.08);--rule-strong:rgba(0,0,0,.14);--edge:#86868b;
-  /* The select marker: one blue for every pick, ring and next step. */
-  --marker:#0071e3;--marker-hover:#0062c4;--marker-ink:#0066cc;--marker-wash:#e8f1fc;--marker-ring:rgba(0,113,227,.32);
-  --pass:#1b7f37;--fail:#d70015;
-  --lift:0 0 0 1px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.04);
-  --lift-high:0 0 0 1px rgba(0,0,0,.04),0 4px 10px rgba(0,0,0,.06),0 16px 40px rgba(0,0,0,.08);
-  --r-thumb:6px;--r-control:10px;--r-card:16px;--r-dialog:22px;
-  --ease:cubic-bezier(.23,1,.32,1);
-  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
-  --font-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;
+  /* A production office: white script pages on a cool grey desk, graphite type, one blue-black pencil. */
+  --desk:#dde1e5;--page:#ffffff;--page-tint:#f4f5f6;
+  --ink:#1f2328;--ink-2:#474d55;--ink-3:#646b74;--on-ink:#ffffff;
+  --rule:rgba(31,35,40,.12);--rule-strong:rgba(31,35,40,.26);--wash:rgba(31,35,40,.06);
+  /* Field edges need 3:1 against the page (WCAG 1.4.11); buttons are named by their labels and keep --rule-strong. */
+  --rule-field:#83888f;
+  --scrim:rgba(221,225,229,.9);
+  /* The pencil draws setup lines, marks the pick and frames the hero. Nothing else is blue. */
+  --pencil:#233f8f;--pencil-wash:rgba(35,63,143,.08);
+  /* Graphite for the one action that moves the work forward. */
+  --act:#1f2124;--act-hover:#000000;
+  --pass:#2e6a3e;--fail:#9c3d2a;
+  --r:2px;
+
+  /* Spacing: a 4px base. */
+  --s0:2px;--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;--s7:28px;--s8:32px;--s10:40px;--s12:48px;
+  --gutter:32px;--gutter-page:40px;--gutter-phone:16px;
+  /* Type: one scale for both faces. Hanken sets the interface; Courier types the script. */
+  --t-xs:12px;--t-sm:13px;--t-md:14px;--t-lg:16px;--t-xl:20px;--t-2xl:22px;--t-3xl:28px;--t-hero:44px;
+  --lh-1:1;--lh-tight:1.2;--lh-text:1.45;--lh-display:1.04;--lh-field:20px;
+  --w-body:400;--w-ui:550;--w-strong:650;--w-display:700;
+  --track-caps:.02em;--track-tight:-.01em;--track-head:-.02em;--track-hero:-.028em;
+  --ui:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
+  --script:"Courier Prime","Courier New",monospace;
+
+  /* Controls: 36px paint, 32px in the header and for chips, 44px for the composer's main action; 48px touch targets. */
+  --h-sm:28px;--h-bar:32px;--h:36px;--h-lg:44px;--hit:48px;--pad-x:14px;
+  --rim:calc((var(--hit) - var(--h)) / 2);
+  --rim-bar:calc((var(--hit) - var(--h-bar)) / 2);
+  /* Strokes. 2px renders as 2px in every engine and pixel density, drawn as a border, outline or inset line; 1.5px snaps to 1 or 2. */
+  --line:2px;--hair:1px;
+  --focus:2px;--focus-gap:2px;--frame-gap:3px;--wrap-gap:calc(var(--frame-gap) + var(--line) + 2px);
+  /* Setup line geometry, shared by every "number, line, text" list. */
+  --setup-indent:28px;--setup-x:7px;--setup-gap:4px;--no-gap:8px;
+  --z-under:-1;--z-raise:1;--z-sticky:2;--z-toast:10;
+  --ease:cubic-bezier(.23,1,.32,1);--dur-press:.1s;--dur:.15s;--dur-enter:.2s;
+  /* One chevron for the select and the disclosure summary, the same 1.5 stroke as the icon set. */
+  --chevron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' width='10' height='6' fill='none' stroke='%231f2328' stroke-width='1.5'%3E%3Cpath d='m1 1 4 4 4-4'/%3E%3C/svg%3E");
+  --check:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16' fill='none' stroke='%23ffffff' stroke-width='2'%3E%3Cpath d='m3.5 8.5 3 3 6-7'/%3E%3C/svg%3E");
 }
-html{background:var(--table)}
-body{margin:0;background:var(--table);color:var(--ink);font:14px/1.45 var(--font);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
-main{flex:1;width:100%;max-width:1440px;margin:0 auto;padding:0 40px}
+html{background:var(--desk);-webkit-font-smoothing:antialiased;text-size-adjust:100%}
+body{margin:0;background:var(--desk);color:var(--ink);font:var(--w-body) var(--t-md)/var(--lh-text) var(--ui);min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;width:100%;max-width:1440px;margin:0 auto;padding:0 var(--s6)}
 button,input,select,textarea{font:inherit;color:inherit}
 [hidden]{display:none!important}
 .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
+.icons{position:absolute;width:0;height:0;overflow:hidden}
+h1,h2,h3,h4{text-wrap:balance;margin:0}
 p{text-wrap:pretty}
-:focus-visible{outline:2px solid var(--marker);outline-offset:3px}
-
-/* Buttons: pill, one primary per view, the next step in the loop. */
-button,.button{cursor:pointer;border:0;border-radius:980px;background:transparent;color:var(--ink);padding:9px 18px;min-height:36px;font-size:14px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;transition:background-color .16s var(--ease),color .16s var(--ease),transform .12s var(--ease),box-shadow .16s var(--ease)}
-button:active:not(:disabled),.button:active{transform:scale(.97)}
-button:disabled{cursor:not-allowed;color:var(--ink-faint)}
-.primary{background:var(--marker);color:#fff}
-.primary:hover:not(:disabled){background:var(--marker-hover)}
-.primary:disabled{background:var(--mat);color:var(--ink-faint)}
-.quiet{background:rgba(0,0,0,.06);color:var(--ink)}
-.quiet:hover:not(:disabled){background:rgba(0,0,0,.1)}
-.quiet:disabled{background:rgba(0,0,0,.035)}
-.tinted{background:var(--marker-wash);color:var(--marker-ink)}
-.tinted:hover:not(:disabled){background:#dceafb}
-.tinted:disabled{background:rgba(0,0,0,.035)}
-.plain{color:var(--ink)}
-.plain:hover{background:rgba(0,0,0,.06)}
-.link{padding:4px 2px;min-height:0;color:var(--marker-ink);font-size:13px}
-.link:hover{text-decoration:underline}
-.icon{width:36px;height:36px;padding:0;background:rgba(0,0,0,.06);font-size:15px}
-.icon:hover{background:rgba(0,0,0,.1)}
-.large{min-height:48px;font-size:17px;padding:12px 28px}
+::selection{background:var(--ink);color:var(--on-ink)}
+:focus-visible{outline:var(--focus) solid var(--ink);outline-offset:var(--focus-gap)}
+/* A dialog is a keyboard scroller; when Tab wraps onto it, its ring stays inside the page edge. */
+dialog:focus-visible{outline-offset:calc(var(--focus) * -1)}
+.i{width:16px;height:16px;flex:none}
 .muted{color:var(--ink-3)}
+:is(dialog,.script-col,.lightbox-frame){scrollbar-width:thin;scrollbar-color:var(--rule-strong) transparent}
 
-/* Top bar */
-.topbar{position:sticky;top:0;z-index:5;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(245,245,247,.82);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--rule)}
-.brand{display:flex;align-items:center;border-radius:8px}
-.brand-logo{display:block;width:129px;height:32px}
-nav{display:flex;gap:8px;align-items:center}
-/* Header buttons are slimmer than page buttons so the bar reads as navigation, not a call to action. */
-.topbar nav>*{min-height:32px;padding:0 14px}
+/* Buttons: square, 36px. Graphite for the next step, an outlined page for the rest, plain text for navigation. */
+button,.button{position:relative;cursor:pointer;border:0;border-radius:var(--r);background:transparent;color:var(--ink);padding:0 var(--pad-x);min-height:var(--h);font:var(--w-ui) var(--t-sm)/var(--lh-1) var(--ui);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);white-space:nowrap;transition:background-color var(--dur) var(--ease),color var(--dur) var(--ease),box-shadow var(--dur) var(--ease),transform var(--dur-press) var(--ease)}
+/* Only compact buttons press in; frames, cards and rows would jump. */
+:is(.primary,.quiet,.plain,.icon,.chip):active:not(:disabled,[aria-disabled="true"]){transform:scale(.97)}
+/* A busy button keeps its fill and its focus; an unavailable one that holds focus reads as disabled. */
+button:is(:disabled,[aria-disabled="true"]:not([aria-busy="true"])){cursor:not-allowed;color:var(--ink-3)}
+button[aria-busy="true"]{cursor:progress}
+.primary{background-color:var(--act);color:var(--on-ink)}
+.primary:hover:not(:disabled,[aria-disabled="true"]){background-color:var(--act-hover)}
+.primary:is(:disabled,[aria-disabled="true"]:not([aria-busy="true"])){background-color:var(--page-tint);color:var(--ink-3);box-shadow:inset 0 0 0 var(--hair) var(--rule)}
+.quiet{background-color:var(--page);box-shadow:inset 0 0 0 var(--hair) var(--rule-strong)}
+.quiet:hover:not(:disabled,[aria-disabled="true"]){box-shadow:inset 0 0 0 var(--hair) var(--ink-3)}
+.quiet:is(:disabled,[aria-disabled="true"]:not([aria-busy="true"])){box-shadow:inset 0 0 0 var(--hair) var(--rule)}
+.plain{color:var(--ink-2)}
+@media(hover:hover){.plain:hover:not(:disabled){color:var(--ink);background-color:var(--wash)}}
+.state{color:var(--pencil);background-color:var(--pencil-wash);box-shadow:inset 0 0 0 var(--line) var(--pencil);cursor:default}
+.link{padding:var(--s1) var(--s0);min-height:0;font-weight:var(--w-ui);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.link:hover{text-decoration-thickness:2px}
+.icon{width:var(--h);height:var(--h);padding:0;background-color:var(--page);box-shadow:inset 0 0 0 var(--hair) var(--rule-strong)}
+.icon:hover:not(:disabled){box-shadow:inset 0 0 0 var(--hair) var(--ink-3)}
+.icon:disabled{box-shadow:inset 0 0 0 var(--hair) var(--rule)}
+.large{min-height:var(--h-lg);font-size:var(--t-lg);padding:0 var(--s6)}
+.back{margin-left:calc(var(--s3) * -1);padding:0 var(--s3) 0 var(--s2)}
 
-/* Home */
-.home-title{font-size:48px;font-weight:600;letter-spacing:-.025em;line-height:1.08;padding:56px 0 12px}
-.home-lede{max-width:640px;margin:0 0 32px;font-size:19px;line-height:1.4;color:var(--ink-2)}
-.featured-board{background:var(--sheet);border-radius:var(--r-card);overflow:hidden;box-shadow:var(--lift)}
-.featured-content{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);min-height:460px}
-.feature-cover{position:relative;overflow:hidden;min-width:0}
-.feature-cover>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transition:transform .8s var(--ease)}
-.featured-board:hover .feature-cover>img{transform:scale(1.02)}
-.feature-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(0,0,0,.62))}
-.feature-caption{position:absolute;left:32px;right:32px;bottom:32px;z-index:1;display:flex;flex-direction:column;align-items:flex-start;gap:16px}
-.feature-caption h2{font-size:34px;font-weight:600;letter-spacing:-.02em;color:#fff}
-.on-photo{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.18)}
-.on-photo:hover{background:#f5f5f7}
-.feature-mosaic{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:16px}
-.feature-cut{position:relative;display:block;min-width:0;min-height:0;padding:0;border-radius:10px;overflow:hidden;background:var(--mat)}
-.feature-cut img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:transform .3s var(--ease)}
-.feature-cut:hover img{transform:scale(1.03)}
-.feature-cut span{position:absolute;left:8px;bottom:8px;z-index:1;font-size:12px;font-weight:500;color:var(--ink);background:rgba(255,255,255,.92);padding:3px 8px;border-radius:980px}
-.section-title{font-size:21px;font-weight:600;letter-spacing:-.01em;margin:48px 0 16px}
-.example-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-bottom:56px}
-.gallery-card{display:block;padding:0;border-radius:var(--r-card);overflow:hidden;background:var(--sheet);box-shadow:var(--lift);text-align:left;transition:box-shadow .2s var(--ease),transform .2s var(--ease)}
-.gallery-card:hover{box-shadow:var(--lift-high);transform:translateY(-2px)}
-.gallery-card:active{transform:scale(.99)}
-.gallery-images{display:flex;gap:2px;height:150px;overflow:hidden}
-.gallery-images img{width:33.333%;min-width:0;object-fit:cover}
-.gallery-caption{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 18px;font-size:14px;font-weight:500}
-.gallery-caption small{font-size:12px;font-weight:400;color:var(--ink-3)}
-
-/* Composer */
-#composer{max-width:760px;margin:0 auto;padding:56px 0 72px}
-#composer h1{font-size:40px;font-weight:600;letter-spacing:-.025em;margin-bottom:24px}
-.composer-panel{background:var(--sheet);border-radius:var(--r-card);padding:28px;box-shadow:var(--lift);display:flex;flex-direction:column}
-.field-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.field-head label{font-size:14px;font-weight:600;color:var(--ink)}
-textarea,input,select{width:100%;background:var(--well);color:var(--ink);border:1px solid var(--edge);border-radius:var(--r-control);padding:9px 12px;min-height:36px;font-size:14px;transition:border-color .16s,box-shadow .16s}
-textarea:focus,input:focus,select:focus{outline:0;border-color:var(--marker);box-shadow:0 0 0 3px var(--marker-ring)}
-input[type=checkbox]{width:18px;height:18px;min-height:0;padding:0;accent-color:var(--marker)}
+/* Fields: inset, a shade darker than the page they sit on; one line paints at button height. */
+textarea,input,select{width:100%;background:var(--page-tint);color:var(--ink);border:var(--hair) solid var(--rule-field);border-radius:var(--r);padding:calc((var(--h) - var(--lh-field) - 2 * var(--hair)) / 2) var(--s3);min-height:var(--h);font-size:var(--t-md);line-height:var(--lh-field);transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
+:is(textarea,input,select):hover:not(:disabled):not(:focus){border-color:var(--ink-3)}
+:is(textarea,input:not([type=checkbox]),select):focus{outline:var(--focus) solid transparent;border-color:var(--ink);box-shadow:0 0 0 var(--hair) var(--ink)}
+:is(textarea,input,select):disabled{color:var(--ink-3);background:var(--page);border-color:var(--rule);cursor:not-allowed}
+:is(textarea,input:not([type=checkbox]))[aria-invalid="true"],:is(textarea,input:not([type=checkbox]))[aria-invalid="true"]:focus{border-color:var(--fail)}
+:is(textarea,input:not([type=checkbox]))[aria-invalid="true"]:focus{box-shadow:0 0 0 var(--hair) var(--fail)}
+.field-error{margin:var(--s2) 0 0;font-size:var(--t-sm);color:var(--fail)}
 ::placeholder{color:var(--ink-3)}
-select{appearance:none;-webkit-appearance:none;padding-right:32px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%231d1d1f' stroke-width='1.5'%3E%3Cpath d='m1 1 4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;cursor:pointer}
-textarea{resize:vertical;min-height:120px;font-size:21px;line-height:1.4;padding:14px 16px}
-label{font-size:12px;font-weight:500;color:var(--ink-2)}
-.coverage-preview{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:20px 0 4px}
-.composition-chip{border-radius:12px;background:var(--table);padding:12px 4px 10px;text-align:center;font-size:12px;font-weight:500;color:var(--ink-2)}
-.composition-chip svg{display:block;width:44px;height:30px;margin:0 auto 6px;color:var(--marker-ink)}
-summary{cursor:pointer;font-size:14px;font-weight:500;color:var(--ink);padding:14px 0;list-style:none;display:flex;align-items:center;gap:8px}
+select{appearance:none;-webkit-appearance:none;padding-right:var(--s8);background-image:var(--chevron);background-repeat:no-repeat;background-position:right var(--s3) center;cursor:pointer}
+textarea{resize:vertical;padding:var(--s2) var(--s3);line-height:var(--lh-text)}
+/* The checkbox is drawn square like everything else: graphite edge, pencil fill and a white check once on. */
+input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:none;width:16px;height:16px;min-height:0;padding:0;margin:0;background:var(--page) center/12px 12px no-repeat;border:var(--hair) solid var(--ink-3);cursor:pointer}
+input[type=checkbox]:checked{background-color:var(--pencil);background-image:var(--check);border-color:var(--pencil)}
+input[type=checkbox]:disabled{background-color:var(--page-tint);border-color:var(--rule-strong)}
+input[type=checkbox]:checked:disabled{background-color:var(--ink-3);border-color:var(--ink-3)}
+input[type=checkbox]:focus-visible{outline:var(--focus) solid var(--ink);outline-offset:var(--focus-gap)}
+/* Two label roles: field labels and legends, and group titles. */
+label,.review-verdict legend,.recipe-group h4,.export-label,.chip-label{font:var(--w-strong) var(--t-xs)/var(--lh-tight) var(--ui);color:var(--ink-2)}
+summary,.takes-head h3,.section-label,.recipe-label{font:var(--w-strong) var(--t-sm)/var(--lh-tight) var(--ui);color:var(--ink)}
+label :is(textarea,input,select){font-weight:var(--w-body)}
+summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:var(--s2);min-height:var(--h)}
 summary::-webkit-details-marker{display:none}
-summary::before{content:"";width:6px;height:6px;border-right:1.5px solid var(--ink-3);border-bottom:1.5px solid var(--ink-3);transform:rotate(-45deg);transition:transform .16s var(--ease);flex-shrink:0}
-details[open]>summary::before{transform:rotate(45deg)}
-.advanced{border-top:1px solid var(--rule);margin-top:20px}
-.bible-fields{display:grid;gap:12px;margin:4px 0 20px}
-.bible-fields input,.form-bottom input,.form-bottom select{display:block;margin-top:6px}
-.section-label{display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin:16px 0 8px}
-.chip-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-.chip-label{width:72px;font-size:12px;color:var(--ink-3)}
-.chip{min-height:30px;padding:5px 12px;font-size:13px;font-weight:400;background:rgba(0,0,0,.05)}
-.chip:hover{background:rgba(0,0,0,.09)}
-.chip.active{background:var(--marker-wash);color:var(--marker-ink);font-weight:500}
-.form-bottom{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid var(--rule);padding-top:16px;margin-top:12px}
-.composer-panel>.primary{margin-top:24px;align-self:stretch}
+summary::before{content:"";width:10px;height:6px;flex-shrink:0;background:var(--ink-3);-webkit-mask:var(--chevron) center/contain no-repeat;mask:var(--chevron) center/contain no-repeat;transform:rotate(-90deg);transition:transform var(--dur) var(--ease),background-color var(--dur) var(--ease)}
+summary:hover::before{background:var(--ink)}
+details[open]>summary::before{transform:none}
+
+/* Script type: the scene, cues, slate marks (setup numbers and take IDs) and file names are typed, as a script is. */
+.cue{margin:var(--s5) 0 var(--s1);font:var(--w-display) var(--t-sm)/var(--lh-tight) var(--script);letter-spacing:var(--track-caps);text-transform:uppercase;color:var(--ink)}
+.cue:first-child{margin-top:0}
+.setup-no{font:var(--w-display) var(--t-sm)/var(--lh-1) var(--script);color:var(--pencil);font-variant-numeric:tabular-nums}
+/* A tight line keeps the typed span inside its sentence's line, so a caption with a number is no taller than one without. */
+.take-no,.slate{font-family:var(--script);font-weight:var(--w-display);font-variant-numeric:tabular-nums;line-height:var(--lh-1)}
+.verdict{display:inline-flex;align-items:baseline;gap:var(--s1);font-size:var(--t-xs);font-weight:var(--w-strong)}
+.verdict::before{content:"";flex:none;width:8px;height:8px;border:var(--line) solid currentColor}
+.verdict.pass{color:var(--pass)}
+.verdict.pass::before{background:currentColor}
+.verdict.fail{color:var(--fail)}
+
+/* Top bar, on the desk */
+.topbar{width:100%;max-width:1440px;margin:0 auto;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--s6)}
+.brand{display:flex;align-items:center;border-radius:var(--r)}
+.brand-logo{display:block;width:129px;height:32px}
+nav{display:flex;gap:var(--s2);align-items:center}
+/* Header buttons are slimmer than page buttons so the bar reads as navigation, not a call to action. */
+.topbar nav>*{min-height:var(--h-bar);padding:0 var(--pad-x)}
+
+/* A page on the desk */
+.page{background:var(--page)}
+
+/* Home: the scene line branches into one setup line per cut, and each line lands on that cut's pick. */
+.home-page{padding:var(--gutter-page)}
+.intro{display:flex;align-items:flex-end;gap:var(--s8)}
+.intro-words{flex:1;min-width:0}
+.home-title{font-size:var(--t-hero);font-weight:var(--w-display);letter-spacing:var(--track-hero);line-height:var(--lh-display)}
+.home-lede{max-width:620px;margin:var(--s3) 0 0;font-size:var(--t-lg);line-height:var(--lh-text);color:var(--ink-2)}
+.intro-actions{display:flex;gap:var(--s2);flex:none}
+.lined-scene{margin-top:var(--s10)}
+.scene-line{margin:0;text-align:center;font:var(--w-body) var(--t-3xl)/var(--lh-tight) var(--script);color:var(--ink);text-wrap:balance}
+.setups{position:relative;display:flex;gap:var(--s5);padding-top:var(--s5);margin-top:var(--s2)}
+.setups::before{content:"";position:absolute;left:50%;top:0;margin-left:calc(var(--line) / -2);height:var(--s5);border-left:var(--line) solid var(--pencil)}
+.setup{position:relative;flex:var(--ar,1.4) 1 0;min-width:0;min-height:0;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding:0;text-align:left;white-space:normal;font:inherit;color:inherit}
+.setup::before{content:"";position:absolute;top:0;left:calc(var(--s5) / -2);right:calc(var(--s5) / -2);border-top:var(--line) solid var(--pencil)}
+.setup:first-child::before{left:calc(50% - var(--line) / 2)}
+.setup:last-child::before{right:calc(50% - var(--line) / 2)}
+.setups .setup-no{position:absolute;top:var(--s3);left:calc(50% + var(--line) / 2 + var(--no-gap))}
+.setups .stem{align-self:center;height:42px;border-left:var(--line) solid var(--pencil)}
+.setups .frame{display:block;position:relative;aspect-ratio:var(--ar,1.4);margin-top:var(--s1);background:var(--page-tint);overflow:hidden;outline:var(--hair) solid transparent;outline-offset:var(--frame-gap);transition:outline-color var(--dur) var(--ease)}
+.setups .frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.setup:hover .frame{outline-color:var(--rule-strong)}
+.setup:focus-visible{outline-offset:var(--wrap-gap)}
+:is(.take,.setup,.hero-card,.gallery-card,.shot-hero,.take-zoom,.board-link){border-radius:0}
+.setup .cap{padding-top:var(--s2);font-size:var(--t-sm);line-height:var(--lh-text)}
+.setup .cap b{display:block;font-weight:var(--w-strong)}
+.setup .cap .src{display:block;color:var(--ink-2)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 var(--s5);margin:var(--s8) 0 0;border-top:var(--hair) solid var(--rule)}
+.facts div{padding-top:var(--s4)}
+.facts dt{font-size:var(--t-xs);color:var(--ink-3)}
+.facts dd{margin:var(--s1) 0 0;font-size:var(--t-md);font-weight:var(--w-ui)}
+.section-title{font-size:var(--t-lg);font-weight:var(--w-strong);margin:var(--s8) 0 var(--s3)}
+.example-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s5);margin-bottom:var(--s10)}
+.gallery-card{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:var(--s4);min-height:0;background:var(--page);text-align:left;white-space:normal;font:inherit;transition:box-shadow var(--dur) var(--ease)}
+.gallery-card:hover{box-shadow:0 0 0 var(--hair) var(--rule-strong)}
+.gallery-strip{display:flex;gap:var(--s1);align-items:flex-end}
+.mini{flex:var(--ar,1.4) 1 0;min-width:0;display:flex;flex-direction:column}
+.mini-no{display:block;padding:0 0 var(--s1) var(--no-gap);border-left:var(--line) solid var(--pencil);font:var(--w-display) var(--t-xs)/var(--lh-1) var(--script);color:var(--pencil)}
+.mini-frame{display:block;position:relative;aspect-ratio:var(--ar,1.4);background:var(--page-tint);overflow:hidden}
+.mini-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gallery-caption{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3);margin-top:var(--s4);font-size:var(--t-md);font-weight:var(--w-strong)}
+.gallery-caption small{font-size:var(--t-xs);font-weight:var(--w-body);color:var(--ink-3);white-space:nowrap}
+.gallery-scene{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:var(--s2);font:var(--w-body) var(--t-sm)/var(--lh-text) var(--script);color:var(--ink-2)}
+
+/* Composer: one setup line per cut drops from the scene onto the coverage template. */
+.composer-page{max-width:820px;margin:var(--s4) auto var(--s12);padding:var(--gutter-page);display:flex;flex-direction:column}
+.composer-page h1{font-size:var(--t-3xl);font-weight:var(--w-display);letter-spacing:var(--track-head);margin-bottom:var(--s6)}
+.field-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--s2)}
+.field-head label{font:var(--w-display) var(--t-sm)/var(--lh-tight) var(--script);letter-spacing:var(--track-caps);text-transform:uppercase;color:var(--ink)}
+#scene{min-height:112px;font:var(--w-body) var(--t-xl)/var(--lh-text) var(--script);padding:var(--s3) var(--s4)}
+.coverage-preview{margin:0 0 var(--s1)}
+.setups.even{gap:var(--s3)}
+.setups.even .setup{flex:1 1 0;cursor:default}
+.setups.even .composition-chip{flex:1}
+.setups.even .setup::before{left:calc(var(--s3) / -2);right:calc(var(--s3) / -2)}
+.setups.even .setup:first-child::before{left:calc(50% - var(--line) / 2)}
+.setups.even .setup:last-child::before{right:calc(50% - var(--line) / 2)}
+.composition-chip{margin-top:var(--s1);padding:var(--s3) var(--s1) var(--s2);background:var(--page-tint);text-align:center;font-size:var(--t-xs);font-weight:var(--w-ui);color:var(--ink-2)}
+.composition-chip svg{display:block;width:42px;height:30px;margin:0 auto var(--s2);color:var(--ink-2)}
+.advanced{border-top:var(--hair) solid var(--rule);margin-top:var(--s6);padding-top:var(--s1)}
+.advanced>summary{min-height:var(--h-lg)}
+.bible-fields{display:grid;gap:var(--s3);margin:var(--s1) 0 var(--s5)}
+.bible-fields input,.form-bottom input,.form-bottom select{display:block;margin-top:var(--s2)}
+.section-label{display:block;margin:var(--s4) 0 var(--s2)}
+.chip-row{display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s2)}
+.chip-label{width:72px}
+.chip{min-height:var(--h-bar);padding:0 var(--s3);font-size:var(--t-sm);font-weight:var(--w-ui);background-color:var(--page);box-shadow:inset 0 0 0 var(--hair) var(--rule-strong);color:var(--ink-2)}
+.chip:hover{color:var(--ink);box-shadow:inset 0 0 0 var(--hair) var(--ink-3)}
+.chip.active{color:var(--pencil);background-color:var(--pencil-wash);box-shadow:inset 0 0 0 var(--line) var(--pencil)}
+.form-bottom{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);border-top:var(--hair) solid var(--rule);padding-top:var(--s4);margin-top:var(--s3)}
+.composer-page>.primary{margin-top:var(--s7);align-self:flex-end}
 
 /* Board */
-#workspace{padding-bottom:40px}
-.board-title{font-size:28px;font-weight:600;letter-spacing:-.02em;line-height:1.2;max-width:900px;padding:40px 0 20px}
-.board-note{margin:-10px 0 18px;font-size:13px;color:var(--ink-3)}
-.loop-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px;margin-bottom:24px;background:var(--sheet);border-radius:980px;box-shadow:var(--lift)}
-.loop-divider{width:1px;height:20px;background:var(--rule-strong)}
-.render-group,.export-group{display:flex;align-items:center;gap:8px}
-.export-group{margin-left:auto}
-.takes-select select{width:auto;min-height:36px;border-radius:980px;border-color:var(--edge);background-color:var(--sheet);font-size:14px;padding:7px 32px 7px 14px}
-.pick-progress{display:flex;align-items:center;gap:10px;padding:0 10px;font-size:13px;font-weight:500;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.pick-meter{display:flex;gap:3px}
-.pick-meter i{width:14px;height:6px;border-radius:3px;background:var(--mat);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-.pick-meter i.on{background:var(--marker);box-shadow:none}
-.render-settings{position:relative}
-.render-settings>summary{padding:8px 12px;border-radius:980px;font-size:14px;color:var(--ink-2)}
-.render-settings>summary:hover{background:rgba(0,0,0,.06)}
-.popover{position:absolute;left:0;top:calc(100% + 8px);z-index:4;width:320px;padding:16px;background:var(--sheet);border-radius:14px;box-shadow:var(--lift-high);transform-origin:top left;animation:pop .18s var(--ease)}
-@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
-.toggle{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink)}
-.popover-label{margin:14px 0 2px;font-size:13px;font-weight:600;color:var(--ink)}
-.popover-meta{margin:6px 0 0;font-size:13px;color:var(--ink-3);line-height:1.5}
-.recipe{border-top:1px solid var(--rule);margin-top:14px}
-.board-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-.shot-card{display:flex;flex-direction:column;background:var(--sheet);border-radius:var(--r-card);overflow:hidden;box-shadow:var(--lift);transition:box-shadow .2s var(--ease)}
-.shot-card:hover{box-shadow:var(--lift-high)}
-.shot-hero{position:relative;aspect-ratio:4/3;background:var(--mat);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden}
+#workspace{padding:var(--s2) 0 var(--s10)}
+.board-page{padding:0}
+.loop-bar{display:flex;align-items:center;gap:var(--s3) var(--s5);flex-wrap:wrap;padding:var(--s4) var(--gutter);border-bottom:var(--hair) solid var(--rule)}
+.board-head{min-width:0}
+.board-name{font-size:var(--t-xl);font-weight:var(--w-display);letter-spacing:var(--track-tight);line-height:var(--lh-tight)}
+.pick-progress{display:flex;align-items:baseline;flex-wrap:wrap;gap:var(--s0) var(--s4);margin-top:var(--s1);font-size:var(--t-sm);color:var(--ink-2);font-variant-numeric:tabular-nums}
+#pick-count{font-weight:var(--w-strong);color:var(--ink)}
+/* The pick meter is the setup numbers themselves: drawn solid once a cut has a pick, dashed while it is open. */
+.pick-meter{display:flex;gap:var(--s1)}
+.pick-meter i{font:var(--w-display) var(--t-xs)/var(--lh-1) var(--script);font-style:normal;color:var(--ink-3);padding:var(--s1) var(--s0);border-bottom:var(--line) dashed var(--ink-3)}
+.pick-meter i.on{color:var(--pencil);border-bottom-style:solid;border-color:var(--pencil)}
+.loop-actions{margin-left:auto;display:flex;align-items:center;gap:var(--s2)}
+.render-group{display:flex;align-items:center;gap:var(--s2)}
+.takes-select select{width:auto;background-color:var(--page);font-size:var(--t-sm);font-weight:var(--w-ui);padding:0 var(--s8) 0 var(--s3)}
+.queue-panel{padding:var(--s3) var(--gutter) 0;border-bottom:var(--hair) solid var(--rule)}
+.queue-panel>div{display:flex;gap:var(--s3);align-items:baseline}
+.queue-panel strong{font-size:var(--t-sm);font-weight:var(--w-strong);font-variant-numeric:tabular-nums}
+.queue-panel span{margin-left:auto;font-size:var(--t-sm);color:var(--ink-3);font-variant-numeric:tabular-nums}
+progress{display:block;width:100%;height:var(--line);margin:var(--s3) 0 calc(var(--hair) * -1);border:0;background:transparent;-webkit-appearance:none;appearance:none}
+progress::-webkit-progress-bar{background:transparent}
+progress::-webkit-progress-value{background:var(--pencil)}
+progress::-moz-progress-bar{background:var(--pencil)}
+.lined-board{display:grid;grid-template-columns:340px minmax(0,1fr);gap:var(--s10);padding:var(--s6) var(--gutter) var(--gutter);align-items:start}
+/* The script column stays beside the cuts; a long scene scrolls inside it instead of pushing it off screen. */
+.script-col{position:sticky;top:var(--s4);max-height:calc(100vh - var(--s8));overflow:auto;margin-left:calc(var(--s2) * -1);padding:0 var(--s1) var(--s1) var(--s2)}
+.board-title{margin:0;font:var(--w-body) var(--t-xl)/var(--lh-text) var(--script);color:var(--ink);overflow-wrap:anywhere}
+.script-notes>summary{display:none}
+#script-fields>.cue:first-child{margin-top:var(--s5)}
+.script-text{margin:0;font:var(--w-body) var(--t-md)/var(--lh-text) var(--script);color:var(--ink-2)}
+.hero-block{margin-top:var(--s6);padding-top:var(--s4);border-top:var(--hair) solid var(--rule)}
+.hero-card{display:flex;align-items:flex-start;justify-content:flex-start;gap:var(--s3);width:100%;padding:0;min-height:0;text-align:left;white-space:normal;font:inherit;color:inherit;margin-top:var(--s1)}
+.hero-thumb{position:relative;flex:none;width:96px;aspect-ratio:4/3;background:var(--page-tint);outline:var(--line) solid var(--pencil);outline-offset:var(--focus-gap)}
+.hero-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.hero-text{display:flex;flex-direction:column;gap:var(--s0);min-width:0;font-size:var(--t-sm);color:var(--ink-2)}
+.hero-name{display:flex;align-items:baseline;gap:var(--s2);font-size:var(--t-lg);font-weight:var(--w-strong);color:var(--ink)}
+.hero-card:hover .hero-name{text-decoration:underline;text-underline-offset:4px}
+/* One setup line runs from the hero down to the cuts a reference edit redraws; it leaves the thumb at its centre. */
+.hero-branch{position:relative;margin:0 0 0 calc(48px - var(--line) / 2);padding:var(--s4) 0 0 var(--s5)}
+.branch-stem{position:absolute;left:0;top:var(--s0);width:var(--s3);height:var(--s7);border-left:var(--line) solid var(--pencil);border-bottom:var(--line) solid var(--pencil)}
+.hero-branch p{margin:0;font-size:var(--t-sm);color:var(--ink-2)}
+.branch-nos{font:var(--w-display) var(--t-sm)/var(--lh-1) var(--script);color:var(--pencil)}
+.toggle{display:flex;align-items:center;gap:var(--s3);margin-top:var(--s4);font-size:var(--t-md);font-weight:var(--w-ui);color:var(--ink);cursor:pointer}
+.toggle:has(input:disabled){color:var(--ink-3);cursor:not-allowed}
+.hero-meta{margin:var(--s1) 0 0;font-size:var(--t-sm);color:var(--ink-3);line-height:var(--lh-text)}
+.hero-meta:empty{display:none}
+.recipe-label{margin:var(--s4) 0 0}
+.board-note{margin:0 0 var(--s4);font-size:var(--t-sm);color:var(--ink-3)}
+.board-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s7) var(--s5)}
+.shot-card{display:flex;flex-direction:column;min-width:0}
+.shot-hero{position:relative;aspect-ratio:3/2;background:var(--page-tint);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;outline:var(--hair) solid transparent;outline-offset:var(--frame-gap);transition:outline-color var(--dur) var(--ease)}
 .shot-hero img{width:100%;height:100%;object-fit:contain;display:block}
-.shot-hero:focus-visible{outline-offset:-3px}
-.badge{position:absolute;top:12px;left:12px;font-size:12px;font-weight:600;color:#fff;background:var(--marker);padding:3px 10px;border-radius:980px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
-.frame-status{position:absolute;left:12px;bottom:12px;font-size:12px;font-weight:500;color:var(--ink);background:rgba(255,255,255,.92);padding:3px 10px;border-radius:980px}
-.empty-frame{font:600 40px/1 var(--font-display);color:var(--ink-faint);letter-spacing:-.02em}
-.shot-label{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px 4px}
-.shot-label h3{display:flex;align-items:center;gap:8px;min-width:0;font-family:var(--font);font-size:15px;font-weight:600}
-.shot-label h3 span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.shot-label svg{width:26px;height:19px;flex-shrink:0;color:var(--ink-3)}
-.shot-label b{font-weight:500;color:var(--ink-3);font-variant-numeric:tabular-nums}
-.verdict{display:flex;align-items:center;gap:6px;flex-shrink:0;font-size:12px;font-weight:500;color:var(--ink-3)}
-.verdict::before{content:"";width:7px;height:7px;border-radius:50%}
-.verdict.pass::before{background:var(--pass)}
-.verdict.fail::before{background:var(--fail)}
-.card-bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 12px;padding:10px 16px 16px;margin-top:auto}
-.card-bottom>button{flex-shrink:0;margin-left:auto;min-height:32px;padding:6px 14px;font-size:13px}
-.take-strip{display:flex;gap:6px;align-items:center;min-width:0;overflow-x:auto;scrollbar-width:none;padding:3px}
-.take-strip::-webkit-scrollbar{display:none}
-.take-thumb{flex-shrink:0;width:44px;height:33px;min-height:0;padding:0;border-radius:var(--r-thumb);overflow:hidden;background:var(--mat);font-size:11px;color:var(--ink-2)}
-.take-thumb img{width:100%;height:100%;display:block;object-fit:cover}
-.take-thumb:hover{box-shadow:0 0 0 2px var(--rule-strong)}
-/* Signature: the pick marker, a blue ring with a white gap, like a select circled on a contact sheet. */
-.take-thumb.selected{box-shadow:0 0 0 2px var(--sheet),0 0 0 4px var(--marker)}
-.queue-panel{background:var(--sheet);border-radius:var(--r-card);padding:16px 20px 8px;margin-bottom:24px;box-shadow:var(--lift)}
-.queue-panel>div{display:flex;gap:10px;align-items:center}
-.queue-panel strong{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
-.queue-panel span:last-child{margin-left:auto;font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
-progress{width:100%;height:4px;margin:12px 0;border:0;border-radius:2px;background:var(--mat);overflow:hidden;-webkit-appearance:none;appearance:none}
-progress::-webkit-progress-bar{background:var(--mat)}
-progress::-webkit-progress-value{background:var(--marker);border-radius:2px}
-progress::-moz-progress-bar{background:var(--marker)}
-.live-dot{width:8px;height:8px;border-radius:50%;background:var(--marker);animation:pulse 1.4s ease-in-out infinite}
-@keyframes pulse{50%{opacity:.35}}
-.shot-editor{background:var(--sheet);border-radius:var(--r-card);box-shadow:var(--lift);margin-bottom:16px;padding:20px;display:grid;grid-template-columns:200px 1fr;gap:20px}
-.shot-editor label{display:block;margin-bottom:12px}
-.shot-editor input{display:block;margin-top:6px}
-.shot-editor textarea{display:block;margin-top:6px;font-size:14px;min-height:112px;line-height:1.5;padding:10px 12px}
-.editor-negative{margin-top:6px}
-.shot-editor button{background:rgba(0,0,0,.06)}
-.shot-editor button:hover{background:rgba(0,0,0,.1)}
+.shot-hero:hover{outline-color:var(--rule-strong)}
+.shot-hero:focus-visible{outline:var(--focus) solid var(--ink);outline-offset:var(--frame-gap)}
+.shot-card.is-hero .shot-hero{outline:var(--line) solid var(--pencil)}
+.shot-card.is-hero .shot-hero:focus-visible{outline:var(--focus) solid var(--ink)}
+.frame-status{position:absolute;left:var(--s2);bottom:var(--s2);font-size:var(--t-xs);font-weight:var(--w-strong);color:var(--ink);background:var(--page);padding:var(--s1) var(--s2);box-shadow:inset 0 0 0 var(--hair) var(--rule-strong)}
+.empty-frame{font:var(--w-display) var(--t-3xl)/var(--lh-1) var(--script);color:var(--ink-3)}
+.cut-src{margin:var(--s2) 0 0;min-height:calc(var(--t-xs) * var(--lh-text));font-size:var(--t-xs);color:var(--ink-3)}
+.cut-src b{color:var(--pencil);font-weight:var(--w-strong)}
+/* Each cut carries its setup line: solid once it has a pick, dashed while it is still open.
+   The number sits on the title's baseline and the line starts just under it; Edit cuts and the export list share the geometry. */
+.cut-text{--no-top:6px;position:relative;margin-top:var(--s2);padding:0 0 var(--s0) var(--setup-indent)}
+:is(.cut-text,.shot-editor,.export-picks li)>.setup-no{position:absolute;left:0;top:var(--no-top)}
+:is(.cut-text,.shot-editor,.export-picks li)::before{content:"";position:absolute;left:var(--setup-x);top:calc(var(--no-top) + var(--t-sm) + var(--setup-gap));bottom:0;border-left:var(--line) solid var(--pencil)}
+.shot-card:not(.picked) .cut-text::before{border-left-style:dashed;border-color:var(--ink-3)}
+.shot-card:not(.picked) .cut-text>.setup-no{color:var(--ink-3)}
+.cut-text h3{font-size:var(--t-lg);line-height:var(--lh-tight);font-weight:var(--w-strong);letter-spacing:var(--track-tight);overflow-wrap:anywhere}
+.cut-facts{margin:var(--s1) 0 0;font-size:var(--t-sm);color:var(--ink-2);display:flex;flex-wrap:wrap;gap:var(--s1) var(--s3);align-items:baseline;font-variant-numeric:tabular-nums}
+.seed{display:inline-flex;gap:var(--s1);align-items:center;align-self:center}
+.seed .i,.locked .i{width:14px;height:14px}
+.go{min-height:var(--h-sm);padding:0;margin-top:var(--s1);font-size:var(--t-sm);font-weight:var(--w-strong);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.go:hover{text-decoration-thickness:2px}
+.shot-editor{--no-top:22px;position:relative;display:grid;grid-template-columns:200px minmax(0,1fr);gap:var(--s4) var(--s6);padding:var(--s5) 0 var(--s5) var(--setup-indent);border-bottom:var(--hair) solid var(--rule)}
+.shot-editor:first-child{--no-top:var(--s0);padding-top:0}
+.shot-editor::before{bottom:var(--s5)}
+.shot-editor label{display:block;margin-bottom:var(--s3)}
+.shot-editor input,.shot-editor textarea{display:block;margin-top:var(--s2)}
+.shot-editor textarea{min-height:112px;font-size:var(--t-md)}
+.editor-prompts button{margin-top:var(--s0)}
 
-/* Dialogs */
-dialog{background:var(--sheet);color:var(--ink);border:0;border-radius:var(--r-dialog);padding:28px;width:94vw;max-width:1360px;max-height:92vh;max-height:92dvh;box-shadow:0 24px 80px rgba(0,0,0,.18)}
-dialog[open]{animation:dialog-in .22s var(--ease)}
-@keyframes dialog-in{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
-dialog::backdrop{background:rgba(245,245,247,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+/* Dialogs: a page laid over the desk. */
+/* Focus moved by Tab scrolls clear of the sticky heading; app.js keeps --heading-h at its real height. */
+dialog{scroll-padding-top:calc(var(--heading-h,68px) + var(--s3));background:var(--page);color:var(--ink);border:0;border-radius:var(--r);padding:var(--gutter);width:94vw;max-width:1392px;max-height:92vh;max-height:92dvh}
+dialog[open]{animation:dialog-in var(--dur-enter) var(--ease)}
+@keyframes dialog-in{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:none}}
+dialog::backdrop{background:var(--scrim)}
+@media(min-width:601px){.sheet-dialog{margin:4dvh auto auto}}
 /* The heading stays on screen while a long dialog scrolls, so close and the cut arrows are always in reach.
    Sticky offsets count from inside the dialog padding, so top cancels the padding and the heading covers it. */
-.dialog-heading{position:sticky;top:-28px;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:-28px -28px 6px;padding:28px 28px 14px;background:var(--sheet);box-shadow:0 1px 0 var(--rule)}
-.dialog-heading h2{font-size:28px;font-weight:600;letter-spacing:-.02em}
-/* Opening a dialog focuses its title, not the first arrow, so no focus ring lands on a button nobody pressed. */
+.dialog-heading{position:sticky;top:calc(var(--gutter) * -1);z-index:var(--z-sticky);display:flex;align-items:center;gap:var(--s4);margin:calc(var(--gutter) * -1) calc(var(--gutter) * -1) 0;padding:var(--s3) var(--gutter);background:var(--page);box-shadow:0 var(--hair) 0 var(--rule)}
+.heading-text{flex:1;min-width:0}
+.dialog-heading h2{display:flex;align-items:baseline;gap:var(--s2);font-size:var(--t-2xl);font-weight:var(--w-display);letter-spacing:var(--track-head)}
+.dialog-heading h2 .setup-no{font-size:.8em}
+/* Opening a dialog focuses its title, not the first button, so no focus ring lands on a button nobody pressed. */
 .dialog-heading h2:focus{outline:0}
-.dialog-kicker{margin:0 0 4px;font-size:13px;font-weight:500;color:var(--ink-3);font-variant-numeric:tabular-nums}
-.dialog-nav{display:flex;gap:8px}
-.compare-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-.compare-take{border-radius:var(--r-card);overflow:hidden;background:var(--sheet);box-shadow:0 0 0 1px var(--rule-strong);transition:box-shadow .16s var(--ease)}
-.compare-take.chosen{box-shadow:0 0 0 2px var(--marker),0 0 0 6px var(--marker-ring)}
-.take-zoom{display:block;width:100%;height:380px;padding:0;border-radius:0;background:var(--mat);cursor:zoom-in}
+.dialog-nav{display:flex;gap:var(--s2)}
+/* The setup rail: every cut of the board, the one on screen drawn in. */
+.cut-rail{display:flex;gap:var(--s0)}
+.rail-cut{min-height:var(--h-bar);padding:0 var(--s2);font:var(--w-display) var(--t-xs)/var(--lh-1) var(--script);color:var(--ink-3);border-bottom:var(--line) dashed var(--ink-3);border-radius:0}
+.rail-cut.picked{color:var(--pencil);border-bottom-style:solid;border-color:var(--pencil)}
+.rail-cut:hover{background:var(--wash);color:var(--ink)}
+/* The cut on screen is framed in ink, as the take on screen is; its number and line keep the pick state. */
+.rail-cut[aria-current]{box-shadow:inset 0 0 0 var(--line) var(--ink)}
+/* Focus wraps outside the box; the state frame sits inside it. */
+.rail-cut:focus-visible{outline-offset:var(--frame-gap)}
+
+/* Compare & pick: the take beside what it should match, the takes under it, the take's sheet at the side. */
+.compare-body{display:grid;grid-template-columns:minmax(0,1fr) 360px;margin:0 calc(var(--gutter) * -1) calc(var(--gutter) * -1)}
+.compare-main{padding:var(--s6) var(--gutter) var(--gutter);min-width:0}
+.take-side{padding:var(--s6) var(--gutter) var(--gutter);border-left:var(--hair) solid var(--rule)}
+#compare-switch{display:none}
+.compare-images{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s5)}
+.compare-images:has(.fig-hero),.compare-images:has(.fig-picked){grid-template-columns:repeat(2,minmax(0,1fr))}
+.fig{margin:0;min-width:0}
+.fig figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3);margin-bottom:var(--s2);font-size:var(--t-sm);line-height:var(--lh-tight);color:var(--ink-3)}
+.fig figcaption b{font:var(--w-display) var(--t-sm)/var(--lh-tight) var(--script);color:var(--ink);text-transform:uppercase;letter-spacing:var(--track-caps)}
+.fig figcaption span{text-align:right;overflow-wrap:anywhere}
+.take-zoom,.frame-empty{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:340px;padding:0;border-radius:0;background:var(--page-tint);cursor:zoom-in}
+.compare-images:not(:has(.fig-hero)):not(:has(.fig-picked)) .take-zoom{height:400px}
 .take-zoom img{display:block;width:100%;height:100%;object-fit:contain}
-.take-zoom:focus-visible{outline-offset:-3px}
-.compare-take>.shot-hero{height:380px;aspect-ratio:auto;cursor:default}
-.take-state{font:500 17px/1 var(--font);color:var(--ink-2);letter-spacing:0;text-transform:capitalize}
-.compare-take>div:not(.shot-hero){display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 16px 4px}
-.compare-take strong{font-size:15px;font-weight:600}
-.compare-take small{display:block;margin-top:4px;font-size:13px;color:var(--ink-3);line-height:1.4}
-.compare-take>div>button{min-width:96px}
-.take-details summary{padding:6px 0 0;font-size:13px;color:var(--ink-3);font-weight:400}
-.take-details summary::before{width:5px;height:5px}
-/* The note gets the full width of the take; the verdict and Save share the row under it. */
-.review-editor{display:grid;grid-template-columns:minmax(112px,200px) minmax(0,1fr);align-items:end;gap:12px 8px;padding:8px 16px 16px}
+.take-zoom:focus-visible{outline-offset:var(--frame-gap)}
+/* The hero is framed in pencil wherever it shows, large or small. */
+.fig-hero .take-zoom{outline:var(--line) solid var(--pencil);outline-offset:var(--frame-gap)}
+.fig-hero .take-zoom:focus-visible{outline:var(--focus) solid var(--ink)}
+.frame-empty{cursor:default}
+.take-state{font-size:var(--t-sm);font-weight:var(--w-ui);color:var(--ink-2)}
+.takes-head{display:flex;align-items:center;gap:var(--s3);margin:var(--s6) 0 var(--s3);font-size:var(--t-sm);color:var(--ink-2)}
+.takes-head button{margin-left:auto}
+.takes-reason{margin:calc(var(--s1) * -1) 0 var(--s3);text-align:right}
+.take-strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:var(--s4) var(--s5)}
+.take{display:block;min-width:0;min-height:0;padding:0;text-align:left;white-space:normal;font:inherit;color:inherit}
+.take-frame{display:flex;align-items:center;justify-content:center;position:relative;aspect-ratio:3/2;background:var(--page-tint);outline:var(--hair) solid transparent;outline-offset:var(--frame-gap);transition:outline-color var(--dur) var(--ease)}
+.take-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.take:hover .take-frame{outline-color:var(--rule-strong)}
+.take[aria-pressed="true"] .take-frame{outline:var(--line) solid var(--ink)}
+.take:focus-visible{outline-offset:var(--wrap-gap)}
+.tl{display:flex;align-items:baseline;gap:var(--s2);padding-top:var(--s2);font-size:var(--t-xs)}
+.take-id{font:var(--w-display) var(--t-sm)/var(--lh-1) var(--script);padding:var(--s1);margin-left:calc(var(--s1) * -1 - var(--line));border:var(--line) solid transparent}
+.take-id.picked{border-color:var(--pencil);color:var(--pencil)}
+.pk{font-weight:var(--w-strong);color:var(--pencil)}
+.tl .verdict{margin-left:auto}
+.sheet-head{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3)}
+.sheet-head h3{flex:none;white-space:nowrap;font-size:var(--t-xl);font-weight:var(--w-display);letter-spacing:var(--track-tight)}
+.sheet-head>span{font-size:var(--t-sm);color:var(--ink-3);text-align:right}
+.sheet-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:var(--s4)}
+/* Verdict, then the note on its own row, then the save row. */
+.review-editor{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s5);margin-top:var(--s6)}
 .review-editor label{display:block;min-width:0}
-.review-editor select,.review-editor textarea{display:block;margin-top:6px}
-.review-editor textarea{width:100%;resize:vertical;min-height:96px;font-size:14px;line-height:1.4;padding:10px 12px}
 .review-note{grid-column:1/-1}
-.review-editor>button{justify-self:end}
-.compare-recipe{margin-top:20px;border-top:1px solid var(--rule)}
-.compare-controls{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;padding-bottom:4px}
-.compare-controls label{max-width:200px}
-.compare-controls input{display:block;margin-top:6px}
-#storyboard-dialog{max-width:1120px}
-.storyboard-controls{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px}
-.storyboard-controls label{width:220px}
-.storyboard-controls select{display:block;margin-top:6px}
-#storyboard-preview{display:block;width:100%;max-height:66vh;object-fit:contain;border-radius:12px;background:var(--table);outline:1px solid rgba(0,0,0,.1);outline-offset:-1px}
-#storyboard-error{color:var(--ink-2);font-size:14px}
+.review-editor textarea{display:block;width:100%;margin-top:var(--s2);min-height:132px;font-size:var(--t-md)}
+.review-verdict{margin:0;padding:0;border:0;min-width:0}
+.review-verdict legend{padding:0;margin-bottom:var(--s2)}
+.review-foot{display:flex;justify-content:space-between;align-items:center;gap:var(--s3);margin-top:calc(var(--s2) * -1)}
+.review-state{font-size:var(--t-xs);color:var(--ink-3)}
+/* Segmented choices: native radios and buttons, drawn as one ruled strip at button height. */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);border:var(--hair) solid var(--rule-strong);border-radius:var(--r)}
+.seg>label,.seg>button{position:relative;display:flex;align-items:center;justify-content:center;gap:var(--s2);min-height:calc(var(--h) - 2 * var(--hair));margin:0;padding:0 var(--s3);border-radius:0;font:var(--w-ui) var(--t-sm)/var(--lh-1) var(--ui);color:var(--ink-2);background:var(--page);cursor:pointer;box-shadow:none}
+.seg>label+label,.seg>button+button{border-left:var(--hair) solid var(--rule)}
+.seg>label input{position:absolute;inset:0;width:100%;height:100%;min-height:0;margin:0;opacity:0;cursor:pointer}
+.seg>label:hover,.seg>button:hover{color:var(--ink)}
+.seg>label:has(input:checked),.seg>button[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+.seg>.seg-pass:has(input:checked){background:var(--pass)}
+.seg>.seg-fail:has(input:checked){background:var(--fail)}
+.seg>label:has(input:focus-visible){outline:var(--focus) solid var(--ink);outline-offset:var(--focus-gap);z-index:var(--z-raise)}
+.seg-pass span::before,.seg-fail span::before,.seg-pending span::before{content:"";display:inline-block;width:8px;height:8px;margin-right:var(--s2);border:var(--line) solid currentColor;vertical-align:0}
+.seg-pass span::before{background:currentColor}
+.seg-pending span::before{border-style:dotted}
+.render-details{margin-top:var(--s6)}
+.details{margin:var(--s1) 0 0;border-top:var(--hair) solid var(--rule)}
+.details div{display:flex;justify-content:space-between;gap:var(--s4);padding:var(--s2) 0;border-bottom:var(--hair) solid var(--rule);font-size:var(--t-sm)}
+.details dt{color:var(--ink-3);flex:none}
+.details dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;display:inline-flex;gap:var(--s2);align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.locked{display:inline-flex;align-items:center;gap:var(--s1);font-size:var(--t-xs);font-weight:var(--w-strong);color:var(--pencil)}
+.compare-recipe{margin-top:var(--s6);padding-top:var(--s1);border-top:var(--hair) solid var(--rule)}
+.recipe-group h4{margin:var(--s4) 0 var(--s2)}
+.seed-row{display:flex;gap:var(--s2)}
+.seed-row label{flex:1;min-width:0}
+.recipe-actions{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:var(--s3)}
+.recipe-group .hero-meta{margin:0}
+.seed-row+.hero-meta{margin-top:var(--s2)}
+/* The hero step in Compare: the same frame and setup line as on the board, with its two actions beside it. */
+.compare-hero{margin-top:var(--s7);padding-top:var(--s4);border-top:var(--hair) solid var(--rule)}
+.compare-hero-body{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--s4) var(--s10)}
+.compare-hero-body>.hero-line:empty{display:none}
+.compare-hero-body>.hero-line:not(:empty){flex:0 1 300px;min-width:240px}
+.compare-hero-text{flex:1 1 320px;min-width:0}
+.compare-hero-text>.hero-meta:first-child{margin-top:0}
+.hero-reason,.pick-reason{margin-top:var(--s2);color:var(--ink-2)}
+
+/* Storyboard export: the sheet that goes out, the picks on it, and what the ZIP holds. */
+.layout-switch{width:240px;flex:none}
+.export-body{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:var(--s10);margin-top:var(--s6)}
+.export-preview{min-width:0}
+#storyboard-preview{display:block;width:100%;max-height:70vh;max-height:70dvh;object-fit:contain;object-position:center top;background:var(--page);outline:var(--hair) solid var(--rule-strong);outline-offset:calc(var(--hair) * -1)}
+#storyboard-preview[data-layout="portrait"]{max-width:560px;margin:0 auto}
+#storyboard-error{margin:0;color:var(--ink-2);font-size:var(--t-md)}
+.export-side h3{font-size:var(--t-xl);font-weight:var(--w-display);letter-spacing:var(--track-tight)}
+.zip-summary{margin:var(--s1) 0 0;font-size:var(--t-sm);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.export-actions{display:grid;grid-template-columns:1fr auto;gap:var(--s2);margin-top:var(--s4)}
+.export-label{margin:var(--s6) 0 var(--s2)}
+.export-picks{list-style:none;margin:0;padding:0}
+.export-picks li{--no-top:8px;position:relative;display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s0) var(--s3);padding:var(--s1) 0 var(--s2) var(--setup-indent);font-size:var(--t-sm)}
+.pick-title{font-weight:var(--w-strong)}
+.pick-take{font:var(--w-display) var(--t-xs)/var(--lh-1) var(--script);color:var(--ink-2)}
+.export-picks .verdict{margin-left:auto}
+.pick-src{flex-basis:100%;font-size:var(--t-xs);color:var(--ink-3)}
+.export-picks li:not(:has(.pick-src))::before{content:none}
+.zip-files{list-style:none;margin:0;padding:0;border-top:var(--hair) solid var(--rule-strong)}
+.zip-files li{display:grid;grid-template-columns:1fr auto;gap:var(--s0) var(--s4);padding:var(--s2) 0;border-bottom:var(--hair) solid var(--rule);font-size:var(--t-sm)}
+.zip-files b{font-weight:var(--w-strong)}
+.zip-files .n{color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums}
+.zip-files .p{grid-column:1/-1;font:var(--w-body) var(--t-xs)/var(--lh-text) var(--script);color:var(--ink-2);overflow-wrap:anywhere}
+.zip-files .f{white-space:nowrap}
+
+/* My boards: what the board is, its scene as typed, and how far the picking got. */
 #boards-dialog{max-width:640px}
+.board-link{display:grid;grid-template-columns:minmax(0,1fr) auto;justify-content:stretch;align-items:baseline;gap:var(--s0) var(--s4);width:100%;min-height:var(--hit);padding:var(--s3) 0;text-align:left;white-space:normal;font:inherit;border-radius:0;border-bottom:var(--hair) solid var(--rule)}
+.board-link:hover{background:var(--page-tint)}
+.board-link-name{font-weight:var(--w-strong)}
+.board-link-meta{font-size:var(--t-xs);color:var(--ink-3);text-align:right;font-variant-numeric:tabular-nums}
+.board-link-scene{grid-column:1/-1;font:var(--w-body) var(--t-sm)/var(--lh-text) var(--script);color:var(--ink-2)}
+#boards-list{margin-top:var(--s2)}
 #image-dialog{max-width:none;width:96vw}
 #image-dialog[open]{display:flex;flex-direction:column;height:94vh;height:94dvh}
-.lightbox-frame{position:relative;flex:1;min-height:0;overflow:auto;border-radius:12px;background:var(--mat)}
+.lightbox-frame{position:relative;flex:1;min-height:0;margin-top:var(--s4);overflow:auto;background:var(--page-tint)}
 .lightbox-frame>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
-#image-full{opacity:0;cursor:zoom-in;transition:opacity .2s var(--ease)}
+#image-full{opacity:0;cursor:zoom-in;transition:opacity var(--dur-enter) var(--ease)}
 #image-full.loaded{opacity:1}
 #image-full.actual{position:static;width:auto;height:auto;max-width:none;cursor:zoom-out}
-.board-link{display:flex;justify-content:flex-start;width:100%;min-height:48px;padding:12px 16px;margin:0 0 4px;border-radius:12px;text-align:left;white-space:normal;font-weight:500}
-.board-link:hover{background:var(--table)}
-#toast{position:fixed;inset:auto auto 28px 50%;margin:0;border:0;overflow:visible;z-index:10;transform:translateX(-50%);max-width:90vw;padding:12px 20px;border-radius:980px;background:rgba(29,29,31,.92);color:#fff;font-size:14px;font-weight:500;box-shadow:0 8px 30px rgba(0,0,0,.2);backdrop-filter:blur(10px)}
+#toast{position:fixed;inset:auto auto var(--s7) 50%;margin:0;border:0;overflow:visible;z-index:var(--z-toast);transform:translateX(-50%);max-width:90vw;padding:var(--s3) var(--s4);border-radius:var(--r);background:var(--ink);color:var(--on-ink);font-size:var(--t-sm);font-weight:var(--w-ui)}
+/* A still that fails to load keeps its tinted frame and says so, instead of the browser's broken-image mark. */
+.img-missing img{visibility:hidden}
+.img-missing::after{content:"Image missing";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:var(--s2);font-size:var(--t-xs);font-weight:var(--w-ui);color:var(--ink-3);text-align:center}
+:is(.mini-frame,.take-frame,.hero-thumb).img-missing::after{content:""}
 
-/* Footer */
-footer{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 40px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-3)}
-.footer-links{gap:16px}
-.footer-links a{color:var(--ink-3);text-decoration:none}
-.footer-links a:hover{color:var(--ink);text-decoration:underline}
-.engine{display:flex;align-items:center;gap:8px}
-.engine-dot{width:7px;height:7px;border-radius:50%;background:var(--ink-faint)}
-.engine:has(#connection[data-state=ready]) .engine-dot{background:#28a745}
+/* Footer, on the desk */
+footer{width:100%;max-width:1440px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:var(--s4);padding:var(--s5) var(--s6) var(--s7);font-size:var(--t-xs);color:var(--ink-2)}
+.footer-links{gap:var(--s4)}
+.footer-links a{display:inline-block;padding:var(--s1) 0;color:var(--ink-2);text-decoration:none}
+.footer-links a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+.engine{display:flex;align-items:center;gap:var(--s2)}
+.engine-dot{width:8px;height:8px;background:var(--ink-3)}
+.engine:has(#connection[data-state=ready]) .engine-dot{background:var(--pass)}
 
-@media(min-width:1500px){.shot-hero{aspect-ratio:1.38}}
-@media(max-width:1340px){.loop-bar{border-radius:var(--r-card)}}
-@media(max-width:1100px){.example-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.board-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.featured-content{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);min-height:380px}.feature-mosaic{grid-template-columns:repeat(2,minmax(0,1fr))}.take-zoom,.compare-take>.shot-hero{height:300px}}
+@media(max-width:1100px){
+  .lined-board{grid-template-columns:280px minmax(0,1fr);gap:var(--s7)}
+  .board-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .example-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .compare-body{grid-template-columns:minmax(0,1fr)}
+  .take-side{border-left:0;border-top:var(--hair) solid var(--rule)}
+  .cut-rail{display:none}
+  .export-body{grid-template-columns:minmax(0,1fr)}
+  .take-zoom,.frame-empty{height:320px}
+}
 @media(max-width:600px){
-  main{padding:0 16px}.topbar{height:56px;padding:0 16px}.brand-logo{width:clamp(110px,30vw,129px);height:auto}nav{gap:4px}.topbar nav>*{padding:0 12px;font-size:13px}
-  .home-title{font-size:34px;padding:28px 0 8px}.home-lede{font-size:16px;margin-bottom:20px}
-  .featured-content{display:block;min-height:0}.feature-cover{height:340px}.feature-caption{left:20px;right:20px;bottom:20px}.feature-caption h2{font-size:28px}
-  .feature-mosaic{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:8px}.feature-cut{aspect-ratio:1;border-radius:8px}.feature-cut span{font-size:11px;left:4px;bottom:4px;padding:2px 6px}
-  .section-title{margin:32px 0 12px;font-size:19px}.example-gallery{grid-template-columns:1fr;gap:14px;margin-bottom:32px}.gallery-images{height:120px}
-  #composer{padding:28px 0 40px}#composer h1{font-size:32px}.composer-panel{padding:18px}textarea{font-size:18px}.coverage-preview{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .board-title{font-size:24px;padding:24px 0 16px}
-  .loop-bar{gap:8px;padding:8px}.loop-divider{display:none}.render-group{flex-wrap:wrap}.export-group{margin-left:0;width:100%;flex-wrap:wrap}.pick-progress{width:100%;padding:4px 4px 0}
-  .popover{width:min(320px,calc(100vw - 48px))}
-  .board-grid{grid-template-columns:1fr;gap:16px}.shot-hero{aspect-ratio:1.15}
-  dialog{width:96vw;padding:18px;border-radius:18px}.dialog-heading{top:-18px;margin:-18px -18px 4px;padding:18px 18px 12px}.dialog-heading h2{font-size:22px}.dialog-nav{gap:4px}.icon{width:34px;height:34px}
-  .compare-images{grid-template-columns:1fr}.take-zoom,.compare-take>.shot-hero{height:280px}.compare-controls label{max-width:100%}
-  .shot-editor{display:block}.storyboard-controls{flex-direction:column;align-items:stretch}.storyboard-controls label{width:auto}
-  footer{flex-wrap:wrap;padding:18px 16px}
+  main{padding:0}.topbar{height:56px;padding:0 var(--s3) 0 var(--gutter-phone)}.brand-logo{width:clamp(110px,30vw,129px);height:auto}nav{gap:var(--s1)}.topbar nav>*{padding:0 var(--s3);font-size:var(--t-sm)}
+  /* Text fields at 16px so phones do not zoom in when one takes focus. */
+  textarea,input:not([type=checkbox]):not([type=radio]){font-size:var(--t-lg)}
+  .home-page{display:flex;flex-direction:column;padding:var(--s5) var(--gutter-phone) var(--s7)}
+  /* Phones see the title and the way in first, then the scene and all six cuts; the explanation follows. */
+  .intro,.intro-words{display:contents}
+  .home-title{font-size:var(--t-3xl)}.home-lede{order:2;font-size:var(--t-md);margin-top:var(--s5)}
+  .intro-actions{order:0;margin-top:var(--s4)}.intro-actions button{flex:1}
+  .lined-scene{order:1;margin-top:var(--s5)}.facts{order:3}
+  .scene-line{text-align:left;font-size:var(--t-lg);line-height:var(--lh-text)}
+  .setups{flex-wrap:wrap;gap:var(--s3);padding-top:0;margin-top:var(--s3)}
+  .setups::before,.setup::before{display:none}
+  .setup{flex:0 0 calc(var(--mw,.5) * (100% - var(--s3)))}
+  .setups .setup-no{position:static;font-size:var(--t-xs);line-height:14px}
+  .setups .stem{align-self:flex-start;margin-left:calc(var(--s2) - var(--line));height:var(--s2)}
+  .setups .frame{margin-top:0}
+  .setup .cap{display:flex;flex-wrap:wrap;gap:0 var(--s2);padding-top:var(--s1);font-size:var(--t-xs)}
+  .setup .cap .src{display:inline}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 var(--s3);margin-top:var(--s6)}
+  .section-title{margin:var(--s7) var(--gutter-phone) var(--s3)}.example-gallery{grid-template-columns:1fr;gap:var(--s3);padding:0 var(--gutter-phone);margin-bottom:var(--s7)}
+  .composer-page{margin:0 0 var(--s6);padding:var(--s5) var(--gutter-phone) var(--s7)}.composer-page h1{font-size:var(--t-2xl);margin-bottom:var(--s4)}
+  .setups.even{gap:var(--s3) var(--s2)}.setups.even .setup{flex:0 0 calc((100% - 2 * var(--s2)) / 3)}
+  .composer-page>.primary{align-self:stretch}
+  #workspace{padding:0 0 var(--s6)}
+  .loop-bar{padding:var(--s2) var(--gutter-phone) var(--s3);gap:var(--s2)}
+  .loop-actions{display:contents}
+  .board-head{flex:1 1 100%}.pick-progress{gap:var(--s0) var(--s3)}
+  .render-group{order:1;flex:1 1 100%}.render-group>button{flex:1}
+  .loop-actions>#storyboard{order:2;flex:1 1 auto}
+  #edit-toggle{order:3}
+  .queue-panel{padding:var(--s3) var(--gutter-phone) 0}
+  .lined-board{grid-template-columns:minmax(0,1fr);gap:var(--s5);padding:var(--s4) var(--gutter-phone) var(--s7)}
+  .script-col{position:static;max-height:none;overflow:visible;margin:0;padding:0}
+  .board-title{font-size:var(--t-lg)}
+  .script-notes{margin-top:var(--s3);border-top:var(--hair) solid var(--rule);border-bottom:var(--hair) solid var(--rule)}
+  .script-notes>summary{display:flex;min-height:var(--h-lg)}
+  .script-notes[open]{padding-bottom:var(--s3)}
+  .script-notes .cue:first-child{margin-top:var(--s1)}
+  .hero-block{margin-top:var(--s4);padding-top:0;border-top:0}
+  /* Frames sit on the image edge, so nothing reaches past the 16px gutter. */
+  .hero-thumb,.shot-card.is-hero .shot-hero{outline-offset:calc(var(--line) * -1)}
+  /* The inset frame paints over the still, not under it. */
+  .hero-thumb{isolation:isolate}.hero-thumb img{z-index:var(--z-under)}
+  .board-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s6) var(--s3)}
+  .shot-hero{aspect-ratio:4/3}
+  /* The 14px title sits 2px higher on its line, so the number follows it. */
+  .cut-text{--no-top:var(--s1)}.cut-text h3{font-size:var(--t-md)}.cut-facts{font-size:var(--t-xs);gap:var(--s0) var(--s3)}
+  .shot-editor{display:block}.shot-editor .editor-settings{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--s3)}.shot-editor .editor-settings label:first-child{grid-column:1/-1}
+  dialog,#image-dialog,#image-dialog[open]{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;padding:var(--gutter-phone);animation:none}
+  .dialog-heading{top:calc(var(--gutter-phone) * -1);margin:calc(var(--gutter-phone) * -1) calc(var(--gutter-phone) * -1) 0;padding:var(--s2) var(--gutter-phone) var(--s3);flex-wrap:wrap;gap:var(--s1) var(--s2)}
+  .dialog-heading .heading-text{order:3;flex:1 1 100%}
+  .dialog-heading h2{font-size:var(--t-xl)}
+  .dialog-nav{margin-left:auto}
+  #image-dialog .dialog-heading,#boards-dialog .dialog-heading{flex-wrap:nowrap}
+  #image-dialog .heading-text,#boards-dialog .heading-text{order:0}
+  .compare-body{display:flex;flex-direction:column;margin:0 calc(var(--gutter-phone) * -1) calc(var(--gutter-phone) * -1)}
+  .compare-main,.take-side{display:contents}
+  .compare-viewer{order:1;padding:var(--s4) var(--gutter-phone) 0}
+  .sheet-actions{order:2;margin:var(--s3) var(--gutter-phone) 0}
+  .pick-reason{order:2;margin:var(--s2) var(--gutter-phone) 0}
+  .compare-takes{order:3;padding:0 var(--gutter-phone)}
+  .compare-hero{order:4;margin:var(--s6) var(--gutter-phone) 0}
+  .sheet-head{order:5;margin-top:var(--s6);padding:var(--s5) var(--gutter-phone) 0;border-top:var(--hair) solid var(--rule)}
+  .take-sheet{order:6;padding:0 var(--gutter-phone) var(--s8)}
+  #compare-switch{display:grid;margin-bottom:var(--s3)}
+  .compare-images,.compare-images:has(.fig-hero),.compare-images:has(.fig-picked){grid-template-columns:minmax(0,1fr)}
+  .compare-images[data-show="take"] .fig-hero,.compare-images[data-show="take"] .fig-picked,.compare-images[data-show="other"] .fig-take{display:none}
+  .take-zoom,.frame-empty,.compare-images:not(:has(.fig-hero)):not(:has(.fig-picked)) .take-zoom{height:300px}
+  .fig figcaption,.fig figcaption b{font-size:var(--t-xs)}
+  .takes-head{margin-top:var(--s5)}
+  .take-strip{display:flex;overflow-x:auto;gap:var(--s5);margin:calc(var(--s2) * -1) calc(var(--gutter-phone) * -1) 0;padding:var(--s3) var(--gutter-phone);scroll-padding-left:var(--gutter-phone);scroll-snap-type:x mandatory;scrollbar-width:none}
+  .take-strip::-webkit-scrollbar{display:none}
+  .take{flex:0 0 140px;scroll-snap-align:start}
+  .dialog-heading .layout-switch{order:4;width:100%}
+  .export-body{gap:var(--s6);margin-top:var(--s4)}
+  .export-actions{grid-template-columns:1fr 1fr}
+  footer{flex-wrap:wrap;padding:var(--s5) var(--gutter-phone) var(--s6)}
+}
+/* Mouse: a 36px button still answers a few pixels above and below its paint. */
+@media(pointer:fine){
+  .primary::after,.quiet::after,.plain::after,.state::after,.go::after,.link::after,.chip::after{content:"";position:absolute;inset:calc(var(--s1) * -1) 0}
+  .icon::after{content:"";position:absolute;inset:calc(var(--s1) * -1)}
 }
 /* Touch: every control is at least 48px tall (iOS asks 44, Android 48), also on rotated phones. */
 @media(pointer:coarse){
-  button,.button,nav button,.card-bottom>button,.link,.chip,.takes-select select,select,input:not([type=checkbox]),summary{min-height:48px}
-  .icon{width:48px;height:48px}.take-thumb{width:64px;height:48px}.take-strip{gap:8px}
-  /* The 48px target stays, but filled buttons paint inside a transparent rim: 36px for page buttons, 32px in the header and card
-     footers, 30px for chips. The focus ring keeps its 3px desktop gap from the paint. */
-  .primary,.quiet,.tinted,.plain,.chip,.icon,.on-photo{border:6px solid transparent;background-clip:padding-box;outline-offset:-3px;padding-top:0;padding-bottom:0}.on-photo{box-shadow:0 2px 8px -6px rgba(0,0,0,.24)}
-  .topbar nav>*{min-height:48px;border-width:8px;outline-offset:-5px}.card-bottom>button{border-width:8px;outline-offset:-5px}.chip{border-width:9px;outline-offset:-6px}
-  .brand{min-height:48px}.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-width:48px;min-height:48px}
+  button,.button,nav button,.go,.link,.chip,.takes-select select,select,input:not([type=checkbox]):not([type=radio]),summary,.advanced>summary,.script-notes>summary{min-height:var(--hit)}
+  .icon{width:var(--hit);height:var(--hit)}.rail-cut{min-height:var(--hit)}
+  /* The 48px target stays, but filled and outlined buttons paint inside a transparent rim: 36px for page buttons,
+     32px in the header and for chips. The focus ring keeps a 3px gap from the paint. */
+  .primary,.quiet,.plain,.state,.chip{border:solid transparent;border-width:var(--rim) 0;background-clip:padding-box;padding-top:0;padding-bottom:0}
+  .icon{border:var(--rim) solid transparent;background-clip:padding-box;outline-offset:calc(var(--frame-gap) * -1)}
+  .topbar nav>*{min-height:var(--hit);border-width:var(--rim-bar) 0}.chip{border-width:var(--rim-bar) 0}
+  /* Single-line fields paint at button height inside the same 48px rim; their edge is an inset line. */
+  input:not([type=checkbox]):not([type=radio]),select{border:solid transparent;border-width:var(--rim) 0;background-clip:padding-box;box-shadow:inset 0 0 0 var(--hair) var(--rule-field)}
+  input:not([type=checkbox]):not([type=radio]):focus,select:focus{border-color:transparent;box-shadow:inset 0 0 0 var(--focus) var(--ink)}
+  input:not([type=checkbox]):not([type=radio])[aria-invalid="true"]{box-shadow:inset 0 0 0 var(--hair) var(--fail)}
+  input:not([type=checkbox]):not([type=radio])[aria-invalid="true"]:focus{box-shadow:inset 0 0 0 var(--focus) var(--fail)}
+  /* Segments paint at button height; the touch band reaches 6px above and below the strip. */
+  .seg>label::after,.seg>button::after{content:"";position:absolute;inset:calc(var(--rim) * -1) 0}.seg{margin:var(--rim) 0}
+  .brand{min-height:var(--hit)}.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-width:var(--hit);min-height:var(--hit)}
+  .toggle{min-height:var(--hit);margin-top:var(--s2)}
+  /* The composer's main action keeps its 44px paint inside the rim, so it stays the largest button on the screen. */
+  .large{min-height:calc(var(--h-lg) + 2 * var(--rim))}
 }
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-property:opacity,background-color,color,box-shadow!important;scroll-behavior:auto!important}button:active:not(:disabled){transform:none}}
-.take-thumb{text-transform:uppercase}
-.take-thumb.more{font-size:12px;font-weight:600;color:var(--ink-2)}
+/* Windows High Contrast drops fills and box-shadows: draw edges and selected states with system colours instead.
+   Touch rims stay, coloured Canvas so they vanish, and the 36px paint gets an inset outline. */
+@media(forced-colors:active){
+  .primary,.quiet,.icon,.state,.chip,.seg,dialog{border-color:ButtonText;border-style:solid}
+  .primary,.quiet,.icon,.state,.chip,.seg,dialog{border-width:var(--hair)}
+  .seg>label:has(input:checked),.seg>button[aria-pressed="true"],.rail-cut[aria-current],.chip.active{outline:var(--focus) solid Highlight;outline-offset:calc(var(--frame-gap) * -1)}
+  .seg-pass span::before,.verdict.pass::before{forced-color-adjust:none;background:CanvasText;border-color:CanvasText}
+  .setups .frame,.shot-hero,.take-frame{outline-style:none}
+  .shot-card.is-hero .shot-hero,.fig-hero .take-zoom,.take[aria-pressed="true"] .take-frame,.hero-thumb{outline:var(--line) solid Highlight;outline-offset:var(--frame-gap)}
+  select{appearance:auto;-webkit-appearance:auto;background-image:none}
+  .take-id{border-color:Canvas}.take-id.picked{border-color:Highlight}
+  input[type=checkbox]{appearance:auto;-webkit-appearance:auto}
+  summary{color:CanvasText}summary::before,summary:hover::before{forced-color-adjust:none;background:CanvasText}
+  :is(textarea,input,select):focus{outline:var(--focus) solid Highlight}
+  :focus-visible{outline:var(--focus) solid Highlight;outline-offset:var(--focus-gap)}
+}
+@media(forced-colors:active) and (pointer:coarse){
+  .primary,.quiet,.plain,.state,.chip,.icon{border-color:Canvas}
+  .primary,.quiet,.state{border-width:var(--rim) 0}.icon{border-width:var(--rim)}.chip,.topbar nav>*{border-width:var(--rim-bar) 0}
+  /* The edge sits exactly on the paint: the padding box, inside the rim. */
+  :is(.primary,.quiet,.state,.icon,.chip)::before{content:"";position:absolute;inset:0;border:var(--hair) solid ButtonText;pointer-events:none}
+  /* A field cannot hold a pseudo-element, so in high contrast it drops the rim and draws its edge round the whole 48px target. */
+  input:not([type=checkbox]):not([type=radio]),select{border:var(--hair) solid ButtonText}
+  :focus-visible{outline:var(--focus) solid Highlight;outline-offset:var(--focus-gap)}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-property:opacity,background-color,color,box-shadow,outline-color!important;scroll-behavior:auto!important}:active{transform:none!important}}
