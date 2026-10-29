@@ -83,6 +83,8 @@ QWEN_LOCK = ROOT / "workflows" / QWEN_LOCKS[QWEN_QUANT]
 QWEN_IMAGE_LOCK = ROOT / "workflows" / QWEN_IMAGE_LOCKS[QWEN_QUANT]
 _QWEN_FILES = {m["component"]: m["filename"] for m in json.loads(QWEN_LOCK.read_text())}
 _QWEN_IMAGE_FILE = json.loads(QWEN_IMAGE_LOCK.read_text())[0]["filename"]
+# Either locked Qwen-Image-2512 file can have drawn a first take, whichever quant the server runs now.
+QWEN_IMAGE_FILES = {json.loads((ROOT / "workflows" / name).read_text())[0]["filename"] for name in QWEN_IMAGE_LOCKS.values()}
 PRESETS = {
     "sdxl-base": {
         "label": "SDXL Base 1.0", "enabled": True,

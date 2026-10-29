@@ -283,12 +283,15 @@ class ContinuityAPITests(unittest.TestCase):
         settings = settings_for(self.shot, 'qwen-image')
         self.take.update(settings=settings, workflow=workflow_for(self.shot, 0, settings))
         original = deepcopy(self.take)
-        for change in ('reference', 'loader', 'unet'):
+        for change in ('reference', 'loader', 'unet', 'edit-model'):
             with self.subTest(change=change):
                 self.take.clear(); self.take.update(deepcopy(original))
                 if change == 'reference': self.take['reference'] = {'image': 'old-hero.png'}
                 elif change == 'loader': self.take['workflow']['8']['class_type'] = 'LoadImage'
-                else: self.take['workflow']['8']['inputs']['unet_name'] = 'other.gguf'
+                elif change == 'unet': self.take['workflow']['8']['inputs']['unet_name'] = 'other.gguf'
+                else:
+                    self.take['settings']['unet'] = 'qwen-image-edit-2511-Q8_0.gguf'
+                    self.take['workflow']['8']['inputs']['unet_name'] = 'qwen-image-edit-2511-Q8_0.gguf'
                 response = self.enable()
                 self.assertEqual(response.status_code, 409)
                 self.assertIn('Only a first take', response.json()['detail'])

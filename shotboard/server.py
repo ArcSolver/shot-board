@@ -26,7 +26,7 @@ from .storyboard import storyboard_png
 from .memory import MemoryGuard, MemorySafetyError
 
 from .core import (ROOT, PRESETS, LENSES, ANGLES, MOVES, LIGHTS, LOOKS, COVERAGE, OBJECT_COVERAGE, PERSON_WORDS, QWEN_LOCK,
-                   QWEN_IMAGE_LOCK,
+                   QWEN_IMAGE_LOCK, QWEN_IMAGE_FILES,
                    expand_shots, seed_for, workflow_for, settings_for, export_board, sha256)
 
 DATA = Path(os.environ.get("SHOTBOARD_DATA_DIR", ROOT / ".runtime/boards"))
@@ -545,6 +545,7 @@ def first_take(take):
                 and workflow.get('1', {}).get('class_type') == 'CheckpointLoaderSimple')
     return (settings.get('preset_id') == 'qwen-image' and settings.get('capability') == 'text-to-image'
             and workflow.get('8', {}).get('class_type') == 'UnetLoaderGGUF'
+            and settings.get('unet') in QWEN_IMAGE_FILES
             and workflow.get('8', {}).get('inputs', {}).get('unet_name') == settings.get('unet')
             and '1' not in workflow)
 

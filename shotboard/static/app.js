@@ -5,7 +5,8 @@ const canBeHero = take => isSDXLOriginal(take) || isQwenImageOriginal(take) || i
 // A Qwen-Image take is drawn from the cut's text, like an SDXL take, so it can be the hero too.
 function isQwenImageOriginal(take) {
   return !!take && take.status==='succeeded' && !take.reference && take.settings?.preset_id==='qwen-image' &&
-    take.workflow?.['8']?.class_type==='UnetLoaderGGUF' && !take.workflow?.['1'];
+    /^qwen-image-2512-[^/]+\.gguf$/.test(take.settings?.unet||'') &&
+    take.workflow?.['8']?.class_type==='UnetLoaderGGUF' && take.workflow?.['8']?.inputs?.unet_name===take.settings?.unet && !take.workflow?.['1'];
 }
 const firstTakeKind = take => isQwenImageOriginal(take)?'Qwen-Image take':'SDXL take';
 function isSDXLOriginal(take) {
