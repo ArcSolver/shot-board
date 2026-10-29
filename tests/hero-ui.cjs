@@ -30,11 +30,16 @@ assert.equal(element('use-hero').disabled, true);
   await element('use-hero').onclick();
   assert.equal(requests.length, 0);
   assert.match(element('toast').textContent, /^Only a first take or an imported reference can be the hero\.$/);
-  const qwenImage = {...board.shots[1].takes[0], id:'qwen-image-fixture', source:undefined, reference:null, seed:3, settings:{preset_id:'qwen-image',unet:'qwen-image-2512-Q8_0.gguf',width:1024,height:768},workflow:{'8':{class_type:'UnetLoaderGGUF',inputs:{unet_name:'qwen-image-2512-Q8_0.gguf'}}}};
+  const qwenImage = {...board.shots[1].takes[0], id:'qwen-image-fixture', source:undefined, reference:null, seed:3, settings:{preset_id:'qwen-image',capability:'text-to-image',unet:'qwen-image-2512-Q8_0.gguf',width:1024,height:768},workflow:{'8':{class_type:'UnetLoaderGGUF',inputs:{unet_name:'qwen-image-2512-Q8_0.gguf'}}}};
   const closePick = board.shots[2].picked;
   board.shots[2].takes.push(qwenImage);board.shots[2].picked=qwenImage.id;
   vm.runInContext('currentShot="s03"; renderCompare();', context);
   assert.equal(element('use-hero').disabled, false, 'A Qwen-Image first take can be the hero');
+  for (const unet of ['qwen-image-edit-2511-Q8_0.gguf','qwen-image-2512-other.gguf']) {
+    qwenImage.settings.unet = unet; qwenImage.workflow['8'].inputs.unet_name = unet;
+    vm.runInContext('renderCompare();', context);
+    assert.equal(element('use-hero').disabled, true, 'Only a locked Qwen-Image-2512 file can draw the hero: '+unet);
+  }
   board.shots[2].takes.pop();board.shots[2].picked=closePick;
   const sdxl = {...board.shots[1].takes[0], id:'sdxl-fixture', source:undefined, reference:null, seed:0, settings:{checkpoint:'sd_xl_base_1.0.safetensors',preset_id:'sdxl-base',width:768,height:576},workflow:{'1':{class_type:'CheckpointLoaderSimple'}}};
   board.shots[1].takes.push(sdxl);board.shots[1].picked=sdxl.id;

@@ -3,9 +3,10 @@ const FIRST_TAKES = {'sdxl-base':'SDXL Base 1.0','qwen-image':'Qwen-Image-2512'}
 function isImported(take) { return take?.status==='succeeded' && take.source?.type==='imported' && take.settings?.preset_id==='imported-reference' && !take.reference && take.seed===null && take.models?.length===0 && Object.keys(take.workflow||{}).length===0; }
 const canBeHero = take => isSDXLOriginal(take) || isQwenImageOriginal(take) || isImported(take);
 // A Qwen-Image take is drawn from the cut's text, like an SDXL take, so it can be the hero too.
+const QWEN_IMAGE_FILES = ['qwen-image-2512-Q8_0.gguf','qwen-image-2512-Q4_K_M.gguf'];
 function isQwenImageOriginal(take) {
   return !!take && take.status==='succeeded' && !take.reference && take.settings?.preset_id==='qwen-image' &&
-    /^qwen-image-2512-[^/]+\.gguf$/.test(take.settings?.unet||'') &&
+    take.settings?.capability==='text-to-image' && QWEN_IMAGE_FILES.includes(take.settings?.unet) &&
     take.workflow?.['8']?.class_type==='UnetLoaderGGUF' && take.workflow?.['8']?.inputs?.unet_name===take.settings?.unet && !take.workflow?.['1'];
 }
 const firstTakeKind = take => isQwenImageOriginal(take)?'Qwen-Image take':'SDXL take';
