@@ -154,7 +154,7 @@ function render() {
       const active=s.takes.find(t=>t.status==='running');
       const verdict=hero?verdictMark(reviewFor(s,hero)):'';
       const isHero=heroRef?.shot_id===s.id&&continuity.enabled;
-      const label=hero?(s.picked?'':'Preview · '+TAKE_NO(hero)):active?'Rendering':s.takes.some(t=>t.status==='queued')?'Queued':s.takes.some(t=>t.status==='failed')?'Failed':'', status=label?`<span class="frame-status">${label}</span>`:'';
+      const label=hero?(s.picked?'':'Preview · '+TAKE_NO(hero)):active?'Rendering':s.takes.some(t=>t.status==='queued')?'Queued':s.takes.some(t=>t.status==='failed')?'Failed':s.takes.some(t=>t.status==='interrupted')?'Interrupted':'', status=label?`<span class="frame-status">${label}</span>`:'';
       const inQueue=s.takes.some(t=>['queued','running'].includes(t.status));
       const facts=hero?`<span>${inQueue?`${TAKE_NO(hero)} · ${done.length} of ${s.takes.length} ready`:`${TAKE_NO(hero)} of ${done.length}`}</span>`:`<span>${s.takes.length?`${done.length} of ${s.takes.length} ready`:'No takes yet'}</span>`;
       const lock=s.locked_seed!==null?`<span class="seed" title="Seed locked">${icon('lock')}<span class="visually-hidden">Seed locked</span></span>`:'';
@@ -214,8 +214,8 @@ function renderCompare(){
   $('next-cut-2').className=isPicked?'primary':'quiet';
   const heroCut=!!board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id;
   const others=s.takes.some(t=>t.status==='succeeded'&&t.id!==v?.id), canRender=!window.SB&&!busy()&&!heroCut;
-  const takeCondition=v&&v.status!=='succeeded'?({failed:'This take failed.',cancelled:'This take was stopped.',queued:'This take is still in the queue.'}[v.status]||'This take is still rendering.'):'';
-  const pickReason=takeCondition&&['failed','cancelled'].includes(v.status)?takeCondition+(others?' View another take to pick one.':canRender?' Render more takes for this cut.':''):takeCondition;
+  // The Pick button already names a take that cannot be picked; the line under it says what to do instead.
+  const pickReason=v&&['failed','cancelled','interrupted'].includes(v.status)?(others?'View another take to pick one.':canRender?'Render more takes for this cut.':''):'';
   $('pick-reason').hidden=!pickReason;$('pick-reason').textContent=pickReason;
   $('review-slot').innerHTML=v&&v.status==='succeeded'?reviewEditor(s,v):'';
   $('render-details').innerHTML=v?renderDetails(v,s):'';

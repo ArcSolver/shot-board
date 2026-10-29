@@ -17,7 +17,6 @@
   --act:#1f2124;--act-hover:#000000;
   --pass:#2e6a3e;--fail:#9c3d2a;
   /* The only shadow: a page lying on the desk. */
-  --lift:0 1px 3px rgba(20,24,30,.12);
   --r:2px;
 
   /* Spacing: a 4px base. */
@@ -135,7 +134,7 @@ nav{display:flex;gap:var(--s2);align-items:center}
 .topbar nav>*{min-height:var(--h-bar);padding:0 var(--pad-x)}
 
 /* A page on the desk */
-.page{background:var(--page);box-shadow:var(--lift)}
+.page{background:var(--page)}
 
 /* Home: the scene line branches into one setup line per cut, and each line lands on that cut's pick. */
 .home-page{padding:var(--gutter-page)}
@@ -168,8 +167,8 @@ nav{display:flex;gap:var(--s2);align-items:center}
 .facts dd{margin:var(--s1) 0 0;font-size:var(--t-md);font-weight:var(--w-ui)}
 .section-title{font-size:var(--t-lg);font-weight:var(--w-strong);margin:var(--s8) 0 var(--s3)}
 .example-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s5);margin-bottom:var(--s10)}
-.gallery-card{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:var(--s4);min-height:0;background:var(--page);box-shadow:var(--lift);text-align:left;white-space:normal;font:inherit;transition:box-shadow var(--dur) var(--ease)}
-.gallery-card:hover{box-shadow:0 0 0 var(--hair) var(--rule-strong),var(--lift)}
+.gallery-card{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:var(--s4);min-height:0;background:var(--page);text-align:left;white-space:normal;font:inherit;transition:box-shadow var(--dur) var(--ease)}
+.gallery-card:hover{box-shadow:0 0 0 var(--hair) var(--rule-strong)}
 .gallery-strip{display:flex;gap:var(--s1);align-items:flex-end}
 .mini{flex:var(--ar,1.4) 1 0;min-width:0;display:flex;flex-direction:column}
 .mini-no{display:block;padding:0 0 var(--s1) var(--no-gap);border-left:var(--line) solid var(--pencil);font:var(--w-display) var(--t-xs)/var(--lh-1) var(--script);color:var(--pencil)}
@@ -288,9 +287,9 @@ progress::-moz-progress-bar{background:var(--pencil)}
 .shot-editor textarea{min-height:112px;font-size:var(--t-md)}
 .editor-prompts button{margin-top:var(--s0)}
 
-/* Dialogs: a page lifted off the desk. */
+/* Dialogs: a page laid over the desk. */
 /* Focus moved by Tab scrolls clear of the sticky heading; app.js keeps --heading-h at its real height. */
-dialog{scroll-padding-top:calc(var(--heading-h,68px) + var(--s3));background:var(--page);color:var(--ink);border:0;border-radius:var(--r);padding:var(--gutter);width:94vw;max-width:1392px;max-height:92vh;max-height:92dvh;box-shadow:var(--lift)}
+dialog{scroll-padding-top:calc(var(--heading-h,68px) + var(--s3));background:var(--page);color:var(--ink);border:0;border-radius:var(--r);padding:var(--gutter);width:94vw;max-width:1392px;max-height:92vh;max-height:92dvh}
 dialog[open]{animation:dialog-in var(--dur-enter) var(--ease)}
 @keyframes dialog-in{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:none}}
 dialog::backdrop{background:var(--scrim)}
@@ -437,7 +436,7 @@ dialog::backdrop{background:var(--scrim)}
 #image-full{opacity:0;cursor:zoom-in;transition:opacity var(--dur-enter) var(--ease)}
 #image-full.loaded{opacity:1}
 #image-full.actual{position:static;width:auto;height:auto;max-width:none;cursor:zoom-out}
-#toast{position:fixed;inset:auto auto var(--s7) 50%;margin:0;border:0;overflow:visible;z-index:var(--z-toast);transform:translateX(-50%);max-width:90vw;padding:var(--s3) var(--s4);border-radius:var(--r);background:var(--ink);color:var(--on-ink);font-size:var(--t-sm);font-weight:var(--w-ui);box-shadow:var(--lift)}
+#toast{position:fixed;inset:auto auto var(--s7) 50%;margin:0;border:0;overflow:visible;z-index:var(--z-toast);transform:translateX(-50%);max-width:90vw;padding:var(--s3) var(--s4);border-radius:var(--r);background:var(--ink);color:var(--on-ink);font-size:var(--t-sm);font-weight:var(--w-ui)}
 /* A still that fails to load keeps its tinted frame and says so, instead of the browser's broken-image mark. */
 .img-missing img{visibility:hidden}
 .img-missing::after{content:"Image missing";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:var(--s2);font-size:var(--t-xs);font-weight:var(--w-ui);color:var(--ink-3);text-align:center}
