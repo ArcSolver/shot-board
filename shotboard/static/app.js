@@ -23,7 +23,10 @@ const TAKE = t => t.id.toUpperCase();
 // Take IDs are slate marks, typed like the setup numbers.
 const TAKE_NO = t => `<span class="take-no">${TAKE(t)}</span>`;
 const WAIT = 'Wait for the queue to finish.';
-const OFFLINE = 'The local Shot Board server is not answering. Start it again, then reload the page.';
+// Numbers and IDs in a sentence are typed too, in the sentence's own colour; pencil is kept for numbers on a setup line.
+const SLATE = text => `<span class="slate">${text}</span>`;
+// When a request never arrives, say so in words that fit the build: the local app has a server, the Pages viewer has files.
+const offline = () => window.SB?'The page could not load its board files. Check the connection, then reload the page.':'The local Shot Board server is not answering. Start it again, then reload the page.';
 const phone = () => !!window.matchMedia?.('(max-width:600px)')?.matches;
 const icon = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 // Every board image goes through img(): lazy unless it is the first one on screen. The static viewer
@@ -51,7 +54,7 @@ function toast(message) {
   toast.timer=setTimeout(()=>{el.hidden=true;if(layer&&el.matches(':popover-open'))el.hidePopover();},6000);
 }
 async function api(path, method='GET', data) {
-  const response=await fetch('/api'+path,{method,headers:data?{'Content-Type':'application/json'}:{},body:data?JSON.stringify(data):undefined}).catch(()=>{throw new Error(OFFLINE);});
+  const response=await fetch('/api'+path,{method,headers:data?{'Content-Type':'application/json'}:{},body:data?JSON.stringify(data):undefined}).catch(()=>{throw new Error(offline());});
   if(!response.ok){let error=await response.json().catch(()=>({detail:'Local server unavailable'}));throw new Error(typeof error.detail==='string'?error.detail:'Please check your inputs.');}
   return response.json();
 }
@@ -77,7 +80,7 @@ function setupRanges(indexes){
 function sourceLabel(take){
   if(!take)return '';
   if(isImported(take))return 'Imported reference';
-  if(take.reference){const at=shotIndex(take.reference.shot_id);return `Redrawn from ${at>=0?NN(at):escapeHTML(take.reference.shot_id.toUpperCase())}`;}
+  if(take.reference){const at=shotIndex(take.reference.shot_id);return `Redrawn from ${SLATE(at>=0?NN(at):escapeHTML(take.reference.shot_id.toUpperCase()))}`;}
   return isSDXLOriginal(take)?'SDXL take':'';
 }
 function heroTake(){
@@ -108,7 +111,7 @@ function render() {
   $('keep-continuity').checked=!!continuity.enabled;
   $('keep-continuity').disabled=busy()||!heroRef;
   // The script column already says when there is no hero; the status line then gives way to it.
-  $('hero-status').textContent=heroRef?(busy()?`${continuity.enabled?'On':'Off'} · ${WAIT}`:continuity.enabled?'On · other cuts render as Qwen reference edits':'Off'):'';
+  $('hero-status').textContent=heroRef?(busy()?`${continuity.enabled?'On':'Off'} · ${WAIT}`:continuity.enabled?'On · the other cuts are redrawn from the hero':'Off'):'';
   const picked=board.shots.filter(s=>s.picked).length, takes=allTakes(), completed=takes.filter(t=>t.status==='succeeded').length;
   const allPicked=picked===board.shots.length, ready=s=>s.takes.some(t=>t.status==='succeeded');
   const needsRender=board.shots.some(s=>!ready(s))||(!!continuity.enabled&&board.shots.some(s=>s.id!==heroRef?.shot_id&&!s.takes.some(t=>t.reference&&t.status==='succeeded')));
@@ -117,11 +120,11 @@ function render() {
   $('storyboard').className=allPicked?'primary':'quiet';
   $('generate').disabled=busy();$('cancel').hidden=!busy();
   $('generate').className=needsRender&&!allPicked?'primary':'quiet';
-  $('generate').textContent=board.continuity?.enabled?'Render reference edits':takes.length?'More takes for every cut':'Render board';
+  $('generate').textContent=board.continuity?.enabled?'Render reference edits':completed?'More takes for every cut':'Render board';
   $('pick-count').textContent=`${picked} of ${board.shots.length} picked`;
   const example=examples.find(ex=>ex.board.id===board.id), heroIndex=shotIndex(heroRef?.shot_id);
   $('board-name').textContent=example?example.label:'Your scene';
-  $('board-meta').textContent=heroRef&&continuity.enabled&&heroIndex>=0?`Hero ${NN(heroIndex)} ${board.shots[heroIndex].title}${heroRef.source?.type==='imported'?', imported':''}`:'';
+  $('board-meta').innerHTML=heroRef&&continuity.enabled&&heroIndex>=0?`Hero ${SLATE(NN(heroIndex))} ${escapeHTML(board.shots[heroIndex].title)}${heroRef.source?.type==='imported'?', imported':''}`:'';
   $('pick-meter').innerHTML=board.shots.map((s,i)=>`<i class="${s.picked?'on':''}">${NN(i)}</i>`).join('');
   $('queue-panel').hidden=!busy();
   const running=takes.find(t=>t.status==='running'),queued=takes.filter(t=>t.status==='queued').length;
@@ -132,7 +135,7 @@ function render() {
   $('recipe-detail').textContent=heroRef?(heroRef.source?.type==='imported'?`${heroRef.settings.width} × ${heroRef.settings.height}`:`${heroRef.settings.steps} steps · seed ${heroRef.seed}`):'20 steps';
   const reviewed=board.review?.some(r=>r.verdict!=='pending'), heroAt=continuity.enabled?shotIndex(heroRef?.shot_id):-1;
   $('review-legend').hidden=!reviewed;
-  $('review-legend').textContent=heroAt>=0?`Pass and Fail are continuity review results against the hero, ${NN(heroAt)} ${board.shots[heroAt].title}.`:"Pass and Fail are review results against each cut's prompt.";
+  $('review-legend').innerHTML=heroAt>=0?`Pass and Fail are continuity review results against the hero, ${SLATE(NN(heroAt))} ${escapeHTML(board.shots[heroAt].title)}.`:"Pass and Fail are review results against each cut's prompt.";
   const signature=JSON.stringify([board.continuity,board.review,board.config,board.shots.map(s=>[s.title,s.prompt,s.picked,s.locked_seed,s.takes.map(t=>[t.id,t.status,t.image,t.error])])]);
   if(signature!==lastSignature){
     lastSignature=signature;
@@ -170,7 +173,7 @@ function renderDetails(t,s) {
   if(isImported(t))return row('Source','Imported reference')+row('Size',`${st.width} × ${st.height}`)+row('Seed','None, not generated');
   const ref=t.reference, at=ref?shotIndex(ref.shot_id):-1;
   return row('Model',escapeHTML(modelName(st)))+row('Text encoder',st.encoder?escapeHTML(st.encoder.replace(/\.gguf$/,'').replace(/-(Q\d_\w+)$/,' $1')):'')+row('License',escapeHTML(st.license))
-    +row('Reference',ref?`${at>=0?NN(at)+' '+escapeHTML(board.shots[at].title):escapeHTML(ref.shot_id)}, ${ref.source?.type==='imported'?'imported':escapeHTML(ref.take_id.toUpperCase())}`:'')
+    +row('Reference',ref?`${at>=0?SLATE(NN(at))+' '+escapeHTML(board.shots[at].title):escapeHTML(ref.shot_id)}, ${ref.source?.type==='imported'?'imported':`<span class="take-no">${escapeHTML(ref.take_id.toUpperCase())}</span>`}`:'')
     +row('Seed',t.seed!==null&&t.seed!==undefined?`${t.seed}${s.locked_seed!==null&&s.locked_seed===t.seed?` <span class="locked">${icon('lock')}Locked</span>`:''}`:'')
     +row('Size',st.width?`${st.width} × ${st.height}`:'')+row('Steps, CFG',st.steps?`${st.steps}, ${st.cfg}`:'')
     +row('Sampler',st.sampler_name?`${escapeHTML(st.sampler_name)} / ${escapeHTML(st.scheduler)}`:'')
@@ -203,7 +206,10 @@ function renderCompare(){
   $('pick-take').ariaPressed=String(isPicked);
   $('pick-take').innerHTML=isPicked?`${icon('check')}Picked`:v?(v.status==='succeeded'?`Pick ${TAKE_NO(v)}`:`${TAKE_NO(v)} ${takeState(v).toLowerCase()}`):'Pick';
   $('next-cut-2').className=isPicked?'primary':'quiet';
-  const pickReason=v&&v.status!=='succeeded'?(v.status==='failed'?'This take failed. Render more takes or view another.':v.status==='cancelled'?'This take was stopped. Render more takes or view another.':'This take is still rendering.'):'';
+  const heroCut=!!board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id;
+  const others=s.takes.some(t=>t.status==='succeeded'&&t.id!==v?.id), canRender=!window.SB&&!busy()&&!heroCut;
+  const takeCondition=v&&v.status!=='succeeded'?({failed:'This take failed.',cancelled:'This take was stopped.',queued:'This take is still in the queue.'}[v.status]||'This take is still rendering.'):'';
+  const pickReason=takeCondition&&['failed','cancelled'].includes(v.status)?takeCondition+(others?' View another take to pick one.':canRender?' Render more takes for this cut.':''):takeCondition;
   $('pick-reason').hidden=!pickReason;$('pick-reason').textContent=pickReason;
   $('review-slot').innerHTML=v&&v.status==='succeeded'?reviewEditor(s,v):'';
   $('render-details').innerHTML=v?renderDetails(v,s):'';
@@ -233,9 +239,8 @@ function renderCompare(){
   $('compare-hero-line').innerHTML=h?heroLine():'';
   document.querySelectorAll('#compare-hero-line [data-compare]').forEach(el=>el.onclick=()=>{openCompare(el.dataset.compare);$('compare-dialog').scrollTop=0;});
   $('hero-note').innerHTML=h&&h.shot_id===s.id&&h.take_id===s.picked?`The picked take ${TAKE_NO(picked)} is the hero. Render reference edits redraws the other cuts from it.`
-    :h?`Hero: <span class="setup-no">${NN(shotIndex(h.shot_id))}</span> ${escapeHTML(board.shots[shotIndex(h.shot_id)]?.title||'')}, ${h.source?.type==='imported'?'imported reference':`<span class="take-no">${escapeHTML(h.take_id.toUpperCase())}</span>`}.${heroAllowed&&!busy()?' Use the picked take here to replace it.':''}`
+    :h?`Hero: ${SLATE(NN(shotIndex(h.shot_id)))} ${escapeHTML(board.shots[shotIndex(h.shot_id)]?.title||'')}, ${h.source?.type==='imported'?'imported reference':`<span class="take-no">${escapeHTML(h.take_id.toUpperCase())}</span>`}.${heroAllowed&&!busy()?' Use the picked take here to replace it.':''}`
     :'No hero yet. Pick an SDXL take or import a reference, then use the pick as hero.';
-  const heroCut=!!board.continuity?.enabled&&board.continuity.hero?.shot_id===s.id;
   $('more-takes').disabled=busy()||heroCut;
   $('more-takes').textContent=s.takes.length?'Render more takes':'Render takes';
   const takesReason=busy()?WAIT:heroCut?'The hero keeps its takes. Render reference edits redraws the other cuts.':'';
@@ -263,7 +268,7 @@ $('storyboard-dialog').onclose=()=>{storyboardRequest++;closedDialog($('storyboa
 // The original PNG opens full size; the sized copy already on screen stands in until it arrives.
 function openImage(shot,take,shownSrc){
   const full=$('image-full'),preview=$('image-preview'),shown=shownSrc||document.querySelector?.(`[data-zoom="${take.id}"] img`)?.currentSrc;
-  $('image-title').textContent=`${shot.title} · ${take.id.toUpperCase()}`;
+  $('image-title').innerHTML=`${escapeHTML(shot.title)} · ${TAKE_NO(take)}`;
   full.alt=`${shot.title} ${take.id} original`;full.classList.remove('loaded','actual');full.removeAttribute('src');
   if(shown)preview.src=shown;else preview.removeAttribute('src');preview.hidden=!shown;
   full.onload=()=>{full.classList.add('loaded');preview.hidden=true;};full.onerror=()=>{if(full.getAttribute('src'))toast('The original image could not be loaded.');};full.src=imageURL(take);
@@ -296,8 +301,8 @@ $('seed-lock').onclick=guarded(async()=>{const s=board.shots.find(x=>x.id===curr
 $('reuse-seed').oninput=()=>{if(seedError){seedError='';renderCompare();}};
 $('use-hero').onclick=guarded(async()=>{const s=board.shots.find(s=>s.id===currentShot);if(!canBeHero(s.takes.find(t=>t.id===s.picked)))throw new Error(HERO_RULE);await api(`/boards/${board.id}/continuity`,'POST',{enabled:true,shot_id:s.id,take_id:s.picked});await refresh();toast('Hero set.');});
 $('keep-continuity').onchange=guarded(async()=>{const hero=board.continuity?.hero;await api(`/boards/${board.id}/continuity`,'POST',{enabled:$('keep-continuity').checked,shot_id:hero?.shot_id,take_id:hero?.take_id});await refresh();});
-// A download link, not a navigation, so the board's polling request is not cancelled mid-flight.
-$('export').onclick=()=>{const link=document.createElement('a');link.href=`/api/boards/${board.id}/export`;link.download='shot-board.zip';document.body.append(link);link.click();link.remove();toast('Preparing shot-board.zip…');};
+// Fetched, then saved through a link: no navigation, so the board's polling request is not cancelled, and a failure is reported.
+$('export').onclick=guarded(async()=>{const button=$('export'),label=button.textContent;button.disabled=true;button.ariaBusy='true';button.textContent='Preparing ZIP…';try{const response=await fetch(`/api/boards/${board.id}/export`).catch(()=>{throw new Error(offline());});if(!response.ok){const error=await response.json().catch(()=>({}));throw new Error(error.detail||'The ZIP could not be made. Try again.');}const href=URL.createObjectURL(await response.blob()),link=document.createElement('a');link.href=href;link.download='shot-board.zip';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(href),60000);toast('shot-board.zip is ready.');}finally{button.disabled=false;button.ariaBusy=null;button.textContent=label;}});
 $('close-compare').onclick=()=>$('compare-dialog').close();$('close-boards').onclick=()=>$('boards-dialog').close();
 $('edit-toggle').onclick=()=>{editing=!editing;$('shot-list').hidden=!editing;$('board-grid').hidden=editing;$('edit-toggle').textContent=editing?'Done':'Edit cuts';if(editing)showEditors();};
 $('new-board').onclick=()=>{$('scene-form').reset();$('scene-error').hidden=true;$('scene').ariaInvalid=null;document.querySelector('.advanced').open=false;board=null;location.hash='';$('home').hidden=true;$('composer').hidden=false;$('workspace').hidden=true;coveragePreview();$('scene').focus();};
@@ -360,7 +365,7 @@ async function loadGallery(){
   const url=(ex,s)=>`/api/examples/${ex.slug}/images/${picked(s).image}`;
   const picks=b.shots.map(picked), heroId=b.continuity?.enabled?b.continuity.hero?.shot_id:null, heroAt=b.shots.findIndex(s=>s.id===heroId);
   const redrawn=heroAt>=0&&b.shots.every((s,i)=>i===heroAt||picks[i]?.reference?.shot_id===heroId);
-  const note=heroAt>=0?`One line of scene, ${b.shots.length} cuts. Cut ${NN(heroAt)} is the hero${isImported(picks[heroAt])?', an imported reference':''}${redrawn?`; the other ${b.shots.length-1} are reference edits drawn from it.`:'.'}`:`One line of scene, ${b.shots.length} cuts.`;
+  const note=heroAt>=0?`One line of scene, ${b.shots.length} cuts. Cut ${SLATE(NN(heroAt))} is the hero${isImported(picks[heroAt])?', an imported reference':''}${redrawn?`; the other ${b.shots.length-1} are reference edits drawn from it.`:'.'}`:`One line of scene, ${b.shots.length} cuts.`;
   $('featured-board').innerHTML=`<p class="scene-line">${escapeHTML(b.config.scene)}</p><div class="setups">${b.shots.map((s,i)=>`<button class="setup" data-example="${featured.slug}" data-cut="${s.id}" aria-label="Open ${NN(i)} ${escapeHTML(s.title)}"><span class="setup-no">${NN(i)}</span><span class="stem" aria-hidden="true"></span><span class="frame">${img(url(featured,s),`${s.title} selected render`,SIZES.lined,i===0)}</span><span class="cap"><b>${escapeHTML(s.title)}</b>${isImported(picks[i])?'<span class="src">Imported reference</span>':''}</span></button>`).join('')}</div><p class="lined-note">${note}</p>`;
   setRatios('#featured-board .setup',picks);
   // Phones set two frames a row; each pair shares the row by its true widths.
@@ -420,7 +425,7 @@ function renderExport(){
   $('zip-files').innerHTML=groups.map(([name,n,path])=>`<li><b>${name}</b><span class="n">${n}</span><span class="p">${escapeHTML(path)}</span></li>`).join('');
   $('export-picks').innerHTML=board.shots.map((s,i)=>`<li><span class="setup-no">${NN(i)}</span><span class="pick-title">${escapeHTML(s.title)}</span><span class="pick-take">${TAKE(picks[i])}</span>${verdictMark(reviewFor(s,picks[i]))}<span class="pick-src">${sourceLabel(picks[i])}</span></li>`).join('');
   const imported=board.shots.map((s,i)=>i).filter(i=>picks[i].source?.type==='imported');
-  $('zip-note').textContent=`${imported.length?`Cut ${setupRanges(imported)} is an imported reference, so it has no workflow. `:''}Load a workflow in ComfyUI with the same pinned models to queue that frame again${refs.length?'; copy the references folder into ComfyUI\'s input folder first':''}.`;
+  $('zip-note').innerHTML=`${imported.length?`Cut ${SLATE(setupRanges(imported))} is an imported reference, so it has no workflow. `:''}Load a workflow in ComfyUI with the same pinned models to queue that frame again${refs.length?'; copy the references folder into ComfyUI\'s input folder first':''}.`;
 }
 let storyboardRequest=0;
 const storyboardLayout=()=>document.querySelector?.('input[name="storyboard-layout"]:checked')?.value||'landscape';
@@ -429,8 +434,8 @@ async function previewStoryboard(){
   $('storyboard-preview').hidden=true;$('download-storyboard').hidden=true;$('storyboard-error').hidden=false;$('storyboard-error').textContent='Preparing your storyboard…';
   $('storyboard-preview').dataset.layout=layout;
   const path=`/api/boards/${board.id}/storyboard?layout=${layout}`;
-  const response=await fetch(path);
-  if(!response.ok){const error=await response.json();throw new Error(error.detail);}
+  const response=await fetch(path).catch(()=>{throw new Error(offline());});
+  if(!response.ok){const error=await response.json().catch(()=>({}));throw new Error(error.detail||'The storyboard could not be drawn. Try again.');}
   const blob=await response.blob();
   if(request!==storyboardRequest)return;
   const old=$('storyboard-preview').dataset.objectUrl;
@@ -461,8 +466,8 @@ $('import-reference').onclick=()=>$('reference-file').click();
 $('reference-file').onchange=guarded(async event=>{
   const file=event.target.files[0];if(!file)return;
   try {
-    const response=await fetch(`/api/boards/${board.id}/shots/${currentShot}/import`,{method:'POST',headers:{'Content-Type':file.type},body:file});
-    const data=await response.json();if(!response.ok)throw new Error(data.detail);
+    const response=await fetch(`/api/boards/${board.id}/shots/${currentShot}/import`,{method:'POST',headers:{'Content-Type':file.type},body:file}).catch(()=>{throw new Error(offline());});
+    const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.detail||'The reference could not be imported. Try a PNG, JPEG or WebP.');
     await refresh();toast('Reference imported. Pick it, then use the pick as hero.');
   } finally { event.target.value=''; }
 });
