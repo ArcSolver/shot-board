@@ -18,7 +18,7 @@
     </div>
     <div id="featured-board" class="lined-scene" aria-label="The greenhouse"></div>
     <dl class="facts">
-      <div><dt>First takes</dt><dd>SDXL Base 1.0</dd></div>
+      <div><dt>First takes</dt><dd>SDXL Base 1.0 or Qwen-Image-2512</dd></div>
       <div><dt>Redrawn from the hero</dt><dd>Qwen-Image-Edit-2511</dd></div>
       <div><dt>Runs on</dt><dd>Your ComfyUI, through the Comfy SDK</dd></div>
       <div><dt>Exports</dt><dd>Seeds and ComfyUI workflows</dd></div>
@@ -36,7 +36,7 @@
     <details class="advanced"><summary>Options</summary>
       <div class="bible-fields"><label>Character<input id="character" name="character" maxlength="400"></label><label>Prop<input id="prop" name="prop" maxlength="160"></label><label>Setting<input id="setting" name="setting" maxlength="400"></label></div>
       <div class="section-label">Camera</div><div id="camera-chips"></div><div class="section-label">Look</div><div id="look-chips"></div>
-      <div class="form-bottom"><label>Cuts<select id="count" name="count"><option value="6">6 cuts</option><option value="7">7 cuts</option><option value="8">8 cuts</option><option value="9">9 cuts</option></select></label><label>Seed<input type="number" id="seed" name="seed" min="0" max="4294967295" value="20261020"></label></div>
+      <div class="form-bottom"><label>First takes<select id="preset" name="preset"><option value="sdxl-base">SDXL Base 1.0</option><option value="qwen-image">Qwen-Image-2512</option></select></label><label>Cuts<select id="count" name="count"><option value="6">6 cuts</option><option value="7">7 cuts</option><option value="8">8 cuts</option><option value="9">9 cuts</option></select></label><label>Seed<input type="number" id="seed" name="seed" min="0" max="4294967295" value="20261020"></label></div>
     </details>
     <button type="submit" class="primary large">Build shot list</button>
   </form>
